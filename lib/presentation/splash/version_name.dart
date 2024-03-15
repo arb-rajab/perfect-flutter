@@ -13,7 +13,7 @@ class VersionName extends HookConsumerWidget {
     return Container(
       margin: const EdgeInsets.all(halfMargin),
       child: Text(
-        package.getVersionName(),
+        package.value!.getVersionName(),
         style: Theme.of(context)
             .textTheme
             .titleLarge!

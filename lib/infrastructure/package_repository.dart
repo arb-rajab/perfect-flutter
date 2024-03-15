@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-final packageRepositoryProvider = Provider((ref) => PackageRepository());
+final packageRepositoryProvider =
+    FutureProvider((ref) => PackageRepository()._initialise());
 
 class PackageRepository {
   late PackageInfo _packageInfo;
@@ -11,10 +12,10 @@ class PackageRepository {
     _initialise();
   }
 
-  Future<PackageInfo> _initialise() async {
-    _isInitialised = true;
+  Future<PackageRepository> _initialise() async {
     _packageInfo = await PackageInfo.fromPlatform();
-    return _packageInfo;
+    _isInitialised = true;
+    return Future(() => this);
   }
 
   bool get isInitialised => _isInitialised;

@@ -7,25 +7,23 @@ import 'package:beta/presentation/splash/version_name.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SplashScreen extends HookConsumerWidget {
+class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
 
-  static const route = 'spalsh';
+  static const route = '/spalsh';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(splashScreenProvider.notifier);
 
     final package = ref.watch(packageRepositoryProvider);
-    final device = ref.watch(deviceRepository);
+    final device = ref.watch(deviceRepositoryProvider);
     DatabaseService? database;
-    if (package.isInitialised && device.isInitialised) {
+    if (device.hasValue && package.hasValue) {
       database = ref.watch(databaseServiceProvider);
     }
     if (database != null) {
-      if (database.isOpened) {
-        notifier.startTimer(context);
-      }
+      notifier.startTimer(context);
     }
     return SafeArea(
       child: Scaffold(
@@ -36,7 +34,7 @@ class SplashScreen extends HookConsumerWidget {
               flex: 9,
               child: ShimmeringLogo(),
             ),
-            if (package.isInitialised)
+            if (package.hasValue)
               const Expanded(flex: 1, child: VersionName()),
           ],
         ),

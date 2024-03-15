@@ -1,0 +1,18 @@
+{
+    "notifications": {
+        "notifications": "الإشعارات"
+    },
+    "settings": {
+        "settings": "الإعدادات"
+    },
+    "coupons": {
+        "coupons": "الكروت"
+    },
+    "backup": {
+        "import": "استيراد نسخ احتياطي",
+        "export": "نسخ احتياطي"
+    },
+    "scan-printed-qr": {
+        "scan-printed-qr": "مسح QR لمختوى مطبوع"
+    }
+}

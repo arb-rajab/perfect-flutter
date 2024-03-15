@@ -4,7 +4,8 @@ import 'package:beta/common/exceptions.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final deviceRepository = Provider((ref) => DeviceRepository());
+final deviceRepositoryProvider = FutureProvider<DeviceRepository>(
+    (ref) async => await DeviceRepository().initialise());
 
 class DeviceRepository {
   late DeviceInfoPlugin _deviceInfoPlugin;
@@ -12,11 +13,7 @@ class DeviceRepository {
   late IosDeviceInfo _iosDeviceInfo;
   bool _isInitialised = false;
 
-  DeviceRepository() {
-    _initialise();
-  }
-
-  Future _initialise() async {
+  Future<DeviceRepository> initialise() async {
     _deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       _androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
@@ -26,6 +23,7 @@ class DeviceRepository {
       throw UnsupportedPlatformException();
     }
     _isInitialised = true;
+    return Future(() => this);
   }
 
   bool get isInitialised => _isInitialised;

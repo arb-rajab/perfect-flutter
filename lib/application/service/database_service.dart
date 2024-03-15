@@ -11,14 +11,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/open.dart';
-import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqflite/sqflite.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
 final databaseServiceProvider = Provider((ref) => DatabaseService(
-    ref.read(deviceRepository), ref.read(packageRepositoryProvider)));
+      ref.watch(deviceRepositoryProvider).asData!.value,
+      ref.watch(packageRepositoryProvider).asData!.value,
+    ));
 
 @DriftDatabase(tables: [])
 class DatabaseService extends _$DatabaseService {
@@ -29,13 +30,6 @@ class DatabaseService extends _$DatabaseService {
   @override
   int get schemaVersion => 37;
 
-  bool isOpened = false;
-
-  @override
-  Future<T> doWhenOpened<T>(FutureOr<T> Function(QueryExecutor e) fn) {
-    isOpened   = true;
-    return super.doWhenOpened(fn);
-  }
 }
 
 LazyDatabase _openConnection(
@@ -53,9 +47,9 @@ LazyDatabase _openConnection(
     final file = File(p.join(dbFolder, 'QuizDatabase.db'));
 
     // Also work around limitations on old Android versions
-    if (Platform.isAndroid) {
-      await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
-    }
+    // if (Platform.isAndroid) {
+    //   await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
+    // }
 
     // Make sqlite3 pick a more suitable location for temporary files - the
     // one from the system may be inaccessible due to sandboxing.
