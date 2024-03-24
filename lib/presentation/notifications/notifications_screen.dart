@@ -1,11 +1,40 @@
+import 'package:beta/configs/colors.dart';
+import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/notifications/notifications_controller.dart';
+import 'package:beta/presentation/widgets/items_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   static const route = '/notifications';
 
   const NotificationsScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  late NotificationsListController _controller;
+
+  @override
+  void initState() {
+    Get.delete<NotificationsListController>();
+    _controller = Get.put(NotificationsListController(this));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          foregroundColor: primaryColorLight,
+          title: Hero(
+              tag: 'notifications',
+              child: Text(StringConstant.notifications.tr())),
+        ),
+        body: ItemsList(controller: _controller));
   }
 }

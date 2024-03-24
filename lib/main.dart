@@ -1,32 +1,33 @@
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
+  await MainController.initServices();
   runApp(
-    ProviderScope(
-      child: EasyLocalization(
-        supportedLocales: supportedLocals,
-        path: 'assets/translations',
-        fallbackLocale: supportedLocals[0],
-        child: const MyApp(),
-      ),
-    ),
+    DevicePreview(
+        enabled: false,
+        builder: (context) => EasyLocalization(
+              supportedLocales: supportedLocals,
+              path: 'assets/translations',
+              fallbackLocale: supportedLocals[0],
+              child: const MyApp(),
+            )),
   );
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return MaterialApp(
+      builder: DevicePreview.appBuilder,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

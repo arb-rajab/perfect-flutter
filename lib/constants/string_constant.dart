@@ -1,4 +1,9 @@
 class StringConstant {
+  static const noConnection = 'no-connection';
+  static const listEmpty = 'list-empty';
+  static const ok = 'ok';
+  static const loadMore = 'load-more';
+
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
 

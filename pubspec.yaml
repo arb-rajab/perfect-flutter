@@ -35,9 +35,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  hooks_riverpod: ^2.4.10
-  flutter_hooks: ^0.20.5
-  riverpod_annotation: ^2.3.4
+  # hooks_riverpod: ^2.4.10
+  # flutter_hooks: ^0.20.5
+  # riverpod_annotation: ^2.3.4
+  get: ^4.6.6
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   drift: ^2.16.0
@@ -50,6 +51,13 @@ dependencies:
   sqflite: ^2.3.2
   shimmer: ^3.0.0
   easy_localization: ^3.0.5
+  unique_identifier: ^0.3.0
+  device_preview: ^1.1.0
+  safe_device: ^1.1.6
+  shared_preferences: ^2.2.2
+  dio: ^5.4.1
+  flutter_linkify: ^6.0.0
+  url_launcher: ^6.2.5
 
 
 dev_dependencies:
@@ -62,10 +70,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
-  riverpod_generator: ^2.3.11
+  # riverpod_generator: ^2.3.11
   build_runner: ^2.4.8
-  custom_lint: ^0.6.2
-  riverpod_lint: ^2.3.9
+  # custom_lint: ^0.6.2
+  # riverpod_lint: ^2.3.9
   freezed: ^2.4.7
   json_serializable: ^6.7.1
   drift_dev: ^2.16.0

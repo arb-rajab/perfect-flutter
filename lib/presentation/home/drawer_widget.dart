@@ -30,7 +30,8 @@ class _NotificationsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.notifications_sharp, color: primaryColorDark),
-      title: Text(StringConstant.notifications.tr()),
+      title: Hero(
+          tag: 'notifications', child: Text(StringConstant.notifications.tr())),
       onTap: () => Navigator.pushNamed(context, NotificationsScreen.route),
     );
   }

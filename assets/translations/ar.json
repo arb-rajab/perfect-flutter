@@ -1,4 +1,9 @@
 {
+    "no-connection": "لا يوجد اتصال بالشبكة",
+    "list-empty": "لا يوجد عناصر لعرضها",
+    "ok": "موافق",
+    "load-more": "تحميل المزيد",
+
     "notifications": {
         "notifications": "الإشعارات"
     },

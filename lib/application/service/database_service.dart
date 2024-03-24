@@ -6,7 +6,7 @@ import 'package:beta/infrastructure/package_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
@@ -16,27 +16,20 @@ import 'package:sqflite/sqflite.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
-final databaseServiceProvider = Provider((ref) => DatabaseService(
-      ref.watch(deviceRepositoryProvider).asData!.value,
-      ref.watch(packageRepositoryProvider).asData!.value,
-    ));
-
 @DriftDatabase(tables: [])
 class DatabaseService extends _$DatabaseService {
-  DatabaseService(
-      DeviceRepository deviceRepository, PackageRepository packageRepository)
-      : super(_openConnection(deviceRepository, packageRepository));
+  DatabaseService() : super(_openConnection());
 
   @override
   int get schemaVersion => 37;
-
 }
 
-LazyDatabase _openConnection(
-    DeviceRepository deviceRepository, PackageRepository packageRepository) {
+LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
 
   return LazyDatabase(() async {
+    DeviceRepository deviceRepository = Get.find();
+    PackageRepository packageRepository = Get.find();
     String model = deviceRepository.getModel();
 
     String encryptionKey = model + packageRepository.getPackageName();
