@@ -3,15 +3,36 @@
     "list-empty": "لا يوجد عناصر لعرضها",
     "ok": "موافق",
     "load-more": "تحميل المزيد",
+    "choose-an-option": "اختر أحد الخيارات",
+    "changes-will-be-applied-upon-restart": "سيتم تطبيق التغييرات المطلوبة بعد إعادة فتح التطبيق",
+    "confirm-action": "تأكيد الإجراء",
+    "confirm-action-explanation": "هل أنت متأكد أنك تريد القيام بهذا الإجراء؟ لا يمكن التراجع في حال التأكيد",
+    "cancel": "إلغاء",
+    "success": "تمت العملية بنجاح",
 
     "notifications": {
         "notifications": "الإشعارات"
     },
     "settings": {
-        "settings": "الإعدادات"
+        "settings": "الإعدادات",
+        "theme-mode": "وضع الألوان",
+        "system-defaults": "إعدادات النظام الافتراضية",
+        "light": "الوضع النهاري",
+        "night": "الوضع الليلي",
+        "text-scale-factor": "حجم النص",
+        "delete-user-notes": "حذف الملاحظات",
+        "delete-user-notes-explanation": "حذف الملاحظات التي قمت بوضعها ضمن الأسئلة، لن يؤدي إلى حذف الملاحظات التي تم تنزيلها",
+        "delete-user-favorite-questions": "حذف الأسئلة المفضلة",
+        "delete-user-favorite-questions-explanation": "إزالة جميع الأسئلة الموضوعة ضمن خانة (المفضلة) من هذه الخانة",
+        "delete-user-answers": "تصفير الأسئلة المجابة",
+        "delete-user-answers-explanation": "تصفير جميع الأسئلة المجابة، فيصبح السؤال غير مجاباً",
+        "delete-term-last-access": "حذف الوصول ضمن الأقسام الدراسية",
+        "delete-term-last-access-explanation": "سيتم مسح البيانات المتعلقة بآخر سؤال تم الوصول إليه ضمن الأسئلة المؤتمتة، آخر فلاش كارد تم التصفح ضمن مجموعة الفلاش كارد، آخر ثانية تم الوصول إليها ضمن الفيديو، جميع الأقسام الدراسية سيتم إضافة كلمة (جديد) لها"
     },
     "coupons": {
-        "coupons": "الكروت"
+        "coupons": "الكروت",
+        "coupon-expired": "الكرت منتهي الصلاحية",
+        "expires-in-n-days": "صالح لغاية (N) يوماً"
     },
     "backup": {
         "import": "استيراد نسخ احتياطي",

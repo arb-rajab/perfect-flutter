@@ -1,7 +1,7 @@
-import 'package:beta/configs/colors.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/notifications/notifications_controller.dart';
 import 'package:beta/presentation/widgets/items_list.dart';
+import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -27,14 +27,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: primaryColor,
-          foregroundColor: primaryColorLight,
-          title: Hero(
-              tag: 'notifications',
-              child: Text(StringConstant.notifications.tr())),
-        ),
-        body: ItemsList(controller: _controller));
+    return ScreenWrapper(
+        title: StringConstant.notifications.tr(),
+        child: ItemsList(controller: _controller));
   }
 }

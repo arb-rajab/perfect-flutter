@@ -1,4 +1,9 @@
-import 'package:beta/application/service/database_service.dart';
+import 'package:beta/application/services/answer_property_service.dart';
+import 'package:beta/application/services/coupon_service.dart';
+import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/question_property_service.dart';
+import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
@@ -41,12 +46,19 @@ class MainController {
   // }
 
   static Future initServices() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    if (testing == false) WidgetsFlutterBinding.ensureInitialized();
+    KeyValue keyValue = await KeyValue().initialise();
     await EasyLocalization.ensureInitialized();
     Get.put(await DeviceRepository().initialise());
     Get.put(await PackageRepository().initialise());
-    Get.put(await KeyValue().initialise());
-    Get.put(DatabaseService());
+    Get.put(keyValue);
+    DatabaseService databaseService = DatabaseService();
+    Get.put(databaseService);
+    Get.put(ThemeService(keyValue: keyValue));
+    Get.put(QuestionPropertyService(databaseService: databaseService));
+    Get.put(AnswerPropertyService(databaseService: databaseService));
+    Get.put(TermLastAccessService(databaseService: databaseService));
+    Get.put(CouponService(databaseService: databaseService));
     // await Firebase.initializeApp(
     //   options: DefaultFirebaseOptions.currentPlatform,
     // );

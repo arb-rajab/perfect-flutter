@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:beta/abstract/list_controller_base.dart';
-import 'package:beta/application/service/network_service.dart';
+import 'package:beta/application/services/network_service.dart';
 import 'package:beta/constants/other_constants.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,15 +20,17 @@ abstract class ListController<T> implements ListControllerBase {
   final Widget Function(BuildContext, int) itemBuilder;
   final State<StatefulWidget> state;
   bool remote;
-  String plural;
-  String indexUrl;
+  String? plural;
+  String? indexUrl;
+  Future<List> Function()? fetch;
 
   ListController(
       {required this.itemBuilder,
       required this.state,
       this.remote = true,
       required this.plural,
-      required this.indexUrl});
+      required this.indexUrl,
+      required this.fetch});
 
   Future init({int offset = 0, bool refresh = false}) async {
     if (refresh) {
@@ -93,9 +95,12 @@ abstract class ListController<T> implements ListControllerBase {
   }
 
   @override
-  Future? loadData({int offset = 0, bool refresh = false}) {
-    if (remote) return _getRemoteData(offset: offset, refresh: refresh);
-    return null;
+  Future? loadData({int offset = 0, bool refresh = false}) async {
+    if (remote) {
+      return _getRemoteData(offset: offset, refresh: refresh);
+    } else {
+      items = await fetch!.call();
+    }
   }
 
   Future? _getRemoteData({required int offset, required bool refresh}) {
@@ -124,7 +129,7 @@ abstract class ListController<T> implements ListControllerBase {
         onMessageReceived: (failureResponse) =>
             message = failureResponse.content,
         onConnectionFailed: () => message =
-            StringConstant.noConnection.tr()).get(url: indexUrl, query: {
+            StringConstant.noConnection.tr()).get(url: indexUrl!, query: {
       'limit': listItemsInitialCount.toString(),
       'offset': offset.toString()
     });

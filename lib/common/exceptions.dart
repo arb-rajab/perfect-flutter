@@ -6,3 +6,11 @@ class UnsupportedPlatformException implements Exception {
   @override
   String toString() => "${Platform.operatingSystem} is not yet supported";
 }
+
+class UnsupportedValueException implements Exception {
+  String value;
+  UnsupportedValueException(this.value);
+
+  @override
+  String toString() => "$value is not supported";
+}

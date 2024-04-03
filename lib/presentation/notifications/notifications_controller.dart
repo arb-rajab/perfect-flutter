@@ -9,5 +9,6 @@ class NotificationsListController extends ListController<Notification> {
             state: state,
             itemBuilder: (context, index) => NotificationWidget(index: index),
             plural: 'notifications',
-            indexUrl: ApiConstant.notifications);
+            indexUrl: ApiConstant.notifications,
+            fetch: null);
 }

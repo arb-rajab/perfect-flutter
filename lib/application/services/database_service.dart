@@ -1,24 +1,57 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:beta/domain/answer.dart';
+import 'package:beta/domain/answer_property.dart';
+import 'package:beta/domain/coupon.dart';
+import 'package:beta/domain/coupon_linked_to_term.dart';
+import 'package:beta/domain/ebook.dart';
+import 'package:beta/domain/fcm_topic.dart';
+import 'package:beta/domain/question.dart';
+import 'package:beta/domain/question_media.dart';
+import 'package:beta/domain/question_property.dart';
+import 'package:beta/domain/question_tag.dart';
+import 'package:beta/domain/question_tag_property.dart';
+import 'package:beta/domain/term.dart';
+import 'package:beta/domain/term_last_access.dart';
+import 'package:beta/domain/term_tree.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:get/instance_manager.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/open.dart';
-import 'package:sqlite3/sqlite3.dart';
 import 'package:sqflite/sqflite.dart';
+// import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
-@DriftDatabase(tables: [])
+@DriftDatabase(tables: [
+  Coupons,
+  Terms,
+  Answers,
+  Questions,
+  QuestionTags,
+  QuestionMedias,
+  FcmTopics,
+  AnswerProperties,
+  CouponsLinkedToTerms,
+  TermTrees,
+  Ebooks,
+  TermsLastAccesses,
+  QuestionTagProperties,
+  QuestionProperties
+])
 class DatabaseService extends _$DatabaseService {
-  DatabaseService() : super(_openConnection());
+  DatabaseService()
+      : super(MainController.testing
+            ? NativeDatabase.memory()
+            : _openConnection());
 
   @override
   int get schemaVersion => 37;
@@ -26,7 +59,6 @@ class DatabaseService extends _$DatabaseService {
 
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
-
   return LazyDatabase(() async {
     DeviceRepository deviceRepository = Get.find();
     PackageRepository packageRepository = Get.find();
@@ -46,20 +78,22 @@ LazyDatabase _openConnection() {
 
     // Make sqlite3 pick a more suitable location for temporary files - the
     // one from the system may be inaccessible due to sandboxing.
-    final cachebase = (await getTemporaryDirectory()).path;
+    // final cachebase = (await getTemporaryDirectory()).path;
     // We can't access /tmp on Android, which sqlite3 would try by default.
     // Explicitly tell it about the correct temporary directory.
-    sqlite3.tempDirectory = cachebase;
+    // sqlite3.tempDirectory = cachebase;
 
     Future<void> setupSqlCipher() async {
+      // await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
+
       await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
       open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
     }
 
+    final token = RootIsolateToken.instance;
     return NativeDatabase.createInBackground(
       file,
       isolateSetup: () async {
-        final token = RootIsolateToken.instance;
         BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
         await setupSqlCipher();
       },

@@ -52,7 +52,9 @@ class NetworkService {
   ///So it is moved to a separate function instead of having the same code in both functions
   Future _handleResponse(Response response) async {
     dynamic body = response.data;
-    print(body);
+    if (kDebugMode) {
+      print(body);
+    }
     try {
       body = json.decode(body);
     } on FormatException {

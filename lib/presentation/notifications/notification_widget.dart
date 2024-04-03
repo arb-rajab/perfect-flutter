@@ -1,4 +1,3 @@
-import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/domain/notification.dart' as n;
 import 'package:beta/presentation/notifications/notifications_controller.dart';
@@ -19,7 +18,10 @@ class NotificationWidget extends StatelessWidget {
         n.Notification.fromJson(notificationsListController.items[index]);
     return Container(
       color:
-          notification.seen == true ? backgroundColorLight : primaryColorLight,
+          notification.seen == true
+          ? Theme.of(context).primaryColor
+          : Theme.of(context) //TODO check color
+              .scaffoldBackgroundColor, //backgroundColorLight : primaryColorLight,
       margin: const EdgeInsets.all(halfMargin),
       child: Column(
         children: [
@@ -32,24 +34,23 @@ class NotificationWidget extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium!
-                  .copyWith(color: primaryColor),
+                // .copyWith(color: primaryColor),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(halfMargin),
-            decoration: BoxDecoration(
-                border: Border.all(color: primaryColor),
+            decoration: const BoxDecoration(
+                // border: Border.all(color: primaryColor),
                 borderRadius:
-                    const BorderRadius.all(Radius.circular(halfMargin))),
+                     BorderRadius.all(Radius.circular(halfMargin))),
             child: ListTile(
-                leading: const Icon(Icons.notifications, color: primaryColor),
-                trailing: const Icon(Icons.navigate_next, color: primaryColor),
-                title: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: margin),
-                  child: Text(
-                    notification.title.value!,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                leading: const Icon(
+                  Icons.notifications, /*color: primaryColor*/
+                ),
+                trailing: const Icon(
+                  Icons.navigate_next, /*color: primaryColor*/
+                ),
+                title: Text(notification.title.value!
                 ),
                 subtitle: SelectableLinkify(
                     onOpen: (link) async {
@@ -57,8 +58,7 @@ class NotificationWidget extends StatelessWidget {
                         throw Exception('Could not launch ${link.url}');
                       }
                     },
-                    text: notification.text.value!,
-                    style: Theme.of(context).textTheme.titleMedium)),
+                    text: notification.text.value!)),
           ),
         ],
       ),

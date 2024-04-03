@@ -1,4 +1,3 @@
-import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class VersionName extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .titleLarge!
-            .copyWith(color: primaryColorDark),
+          // .copyWith(color: primaryColorDark),
       ),
     );
   }

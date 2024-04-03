@@ -1,4 +1,3 @@
-import 'package:beta/configs/colors.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -10,8 +9,8 @@ class ShimmeringLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Shimmer.fromColors(
-          baseColor: primaryColor,
-          highlightColor: Colors.white,
+          baseColor: Theme.of(context).primaryColor,
+          highlightColor: Theme.of(context).primaryColorLight,
           child: const NoBackgroundLogo()),
     );
   }
