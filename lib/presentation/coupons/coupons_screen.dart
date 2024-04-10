@@ -8,6 +8,8 @@ import 'package:get/instance_manager.dart';
 
 class CouponsScreen extends StatefulWidget {
   static const route = '/coupons';
+  static String title = StringConstant.coupons.tr();
+  static const IconData icon = Icons.credit_card;
 
   const CouponsScreen({super.key});
 
@@ -28,7 +30,8 @@ class _CouponsScreenState extends State<CouponsScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: StringConstant.coupons.tr(),
+        title: CouponsScreen.title,
+        icon: CouponsScreen.icon,
         child: ItemsList(controller: _controller));
   }
 }

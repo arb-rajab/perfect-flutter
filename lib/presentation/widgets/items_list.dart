@@ -57,7 +57,7 @@ class _ListLocaleState extends State<_ListLocale> {
   Widget build(BuildContext context) {
     var controller = widget.controller;
     if (controller.items.isEmpty) {
-      if (controller.loading) return const Center(child: LoadingWidget());
+      if (controller.loading) return const LoadingWidget();
       if (controller.message != '') return MessageWidget(controller.message);
       return const NoItemsWidget();
     }

@@ -4,6 +4,7 @@ import 'package:beta/presentation/splash/version_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//TODO apply test that splash screen is changed after amount of time
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 

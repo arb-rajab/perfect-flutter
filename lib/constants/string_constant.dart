@@ -10,6 +10,14 @@ class StringConstant {
   static const confirmActionExplanation = 'confirm-action-explanation';
   static const cancel = 'cancel';
   static const success = 'success';
+  static const congratulations = 'congratulations';
+  static const unfortunately = 'unfortunately';
+  static const placeQrInRectangle = 'place-qr-in-rectangle';
+  static const enableCameraPermission = 'enable-camera-permission';
+  static const goToAppSettings = 'go-to-app-settings';
+  static const no = 'no';
+  static const yes = 'yes';
+  static const confirmExist = 'confirm-exist';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -50,4 +58,14 @@ class StringConstant {
 
   static const _scanPrintedQr = 'scan-printed-qr';
   static const scanPrintedQr = '$_scanPrintedQr.scan-printed-qr';
+  static const youWonTheGiftBelow = '$_scanPrintedQr.you-won-the-gift-below';
+  static const youWonTheCouponBelow =
+      '$_scanPrintedQr.you-won-the-coupon-below';
+  static const dontCloseUntilGiftRecieved =
+      '$_scanPrintedQr.dont-close-until-gift-recieved';
+  static const dontCloseUntilCouponCopied =
+      '$_scanPrintedQr.dont-close-until-coupon-copied';
+  static const noGift = '$_scanPrintedQr.no-gift';
+  static const haveYouCopiedCoupon = '$_scanPrintedQr.have-you-copied-coupon';
+  static const haveYouRecievedGift = '$_scanPrintedQr.have-you-recieved-gift';
 }

@@ -9,41 +9,43 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   testWidgets('test text is visible and ok button removes dialogue',
       (widgetTester) async {
+    int x = 0;
     await widgetTester.pumpWidget(MaterialApp(home: Scaffold(
       body: ConfirmDialogue(
         onConfirm: () {
           log('success');
+          x = 1;
         },
       ),
     )));
 
-    expect(find.text(StringConstant.confirmActionExplanation.tr()),
-        findsOneWidget);
+    expect(find.byType(ConfirmDialogue), findsOneWidget);
 
     await widgetTester.tap(find.text(StringConstant.ok.tr()));
     await widgetTester.pumpAndSettle();
 
-    expect(
-        find.text(StringConstant.confirmActionExplanation.tr()), findsNothing);
+    expect(find.byType(ConfirmDialogue), findsNothing);
+    expect(x, 1);
   });
 
   testWidgets('test text is visible and cancel button removes dialogue',
       (widgetTester) async {
+    int x = 0;
     await widgetTester.pumpWidget(MaterialApp(home: Scaffold(
       body: ConfirmDialogue(
         onConfirm: () {
           log('success');
+          x = 1;
         },
       ),
     )));
 
-    expect(find.text(StringConstant.confirmActionExplanation.tr()),
-        findsOneWidget);
+    expect(find.byType(ConfirmDialogue), findsOneWidget);
 
     await widgetTester.tap(find.text(StringConstant.cancel.tr()));
     await widgetTester.pumpAndSettle();
 
-    expect(
-        find.text(StringConstant.confirmActionExplanation.tr()), findsNothing);
+    expect(find.byType(ConfirmDialogue), findsNothing);
+    expect(x, 0);
   });
 }

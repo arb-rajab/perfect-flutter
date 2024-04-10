@@ -14,11 +14,14 @@ import 'package:get/instance_manager.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
   static const route = '/settings';
+  static const icon = Icons.settings;
+  static final title = StringConstant.settings.tr();
 
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: StringConstant.settings.tr(),
+        title: title,
+        icon: icon,
         child: ListView(
           children: const [
             SelectThemeWidget(),

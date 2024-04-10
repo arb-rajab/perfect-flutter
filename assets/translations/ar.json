@@ -9,6 +9,14 @@
     "confirm-action-explanation": "هل أنت متأكد أنك تريد القيام بهذا الإجراء؟ لا يمكن التراجع في حال التأكيد",
     "cancel": "إلغاء",
     "success": "تمت العملية بنجاح",
+    "congratulations": "مبروك",
+    "unfortunately": "للأسف",
+    "place-qr-in-rectangle": "ضع رمز ال QR ضمن الإطار ليتم مسحه",
+    "enable-camera-permission": "يرجى منح صلاحية الوصول للكميرا، من أجل مسح رمز ال QR",
+    "go-to-app-settings": "الذهاب إلى صفحة الإعدادات",
+    "no": "لا",
+    "yes": "نعم",
+    "confirm-exist": "تأكيد الخروج",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -39,6 +47,13 @@
         "export": "نسخ احتياطي"
     },
     "scan-printed-qr": {
-        "scan-printed-qr": "مسح QR لمختوى مطبوع"
+        "scan-printed-qr": "مسح QR لمحتوى مطبوع",
+        "you-won-the-gift-below": "لقد ربحت الهدية أدناه",
+        "you-won-the-coupon-below": "لقد ربحت الكرت أدناه",
+        "dont-close-until-gift-recieved": "يرجى عدم إغلاق الصفحة حتى استلام الهدية",
+        "dont-close-until-coupon-copied": "يرجى عدم إغلاق الصفحة حتى نسخ رمز التفعيل",
+        "no-gift": "لا يوجد هدية مرفقة، حظاً موفقاً في المرة القادمة",
+        "have-you-copied-coupon": "هل قمت بنسخ رمز التفعيل، لن يظهر رمز التفعيل مجدداً إذا قمت بالخروج من الصفحة",
+        "have-you-recieved-gift": "هل قمت باستلام الهدية، لن تظهر الهدية مجدداً إذا قمت بالخروج من الصفحة"
     }
 }

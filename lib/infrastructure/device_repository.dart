@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:android_id/android_id.dart';
 import 'package:beta/common/exceptions.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/main_controller.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:unique_identifier/unique_identifier.dart';
+// import 'package:unique_identifier/unique_identifier.dart';
 import 'package:safe_device/safe_device.dart';
 
 class DeviceRepository {
@@ -22,16 +24,18 @@ class DeviceRepository {
   bool isRealDevice = true;
 
   Future<DeviceRepository> initialise() async {
+    // if (MainController.testing) WidgetsFlutterBinding.ensureInitialized();
     _deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       _androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
     } else if (Platform.isIOS) {
       _iosDeviceInfo = await _deviceInfoPlugin.iosInfo;
     } else {
-      throw UnsupportedPlatformException();
+      if (!MainController.testing) throw UnsupportedPlatformException();
     }
     if (Platform.isAndroid) {
-      ime1 = await UniqueIdentifier.serial ?? '';
+      // ime1 = await UniqueIdentifier.serial ?? '';
+      ime1 = await const AndroidId().getId() ?? '';
     } else if (Platform.isIOS) {
       ime1 = _iosDeviceInfo.identifierForVendor!;
     }
@@ -51,6 +55,7 @@ class DeviceRepository {
     } else if (Platform.isIOS) {
       return _iosDeviceInfo.utsname.machine;
     }
+    if (MainController.testing) return 'test model';
     throw UnsupportedPlatformException();
   }
 
@@ -58,6 +63,7 @@ class DeviceRepository {
     if (Platform.isAndroid) {
       return _androidDeviceInfo.version.sdkInt.toString();
     }
+    if (MainController.testing) return '25';
     return '';
   }
 
@@ -65,6 +71,7 @@ class DeviceRepository {
     if (Platform.isIOS) {
       return _iosDeviceInfo.systemVersion;
     }
+    if (MainController.testing) return '25';
     return '';
   }
 
@@ -89,7 +96,8 @@ class DeviceRepository {
       'rooted': isRooted(),
       'isEmulator': isEmulator(),
       'appId': appId,
-      'appLanguage': context.locale.languageCode,
+      'appLanguage':
+          MainController.testing ? 'en' : context.locale.languageCode,
       'appVersionCode': packageRepository.getVersionCode(),
       'appVersionName': packageRepository.getVersionName()
     });

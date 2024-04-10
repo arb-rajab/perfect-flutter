@@ -129,7 +129,10 @@ abstract class ListController<T> implements ListControllerBase {
         onMessageReceived: (failureResponse) =>
             message = failureResponse.content,
         onConnectionFailed: () => message =
-            StringConstant.noConnection.tr()).get(url: indexUrl!, query: {
+            StringConstant.noConnection.tr(),
+            onPreConnect: () {},
+            onPostConnect: () {})
+        .get(url: indexUrl!, query: {
       'limit': listItemsInitialCount.toString(),
       'offset': offset.toString()
     });

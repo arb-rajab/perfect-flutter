@@ -1,8 +1,6 @@
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/domain/coupon.dart';
 import 'package:drift/drift.dart';
 
-@DriftAccessor(tables: [Coupons])
 class CouponService {
   DatabaseService databaseService;
   CouponService({required this.databaseService});

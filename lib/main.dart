@@ -7,25 +7,34 @@ import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
 Future<void> main() async {
   await MainController.initServices();
-  runApp(
-    DevicePreview(
+  runApp(const AppWrapper());
+}
+
+//TODO delete if not used
+class AppWrapper extends StatelessWidget {
+  final Widget? home;
+  const AppWrapper({super.key, this.home});
+
+  @override
+  Widget build(BuildContext context) {
+    return DevicePreview(
         enabled: false,
         builder: (context) => EasyLocalization(
               supportedLocales: supportedLocals,
               path: 'assets/translations',
               fallbackLocale: supportedLocals[0],
-              child: const MyApp(),
-            )),
-  );
+              child: MyApp(home: home),
+            ));
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Widget? home;
+  const MyApp({super.key, this.home});
 
   // This widget is the root of your application.
   @override
@@ -81,7 +90,8 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: themeService.getThemeMode(),
         routes: routes,
-        initialRoute: SplashScreen.route,
+        initialRoute: home == null ? SplashScreen.route : '/',
+        home: home,
       ),
     );
   }

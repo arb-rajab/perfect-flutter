@@ -1,7 +1,6 @@
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
-import 'package:beta/presentation/notifications/notifications_screen.dart';
-import 'package:beta/presentation/settings/settings_screen.dart';
+import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       child: ListView(children: [
         const NoBackgroundLogo(),
-        _NotificationsTile(),
-        _SettingsTile(),
         _CouponsTile(),
         _ImportBackupTile(),
         _ExportBackupTile(),
@@ -25,44 +22,14 @@ class DrawerWidget extends StatelessWidget {
   }
 }
 
-class _NotificationsTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(
-        Icons.notifications_sharp, /*color: primaryColorDark*/
-      ),
-      title: Hero(
-          tag: StringConstant.notifications.tr(),
-          child: Text(StringConstant.notifications.tr())),
-      onTap: () => Navigator.pushNamed(context, NotificationsScreen.route),
-    );
-  }
-}
-
-class _SettingsTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(
-        Icons.settings, /*color: primaryColorDark*/
-      ),
-      title: Hero(
-          tag: StringConstant.settings.tr(),
-          child: Text(StringConstant.settings.tr())),
-      onTap: () => Navigator.pushNamed(context, SettingsScreen.route),
-    );
-  }
-}
-
 class _CouponsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(
-        Icons.credit_card, /*color: primaryColorDark*/
+        CouponsScreen.icon
       ),
-      title: Text(StringConstant.coupons.tr()),
+      title: Text(CouponsScreen.title),
       onTap: () => Navigator.pushNamed(context, CouponsScreen.route),
     );
   }
@@ -100,10 +67,11 @@ class _ScanPrintedQRTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(
-        Icons.qr_code_scanner, /*color: primaryColorDark*/
+        PrintedQrScannerScreen.icon
       ),
-      title: Text(StringConstant.scanPrintedQr.tr()),
-      onTap: () {},
+        title: Text(PrintedQrScannerScreen.title),
+        onTap: () =>
+            Navigator.pushNamed(context, PrintedQrScannerScreen.route)
     );
   }
 }

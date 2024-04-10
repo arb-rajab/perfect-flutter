@@ -8,6 +8,8 @@ import 'package:get/instance_manager.dart';
 
 class NotificationsScreen extends StatefulWidget {
   static const route = '/notifications';
+  static const icon = Icons.notifications;
+  static final title = StringConstant.notifications.tr();
 
   const NotificationsScreen({super.key});
 
@@ -28,7 +30,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: StringConstant.notifications.tr(),
+        icon: NotificationsScreen.icon,
+        title: NotificationsScreen.title,
         child: ItemsList(controller: _controller));
   }
 }

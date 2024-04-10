@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+//TODO add test
 class MessageWidget extends StatelessWidget {
   final String message;
 
