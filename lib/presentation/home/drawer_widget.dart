@@ -1,5 +1,6 @@
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
+import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
@@ -7,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 //TODO add what's new
-//TODO add contact us
 //TODO add frequent questions
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -20,7 +20,9 @@ class DrawerWidget extends StatelessWidget {
         _CouponsTile(),
         _ImportBackupTile(),
         _ExportBackupTile(),
-        _ScanPrintedQRTile()
+        _ScanPrintedQRTile(),
+        const Divider(),
+        _ContactUsTile()
       ]),
     );
   }
@@ -32,7 +34,7 @@ class _CouponsTile extends StatelessWidget {
     return OpacityAnimation(
       child: ListTile(
         leading: const Icon(CouponsScreen.icon),
-        title: Text(CouponsScreen.title),
+        title: Hero(tag: CouponsScreen.title, child: Text(CouponsScreen.title)),
         onTap: () => Navigator.pushNamed(context, CouponsScreen.route),
       ),
     );
@@ -75,10 +77,26 @@ class _ScanPrintedQRTile extends StatelessWidget {
     return OpacityAnimation(
       child: ListTile(
           leading: const Icon(PrintedQrScannerScreen.icon),
-          title: Text(PrintedQrScannerScreen.title),
+          title: Hero(
+              tag: PrintedQrScannerScreen.title,
+              child: Text(PrintedQrScannerScreen.title)),
           onTap: () =>
               Navigator.pushNamed(context, PrintedQrScannerScreen.route)
       ),
+    );
+  }
+}
+
+//TODO apply test
+class _ContactUsTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(ContactUsScreen.icon),
+          title: Hero(
+              tag: ContactUsScreen.title, child: Text(ContactUsScreen.title)),
+          onTap: () => Navigator.pushNamed(context, ContactUsScreen.route)),
     );
   }
 }

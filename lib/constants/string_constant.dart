@@ -84,6 +84,15 @@ class StringConstant {
   static const scanQrDescription = '$_addCoupon.scan-qr-description';
 
   static const _contactUs = 'contact-us';
+  static const contactUs = '$_contactUs.contact-us';
   static const frequentlyAskedQuestions =
       '$_contactUs.frequently-asked-questions';
+  static const frequentlyAskedQuestionsExplanation =
+      '$_contactUs.frequently-asked-questions-explanation';
+  static const telegram = '$_contactUs.telegram';
+  static const telegramExplanation = '$_contactUs.telegram-explanation';
+  static const telegramChatExplanation =
+      '$_contactUs.telegram-chat-explanation';
+  static const facebook = '$_contactUs.facebook';
+  static const facebookExplanation = '$_contactUs.facebook-explanation';
 }
