@@ -2,13 +2,14 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
+import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 //TODO add what's new
-//TODO add frequent questions
+//TODO add share app
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
 
@@ -22,7 +23,8 @@ class DrawerWidget extends StatelessWidget {
         _ExportBackupTile(),
         _ScanPrintedQRTile(),
         const Divider(),
-        _ContactUsTile()
+        _ContactUsTile(),
+        _FrequestQuestionsTile()
       ]),
     );
   }
@@ -97,6 +99,22 @@ class _ContactUsTile extends StatelessWidget {
           title: Hero(
               tag: ContactUsScreen.title, child: Text(ContactUsScreen.title)),
           onTap: () => Navigator.pushNamed(context, ContactUsScreen.route)),
+    );
+  }
+}
+
+//TODO apply test
+class _FrequestQuestionsTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(FrequentQuestionsScreen.icon),
+          title: Hero(
+              tag: FrequentQuestionsScreen.title,
+              child: Text(FrequentQuestionsScreen.title)),
+          onTap: () =>
+              Navigator.pushNamed(context, FrequentQuestionsScreen.route)),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:beta/configs/links.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
-import 'package:beta/presentation/frequent_questions/frequent_questions.dart';
+import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -35,10 +35,13 @@ class _FrequesntQuestionsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-        leading: const Icon(Icons.question_answer_sharp),
-        title: Text(StringConstant.frequentlyAskedQuestions.tr()),
+        leading: const Icon(FrequentQuestionsScreen.icon),
+        title: Hero(
+            tag: FrequentQuestionsScreen.title,
+            child: Text(FrequentQuestionsScreen.title)),
         subtitle: Text(StringConstant.frequentlyAskedQuestionsExplanation.tr()),
-        onTap: () => Navigator.pushNamed(context, FrequentQuestions.route),
+        onTap: () =>
+            Navigator.pushNamed(context, FrequentQuestionsScreen.route),
       ),
     );
   }

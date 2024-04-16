@@ -7,4 +7,5 @@ class ApiConstant {
   static const String checkCoupon = '${_apiV1}coupons/(SERIAL)/check';
   static const String activateFreeVersion =
       '${_apiV1}coupons/activate-free-version';
+  static const String frequentQuestions = '${_apiV1}frequent-questions';
 }

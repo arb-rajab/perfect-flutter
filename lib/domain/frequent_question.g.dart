@@ -1,0 +1,23 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'frequent_question.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+FrequentQuestion _$FrequentQuestionFromJson(Map<String, dynamic> json) =>
+    FrequentQuestion(
+      id: const IdJsonConverter().fromJson(json['id'] as int),
+      title: const TitleJsonConverter().fromJson(json['title'] as String),
+      description: const DescriptionJsonConverter()
+          .fromJson(json['description'] as String),
+    );
+
+Map<String, dynamic> _$FrequentQuestionToJson(FrequentQuestion instance) =>
+    <String, dynamic>{
+      'id': const IdJsonConverter().toJson(instance.id),
+      'title': const TitleJsonConverter().toJson(instance.title),
+      'description':
+          const DescriptionJsonConverter().toJson(instance.description),
+    };
