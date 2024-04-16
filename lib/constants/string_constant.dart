@@ -18,6 +18,11 @@ class StringConstant {
   static const no = 'no';
   static const yes = 'yes';
   static const confirmExist = 'confirm-exist';
+  static const skip = 'skip';
+  static const pleaseFillThisField = 'please-fill-this-field';
+  static const notValidMD5Format = 'not-valid-md5-format';
+  static const doYouNeedHelp = 'do-you-need-help';
+  static const scanQr = 'scan-qr';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -68,4 +73,17 @@ class StringConstant {
   static const noGift = '$_scanPrintedQr.no-gift';
   static const haveYouCopiedCoupon = '$_scanPrintedQr.have-you-copied-coupon';
   static const haveYouRecievedGift = '$_scanPrintedQr.have-you-recieved-gift';
+
+  static const _addCoupon = 'add-coupon';
+  static const addCoupon = '$_addCoupon.add-coupon';
+  static const addCouponDescription = '$_addCoupon.add-coupon-description';
+  static const firstAndLastName = '$_addCoupon.first-and-last-name';
+  static const coupon = '$_addCoupon.coupon';
+  static const youCanInstead = '$_addCoupon.you-can-instead';
+  static const activateFreeVersion = '$_addCoupon.activate-free-version';
+  static const scanQrDescription = '$_addCoupon.scan-qr-description';
+
+  static const _contactUs = 'contact-us';
+  static const frequentlyAskedQuestions =
+      '$_contactUs.frequently-asked-questions';
 }

@@ -1,6 +1,7 @@
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/changes_applied_upon_restart_dialogue.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -36,26 +37,28 @@ class _SelectThemeWidgetState extends State<SelectThemeWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(StringConstant.chooseAnOption.tr()),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                  child: Text(StringConstant.systemDefaults.tr()),
-                  onTap: () => _selectTheme(ThemeMode.system),
-                ),
-                const Padding(padding: EdgeInsets.all(margin)),
-                GestureDetector(
-                  child: Text(StringConstant.light.tr()),
-                  onTap: () => _selectTheme(ThemeMode.light),
-                ),
-                const Padding(padding: EdgeInsets.all(margin)),
-                GestureDetector(
-                  child: Text(StringConstant.night.tr()),
-                  onTap: () => _selectTheme(ThemeMode.dark),
-                ),
-              ],
+        return OpacityAnimation(
+          child: AlertDialog(
+            title: Text(StringConstant.chooseAnOption.tr()),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                    child: Text(StringConstant.systemDefaults.tr()),
+                    onTap: () => _selectTheme(ThemeMode.system),
+                  ),
+                  const Padding(padding: EdgeInsets.all(margin)),
+                  GestureDetector(
+                    child: Text(StringConstant.light.tr()),
+                    onTap: () => _selectTheme(ThemeMode.light),
+                  ),
+                  const Padding(padding: EdgeInsets.all(margin)),
+                  GestureDetector(
+                    child: Text(StringConstant.night.tr()),
+                    onTap: () => _selectTheme(ThemeMode.dark),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -65,11 +68,13 @@ class _SelectThemeWidgetState extends State<SelectThemeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.sunny),
-      title: Text(StringConstant.themeMode.tr()),
-      subtitle: Text(_selectedTheme),
-      onTap: _showMultiChoiceDialog,
+    return OpacityAnimation(
+      child: ListTile(
+        leading: const Icon(Icons.sunny),
+        title: Text(StringConstant.themeMode.tr()),
+        subtitle: Text(_selectedTheme),
+        onTap: _showMultiChoiceDialog,
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:confetti/confetti.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,11 @@ class _CongratulationsWidgetState extends State<CongratulationsWidget> {
             shouldLoop: true,
             gravity: 0,
           ),
-          Text(
-            StringConstant.congratulations.tr(),
-            style: Theme.of(context).textTheme.headlineSmall,
+          OpacityAnimation(
+            child: Text(
+              StringConstant.congratulations.tr(),
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
         ]));
   }

@@ -4,6 +4,8 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/theme_service.dart';
+import 'package:beta/application/services/tutorial_service.dart';
+import 'package:beta/application/services/user_service.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
@@ -48,7 +50,7 @@ class MainController {
   static Future initServices() async {
     if (testing == false) WidgetsFlutterBinding.ensureInitialized();
     KeyValue keyValue = await KeyValue().initialise();
-    await EasyLocalization.ensureInitialized();
+    if (testing == false) await EasyLocalization.ensureInitialized();
     Get.put(await DeviceRepository().initialise());
     Get.put(await PackageRepository().initialise());
     Get.put(keyValue);
@@ -59,6 +61,8 @@ class MainController {
     Get.put(AnswerPropertyService(databaseService: databaseService));
     Get.put(TermLastAccessService(databaseService: databaseService));
     Get.put(CouponService(databaseService: databaseService));
+    Get.put(TutorialService(keyValue: keyValue));
+    Get.put(UserService(keyValue: keyValue));
     // await Firebase.initializeApp(
     //   options: DefaultFirebaseOptions.currentPlatform,
     // );

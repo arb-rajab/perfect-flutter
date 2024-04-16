@@ -4,4 +4,8 @@ class KeyValueConstant {
 
   static const String textScaleFactor = 'textScaleFactor';
   static const double textScaleFactorDefaultValue = 1.0;
+
+  static const String dismissedTutorials = 'dismissedTutorials';
+
+  static const String userId = 'userId';
 }

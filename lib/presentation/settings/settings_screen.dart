@@ -2,6 +2,7 @@ import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/dialogues/success_dialogue.dart';
 import 'package:beta/presentation/settings/select_theme_widget.dart';
@@ -42,15 +43,17 @@ class DeleteUserNotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        leading: const Icon(Icons.note),
-        title: Text(StringConstant.deleteUserNotes.tr()),
-        subtitle: Text(StringConstant.deleteUserNotesExplanation.tr()),
-        onTap: () => showConfirmationDialog(context, () async {
-              QuestionPropertyService questionPropertyService = Get.find();
-              await questionPropertyService.deleteAllUserNotes();
-              if (context.mounted) showSuccessDialogue(context);
-            }));
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.note),
+          title: Text(StringConstant.deleteUserNotes.tr()),
+          subtitle: Text(StringConstant.deleteUserNotesExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                QuestionPropertyService questionPropertyService = Get.find();
+                await questionPropertyService.deleteAllUserNotes();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
   }
 }
 
@@ -59,16 +62,18 @@ class DeleteUserFavoriteQuestionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        leading: const Icon(Icons.star),
-        title: Text(StringConstant.deleteUserFavoriteQuestions.tr()),
-        subtitle:
-            Text(StringConstant.deleteUserFavoriteQuestionsExplanation.tr()),
-        onTap: () => showConfirmationDialog(context, () async {
-              QuestionPropertyService questionPropertyService = Get.find();
-              await questionPropertyService.deleteAllUserFavoriteQuestions();
-              if (context.mounted) showSuccessDialogue(context);
-            }));
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.star),
+          title: Text(StringConstant.deleteUserFavoriteQuestions.tr()),
+          subtitle:
+              Text(StringConstant.deleteUserFavoriteQuestionsExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                QuestionPropertyService questionPropertyService = Get.find();
+                await questionPropertyService.deleteAllUserFavoriteQuestions();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
   }
 }
 
@@ -77,15 +82,17 @@ class DeleteUserAnswersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        leading: const Icon(Icons.check),
-        title: Text(StringConstant.deleteUserAnswers.tr()),
-        subtitle: Text(StringConstant.deleteUserAnswersExplanation.tr()),
-        onTap: () => showConfirmationDialog(context, () async {
-              AnswerPropertyService answerPropertyService = Get.find();
-              await answerPropertyService.deleteAllUserCheckedAnswers();
-              if (context.mounted) showSuccessDialogue(context);
-            }));
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.check),
+          title: Text(StringConstant.deleteUserAnswers.tr()),
+          subtitle: Text(StringConstant.deleteUserAnswersExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                AnswerPropertyService answerPropertyService = Get.find();
+                await answerPropertyService.deleteAllUserCheckedAnswers();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
   }
 }
 
@@ -94,14 +101,16 @@ class DeleteTermLastAccessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        leading: const Icon(Icons.timeline),
-        title: Text(StringConstant.deleteTermLastAccess.tr()),
-        subtitle: Text(StringConstant.deleteTermLastAccessExplanation.tr()),
-        onTap: () => showConfirmationDialog(context, () async {
-              TermLastAccessService termLastAccessService = Get.find();
-              await termLastAccessService.deleteAllTermLastAccess();
-              if (context.mounted) showSuccessDialogue(context);
-            }));
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.timeline),
+          title: Text(StringConstant.deleteTermLastAccess.tr()),
+          subtitle: Text(StringConstant.deleteTermLastAccessExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                TermLastAccessService termLastAccessService = Get.find();
+                await termLastAccessService.deleteAllTermLastAccess();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
   }
 }

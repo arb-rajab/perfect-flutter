@@ -1,4 +1,5 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,15 @@ class ChangesAppliedUponRestartDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(StringConstant.changesWillBeAppliedUponRestart.tr()),
-      actions: [
-        TextButton(
-            onPressed: Navigator.of(context).pop,
-            child: Text(StringConstant.ok.tr()))
-      ],
+    return OpacityAnimation(
+      child: AlertDialog(
+        title: Text(StringConstant.changesWillBeAppliedUponRestart.tr()),
+        actions: [
+          TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: Text(StringConstant.ok.tr()))
+        ],
+      ),
     );
   }
 }

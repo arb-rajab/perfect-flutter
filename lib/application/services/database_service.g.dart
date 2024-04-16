@@ -27,25 +27,6 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
   late final GeneratedColumn<int> type = GeneratedColumn<int>(
       'type', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _layerMeta = const VerificationMeta('layer');
-  @override
-  late final GeneratedColumn<int> layer = GeneratedColumn<int>(
-      'layer', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _numberOfObjectsMeta =
-      const VerificationMeta('numberOfObjects');
-  @override
-  late final GeneratedColumn<int> numberOfObjects = GeneratedColumn<int>(
-      'numberOfObjects', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(1));
-  static const VerificationMeta _rootTermIdMeta =
-      const VerificationMeta('rootTermId');
-  @override
-  late final GeneratedColumn<int> rootTermId = GeneratedColumn<int>(
-      'rootTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _freeMeta = const VerificationMeta('free');
   @override
   late final GeneratedColumn<int> free = GeneratedColumn<int>(
@@ -74,18 +55,8 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
       requiredDuringInsert: false,
       defaultValue: const Constant(-1));
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        serial,
-        type,
-        layer,
-        numberOfObjects,
-        rootTermId,
-        free,
-        creation,
-        activationDate,
-        expirationDays
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, serial, type, free, creation, activationDate, expirationDays];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -110,26 +81,6 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
           _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     } else if (isInserting) {
       context.missing(_typeMeta);
-    }
-    if (data.containsKey('layer')) {
-      context.handle(
-          _layerMeta, layer.isAcceptableOrUnknown(data['layer']!, _layerMeta));
-    } else if (isInserting) {
-      context.missing(_layerMeta);
-    }
-    if (data.containsKey('numberOfObjects')) {
-      context.handle(
-          _numberOfObjectsMeta,
-          numberOfObjects.isAcceptableOrUnknown(
-              data['numberOfObjects']!, _numberOfObjectsMeta));
-    }
-    if (data.containsKey('rootTermId')) {
-      context.handle(
-          _rootTermIdMeta,
-          rootTermId.isAcceptableOrUnknown(
-              data['rootTermId']!, _rootTermIdMeta));
-    } else if (isInserting) {
-      context.missing(_rootTermIdMeta);
     }
     if (data.containsKey('free')) {
       context.handle(
@@ -168,12 +119,6 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
           .read(DriftSqlType.string, data['${effectivePrefix}serial'])!,
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
-      layer: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}layer'])!,
-      numberOfObjects: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}numberOfObjects'])!,
-      rootTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}rootTermId'])!,
       free: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}free'])!,
       creation: attachedDatabase.typeMapping
@@ -195,9 +140,6 @@ class coupons extends DataClass implements Insertable<coupons> {
   final int id;
   final String serial;
   final int type;
-  final int layer;
-  final int numberOfObjects;
-  final int rootTermId;
   final int free;
   final DateTime creation;
   final DateTime? activationDate;
@@ -206,9 +148,6 @@ class coupons extends DataClass implements Insertable<coupons> {
       {required this.id,
       required this.serial,
       required this.type,
-      required this.layer,
-      required this.numberOfObjects,
-      required this.rootTermId,
       required this.free,
       required this.creation,
       this.activationDate,
@@ -219,9 +158,6 @@ class coupons extends DataClass implements Insertable<coupons> {
     map['id'] = Variable<int>(id);
     map['serial'] = Variable<String>(serial);
     map['type'] = Variable<int>(type);
-    map['layer'] = Variable<int>(layer);
-    map['numberOfObjects'] = Variable<int>(numberOfObjects);
-    map['rootTermId'] = Variable<int>(rootTermId);
     map['free'] = Variable<int>(free);
     map['creation'] = Variable<DateTime>(creation);
     if (!nullToAbsent || activationDate != null) {
@@ -236,9 +172,6 @@ class coupons extends DataClass implements Insertable<coupons> {
       id: Value(id),
       serial: Value(serial),
       type: Value(type),
-      layer: Value(layer),
-      numberOfObjects: Value(numberOfObjects),
-      rootTermId: Value(rootTermId),
       free: Value(free),
       creation: Value(creation),
       activationDate: activationDate == null && nullToAbsent
@@ -255,9 +188,6 @@ class coupons extends DataClass implements Insertable<coupons> {
       id: serializer.fromJson<int>(json['id']),
       serial: serializer.fromJson<String>(json['serial']),
       type: serializer.fromJson<int>(json['type']),
-      layer: serializer.fromJson<int>(json['layer']),
-      numberOfObjects: serializer.fromJson<int>(json['numberOfObjects']),
-      rootTermId: serializer.fromJson<int>(json['rootTermId']),
       free: serializer.fromJson<int>(json['free']),
       creation: serializer.fromJson<DateTime>(json['creation']),
       activationDate: serializer.fromJson<DateTime?>(json['activationDate']),
@@ -271,9 +201,6 @@ class coupons extends DataClass implements Insertable<coupons> {
       'id': serializer.toJson<int>(id),
       'serial': serializer.toJson<String>(serial),
       'type': serializer.toJson<int>(type),
-      'layer': serializer.toJson<int>(layer),
-      'numberOfObjects': serializer.toJson<int>(numberOfObjects),
-      'rootTermId': serializer.toJson<int>(rootTermId),
       'free': serializer.toJson<int>(free),
       'creation': serializer.toJson<DateTime>(creation),
       'activationDate': serializer.toJson<DateTime?>(activationDate),
@@ -285,9 +212,6 @@ class coupons extends DataClass implements Insertable<coupons> {
           {int? id,
           String? serial,
           int? type,
-          int? layer,
-          int? numberOfObjects,
-          int? rootTermId,
           int? free,
           DateTime? creation,
           Value<DateTime?> activationDate = const Value.absent(),
@@ -296,9 +220,6 @@ class coupons extends DataClass implements Insertable<coupons> {
         id: id ?? this.id,
         serial: serial ?? this.serial,
         type: type ?? this.type,
-        layer: layer ?? this.layer,
-        numberOfObjects: numberOfObjects ?? this.numberOfObjects,
-        rootTermId: rootTermId ?? this.rootTermId,
         free: free ?? this.free,
         creation: creation ?? this.creation,
         activationDate:
@@ -311,9 +232,6 @@ class coupons extends DataClass implements Insertable<coupons> {
           ..write('id: $id, ')
           ..write('serial: $serial, ')
           ..write('type: $type, ')
-          ..write('layer: $layer, ')
-          ..write('numberOfObjects: $numberOfObjects, ')
-          ..write('rootTermId: $rootTermId, ')
           ..write('free: $free, ')
           ..write('creation: $creation, ')
           ..write('activationDate: $activationDate, ')
@@ -323,8 +241,8 @@ class coupons extends DataClass implements Insertable<coupons> {
   }
 
   @override
-  int get hashCode => Object.hash(id, serial, type, layer, numberOfObjects,
-      rootTermId, free, creation, activationDate, expirationDays);
+  int get hashCode => Object.hash(
+      id, serial, type, free, creation, activationDate, expirationDays);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -332,9 +250,6 @@ class coupons extends DataClass implements Insertable<coupons> {
           other.id == this.id &&
           other.serial == this.serial &&
           other.type == this.type &&
-          other.layer == this.layer &&
-          other.numberOfObjects == this.numberOfObjects &&
-          other.rootTermId == this.rootTermId &&
           other.free == this.free &&
           other.creation == this.creation &&
           other.activationDate == this.activationDate &&
@@ -345,9 +260,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
   final Value<int> id;
   final Value<String> serial;
   final Value<int> type;
-  final Value<int> layer;
-  final Value<int> numberOfObjects;
-  final Value<int> rootTermId;
   final Value<int> free;
   final Value<DateTime> creation;
   final Value<DateTime?> activationDate;
@@ -356,9 +268,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
     this.id = const Value.absent(),
     this.serial = const Value.absent(),
     this.type = const Value.absent(),
-    this.layer = const Value.absent(),
-    this.numberOfObjects = const Value.absent(),
-    this.rootTermId = const Value.absent(),
     this.free = const Value.absent(),
     this.creation = const Value.absent(),
     this.activationDate = const Value.absent(),
@@ -368,25 +277,17 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
     this.id = const Value.absent(),
     required String serial,
     required int type,
-    required int layer,
-    this.numberOfObjects = const Value.absent(),
-    required int rootTermId,
     this.free = const Value.absent(),
     required DateTime creation,
     this.activationDate = const Value.absent(),
     this.expirationDays = const Value.absent(),
   })  : serial = Value(serial),
         type = Value(type),
-        layer = Value(layer),
-        rootTermId = Value(rootTermId),
         creation = Value(creation);
   static Insertable<coupons> custom({
     Expression<int>? id,
     Expression<String>? serial,
     Expression<int>? type,
-    Expression<int>? layer,
-    Expression<int>? numberOfObjects,
-    Expression<int>? rootTermId,
     Expression<int>? free,
     Expression<DateTime>? creation,
     Expression<DateTime>? activationDate,
@@ -396,9 +297,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
       if (id != null) 'id': id,
       if (serial != null) 'serial': serial,
       if (type != null) 'type': type,
-      if (layer != null) 'layer': layer,
-      if (numberOfObjects != null) 'numberOfObjects': numberOfObjects,
-      if (rootTermId != null) 'rootTermId': rootTermId,
       if (free != null) 'free': free,
       if (creation != null) 'creation': creation,
       if (activationDate != null) 'activationDate': activationDate,
@@ -410,9 +308,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
       {Value<int>? id,
       Value<String>? serial,
       Value<int>? type,
-      Value<int>? layer,
-      Value<int>? numberOfObjects,
-      Value<int>? rootTermId,
       Value<int>? free,
       Value<DateTime>? creation,
       Value<DateTime?>? activationDate,
@@ -421,9 +316,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
       id: id ?? this.id,
       serial: serial ?? this.serial,
       type: type ?? this.type,
-      layer: layer ?? this.layer,
-      numberOfObjects: numberOfObjects ?? this.numberOfObjects,
-      rootTermId: rootTermId ?? this.rootTermId,
       free: free ?? this.free,
       creation: creation ?? this.creation,
       activationDate: activationDate ?? this.activationDate,
@@ -442,15 +334,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
     }
     if (type.present) {
       map['type'] = Variable<int>(type.value);
-    }
-    if (layer.present) {
-      map['layer'] = Variable<int>(layer.value);
-    }
-    if (numberOfObjects.present) {
-      map['numberOfObjects'] = Variable<int>(numberOfObjects.value);
-    }
-    if (rootTermId.present) {
-      map['rootTermId'] = Variable<int>(rootTermId.value);
     }
     if (free.present) {
       map['free'] = Variable<int>(free.value);
@@ -473,9 +356,6 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
           ..write('id: $id, ')
           ..write('serial: $serial, ')
           ..write('type: $type, ')
-          ..write('layer: $layer, ')
-          ..write('numberOfObjects: $numberOfObjects, ')
-          ..write('rootTermId: $rootTermId, ')
           ..write('free: $free, ')
           ..write('creation: $creation, ')
           ..write('activationDate: $activationDate, ')

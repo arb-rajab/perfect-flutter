@@ -1,15 +1,14 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/presentation/dialogues/success_dialogue.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/printed_qr_scanner/congratulations_widget.dart';
+import 'package:beta/presentation/printed_qr_scanner/coupon_with_copy_widget.dart';
 import 'package:beta/presentation/printed_qr_scanner/warning_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-//TODO Apply test to check coupon exists and copying works
-//TODO add back press confirm dialogue
+//TODO Apply test to check copying works and back press shows dialogue
 class CouponGiftWidget extends StatelessWidget {
   final String coupon;
   const CouponGiftWidget({super.key, required this.coupon});
@@ -31,7 +30,7 @@ class CouponGiftWidget extends StatelessWidget {
         children: [
           const CongratulationsWidget(),
           _YouWonTheCouponBelow(),
-          _CouponWithCopy(coupon),
+          CouponWithCopy(coupon),
           WarningWidget(text: StringConstant.dontCloseUntilCouponCopied.tr())
         ],
       ),
@@ -42,45 +41,15 @@ class CouponGiftWidget extends StatelessWidget {
 class _YouWonTheCouponBelow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(margin),
-      child: Center(
-        child: Text(
-          StringConstant.youWonTheCouponBelow.tr(),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
-    );
-  }
-}
-
-class _CouponWithCopy extends StatelessWidget {
-  final String coupon;
-
-  const _CouponWithCopy(this.coupon);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(margin),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Clipboard.setData(ClipboardData(text: coupon));
-              showSuccessDialogue(context);
-            },
-            child: const Icon(
-              Icons.copy,
-              size: 35,
-            ),
+    return OpacityAnimation(
+      child: Container(
+        margin: const EdgeInsets.all(margin),
+        child: Center(
+          child: Text(
+            StringConstant.youWonTheCouponBelow.tr(),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          Text(
-            coupon,
-            style: Theme.of(context).textTheme.bodyLarge,
-          )
-        ],
+        ),
       ),
     );
   }

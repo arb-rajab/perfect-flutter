@@ -17,6 +17,11 @@
     "no": "لا",
     "yes": "نعم",
     "confirm-exist": "تأكيد الخروج",
+    "skip": "تجاوز",
+    "please-fill-this-field": "لا يمكن ترك هذا الحقل فارغاً",
+    "not-valid-md5-format": "الصيغة فير مناسبة، يجب أن تكون الصيغة على شكل aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "do-you-need-help": "هل تحتاج إلى مساعدة",
+    "scan-qr": "مسح رمز QR",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -55,5 +60,17 @@
         "no-gift": "لا يوجد هدية مرفقة، حظاً موفقاً في المرة القادمة",
         "have-you-copied-coupon": "هل قمت بنسخ رمز التفعيل، لن يظهر رمز التفعيل مجدداً إذا قمت بالخروج من الصفحة",
         "have-you-recieved-gift": "هل قمت باستلام الهدية، لن تظهر الهدية مجدداً إذا قمت بالخروج من الصفحة"
+    },
+    "add-coupon": {
+        "add-coupon": "إضافة كرت جديد",
+        "add-coupon-description": "انقر هنا، لإدخال كرت، أو تفعيل نسخة مجانية من التطبيق، حتى يتسنى لك تصفح الأقسام الدراسية",
+        "first-and-last-name": "الاسم والكنية",
+        "coupon": "الكرت",
+        "you-can-instead": "أو يمكنك بدلاً من ذلك",
+        "activate-free-version": "تفعيل نسخة مجانية",
+        "scan-qr-description": "امسح رمز ال QR الموجود ضمن الكرت لتسهيل نسخ الكود"
+    },
+    "contact-us": {
+        "frequently-asked-questions": "الأسئلة الشائعة"
     }
 }

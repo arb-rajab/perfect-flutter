@@ -1,4 +1,5 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -33,31 +34,33 @@ class YesNoDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(title),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(description),
-          ],
+    return OpacityAnimation(
+      child: AlertDialog(
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(description),
+            ],
+          ),
         ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(StringConstant.no.tr()),
+            onPressed: () {
+              Navigator.of(context).pop();
+              onNoClicked.call();
+            },
+          ),
+          TextButton(
+            child: Text(StringConstant.yes.tr()),
+            onPressed: () {
+              Navigator.of(context).pop();
+              onYesClicked.call();
+            },
+          ),
+        ],
       ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(StringConstant.no.tr()),
-          onPressed: () {
-            Navigator.of(context).pop();
-            onNoClicked.call();
-          },
-        ),
-        TextButton(
-          child: Text(StringConstant.yes.tr()),
-          onPressed: () {
-            Navigator.of(context).pop();
-            onYesClicked.call();
-          },
-        ),
-      ],
     );
   }
 }

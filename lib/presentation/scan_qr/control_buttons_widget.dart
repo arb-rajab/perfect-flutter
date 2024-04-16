@@ -1,5 +1,5 @@
-import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_controller.dart';
-import 'package:beta/presentation/printed_qr_scanner/rectangle_widget.dart';
+import 'package:beta/presentation/scan_qr/rectangle_widget_with_opacity.dart';
+import 'package:beta/presentation/scan_qr/scan_qr_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -9,7 +9,7 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RectangleWidget(
+    return const RectangleWidgetWithOpacity(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,7 +27,7 @@ class FlashIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PrintedQrScannerController controller = Get.find();
+    ScanQrScreenController controller = Get.find();
     return IconButton(
         onPressed: () async {
           await controller.mobileScannerController.toggleTorch();
@@ -52,7 +52,7 @@ class CameraIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PrintedQrScannerController controller = Get.find();
+    ScanQrScreenController controller = Get.find();
     return IconButton(
       onPressed: () async {
         await controller.mobileScannerController.switchCamera();

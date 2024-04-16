@@ -1,4 +1,5 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -12,16 +13,18 @@ class FormMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (message.isNotEmpty) {
-      return SingleChildScrollView(
-        child: MaterialBanner(
-          actions: [
-            OutlinedButton(
-              onPressed: () => onDismiss.call(),
-              child: Text(StringConstant.ok.tr()),
-            )
-          ],
-          content: Text(
-            message,
+      return OpacityAnimation(
+        child: SingleChildScrollView(
+          child: MaterialBanner(
+            actions: [
+              OutlinedButton(
+                onPressed: () => onDismiss.call(),
+                child: Text(StringConstant.ok.tr()),
+              )
+            ],
+            content: Text(
+              message,
+            ),
           ),
         ),
       );

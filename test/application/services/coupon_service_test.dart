@@ -16,11 +16,9 @@ void main() {
         free: const Value(1),
         id: const Value(1),
         type: const Value(1),
-        serial: const Value('serial'),
-        layer: const Value(1),
-        numberOfObjects: const Value(1),
+          serial: const Value('serial'),
         creation: Value(DateTime.now()),
-        rootTermId: const Value(1)));
+        ));
     var allItems = await databaseService.coupons.all().get();
     expect(allItems.length, 1);
 
@@ -35,11 +33,9 @@ void main() {
         free: const Value(0),
         id: const Value(1),
         type: const Value(1),
-        serial: const Value('serial'),
-        layer: const Value(1),
-        numberOfObjects: const Value(1),
+          serial: const Value('serial'),
         creation: Value(DateTime.now()),
-        rootTermId: const Value(1)));
+        ));
     var allItems = await databaseService.coupons.all().get();
     expect(allItems.length, 1);
 

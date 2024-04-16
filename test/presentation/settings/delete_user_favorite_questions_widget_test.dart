@@ -1,6 +1,7 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/theme_service.dart';
+import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
@@ -13,11 +14,14 @@ import 'package:get/instance_manager.dart';
 void main() {
   MainController.testing = true;
   late DatabaseService databaseService;
+  late KeyValue keyValue;
 
   setUp(
     () async {
-      Get.put(ThemeService(keyValue: await KeyValue().initialise()));
+      keyValue = await KeyValue().initialise();
+      Get.put(ThemeService(keyValue: keyValue));
       databaseService = Get.put(DatabaseService());
+      Get.put(TutorialService(keyValue: keyValue));
     },
   );
 

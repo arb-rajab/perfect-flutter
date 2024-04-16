@@ -22,4 +22,9 @@ class KeyValue {
       _pref.getDouble(key) ?? defaultValue;
 
   Future setDouble(String key, double value) => _pref.setDouble(key, value);
+
+  List<String>? getStringList(String key) => _pref.getStringList(key);
+
+  Future setStringList(String key, List<String> value) =>
+      _pref.setStringList(key, value);
 }

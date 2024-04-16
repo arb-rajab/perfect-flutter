@@ -1,14 +1,18 @@
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/home/drawer_widget.dart';
-import 'package:beta/presentation/printed_qr_scanner/control_buttons_widget.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
+import 'package:beta/presentation/scan_qr/control_buttons_widget.dart';
+import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 
-void main() {
+Future<void> main() async {
+  MainController.testing = true;
+  await MainController.initServices();
   patrolTest(
       'scan printed qr shows app settings dialogue when permission denied',
       (widgetTester) async {

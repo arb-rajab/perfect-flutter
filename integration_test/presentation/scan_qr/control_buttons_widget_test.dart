@@ -1,9 +1,9 @@
 // ignore_for_file: empty_catches
 
 import 'package:beta/constants/route_constant.dart';
-import 'package:beta/presentation/printed_qr_scanner/control_buttons_widget.dart';
-import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_controller.dart';
-import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
+import 'package:beta/presentation/scan_qr/control_buttons_widget.dart';
+import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
+import 'package:beta/presentation/scan_qr/scan_qr_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
@@ -16,9 +16,9 @@ void main() {
         (widgetTester) async {
       await widgetTester.pumpWidgetAndSettle(MaterialApp(
         routes: routes,
-        home: const PrintedQrScannerScreen(),
+        home: const ScanQrScreen(),
       ));
-      PrintedQrScannerController controller = Get.find();
+      ScanQrScreenController controller = Get.find();
 
       await widgetTester.native.grantPermissionOnlyThisTime();
       await widgetTester.pumpAndSettle(duration: Durations.extralong4);
@@ -34,9 +34,9 @@ void main() {
         (widgetTester) async {
       await widgetTester.pumpWidgetAndSettle(MaterialApp(
         routes: routes,
-        home: const PrintedQrScannerScreen(),
+        home: const ScanQrScreen(),
       ));
-      PrintedQrScannerController controller = Get.find();
+      ScanQrScreenController controller = Get.find();
 
       await widgetTester.native.grantPermissionOnlyThisTime();
       await widgetTester.pumpAndSettle(duration: Durations.long1);
@@ -56,9 +56,9 @@ void main() {
         (widgetTester) async {
       await widgetTester.pumpWidgetAndSettle(MaterialApp(
         routes: routes,
-        home: const PrintedQrScannerScreen(),
+        home: const ScanQrScreen(),
       ));
-      PrintedQrScannerController controller = Get.find();
+      ScanQrScreenController controller = Get.find();
 
       await widgetTester.native.grantPermissionOnlyThisTime();
       await widgetTester.pumpAndSettle(duration: Durations.long1);
@@ -73,7 +73,7 @@ void main() {
         expect(find.byIcon(FlashIcon.flashOff), findsOneWidget);
         expect(find.byIcon(FlashIcon.flashOn), findsNothing);
 
-        PrintedQrScannerController controller = Get.find();
+        ScanQrScreenController controller = Get.find();
         expect(controller.mobileScannerController.torchState.value,
             TorchState.off);
       }
@@ -84,9 +84,9 @@ void main() {
     patrolTest('camera button has rear icon by default', (widgetTester) async {
       await widgetTester.pumpWidgetAndSettle(MaterialApp(
         routes: routes,
-        home: const PrintedQrScannerScreen(),
+        home: const ScanQrScreen(),
       ));
-      PrintedQrScannerController controller = Get.find();
+      ScanQrScreenController controller = Get.find();
 
       await widgetTester.native.grantPermissionOnlyThisTime();
       await widgetTester.pumpAndSettle(duration: Durations.long1);

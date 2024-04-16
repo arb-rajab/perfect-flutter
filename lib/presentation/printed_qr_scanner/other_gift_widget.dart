@@ -1,13 +1,13 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/printed_qr_scanner/congratulations_widget.dart';
 import 'package:beta/presentation/printed_qr_scanner/warning_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-//TODO test if gift text is visible
-//TODO add back press confirm dialogue
+//TODO test if gift text is visible and back press shows dialogue
 class OtherGiftWidget extends StatelessWidget {
   final String gift;
 
@@ -40,12 +40,14 @@ class OtherGiftWidget extends StatelessWidget {
 class _YouWonTheGiftBelow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(margin),
-      child: Center(
-        child: Text(
-          StringConstant.youWonTheGiftBelow.tr(),
-          style: Theme.of(context).textTheme.titleLarge,
+    return OpacityAnimation(
+      child: Container(
+        margin: const EdgeInsets.all(margin),
+        child: Center(
+          child: Text(
+            StringConstant.youWonTheGiftBelow.tr(),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
       ),
     );
@@ -58,12 +60,14 @@ class _Gift extends StatelessWidget {
   const _Gift(this.gift);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(margin),
-      child: Center(
-        child: Text(
-          gift,
-          style: Theme.of(context).textTheme.bodyLarge,
+    return OpacityAnimation(
+      child: Container(
+        margin: const EdgeInsets.all(margin),
+        child: Center(
+          child: Text(
+            gift,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         ),
       ),
     );

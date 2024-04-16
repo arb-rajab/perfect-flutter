@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:beta/application/services/theme_service.dart';
+import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
@@ -16,10 +17,11 @@ Future<void> main() async {
   testWidgets('clicking select theme invokes dialogue', (widgetTester) async {
     await widgetTester.pumpWidget(
         const MaterialApp(home: Scaffold(body: SelectThemeWidget())));
+    await widgetTester.pump(animationDuration);
 
     //click on the widget
     await widgetTester.tap(find.text(StringConstant.themeMode.tr()));
-    await widgetTester.pump();
+    await widgetTester.pump(animationDuration);
     expect(find.text(StringConstant.chooseAnOption.tr()), findsOneWidget);
     expect(find.text(StringConstant.systemDefaults.tr()), findsNWidgets(2));
     expect(find.text(StringConstant.light.tr()), findsOneWidget);
@@ -34,7 +36,7 @@ Future<void> main() async {
     String randomOption = options[Random().nextInt(options.length)];
 
     await widgetTester.tap(find.text(randomOption));
-    await widgetTester.pump();
+    await widgetTester.pump(animationDuration);
 
     //multi choice dialogue is dismissed and changesWillBeAppliedUponRestart dialogue is shown
     expect(find.text(StringConstant.chooseAnOption.tr()), findsNothing);
@@ -42,7 +44,7 @@ Future<void> main() async {
         findsOneWidget);
 
     await widgetTester.tap(find.text(StringConstant.ok.tr()));
-    await widgetTester.pump();
+    await widgetTester.pump(animationDuration);
 
     //changesWillBeAppliedUponRestart is dismissed
     expect(find.text(StringConstant.changesWillBeAppliedUponRestart.tr()),

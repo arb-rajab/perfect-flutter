@@ -10,7 +10,9 @@ import 'package:test_api/src/backend/invoker.dart';
 
 // START: GENERATED TEST IMPORTS
 import 'presentation/home/drawer_widget_test.dart' as presentation__home__drawer_widget_test;
-import 'presentation/printed_qr_scanner/control_buttons_widget_test.dart' as presentation__printed_qr_scanner__control_buttons_widget_test;
+import 'presentation/printed_qr_scanner/coupon_gift_widget_test.dart' as presentation__printed_qr_scanner__coupon_gift_widget_test;
+import 'presentation/printed_qr_scanner/coupon_with_copy_widget_test.dart' as presentation__printed_qr_scanner__coupon_with_copy_widget_test;
+import 'presentation/scan_qr/control_buttons_widget_test.dart' as presentation__scan_qr__control_buttons_widget_test;
 // END: GENERATED TEST IMPORTS
 
 Future<void> main() async {
@@ -68,7 +70,9 @@ Future<void> main() async {
 
   // START: GENERATED TEST GROUPS
   group('presentation.home.drawer_widget_test', presentation__home__drawer_widget_test.main);
-  group('presentation.printed_qr_scanner.control_buttons_widget_test', presentation__printed_qr_scanner__control_buttons_widget_test.main);
+  group('presentation.printed_qr_scanner.coupon_gift_widget_test', presentation__printed_qr_scanner__coupon_gift_widget_test.main);
+  group('presentation.printed_qr_scanner.coupon_with_copy_widget_test', presentation__printed_qr_scanner__coupon_with_copy_widget_test.main);
+  group('presentation.scan_qr.control_buttons_widget_test', presentation__scan_qr__control_buttons_widget_test.main);
   // END: GENERATED TEST GROUPS
 
   final dartTestGroup = await testExplorationCompleter.future;
