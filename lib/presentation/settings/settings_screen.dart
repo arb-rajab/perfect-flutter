@@ -33,8 +33,7 @@ class SettingsScreen extends StatelessWidget {
             DeleteUserAnswersWidget(),
             DeleteTermLastAccessWidget(),
             Divider(),
-          ],
-        ));
+        ]));
   }
 }
 

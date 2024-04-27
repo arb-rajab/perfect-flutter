@@ -31,7 +31,7 @@ class _ItemListState extends State<ItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.remoteData) {
+    if (widget.remoteData && widget.controller.showRefresh) {
       return RefreshIndicator(
           child: _ListLocale(widget.controller),
           onRefresh: () {
@@ -73,7 +73,7 @@ class _ListLocaleState extends State<_ListLocale> {
           itemCount: controller.items.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics()),
-      if (controller.loadMoreVisibility)
+      if (controller.loadMoreVisibility && controller.showLoadMore)
         SubmitButton(
             text: StringConstant.loadMore.tr(),
             loading: controller.loading,

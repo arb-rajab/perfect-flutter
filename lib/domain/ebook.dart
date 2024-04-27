@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('ebooks')
 class Ebooks extends Table {
   //url string ignored
   TextColumn get encryptionKey => text().named('encryptionKey')();
@@ -8,4 +7,7 @@ class Ebooks extends Table {
       integer().autoIncrement().named('parentTermId')();
   DateTimeColumn get creation => dateTime()();
   DateTimeColumn get lastUpdated => dateTime().named('lastUpdated')();
+
+  @override
+  String? get tableName => 'ebooks';
 }

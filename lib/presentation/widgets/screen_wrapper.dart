@@ -39,6 +39,7 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
   late List<TargetFocus> _targets;
   @override
   void initState() {
+    Get.delete<ScreenWrapperController>();
     _controller = Get.put(ScreenWrapperController(), tag: widget.title);
     _tutorialService = Get.find();
     _targets = widget.targets

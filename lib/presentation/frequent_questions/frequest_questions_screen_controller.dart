@@ -12,5 +12,6 @@ class FrequestQuestionsScreenController
             state: state,
             plural: 'frequent-questions',
             fetch: null,
+            fromJson: FrequentQuestion.fromJson,
             indexUrl: ApiConstant.frequentQuestions);
 }

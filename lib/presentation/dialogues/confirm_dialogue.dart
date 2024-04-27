@@ -3,21 +3,24 @@ import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showConfirmationDialog(
-    BuildContext context, Function onConfirm) async {
+//TODO add test with custom content
+Future<void> showConfirmationDialog(BuildContext context, Function onConfirm,
+    {Widget? content}) async {
   // Show dialog returns a Future that completes when the dialog is dismissed.
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // User must tap button to dismiss
     builder: (BuildContext context) => ConfirmDialogue(
       onConfirm: onConfirm,
+      content: content,
     ),
   );
 }
 
 class ConfirmDialogue extends StatelessWidget {
   final Function onConfirm;
-  const ConfirmDialogue({super.key, required this.onConfirm});
+  final Widget? content;
+  const ConfirmDialogue({super.key, required this.onConfirm, this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,10 @@ class ConfirmDialogue extends StatelessWidget {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text(StringConstant.confirmActionExplanation.tr()),
+              if (content == null)
+                Text(StringConstant.confirmActionExplanation.tr())
+              else
+                content!
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('termsLastAccess')
+@DataClassName('TermsLastAccess')
 class TermsLastAccesses extends Table {
   IntColumn get parentTermId => integer().named('parentTermId')();
   IntColumn get childId => integer().named('childId')();
@@ -9,4 +9,7 @@ class TermsLastAccesses extends Table {
 
   @override
   Set<Column<Object>>? get primaryKey => {parentTermId, childId};
+
+  @override
+  String? get tableName => 'termsLastAccess';
 }

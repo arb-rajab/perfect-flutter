@@ -3,7 +3,7 @@
 part of 'database_service.dart';
 
 // ignore_for_file: type=lint
-class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
+class $CouponsTable extends Coupons with TableInfo<$CouponsTable, Coupon> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -63,7 +63,7 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
   String get actualTableName => $name;
   static const String $name = 'coupons';
   @override
-  VerificationContext validateIntegrity(Insertable<coupons> instance,
+  VerificationContext validateIntegrity(Insertable<Coupon> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -110,9 +110,9 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  coupons map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Coupon map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return coupons(
+    return Coupon(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       serial: attachedDatabase.typeMapping
@@ -136,7 +136,7 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, coupons> {
   }
 }
 
-class coupons extends DataClass implements Insertable<coupons> {
+class Coupon extends DataClass implements Insertable<Coupon> {
   final int id;
   final String serial;
   final int type;
@@ -144,7 +144,7 @@ class coupons extends DataClass implements Insertable<coupons> {
   final DateTime creation;
   final DateTime? activationDate;
   final int expirationDays;
-  const coupons(
+  const Coupon(
       {required this.id,
       required this.serial,
       required this.type,
@@ -181,10 +181,10 @@ class coupons extends DataClass implements Insertable<coupons> {
     );
   }
 
-  factory coupons.fromJson(Map<String, dynamic> json,
+  factory Coupon.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return coupons(
+    return Coupon(
       id: serializer.fromJson<int>(json['id']),
       serial: serializer.fromJson<String>(json['serial']),
       type: serializer.fromJson<int>(json['type']),
@@ -208,7 +208,7 @@ class coupons extends DataClass implements Insertable<coupons> {
     };
   }
 
-  coupons copyWith(
+  Coupon copyWith(
           {int? id,
           String? serial,
           int? type,
@@ -216,7 +216,7 @@ class coupons extends DataClass implements Insertable<coupons> {
           DateTime? creation,
           Value<DateTime?> activationDate = const Value.absent(),
           int? expirationDays}) =>
-      coupons(
+      Coupon(
         id: id ?? this.id,
         serial: serial ?? this.serial,
         type: type ?? this.type,
@@ -228,7 +228,7 @@ class coupons extends DataClass implements Insertable<coupons> {
       );
   @override
   String toString() {
-    return (StringBuffer('coupons(')
+    return (StringBuffer('Coupon(')
           ..write('id: $id, ')
           ..write('serial: $serial, ')
           ..write('type: $type, ')
@@ -246,7 +246,7 @@ class coupons extends DataClass implements Insertable<coupons> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is coupons &&
+      (other is Coupon &&
           other.id == this.id &&
           other.serial == this.serial &&
           other.type == this.type &&
@@ -256,7 +256,7 @@ class coupons extends DataClass implements Insertable<coupons> {
           other.expirationDays == this.expirationDays);
 }
 
-class CouponsCompanion extends UpdateCompanion<coupons> {
+class CouponsCompanion extends UpdateCompanion<Coupon> {
   final Value<int> id;
   final Value<String> serial;
   final Value<int> type;
@@ -284,7 +284,7 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
   })  : serial = Value(serial),
         type = Value(type),
         creation = Value(creation);
-  static Insertable<coupons> custom({
+  static Insertable<Coupon> custom({
     Expression<int>? id,
     Expression<String>? serial,
     Expression<int>? type,
@@ -365,7 +365,7 @@ class CouponsCompanion extends UpdateCompanion<coupons> {
   }
 }
 
-class $TermsTable extends Terms with TableInfo<$TermsTable, terms> {
+class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -461,7 +461,7 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, terms> {
   String get actualTableName => $name;
   static const String $name = 'terms';
   @override
-  VerificationContext validateIntegrity(Insertable<terms> instance,
+  VerificationContext validateIntegrity(Insertable<Term> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -532,9 +532,9 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, terms> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  terms map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Term map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return terms(
+    return Term(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       uuid: attachedDatabase.typeMapping
@@ -566,7 +566,7 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, terms> {
   }
 }
 
-class terms extends DataClass implements Insertable<terms> {
+class Term extends DataClass implements Insertable<Term> {
   final int id;
   final String uuid;
   final String name;
@@ -578,7 +578,7 @@ class terms extends DataClass implements Insertable<terms> {
   final int needsUpdate;
   final int captureable;
   final String textCulumn;
-  const terms(
+  const Term(
       {required this.id,
       required this.uuid,
       required this.name,
@@ -623,10 +623,10 @@ class terms extends DataClass implements Insertable<terms> {
     );
   }
 
-  factory terms.fromJson(Map<String, dynamic> json,
+  factory Term.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return terms(
+    return Term(
       id: serializer.fromJson<int>(json['id']),
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
@@ -658,7 +658,7 @@ class terms extends DataClass implements Insertable<terms> {
     };
   }
 
-  terms copyWith(
+  Term copyWith(
           {int? id,
           String? uuid,
           String? name,
@@ -670,7 +670,7 @@ class terms extends DataClass implements Insertable<terms> {
           int? needsUpdate,
           int? captureable,
           String? textCulumn}) =>
-      terms(
+      Term(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
@@ -685,7 +685,7 @@ class terms extends DataClass implements Insertable<terms> {
       );
   @override
   String toString() {
-    return (StringBuffer('terms(')
+    return (StringBuffer('Term(')
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
@@ -707,7 +707,7 @@ class terms extends DataClass implements Insertable<terms> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is terms &&
+      (other is Term &&
           other.id == this.id &&
           other.uuid == this.uuid &&
           other.name == this.name &&
@@ -721,7 +721,7 @@ class terms extends DataClass implements Insertable<terms> {
           other.textCulumn == this.textCulumn);
 }
 
-class TermsCompanion extends UpdateCompanion<terms> {
+class TermsCompanion extends UpdateCompanion<Term> {
   final Value<int> id;
   final Value<String> uuid;
   final Value<String> name;
@@ -765,7 +765,7 @@ class TermsCompanion extends UpdateCompanion<terms> {
         free = Value(free),
         ordering = Value(ordering),
         textCulumn = Value(textCulumn);
-  static Insertable<terms> custom({
+  static Insertable<Term> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<String>? name,
@@ -878,7 +878,7 @@ class TermsCompanion extends UpdateCompanion<terms> {
   }
 }
 
-class $AnswersTable extends Answers with TableInfo<$AnswersTable, answers> {
+class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -960,7 +960,7 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, answers> {
   String get actualTableName => $name;
   static const String $name = 'answers';
   @override
-  VerificationContext validateIntegrity(Insertable<answers> instance,
+  VerificationContext validateIntegrity(Insertable<Answer> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1025,9 +1025,9 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, answers> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  answers map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Answer map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return answers(
+    return Answer(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       uuid: attachedDatabase.typeMapping
@@ -1055,7 +1055,7 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, answers> {
   }
 }
 
-class answers extends DataClass implements Insertable<answers> {
+class Answer extends DataClass implements Insertable<Answer> {
   final int id;
   final String uuid;
   final String title;
@@ -1065,7 +1065,7 @@ class answers extends DataClass implements Insertable<answers> {
   final int specialCharacter;
   final DateTime creation;
   final int checkedCount;
-  const answers(
+  const Answer(
       {required this.id,
       required this.uuid,
       required this.title,
@@ -1104,10 +1104,10 @@ class answers extends DataClass implements Insertable<answers> {
     );
   }
 
-  factory answers.fromJson(Map<String, dynamic> json,
+  factory Answer.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return answers(
+    return Answer(
       id: serializer.fromJson<int>(json['id']),
       uuid: serializer.fromJson<String>(json['uuid']),
       title: serializer.fromJson<String>(json['title']),
@@ -1135,7 +1135,7 @@ class answers extends DataClass implements Insertable<answers> {
     };
   }
 
-  answers copyWith(
+  Answer copyWith(
           {int? id,
           String? uuid,
           String? title,
@@ -1145,7 +1145,7 @@ class answers extends DataClass implements Insertable<answers> {
           int? specialCharacter,
           DateTime? creation,
           int? checkedCount}) =>
-      answers(
+      Answer(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
         title: title ?? this.title,
@@ -1158,7 +1158,7 @@ class answers extends DataClass implements Insertable<answers> {
       );
   @override
   String toString() {
-    return (StringBuffer('answers(')
+    return (StringBuffer('Answer(')
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('title: $title, ')
@@ -1178,7 +1178,7 @@ class answers extends DataClass implements Insertable<answers> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is answers &&
+      (other is Answer &&
           other.id == this.id &&
           other.uuid == this.uuid &&
           other.title == this.title &&
@@ -1190,7 +1190,7 @@ class answers extends DataClass implements Insertable<answers> {
           other.checkedCount == this.checkedCount);
 }
 
-class AnswersCompanion extends UpdateCompanion<answers> {
+class AnswersCompanion extends UpdateCompanion<Answer> {
   final Value<int> id;
   final Value<String> uuid;
   final Value<String> title;
@@ -1227,7 +1227,7 @@ class AnswersCompanion extends UpdateCompanion<answers> {
         parentQuestionId = Value(parentQuestionId),
         specialCharacter = Value(specialCharacter),
         creation = Value(creation);
-  static Insertable<answers> custom({
+  static Insertable<Answer> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<String>? title,
@@ -1325,7 +1325,7 @@ class AnswersCompanion extends UpdateCompanion<answers> {
 }
 
 class $QuestionsTable extends Questions
-    with TableInfo<$QuestionsTable, questions> {
+    with TableInfo<$QuestionsTable, Question> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1443,7 +1443,7 @@ class $QuestionsTable extends Questions
   String get actualTableName => $name;
   static const String $name = 'questions';
   @override
-  VerificationContext validateIntegrity(Insertable<questions> instance,
+  VerificationContext validateIntegrity(Insertable<Question> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1536,9 +1536,9 @@ class $QuestionsTable extends Questions
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  questions map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Question map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return questions(
+    return Question(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       uuid: attachedDatabase.typeMapping
@@ -1576,7 +1576,7 @@ class $QuestionsTable extends Questions
   }
 }
 
-class questions extends DataClass implements Insertable<questions> {
+class Question extends DataClass implements Insertable<Question> {
   final int id;
   final String uuid;
   final String title;
@@ -1591,7 +1591,7 @@ class questions extends DataClass implements Insertable<questions> {
   final String imageUrl;
   final DateTime creation;
   final DateTime editionDate;
-  const questions(
+  const Question(
       {required this.id,
       required this.uuid,
       required this.title,
@@ -1645,10 +1645,10 @@ class questions extends DataClass implements Insertable<questions> {
     );
   }
 
-  factory questions.fromJson(Map<String, dynamic> json,
+  factory Question.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return questions(
+    return Question(
       id: serializer.fromJson<int>(json['id']),
       uuid: serializer.fromJson<String>(json['uuid']),
       title: serializer.fromJson<String>(json['title']),
@@ -1686,7 +1686,7 @@ class questions extends DataClass implements Insertable<questions> {
     };
   }
 
-  questions copyWith(
+  Question copyWith(
           {int? id,
           String? uuid,
           String? title,
@@ -1701,7 +1701,7 @@ class questions extends DataClass implements Insertable<questions> {
           String? imageUrl,
           DateTime? creation,
           DateTime? editionDate}) =>
-      questions(
+      Question(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
         title: title ?? this.title,
@@ -1719,7 +1719,7 @@ class questions extends DataClass implements Insertable<questions> {
       );
   @override
   String toString() {
-    return (StringBuffer('questions(')
+    return (StringBuffer('Question(')
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('title: $title, ')
@@ -1757,7 +1757,7 @@ class questions extends DataClass implements Insertable<questions> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is questions &&
+      (other is Question &&
           other.id == this.id &&
           other.uuid == this.uuid &&
           other.title == this.title &&
@@ -1774,7 +1774,7 @@ class questions extends DataClass implements Insertable<questions> {
           other.editionDate == this.editionDate);
 }
 
-class QuestionsCompanion extends UpdateCompanion<questions> {
+class QuestionsCompanion extends UpdateCompanion<Question> {
   final Value<int> id;
   final Value<String> uuid;
   final Value<String> title;
@@ -1829,7 +1829,7 @@ class QuestionsCompanion extends UpdateCompanion<questions> {
         type = Value(type),
         creation = Value(creation),
         editionDate = Value(editionDate);
-  static Insertable<questions> custom({
+  static Insertable<Question> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<String>? title,
@@ -1967,7 +1967,7 @@ class QuestionsCompanion extends UpdateCompanion<questions> {
 }
 
 class $QuestionTagsTable extends QuestionTags
-    with TableInfo<$QuestionTagsTable, questionTags> {
+    with TableInfo<$QuestionTagsTable, QuestionTag> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1976,7 +1976,7 @@ class $QuestionTagsTable extends QuestionTags
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -2009,16 +2009,14 @@ class $QuestionTagsTable extends QuestionTags
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'question_tags';
+  static const String $name = 'questionTags';
   @override
-  VerificationContext validateIntegrity(Insertable<questionTags> instance,
+  VerificationContext validateIntegrity(Insertable<QuestionTag> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -2050,11 +2048,11 @@ class $QuestionTagsTable extends QuestionTags
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  questionTags map(Map<String, dynamic> data, {String? tablePrefix}) {
+  QuestionTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return questionTags(
+    return QuestionTag(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
@@ -2074,13 +2072,13 @@ class $QuestionTagsTable extends QuestionTags
   }
 }
 
-class questionTags extends DataClass implements Insertable<questionTags> {
+class QuestionTag extends DataClass implements Insertable<QuestionTag> {
   final int id;
   final String name;
   final int parentTagId;
   final int hasInformation;
   final DateTime creation;
-  const questionTags(
+  const QuestionTag(
       {required this.id,
       required this.name,
       required this.parentTagId,
@@ -2107,10 +2105,10 @@ class questionTags extends DataClass implements Insertable<questionTags> {
     );
   }
 
-  factory questionTags.fromJson(Map<String, dynamic> json,
+  factory QuestionTag.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return questionTags(
+    return QuestionTag(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       parentTagId: serializer.fromJson<int>(json['parentTagId']),
@@ -2130,13 +2128,13 @@ class questionTags extends DataClass implements Insertable<questionTags> {
     };
   }
 
-  questionTags copyWith(
+  QuestionTag copyWith(
           {int? id,
           String? name,
           int? parentTagId,
           int? hasInformation,
           DateTime? creation}) =>
-      questionTags(
+      QuestionTag(
         id: id ?? this.id,
         name: name ?? this.name,
         parentTagId: parentTagId ?? this.parentTagId,
@@ -2145,7 +2143,7 @@ class questionTags extends DataClass implements Insertable<questionTags> {
       );
   @override
   String toString() {
-    return (StringBuffer('questionTags(')
+    return (StringBuffer('QuestionTag(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('parentTagId: $parentTagId, ')
@@ -2161,7 +2159,7 @@ class questionTags extends DataClass implements Insertable<questionTags> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is questionTags &&
+      (other is QuestionTag &&
           other.id == this.id &&
           other.name == this.name &&
           other.parentTagId == this.parentTagId &&
@@ -2169,39 +2167,34 @@ class questionTags extends DataClass implements Insertable<questionTags> {
           other.creation == this.creation);
 }
 
-class QuestionTagsCompanion extends UpdateCompanion<questionTags> {
+class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> parentTagId;
   final Value<int> hasInformation;
   final Value<DateTime> creation;
-  final Value<int> rowid;
   const QuestionTagsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.parentTagId = const Value.absent(),
     this.hasInformation = const Value.absent(),
     this.creation = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   QuestionTagsCompanion.insert({
-    required int id,
+    this.id = const Value.absent(),
     required String name,
     required int parentTagId,
     this.hasInformation = const Value.absent(),
     required DateTime creation,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
+  })  : name = Value(name),
         parentTagId = Value(parentTagId),
         creation = Value(creation);
-  static Insertable<questionTags> custom({
+  static Insertable<QuestionTag> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<int>? parentTagId,
     Expression<int>? hasInformation,
     Expression<DateTime>? creation,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2209,7 +2202,6 @@ class QuestionTagsCompanion extends UpdateCompanion<questionTags> {
       if (parentTagId != null) 'parentTagId': parentTagId,
       if (hasInformation != null) 'hasInformation': hasInformation,
       if (creation != null) 'creation': creation,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -2218,15 +2210,13 @@ class QuestionTagsCompanion extends UpdateCompanion<questionTags> {
       Value<String>? name,
       Value<int>? parentTagId,
       Value<int>? hasInformation,
-      Value<DateTime>? creation,
-      Value<int>? rowid}) {
+      Value<DateTime>? creation}) {
     return QuestionTagsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       parentTagId: parentTagId ?? this.parentTagId,
       hasInformation: hasInformation ?? this.hasInformation,
       creation: creation ?? this.creation,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -2248,9 +2238,6 @@ class QuestionTagsCompanion extends UpdateCompanion<questionTags> {
     if (creation.present) {
       map['creation'] = Variable<DateTime>(creation.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -2261,15 +2248,14 @@ class QuestionTagsCompanion extends UpdateCompanion<questionTags> {
           ..write('name: $name, ')
           ..write('parentTagId: $parentTagId, ')
           ..write('hasInformation: $hasInformation, ')
-          ..write('creation: $creation, ')
-          ..write('rowid: $rowid')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
 }
 
 class $QuestionMediasTable extends QuestionMedias
-    with TableInfo<$QuestionMediasTable, questionMedias> {
+    with TableInfo<$QuestionMediasTable, QuestionMedia> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2302,9 +2288,9 @@ class $QuestionMediasTable extends QuestionMedias
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'question_medias';
+  static const String $name = 'questionMedias';
   @override
-  VerificationContext validateIntegrity(Insertable<questionMedias> instance,
+  VerificationContext validateIntegrity(Insertable<QuestionMedia> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2339,9 +2325,9 @@ class $QuestionMediasTable extends QuestionMedias
   @override
   Set<GeneratedColumn> get $primaryKey => {id, parentQuestionId};
   @override
-  questionMedias map(Map<String, dynamic> data, {String? tablePrefix}) {
+  QuestionMedia map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return questionMedias(
+    return QuestionMedia(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       url: attachedDatabase.typeMapping
@@ -2359,12 +2345,12 @@ class $QuestionMediasTable extends QuestionMedias
   }
 }
 
-class questionMedias extends DataClass implements Insertable<questionMedias> {
+class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
   final int id;
   final String url;
   final int parentQuestionId;
   final DateTime creation;
-  const questionMedias(
+  const QuestionMedia(
       {required this.id,
       required this.url,
       required this.parentQuestionId,
@@ -2388,10 +2374,10 @@ class questionMedias extends DataClass implements Insertable<questionMedias> {
     );
   }
 
-  factory questionMedias.fromJson(Map<String, dynamic> json,
+  factory QuestionMedia.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return questionMedias(
+    return QuestionMedia(
       id: serializer.fromJson<int>(json['id']),
       url: serializer.fromJson<String>(json['url']),
       parentQuestionId: serializer.fromJson<int>(json['parentQuestionId']),
@@ -2409,9 +2395,9 @@ class questionMedias extends DataClass implements Insertable<questionMedias> {
     };
   }
 
-  questionMedias copyWith(
+  QuestionMedia copyWith(
           {int? id, String? url, int? parentQuestionId, DateTime? creation}) =>
-      questionMedias(
+      QuestionMedia(
         id: id ?? this.id,
         url: url ?? this.url,
         parentQuestionId: parentQuestionId ?? this.parentQuestionId,
@@ -2419,7 +2405,7 @@ class questionMedias extends DataClass implements Insertable<questionMedias> {
       );
   @override
   String toString() {
-    return (StringBuffer('questionMedias(')
+    return (StringBuffer('QuestionMedia(')
           ..write('id: $id, ')
           ..write('url: $url, ')
           ..write('parentQuestionId: $parentQuestionId, ')
@@ -2433,14 +2419,14 @@ class questionMedias extends DataClass implements Insertable<questionMedias> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is questionMedias &&
+      (other is QuestionMedia &&
           other.id == this.id &&
           other.url == this.url &&
           other.parentQuestionId == this.parentQuestionId &&
           other.creation == this.creation);
 }
 
-class QuestionMediasCompanion extends UpdateCompanion<questionMedias> {
+class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
   final Value<int> id;
   final Value<String> url;
   final Value<int> parentQuestionId;
@@ -2463,7 +2449,7 @@ class QuestionMediasCompanion extends UpdateCompanion<questionMedias> {
         url = Value(url),
         parentQuestionId = Value(parentQuestionId),
         creation = Value(creation);
-  static Insertable<questionMedias> custom({
+  static Insertable<QuestionMedia> custom({
     Expression<int>? id,
     Expression<String>? url,
     Expression<int>? parentQuestionId,
@@ -2529,7 +2515,7 @@ class QuestionMediasCompanion extends UpdateCompanion<questionMedias> {
 }
 
 class $FcmTopicsTable extends FcmTopics
-    with TableInfo<$FcmTopicsTable, FCMTopics> {
+    with TableInfo<$FcmTopicsTable, FcmTopic> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2548,25 +2534,15 @@ class $FcmTopicsTable extends FcmTopics
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("subscriptionSucceed" IN (0, 1))'));
-  static const VerificationMeta _subscribedMeta =
-      const VerificationMeta('subscribed');
   @override
-  late final GeneratedColumn<bool> subscribed = GeneratedColumn<bool>(
-      'subscribed', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("subscribed" IN (0, 1))'));
-  @override
-  List<GeneratedColumn> get $columns =>
-      [title, subscriptionSucceed, subscribed];
+  List<GeneratedColumn> get $columns => [title, subscriptionSucceed];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'fcm_topics';
+  static const String $name = 'FCMTopics';
   @override
-  VerificationContext validateIntegrity(Insertable<FCMTopics> instance,
+  VerificationContext validateIntegrity(Insertable<FcmTopic> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2584,29 +2560,19 @@ class $FcmTopicsTable extends FcmTopics
     } else if (isInserting) {
       context.missing(_subscriptionSucceedMeta);
     }
-    if (data.containsKey('subscribed')) {
-      context.handle(
-          _subscribedMeta,
-          subscribed.isAcceptableOrUnknown(
-              data['subscribed']!, _subscribedMeta));
-    } else if (isInserting) {
-      context.missing(_subscribedMeta);
-    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {title};
   @override
-  FCMTopics map(Map<String, dynamic> data, {String? tablePrefix}) {
+  FcmTopic map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return FCMTopics(
+    return FcmTopic(
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       subscriptionSucceed: attachedDatabase.typeMapping.read(
           DriftSqlType.bool, data['${effectivePrefix}subscriptionSucceed'])!,
-      subscribed: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}subscribed'])!,
     );
   }
 
@@ -2616,20 +2582,15 @@ class $FcmTopicsTable extends FcmTopics
   }
 }
 
-class FCMTopics extends DataClass implements Insertable<FCMTopics> {
+class FcmTopic extends DataClass implements Insertable<FcmTopic> {
   final String title;
   final bool subscriptionSucceed;
-  final bool subscribed;
-  const FCMTopics(
-      {required this.title,
-      required this.subscriptionSucceed,
-      required this.subscribed});
+  const FcmTopic({required this.title, required this.subscriptionSucceed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['title'] = Variable<String>(title);
     map['subscriptionSucceed'] = Variable<bool>(subscriptionSucceed);
-    map['subscribed'] = Variable<bool>(subscribed);
     return map;
   }
 
@@ -2637,18 +2598,16 @@ class FCMTopics extends DataClass implements Insertable<FCMTopics> {
     return FcmTopicsCompanion(
       title: Value(title),
       subscriptionSucceed: Value(subscriptionSucceed),
-      subscribed: Value(subscribed),
     );
   }
 
-  factory FCMTopics.fromJson(Map<String, dynamic> json,
+  factory FcmTopic.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return FCMTopics(
+    return FcmTopic(
       title: serializer.fromJson<String>(json['title']),
       subscriptionSucceed:
           serializer.fromJson<bool>(json['subscriptionSucceed']),
-      subscribed: serializer.fromJson<bool>(json['subscribed']),
     );
   }
   @override
@@ -2657,68 +2616,56 @@ class FCMTopics extends DataClass implements Insertable<FCMTopics> {
     return <String, dynamic>{
       'title': serializer.toJson<String>(title),
       'subscriptionSucceed': serializer.toJson<bool>(subscriptionSucceed),
-      'subscribed': serializer.toJson<bool>(subscribed),
     };
   }
 
-  FCMTopics copyWith(
-          {String? title, bool? subscriptionSucceed, bool? subscribed}) =>
-      FCMTopics(
+  FcmTopic copyWith({String? title, bool? subscriptionSucceed}) => FcmTopic(
         title: title ?? this.title,
         subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
-        subscribed: subscribed ?? this.subscribed,
       );
   @override
   String toString() {
-    return (StringBuffer('FCMTopics(')
+    return (StringBuffer('FcmTopic(')
           ..write('title: $title, ')
-          ..write('subscriptionSucceed: $subscriptionSucceed, ')
-          ..write('subscribed: $subscribed')
+          ..write('subscriptionSucceed: $subscriptionSucceed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(title, subscriptionSucceed, subscribed);
+  int get hashCode => Object.hash(title, subscriptionSucceed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is FCMTopics &&
+      (other is FcmTopic &&
           other.title == this.title &&
-          other.subscriptionSucceed == this.subscriptionSucceed &&
-          other.subscribed == this.subscribed);
+          other.subscriptionSucceed == this.subscriptionSucceed);
 }
 
-class FcmTopicsCompanion extends UpdateCompanion<FCMTopics> {
+class FcmTopicsCompanion extends UpdateCompanion<FcmTopic> {
   final Value<String> title;
   final Value<bool> subscriptionSucceed;
-  final Value<bool> subscribed;
   final Value<int> rowid;
   const FcmTopicsCompanion({
     this.title = const Value.absent(),
     this.subscriptionSucceed = const Value.absent(),
-    this.subscribed = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   FcmTopicsCompanion.insert({
     required String title,
     required bool subscriptionSucceed,
-    required bool subscribed,
     this.rowid = const Value.absent(),
   })  : title = Value(title),
-        subscriptionSucceed = Value(subscriptionSucceed),
-        subscribed = Value(subscribed);
-  static Insertable<FCMTopics> custom({
+        subscriptionSucceed = Value(subscriptionSucceed);
+  static Insertable<FcmTopic> custom({
     Expression<String>? title,
     Expression<bool>? subscriptionSucceed,
-    Expression<bool>? subscribed,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (title != null) 'title': title,
       if (subscriptionSucceed != null)
         'subscriptionSucceed': subscriptionSucceed,
-      if (subscribed != null) 'subscribed': subscribed,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2726,12 +2673,10 @@ class FcmTopicsCompanion extends UpdateCompanion<FCMTopics> {
   FcmTopicsCompanion copyWith(
       {Value<String>? title,
       Value<bool>? subscriptionSucceed,
-      Value<bool>? subscribed,
       Value<int>? rowid}) {
     return FcmTopicsCompanion(
       title: title ?? this.title,
       subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
-      subscribed: subscribed ?? this.subscribed,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2745,9 +2690,6 @@ class FcmTopicsCompanion extends UpdateCompanion<FCMTopics> {
     if (subscriptionSucceed.present) {
       map['subscriptionSucceed'] = Variable<bool>(subscriptionSucceed.value);
     }
-    if (subscribed.present) {
-      map['subscribed'] = Variable<bool>(subscribed.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2759,7 +2701,6 @@ class FcmTopicsCompanion extends UpdateCompanion<FCMTopics> {
     return (StringBuffer('FcmTopicsCompanion(')
           ..write('title: $title, ')
           ..write('subscriptionSucceed: $subscriptionSucceed, ')
-          ..write('subscribed: $subscribed, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2767,7 +2708,7 @@ class FcmTopicsCompanion extends UpdateCompanion<FCMTopics> {
 }
 
 class $AnswerPropertiesTable extends AnswerProperties
-    with TableInfo<$AnswerPropertiesTable, answerProperties> {
+    with TableInfo<$AnswerPropertiesTable, AnswerProperty> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2794,9 +2735,9 @@ class $AnswerPropertiesTable extends AnswerProperties
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'answer_properties';
+  static const String $name = 'answerProperties';
   @override
-  VerificationContext validateIntegrity(Insertable<answerProperties> instance,
+  VerificationContext validateIntegrity(Insertable<AnswerProperty> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -2824,9 +2765,9 @@ class $AnswerPropertiesTable extends AnswerProperties
   @override
   Set<GeneratedColumn> get $primaryKey => {answerId, name};
   @override
-  answerProperties map(Map<String, dynamic> data, {String? tablePrefix}) {
+  AnswerProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return answerProperties(
+    return AnswerProperty(
       answerId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}answerId'])!,
       name: attachedDatabase.typeMapping
@@ -2842,12 +2783,11 @@ class $AnswerPropertiesTable extends AnswerProperties
   }
 }
 
-class answerProperties extends DataClass
-    implements Insertable<answerProperties> {
+class AnswerProperty extends DataClass implements Insertable<AnswerProperty> {
   final int answerId;
   final String name;
   final String value;
-  const answerProperties(
+  const AnswerProperty(
       {required this.answerId, required this.name, required this.value});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2866,10 +2806,10 @@ class answerProperties extends DataClass
     );
   }
 
-  factory answerProperties.fromJson(Map<String, dynamic> json,
+  factory AnswerProperty.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return answerProperties(
+    return AnswerProperty(
       answerId: serializer.fromJson<int>(json['answerId']),
       name: serializer.fromJson<String>(json['name']),
       value: serializer.fromJson<String>(json['value']),
@@ -2885,15 +2825,15 @@ class answerProperties extends DataClass
     };
   }
 
-  answerProperties copyWith({int? answerId, String? name, String? value}) =>
-      answerProperties(
+  AnswerProperty copyWith({int? answerId, String? name, String? value}) =>
+      AnswerProperty(
         answerId: answerId ?? this.answerId,
         name: name ?? this.name,
         value: value ?? this.value,
       );
   @override
   String toString() {
-    return (StringBuffer('answerProperties(')
+    return (StringBuffer('AnswerProperty(')
           ..write('answerId: $answerId, ')
           ..write('name: $name, ')
           ..write('value: $value')
@@ -2906,13 +2846,13 @@ class answerProperties extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is answerProperties &&
+      (other is AnswerProperty &&
           other.answerId == this.answerId &&
           other.name == this.name &&
           other.value == this.value);
 }
 
-class AnswerPropertiesCompanion extends UpdateCompanion<answerProperties> {
+class AnswerPropertiesCompanion extends UpdateCompanion<AnswerProperty> {
   final Value<int> answerId;
   final Value<String> name;
   final Value<String> value;
@@ -2931,7 +2871,7 @@ class AnswerPropertiesCompanion extends UpdateCompanion<answerProperties> {
   })  : answerId = Value(answerId),
         name = Value(name),
         value = Value(value);
-  static Insertable<answerProperties> custom({
+  static Insertable<AnswerProperty> custom({
     Expression<int>? answerId,
     Expression<String>? name,
     Expression<String>? value,
@@ -2989,7 +2929,7 @@ class AnswerPropertiesCompanion extends UpdateCompanion<answerProperties> {
 }
 
 class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
-    with TableInfo<$CouponsLinkedToTermsTable, couponsLinkedToTerms> {
+    with TableInfo<$CouponsLinkedToTermsTable, CouponsLinkedToTerm> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3011,10 +2951,10 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'coupons_linked_to_terms';
+  static const String $name = 'couponsLinkedToTerms';
   @override
   VerificationContext validateIntegrity(
-      Insertable<couponsLinkedToTerms> instance,
+      Insertable<CouponsLinkedToTerm> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3036,9 +2976,9 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   @override
   Set<GeneratedColumn> get $primaryKey => {couponId, termId};
   @override
-  couponsLinkedToTerms map(Map<String, dynamic> data, {String? tablePrefix}) {
+  CouponsLinkedToTerm map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return couponsLinkedToTerms(
+    return CouponsLinkedToTerm(
       couponId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}couponId'])!,
       termId: attachedDatabase.typeMapping
@@ -3052,11 +2992,11 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   }
 }
 
-class couponsLinkedToTerms extends DataClass
-    implements Insertable<couponsLinkedToTerms> {
+class CouponsLinkedToTerm extends DataClass
+    implements Insertable<CouponsLinkedToTerm> {
   final int couponId;
   final int termId;
-  const couponsLinkedToTerms({required this.couponId, required this.termId});
+  const CouponsLinkedToTerm({required this.couponId, required this.termId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3072,10 +3012,10 @@ class couponsLinkedToTerms extends DataClass
     );
   }
 
-  factory couponsLinkedToTerms.fromJson(Map<String, dynamic> json,
+  factory CouponsLinkedToTerm.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return couponsLinkedToTerms(
+    return CouponsLinkedToTerm(
       couponId: serializer.fromJson<int>(json['couponId']),
       termId: serializer.fromJson<int>(json['termId']),
     );
@@ -3089,14 +3029,14 @@ class couponsLinkedToTerms extends DataClass
     };
   }
 
-  couponsLinkedToTerms copyWith({int? couponId, int? termId}) =>
-      couponsLinkedToTerms(
+  CouponsLinkedToTerm copyWith({int? couponId, int? termId}) =>
+      CouponsLinkedToTerm(
         couponId: couponId ?? this.couponId,
         termId: termId ?? this.termId,
       );
   @override
   String toString() {
-    return (StringBuffer('couponsLinkedToTerms(')
+    return (StringBuffer('CouponsLinkedToTerm(')
           ..write('couponId: $couponId, ')
           ..write('termId: $termId')
           ..write(')'))
@@ -3108,13 +3048,13 @@ class couponsLinkedToTerms extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is couponsLinkedToTerms &&
+      (other is CouponsLinkedToTerm &&
           other.couponId == this.couponId &&
           other.termId == this.termId);
 }
 
 class CouponsLinkedToTermsCompanion
-    extends UpdateCompanion<couponsLinkedToTerms> {
+    extends UpdateCompanion<CouponsLinkedToTerm> {
   final Value<int> couponId;
   final Value<int> termId;
   final Value<int> rowid;
@@ -3129,7 +3069,7 @@ class CouponsLinkedToTermsCompanion
     this.rowid = const Value.absent(),
   })  : couponId = Value(couponId),
         termId = Value(termId);
-  static Insertable<couponsLinkedToTerms> custom({
+  static Insertable<CouponsLinkedToTerm> custom({
     Expression<int>? couponId,
     Expression<int>? termId,
     Expression<int>? rowid,
@@ -3177,7 +3117,7 @@ class CouponsLinkedToTermsCompanion
 }
 
 class $TermTreesTable extends TermTrees
-    with TableInfo<$TermTreesTable, termTrees> {
+    with TableInfo<$TermTreesTable, TermTree> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3206,9 +3146,9 @@ class $TermTreesTable extends TermTrees
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'term_trees';
+  static const String $name = 'termTrees';
   @override
-  VerificationContext validateIntegrity(Insertable<termTrees> instance,
+  VerificationContext validateIntegrity(Insertable<TermTree> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3236,9 +3176,9 @@ class $TermTreesTable extends TermTrees
   @override
   Set<GeneratedColumn> get $primaryKey => {termId, parentTermId, depth};
   @override
-  termTrees map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TermTree map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return termTrees(
+    return TermTree(
       termId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
       parentTermId: attachedDatabase.typeMapping
@@ -3254,11 +3194,11 @@ class $TermTreesTable extends TermTrees
   }
 }
 
-class termTrees extends DataClass implements Insertable<termTrees> {
+class TermTree extends DataClass implements Insertable<TermTree> {
   final int termId;
   final int parentTermId;
   final int depth;
-  const termTrees(
+  const TermTree(
       {required this.termId, required this.parentTermId, required this.depth});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3277,10 +3217,10 @@ class termTrees extends DataClass implements Insertable<termTrees> {
     );
   }
 
-  factory termTrees.fromJson(Map<String, dynamic> json,
+  factory TermTree.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return termTrees(
+    return TermTree(
       termId: serializer.fromJson<int>(json['termId']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       depth: serializer.fromJson<int>(json['depth']),
@@ -3296,14 +3236,14 @@ class termTrees extends DataClass implements Insertable<termTrees> {
     };
   }
 
-  termTrees copyWith({int? termId, int? parentTermId, int? depth}) => termTrees(
+  TermTree copyWith({int? termId, int? parentTermId, int? depth}) => TermTree(
         termId: termId ?? this.termId,
         parentTermId: parentTermId ?? this.parentTermId,
         depth: depth ?? this.depth,
       );
   @override
   String toString() {
-    return (StringBuffer('termTrees(')
+    return (StringBuffer('TermTree(')
           ..write('termId: $termId, ')
           ..write('parentTermId: $parentTermId, ')
           ..write('depth: $depth')
@@ -3316,13 +3256,13 @@ class termTrees extends DataClass implements Insertable<termTrees> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is termTrees &&
+      (other is TermTree &&
           other.termId == this.termId &&
           other.parentTermId == this.parentTermId &&
           other.depth == this.depth);
 }
 
-class TermTreesCompanion extends UpdateCompanion<termTrees> {
+class TermTreesCompanion extends UpdateCompanion<TermTree> {
   final Value<int> termId;
   final Value<int> parentTermId;
   final Value<int> depth;
@@ -3340,7 +3280,7 @@ class TermTreesCompanion extends UpdateCompanion<termTrees> {
     this.rowid = const Value.absent(),
   })  : termId = Value(termId),
         parentTermId = Value(parentTermId);
-  static Insertable<termTrees> custom({
+  static Insertable<TermTree> custom({
     Expression<int>? termId,
     Expression<int>? parentTermId,
     Expression<int>? depth,
@@ -3397,7 +3337,7 @@ class TermTreesCompanion extends UpdateCompanion<termTrees> {
   }
 }
 
-class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, ebooks> {
+class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3439,7 +3379,7 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, ebooks> {
   String get actualTableName => $name;
   static const String $name = 'ebooks';
   @override
-  VerificationContext validateIntegrity(Insertable<ebooks> instance,
+  VerificationContext validateIntegrity(Insertable<Ebook> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3477,9 +3417,9 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, ebooks> {
   @override
   Set<GeneratedColumn> get $primaryKey => {parentTermId};
   @override
-  ebooks map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Ebook map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ebooks(
+    return Ebook(
       encryptionKey: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
       parentTermId: attachedDatabase.typeMapping
@@ -3497,12 +3437,12 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, ebooks> {
   }
 }
 
-class ebooks extends DataClass implements Insertable<ebooks> {
+class Ebook extends DataClass implements Insertable<Ebook> {
   final String encryptionKey;
   final int parentTermId;
   final DateTime creation;
   final DateTime lastUpdated;
-  const ebooks(
+  const Ebook(
       {required this.encryptionKey,
       required this.parentTermId,
       required this.creation,
@@ -3526,10 +3466,10 @@ class ebooks extends DataClass implements Insertable<ebooks> {
     );
   }
 
-  factory ebooks.fromJson(Map<String, dynamic> json,
+  factory Ebook.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ebooks(
+    return Ebook(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       creation: serializer.fromJson<DateTime>(json['creation']),
@@ -3547,12 +3487,12 @@ class ebooks extends DataClass implements Insertable<ebooks> {
     };
   }
 
-  ebooks copyWith(
+  Ebook copyWith(
           {String? encryptionKey,
           int? parentTermId,
           DateTime? creation,
           DateTime? lastUpdated}) =>
-      ebooks(
+      Ebook(
         encryptionKey: encryptionKey ?? this.encryptionKey,
         parentTermId: parentTermId ?? this.parentTermId,
         creation: creation ?? this.creation,
@@ -3560,7 +3500,7 @@ class ebooks extends DataClass implements Insertable<ebooks> {
       );
   @override
   String toString() {
-    return (StringBuffer('ebooks(')
+    return (StringBuffer('Ebook(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
           ..write('creation: $creation, ')
@@ -3575,14 +3515,14 @@ class ebooks extends DataClass implements Insertable<ebooks> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ebooks &&
+      (other is Ebook &&
           other.encryptionKey == this.encryptionKey &&
           other.parentTermId == this.parentTermId &&
           other.creation == this.creation &&
           other.lastUpdated == this.lastUpdated);
 }
 
-class EbooksCompanion extends UpdateCompanion<ebooks> {
+class EbooksCompanion extends UpdateCompanion<Ebook> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
   final Value<DateTime> creation;
@@ -3601,7 +3541,7 @@ class EbooksCompanion extends UpdateCompanion<ebooks> {
   })  : encryptionKey = Value(encryptionKey),
         creation = Value(creation),
         lastUpdated = Value(lastUpdated);
-  static Insertable<ebooks> custom({
+  static Insertable<Ebook> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
     Expression<DateTime>? creation,
@@ -3659,7 +3599,7 @@ class EbooksCompanion extends UpdateCompanion<ebooks> {
 }
 
 class $TermsLastAccessesTable extends TermsLastAccesses
-    with TableInfo<$TermsLastAccessesTable, termsLastAccess> {
+    with TableInfo<$TermsLastAccessesTable, TermsLastAccess> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3690,9 +3630,9 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'terms_last_accesses';
+  static const String $name = 'termsLastAccess';
   @override
-  VerificationContext validateIntegrity(Insertable<termsLastAccess> instance,
+  VerificationContext validateIntegrity(Insertable<TermsLastAccess> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3722,9 +3662,9 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   @override
   Set<GeneratedColumn> get $primaryKey => {parentTermId, childId};
   @override
-  termsLastAccess map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TermsLastAccess map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return termsLastAccess(
+    return TermsLastAccess(
       parentTermId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
       childId: attachedDatabase.typeMapping
@@ -3740,11 +3680,11 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   }
 }
 
-class termsLastAccess extends DataClass implements Insertable<termsLastAccess> {
+class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
   final int parentTermId;
   final int childId;
   final DateTime lastAccess;
-  const termsLastAccess(
+  const TermsLastAccess(
       {required this.parentTermId,
       required this.childId,
       required this.lastAccess});
@@ -3765,10 +3705,10 @@ class termsLastAccess extends DataClass implements Insertable<termsLastAccess> {
     );
   }
 
-  factory termsLastAccess.fromJson(Map<String, dynamic> json,
+  factory TermsLastAccess.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return termsLastAccess(
+    return TermsLastAccess(
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       childId: serializer.fromJson<int>(json['childId']),
       lastAccess: serializer.fromJson<DateTime>(json['lastAccess']),
@@ -3784,16 +3724,16 @@ class termsLastAccess extends DataClass implements Insertable<termsLastAccess> {
     };
   }
 
-  termsLastAccess copyWith(
+  TermsLastAccess copyWith(
           {int? parentTermId, int? childId, DateTime? lastAccess}) =>
-      termsLastAccess(
+      TermsLastAccess(
         parentTermId: parentTermId ?? this.parentTermId,
         childId: childId ?? this.childId,
         lastAccess: lastAccess ?? this.lastAccess,
       );
   @override
   String toString() {
-    return (StringBuffer('termsLastAccess(')
+    return (StringBuffer('TermsLastAccess(')
           ..write('parentTermId: $parentTermId, ')
           ..write('childId: $childId, ')
           ..write('lastAccess: $lastAccess')
@@ -3806,13 +3746,13 @@ class termsLastAccess extends DataClass implements Insertable<termsLastAccess> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is termsLastAccess &&
+      (other is TermsLastAccess &&
           other.parentTermId == this.parentTermId &&
           other.childId == this.childId &&
           other.lastAccess == this.lastAccess);
 }
 
-class TermsLastAccessesCompanion extends UpdateCompanion<termsLastAccess> {
+class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
   final Value<int> parentTermId;
   final Value<int> childId;
   final Value<DateTime> lastAccess;
@@ -3830,7 +3770,7 @@ class TermsLastAccessesCompanion extends UpdateCompanion<termsLastAccess> {
     this.rowid = const Value.absent(),
   })  : parentTermId = Value(parentTermId),
         childId = Value(childId);
-  static Insertable<termsLastAccess> custom({
+  static Insertable<TermsLastAccess> custom({
     Expression<int>? parentTermId,
     Expression<int>? childId,
     Expression<DateTime>? lastAccess,
@@ -3888,7 +3828,7 @@ class TermsLastAccessesCompanion extends UpdateCompanion<termsLastAccess> {
 }
 
 class $QuestionTagPropertiesTable extends QuestionTagProperties
-    with TableInfo<$QuestionTagPropertiesTable, questionTagProperties> {
+    with TableInfo<$QuestionTagPropertiesTable, QuestionTagProperty> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3915,10 +3855,10 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'question_tag_properties';
+  static const String $name = 'questionTagProperties';
   @override
   VerificationContext validateIntegrity(
-      Insertable<questionTagProperties> instance,
+      Insertable<QuestionTagProperty> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3948,9 +3888,9 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   @override
   Set<GeneratedColumn> get $primaryKey => {questionTagId, name};
   @override
-  questionTagProperties map(Map<String, dynamic> data, {String? tablePrefix}) {
+  QuestionTagProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return questionTagProperties(
+    return QuestionTagProperty(
       questionTagId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}questionTagId'])!,
       name: attachedDatabase.typeMapping
@@ -3966,12 +3906,12 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   }
 }
 
-class questionTagProperties extends DataClass
-    implements Insertable<questionTagProperties> {
+class QuestionTagProperty extends DataClass
+    implements Insertable<QuestionTagProperty> {
   final int questionTagId;
   final String name;
   final String value;
-  const questionTagProperties(
+  const QuestionTagProperty(
       {required this.questionTagId, required this.name, required this.value});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3990,10 +3930,10 @@ class questionTagProperties extends DataClass
     );
   }
 
-  factory questionTagProperties.fromJson(Map<String, dynamic> json,
+  factory QuestionTagProperty.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return questionTagProperties(
+    return QuestionTagProperty(
       questionTagId: serializer.fromJson<int>(json['questionTagId']),
       name: serializer.fromJson<String>(json['name']),
       value: serializer.fromJson<String>(json['value']),
@@ -4009,16 +3949,16 @@ class questionTagProperties extends DataClass
     };
   }
 
-  questionTagProperties copyWith(
+  QuestionTagProperty copyWith(
           {int? questionTagId, String? name, String? value}) =>
-      questionTagProperties(
+      QuestionTagProperty(
         questionTagId: questionTagId ?? this.questionTagId,
         name: name ?? this.name,
         value: value ?? this.value,
       );
   @override
   String toString() {
-    return (StringBuffer('questionTagProperties(')
+    return (StringBuffer('QuestionTagProperty(')
           ..write('questionTagId: $questionTagId, ')
           ..write('name: $name, ')
           ..write('value: $value')
@@ -4031,14 +3971,14 @@ class questionTagProperties extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is questionTagProperties &&
+      (other is QuestionTagProperty &&
           other.questionTagId == this.questionTagId &&
           other.name == this.name &&
           other.value == this.value);
 }
 
 class QuestionTagPropertiesCompanion
-    extends UpdateCompanion<questionTagProperties> {
+    extends UpdateCompanion<QuestionTagProperty> {
   final Value<int> questionTagId;
   final Value<String> name;
   final Value<String> value;
@@ -4057,7 +3997,7 @@ class QuestionTagPropertiesCompanion
   })  : questionTagId = Value(questionTagId),
         name = Value(name),
         value = Value(value);
-  static Insertable<questionTagProperties> custom({
+  static Insertable<QuestionTagProperty> custom({
     Expression<int>? questionTagId,
     Expression<String>? name,
     Expression<String>? value,
@@ -4115,7 +4055,7 @@ class QuestionTagPropertiesCompanion
 }
 
 class $QuestionPropertiesTable extends QuestionProperties
-    with TableInfo<$QuestionPropertiesTable, questionProperties> {
+    with TableInfo<$QuestionPropertiesTable, QuestionProperty> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -4142,9 +4082,9 @@ class $QuestionPropertiesTable extends QuestionProperties
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'question_properties';
+  static const String $name = 'questionProperties';
   @override
-  VerificationContext validateIntegrity(Insertable<questionProperties> instance,
+  VerificationContext validateIntegrity(Insertable<QuestionProperty> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4174,9 +4114,9 @@ class $QuestionPropertiesTable extends QuestionProperties
   @override
   Set<GeneratedColumn> get $primaryKey => {questionId, name};
   @override
-  questionProperties map(Map<String, dynamic> data, {String? tablePrefix}) {
+  QuestionProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return questionProperties(
+    return QuestionProperty(
       questionId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}questionId'])!,
       name: attachedDatabase.typeMapping
@@ -4192,12 +4132,12 @@ class $QuestionPropertiesTable extends QuestionProperties
   }
 }
 
-class questionProperties extends DataClass
-    implements Insertable<questionProperties> {
+class QuestionProperty extends DataClass
+    implements Insertable<QuestionProperty> {
   final int questionId;
   final String name;
   final String value;
-  const questionProperties(
+  const QuestionProperty(
       {required this.questionId, required this.name, required this.value});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4216,10 +4156,10 @@ class questionProperties extends DataClass
     );
   }
 
-  factory questionProperties.fromJson(Map<String, dynamic> json,
+  factory QuestionProperty.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return questionProperties(
+    return QuestionProperty(
       questionId: serializer.fromJson<int>(json['questionId']),
       name: serializer.fromJson<String>(json['name']),
       value: serializer.fromJson<String>(json['value']),
@@ -4235,15 +4175,15 @@ class questionProperties extends DataClass
     };
   }
 
-  questionProperties copyWith({int? questionId, String? name, String? value}) =>
-      questionProperties(
+  QuestionProperty copyWith({int? questionId, String? name, String? value}) =>
+      QuestionProperty(
         questionId: questionId ?? this.questionId,
         name: name ?? this.name,
         value: value ?? this.value,
       );
   @override
   String toString() {
-    return (StringBuffer('questionProperties(')
+    return (StringBuffer('QuestionProperty(')
           ..write('questionId: $questionId, ')
           ..write('name: $name, ')
           ..write('value: $value')
@@ -4256,13 +4196,13 @@ class questionProperties extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is questionProperties &&
+      (other is QuestionProperty &&
           other.questionId == this.questionId &&
           other.name == this.name &&
           other.value == this.value);
 }
 
-class QuestionPropertiesCompanion extends UpdateCompanion<questionProperties> {
+class QuestionPropertiesCompanion extends UpdateCompanion<QuestionProperty> {
   final Value<int> questionId;
   final Value<String> name;
   final Value<String> value;
@@ -4281,7 +4221,7 @@ class QuestionPropertiesCompanion extends UpdateCompanion<questionProperties> {
   })  : questionId = Value(questionId),
         name = Value(name),
         value = Value(value);
-  static Insertable<questionProperties> custom({
+  static Insertable<QuestionProperty> custom({
     Expression<int>? questionId,
     Expression<String>? name,
     Expression<String>? value,
@@ -4338,6 +4278,2242 @@ class QuestionPropertiesCompanion extends UpdateCompanion<questionProperties> {
   }
 }
 
+class $HttpRequestsTable extends HttpRequests
+    with TableInfo<$HttpRequestsTable, HttpRequest> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HttpRequestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
+  @override
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
+      'url', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _mappMeta = const VerificationMeta('mapp');
+  @override
+  late final GeneratedColumn<String> mapp = GeneratedColumn<String>(
+      'map', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, url, mapp];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'httpRequests';
+  @override
+  VerificationContext validateIntegrity(Insertable<HttpRequest> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    if (data.containsKey('map')) {
+      context.handle(
+          _mappMeta, mapp.isAcceptableOrUnknown(data['map']!, _mappMeta));
+    } else if (isInserting) {
+      context.missing(_mappMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HttpRequest map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HttpRequest(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
+      mapp: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}map'])!,
+    );
+  }
+
+  @override
+  $HttpRequestsTable createAlias(String alias) {
+    return $HttpRequestsTable(attachedDatabase, alias);
+  }
+}
+
+class HttpRequest extends DataClass implements Insertable<HttpRequest> {
+  final int id;
+  final String url;
+  final String mapp;
+  const HttpRequest({required this.id, required this.url, required this.mapp});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['url'] = Variable<String>(url);
+    map['map'] = Variable<String>(mapp);
+    return map;
+  }
+
+  HttpRequestsCompanion toCompanion(bool nullToAbsent) {
+    return HttpRequestsCompanion(
+      id: Value(id),
+      url: Value(url),
+      mapp: Value(mapp),
+    );
+  }
+
+  factory HttpRequest.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HttpRequest(
+      id: serializer.fromJson<int>(json['id']),
+      url: serializer.fromJson<String>(json['url']),
+      mapp: serializer.fromJson<String>(json['mapp']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'url': serializer.toJson<String>(url),
+      'mapp': serializer.toJson<String>(mapp),
+    };
+  }
+
+  HttpRequest copyWith({int? id, String? url, String? mapp}) => HttpRequest(
+        id: id ?? this.id,
+        url: url ?? this.url,
+        mapp: mapp ?? this.mapp,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('HttpRequest(')
+          ..write('id: $id, ')
+          ..write('url: $url, ')
+          ..write('mapp: $mapp')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, url, mapp);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HttpRequest &&
+          other.id == this.id &&
+          other.url == this.url &&
+          other.mapp == this.mapp);
+}
+
+class HttpRequestsCompanion extends UpdateCompanion<HttpRequest> {
+  final Value<int> id;
+  final Value<String> url;
+  final Value<String> mapp;
+  const HttpRequestsCompanion({
+    this.id = const Value.absent(),
+    this.url = const Value.absent(),
+    this.mapp = const Value.absent(),
+  });
+  HttpRequestsCompanion.insert({
+    this.id = const Value.absent(),
+    required String url,
+    required String mapp,
+  })  : url = Value(url),
+        mapp = Value(mapp);
+  static Insertable<HttpRequest> custom({
+    Expression<int>? id,
+    Expression<String>? url,
+    Expression<String>? mapp,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (url != null) 'url': url,
+      if (mapp != null) 'map': mapp,
+    });
+  }
+
+  HttpRequestsCompanion copyWith(
+      {Value<int>? id, Value<String>? url, Value<String>? mapp}) {
+    return HttpRequestsCompanion(
+      id: id ?? this.id,
+      url: url ?? this.url,
+      mapp: mapp ?? this.mapp,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (mapp.present) {
+      map['map'] = Variable<String>(mapp.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HttpRequestsCompanion(')
+          ..write('id: $id, ')
+          ..write('url: $url, ')
+          ..write('mapp: $mapp')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermsWithQuestionsFilteringEnabledTable
+    extends TermsWithQuestionsFilteringEnabled
+    with
+        TableInfo<$TermsWithQuestionsFilteringEnabledTable,
+            TermsWithQuestionsFilteringEnabledData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermsWithQuestionsFilteringEnabledTable(this.attachedDatabase,
+      [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'term_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [termId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsWithQuestionsFilteringEnabled';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<TermsWithQuestionsFilteringEnabledData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('term_id')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['term_id']!, _termIdMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId};
+  @override
+  TermsWithQuestionsFilteringEnabledData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermsWithQuestionsFilteringEnabledData(
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}term_id'])!,
+    );
+  }
+
+  @override
+  $TermsWithQuestionsFilteringEnabledTable createAlias(String alias) {
+    return $TermsWithQuestionsFilteringEnabledTable(attachedDatabase, alias);
+  }
+}
+
+class TermsWithQuestionsFilteringEnabledData extends DataClass
+    implements Insertable<TermsWithQuestionsFilteringEnabledData> {
+  final int termId;
+  const TermsWithQuestionsFilteringEnabledData({required this.termId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['term_id'] = Variable<int>(termId);
+    return map;
+  }
+
+  TermsWithQuestionsFilteringEnabledCompanion toCompanion(bool nullToAbsent) {
+    return TermsWithQuestionsFilteringEnabledCompanion(
+      termId: Value(termId),
+    );
+  }
+
+  factory TermsWithQuestionsFilteringEnabledData.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermsWithQuestionsFilteringEnabledData(
+      termId: serializer.fromJson<int>(json['termId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'termId': serializer.toJson<int>(termId),
+    };
+  }
+
+  TermsWithQuestionsFilteringEnabledData copyWith({int? termId}) =>
+      TermsWithQuestionsFilteringEnabledData(
+        termId: termId ?? this.termId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermsWithQuestionsFilteringEnabledData(')
+          ..write('termId: $termId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => termId.hashCode;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermsWithQuestionsFilteringEnabledData &&
+          other.termId == this.termId);
+}
+
+class TermsWithQuestionsFilteringEnabledCompanion
+    extends UpdateCompanion<TermsWithQuestionsFilteringEnabledData> {
+  final Value<int> termId;
+  const TermsWithQuestionsFilteringEnabledCompanion({
+    this.termId = const Value.absent(),
+  });
+  TermsWithQuestionsFilteringEnabledCompanion.insert({
+    this.termId = const Value.absent(),
+  });
+  static Insertable<TermsWithQuestionsFilteringEnabledData> custom({
+    Expression<int>? termId,
+  }) {
+    return RawValuesInsertable({
+      if (termId != null) 'term_id': termId,
+    });
+  }
+
+  TermsWithQuestionsFilteringEnabledCompanion copyWith({Value<int>? termId}) {
+    return TermsWithQuestionsFilteringEnabledCompanion(
+      termId: termId ?? this.termId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['term_id'] = Variable<int>(termId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsWithQuestionsFilteringEnabledCompanion(')
+          ..write('termId: $termId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FlashcardsTable extends Flashcards
+    with TableInfo<$FlashcardsTable, Flashcard> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FlashcardsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _headMeta = const VerificationMeta('head');
+  @override
+  late final GeneratedColumn<String> head = GeneratedColumn<String>(
+      'head', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _tailMeta = const VerificationMeta('tail');
+  @override
+  late final GeneratedColumn<String> tail = GeneratedColumn<String>(
+      'tail', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _parentTermIdMeta =
+      const VerificationMeta('parentTermId');
+  @override
+  late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
+      'parentTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, head, tail, parentTermId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'flashcards';
+  @override
+  VerificationContext validateIntegrity(Insertable<Flashcard> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('head')) {
+      context.handle(
+          _headMeta, head.isAcceptableOrUnknown(data['head']!, _headMeta));
+    } else if (isInserting) {
+      context.missing(_headMeta);
+    }
+    if (data.containsKey('tail')) {
+      context.handle(
+          _tailMeta, tail.isAcceptableOrUnknown(data['tail']!, _tailMeta));
+    } else if (isInserting) {
+      context.missing(_tailMeta);
+    }
+    if (data.containsKey('parentTermId')) {
+      context.handle(
+          _parentTermIdMeta,
+          parentTermId.isAcceptableOrUnknown(
+              data['parentTermId']!, _parentTermIdMeta));
+    } else if (isInserting) {
+      context.missing(_parentTermIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Flashcard map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Flashcard(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      head: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}head'])!,
+      tail: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tail'])!,
+      parentTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
+    );
+  }
+
+  @override
+  $FlashcardsTable createAlias(String alias) {
+    return $FlashcardsTable(attachedDatabase, alias);
+  }
+}
+
+class Flashcard extends DataClass implements Insertable<Flashcard> {
+  final int id;
+  final String head;
+  final String tail;
+  final int parentTermId;
+  const Flashcard(
+      {required this.id,
+      required this.head,
+      required this.tail,
+      required this.parentTermId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['head'] = Variable<String>(head);
+    map['tail'] = Variable<String>(tail);
+    map['parentTermId'] = Variable<int>(parentTermId);
+    return map;
+  }
+
+  FlashcardsCompanion toCompanion(bool nullToAbsent) {
+    return FlashcardsCompanion(
+      id: Value(id),
+      head: Value(head),
+      tail: Value(tail),
+      parentTermId: Value(parentTermId),
+    );
+  }
+
+  factory Flashcard.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Flashcard(
+      id: serializer.fromJson<int>(json['id']),
+      head: serializer.fromJson<String>(json['head']),
+      tail: serializer.fromJson<String>(json['tail']),
+      parentTermId: serializer.fromJson<int>(json['parentTermId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'head': serializer.toJson<String>(head),
+      'tail': serializer.toJson<String>(tail),
+      'parentTermId': serializer.toJson<int>(parentTermId),
+    };
+  }
+
+  Flashcard copyWith(
+          {int? id, String? head, String? tail, int? parentTermId}) =>
+      Flashcard(
+        id: id ?? this.id,
+        head: head ?? this.head,
+        tail: tail ?? this.tail,
+        parentTermId: parentTermId ?? this.parentTermId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Flashcard(')
+          ..write('id: $id, ')
+          ..write('head: $head, ')
+          ..write('tail: $tail, ')
+          ..write('parentTermId: $parentTermId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, head, tail, parentTermId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Flashcard &&
+          other.id == this.id &&
+          other.head == this.head &&
+          other.tail == this.tail &&
+          other.parentTermId == this.parentTermId);
+}
+
+class FlashcardsCompanion extends UpdateCompanion<Flashcard> {
+  final Value<int> id;
+  final Value<String> head;
+  final Value<String> tail;
+  final Value<int> parentTermId;
+  const FlashcardsCompanion({
+    this.id = const Value.absent(),
+    this.head = const Value.absent(),
+    this.tail = const Value.absent(),
+    this.parentTermId = const Value.absent(),
+  });
+  FlashcardsCompanion.insert({
+    this.id = const Value.absent(),
+    required String head,
+    required String tail,
+    required int parentTermId,
+  })  : head = Value(head),
+        tail = Value(tail),
+        parentTermId = Value(parentTermId);
+  static Insertable<Flashcard> custom({
+    Expression<int>? id,
+    Expression<String>? head,
+    Expression<String>? tail,
+    Expression<int>? parentTermId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (head != null) 'head': head,
+      if (tail != null) 'tail': tail,
+      if (parentTermId != null) 'parentTermId': parentTermId,
+    });
+  }
+
+  FlashcardsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? head,
+      Value<String>? tail,
+      Value<int>? parentTermId}) {
+    return FlashcardsCompanion(
+      id: id ?? this.id,
+      head: head ?? this.head,
+      tail: tail ?? this.tail,
+      parentTermId: parentTermId ?? this.parentTermId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (head.present) {
+      map['head'] = Variable<String>(head.value);
+    }
+    if (tail.present) {
+      map['tail'] = Variable<String>(tail.value);
+    }
+    if (parentTermId.present) {
+      map['parentTermId'] = Variable<int>(parentTermId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlashcardsCompanion(')
+          ..write('id: $id, ')
+          ..write('head: $head, ')
+          ..write('tail: $tail, ')
+          ..write('parentTermId: $parentTermId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $VoiceNotesTable extends VoiceNotes
+    with TableInfo<$VoiceNotesTable, VoiceNote> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VoiceNotesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _encryptionKeyMeta =
+      const VerificationMeta('encryptionKey');
+  @override
+  late final GeneratedColumn<Uint8List> encryptionKey =
+      GeneratedColumn<Uint8List>('encryptionKey', aliasedName, false,
+          type: DriftSqlType.blob, requiredDuringInsert: true);
+  static const VerificationMeta _parentTermIdMeta =
+      const VerificationMeta('parentTermId');
+  @override
+  late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
+      'parentTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _creationMeta =
+      const VerificationMeta('creation');
+  @override
+  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+      'creation', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _lastUpdatedMeta =
+      const VerificationMeta('lastUpdated');
+  @override
+  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
+      'lastUpdated', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [encryptionKey, parentTermId, creation, lastUpdated];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'voiceNotes';
+  @override
+  VerificationContext validateIntegrity(Insertable<VoiceNote> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('encryptionKey')) {
+      context.handle(
+          _encryptionKeyMeta,
+          encryptionKey.isAcceptableOrUnknown(
+              data['encryptionKey']!, _encryptionKeyMeta));
+    } else if (isInserting) {
+      context.missing(_encryptionKeyMeta);
+    }
+    if (data.containsKey('parentTermId')) {
+      context.handle(
+          _parentTermIdMeta,
+          parentTermId.isAcceptableOrUnknown(
+              data['parentTermId']!, _parentTermIdMeta));
+    }
+    if (data.containsKey('creation')) {
+      context.handle(_creationMeta,
+          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+    } else if (isInserting) {
+      context.missing(_creationMeta);
+    }
+    if (data.containsKey('lastUpdated')) {
+      context.handle(
+          _lastUpdatedMeta,
+          lastUpdated.isAcceptableOrUnknown(
+              data['lastUpdated']!, _lastUpdatedMeta));
+    } else if (isInserting) {
+      context.missing(_lastUpdatedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {parentTermId};
+  @override
+  VoiceNote map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VoiceNote(
+      encryptionKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}encryptionKey'])!,
+      parentTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
+      creation: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+      lastUpdated: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}lastUpdated'])!,
+    );
+  }
+
+  @override
+  $VoiceNotesTable createAlias(String alias) {
+    return $VoiceNotesTable(attachedDatabase, alias);
+  }
+}
+
+class VoiceNote extends DataClass implements Insertable<VoiceNote> {
+  final Uint8List encryptionKey;
+  final int parentTermId;
+  final DateTime creation;
+  final DateTime lastUpdated;
+  const VoiceNote(
+      {required this.encryptionKey,
+      required this.parentTermId,
+      required this.creation,
+      required this.lastUpdated});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['encryptionKey'] = Variable<Uint8List>(encryptionKey);
+    map['parentTermId'] = Variable<int>(parentTermId);
+    map['creation'] = Variable<DateTime>(creation);
+    map['lastUpdated'] = Variable<DateTime>(lastUpdated);
+    return map;
+  }
+
+  VoiceNotesCompanion toCompanion(bool nullToAbsent) {
+    return VoiceNotesCompanion(
+      encryptionKey: Value(encryptionKey),
+      parentTermId: Value(parentTermId),
+      creation: Value(creation),
+      lastUpdated: Value(lastUpdated),
+    );
+  }
+
+  factory VoiceNote.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VoiceNote(
+      encryptionKey: serializer.fromJson<Uint8List>(json['encryptionKey']),
+      parentTermId: serializer.fromJson<int>(json['parentTermId']),
+      creation: serializer.fromJson<DateTime>(json['creation']),
+      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'encryptionKey': serializer.toJson<Uint8List>(encryptionKey),
+      'parentTermId': serializer.toJson<int>(parentTermId),
+      'creation': serializer.toJson<DateTime>(creation),
+      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+    };
+  }
+
+  VoiceNote copyWith(
+          {Uint8List? encryptionKey,
+          int? parentTermId,
+          DateTime? creation,
+          DateTime? lastUpdated}) =>
+      VoiceNote(
+        encryptionKey: encryptionKey ?? this.encryptionKey,
+        parentTermId: parentTermId ?? this.parentTermId,
+        creation: creation ?? this.creation,
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('VoiceNote(')
+          ..write('encryptionKey: $encryptionKey, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('creation: $creation, ')
+          ..write('lastUpdated: $lastUpdated')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash($driftBlobEquality.hash(encryptionKey),
+      parentTermId, creation, lastUpdated);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VoiceNote &&
+          $driftBlobEquality.equals(other.encryptionKey, this.encryptionKey) &&
+          other.parentTermId == this.parentTermId &&
+          other.creation == this.creation &&
+          other.lastUpdated == this.lastUpdated);
+}
+
+class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
+  final Value<Uint8List> encryptionKey;
+  final Value<int> parentTermId;
+  final Value<DateTime> creation;
+  final Value<DateTime> lastUpdated;
+  const VoiceNotesCompanion({
+    this.encryptionKey = const Value.absent(),
+    this.parentTermId = const Value.absent(),
+    this.creation = const Value.absent(),
+    this.lastUpdated = const Value.absent(),
+  });
+  VoiceNotesCompanion.insert({
+    required Uint8List encryptionKey,
+    this.parentTermId = const Value.absent(),
+    required DateTime creation,
+    required DateTime lastUpdated,
+  })  : encryptionKey = Value(encryptionKey),
+        creation = Value(creation),
+        lastUpdated = Value(lastUpdated);
+  static Insertable<VoiceNote> custom({
+    Expression<Uint8List>? encryptionKey,
+    Expression<int>? parentTermId,
+    Expression<DateTime>? creation,
+    Expression<DateTime>? lastUpdated,
+  }) {
+    return RawValuesInsertable({
+      if (encryptionKey != null) 'encryptionKey': encryptionKey,
+      if (parentTermId != null) 'parentTermId': parentTermId,
+      if (creation != null) 'creation': creation,
+      if (lastUpdated != null) 'lastUpdated': lastUpdated,
+    });
+  }
+
+  VoiceNotesCompanion copyWith(
+      {Value<Uint8List>? encryptionKey,
+      Value<int>? parentTermId,
+      Value<DateTime>? creation,
+      Value<DateTime>? lastUpdated}) {
+    return VoiceNotesCompanion(
+      encryptionKey: encryptionKey ?? this.encryptionKey,
+      parentTermId: parentTermId ?? this.parentTermId,
+      creation: creation ?? this.creation,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (encryptionKey.present) {
+      map['encryptionKey'] = Variable<Uint8List>(encryptionKey.value);
+    }
+    if (parentTermId.present) {
+      map['parentTermId'] = Variable<int>(parentTermId.value);
+    }
+    if (creation.present) {
+      map['creation'] = Variable<DateTime>(creation.value);
+    }
+    if (lastUpdated.present) {
+      map['lastUpdated'] = Variable<DateTime>(lastUpdated.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VoiceNotesCompanion(')
+          ..write('encryptionKey: $encryptionKey, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('creation: $creation, ')
+          ..write('lastUpdated: $lastUpdated')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RelatedTermsTable extends RelatedTerms
+    with TableInfo<$RelatedTermsTable, RelatedTerm> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RelatedTermsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _anotherTermIdMeta =
+      const VerificationMeta('anotherTermId');
+  @override
+  late final GeneratedColumn<int> anotherTermId = GeneratedColumn<int>(
+      'anotherTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'termId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [anotherTermId, termId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'relatedTerms';
+  @override
+  VerificationContext validateIntegrity(Insertable<RelatedTerm> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('anotherTermId')) {
+      context.handle(
+          _anotherTermIdMeta,
+          anotherTermId.isAcceptableOrUnknown(
+              data['anotherTermId']!, _anotherTermIdMeta));
+    } else if (isInserting) {
+      context.missing(_anotherTermIdMeta);
+    }
+    if (data.containsKey('termId')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+    } else if (isInserting) {
+      context.missing(_termIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {anotherTermId, termId};
+  @override
+  RelatedTerm map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RelatedTerm(
+      anotherTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}anotherTermId'])!,
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+    );
+  }
+
+  @override
+  $RelatedTermsTable createAlias(String alias) {
+    return $RelatedTermsTable(attachedDatabase, alias);
+  }
+}
+
+class RelatedTerm extends DataClass implements Insertable<RelatedTerm> {
+  final int anotherTermId;
+  final int termId;
+  const RelatedTerm({required this.anotherTermId, required this.termId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['anotherTermId'] = Variable<int>(anotherTermId);
+    map['termId'] = Variable<int>(termId);
+    return map;
+  }
+
+  RelatedTermsCompanion toCompanion(bool nullToAbsent) {
+    return RelatedTermsCompanion(
+      anotherTermId: Value(anotherTermId),
+      termId: Value(termId),
+    );
+  }
+
+  factory RelatedTerm.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RelatedTerm(
+      anotherTermId: serializer.fromJson<int>(json['anotherTermId']),
+      termId: serializer.fromJson<int>(json['termId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'anotherTermId': serializer.toJson<int>(anotherTermId),
+      'termId': serializer.toJson<int>(termId),
+    };
+  }
+
+  RelatedTerm copyWith({int? anotherTermId, int? termId}) => RelatedTerm(
+        anotherTermId: anotherTermId ?? this.anotherTermId,
+        termId: termId ?? this.termId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('RelatedTerm(')
+          ..write('anotherTermId: $anotherTermId, ')
+          ..write('termId: $termId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(anotherTermId, termId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RelatedTerm &&
+          other.anotherTermId == this.anotherTermId &&
+          other.termId == this.termId);
+}
+
+class RelatedTermsCompanion extends UpdateCompanion<RelatedTerm> {
+  final Value<int> anotherTermId;
+  final Value<int> termId;
+  final Value<int> rowid;
+  const RelatedTermsCompanion({
+    this.anotherTermId = const Value.absent(),
+    this.termId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RelatedTermsCompanion.insert({
+    required int anotherTermId,
+    required int termId,
+    this.rowid = const Value.absent(),
+  })  : anotherTermId = Value(anotherTermId),
+        termId = Value(termId);
+  static Insertable<RelatedTerm> custom({
+    Expression<int>? anotherTermId,
+    Expression<int>? termId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (anotherTermId != null) 'anotherTermId': anotherTermId,
+      if (termId != null) 'termId': termId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RelatedTermsCompanion copyWith(
+      {Value<int>? anotherTermId, Value<int>? termId, Value<int>? rowid}) {
+    return RelatedTermsCompanion(
+      anotherTermId: anotherTermId ?? this.anotherTermId,
+      termId: termId ?? this.termId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (anotherTermId.present) {
+      map['anotherTermId'] = Variable<int>(anotherTermId.value);
+    }
+    if (termId.present) {
+      map['termId'] = Variable<int>(termId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RelatedTermsCompanion(')
+          ..write('anotherTermId: $anotherTermId, ')
+          ..write('termId: $termId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $QuestionsLinkedToTagsTable extends QuestionsLinkedToTags
+    with TableInfo<$QuestionsLinkedToTagsTable, QuestionsLinkedToTag> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $QuestionsLinkedToTagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _questionIdMeta =
+      const VerificationMeta('questionId');
+  @override
+  late final GeneratedColumn<int> questionId = GeneratedColumn<int>(
+      'questionId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
+  @override
+  late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
+      'tagId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [questionId, tagId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'questionsLinkedToTags';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<QuestionsLinkedToTag> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('questionId')) {
+      context.handle(
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['questionId']!, _questionIdMeta));
+    } else if (isInserting) {
+      context.missing(_questionIdMeta);
+    }
+    if (data.containsKey('tagId')) {
+      context.handle(
+          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta));
+    } else if (isInserting) {
+      context.missing(_tagIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {questionId, tagId};
+  @override
+  QuestionsLinkedToTag map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return QuestionsLinkedToTag(
+      questionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}questionId'])!,
+      tagId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tagId'])!,
+    );
+  }
+
+  @override
+  $QuestionsLinkedToTagsTable createAlias(String alias) {
+    return $QuestionsLinkedToTagsTable(attachedDatabase, alias);
+  }
+}
+
+class QuestionsLinkedToTag extends DataClass
+    implements Insertable<QuestionsLinkedToTag> {
+  final int questionId;
+  final int tagId;
+  const QuestionsLinkedToTag({required this.questionId, required this.tagId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['questionId'] = Variable<int>(questionId);
+    map['tagId'] = Variable<int>(tagId);
+    return map;
+  }
+
+  QuestionsLinkedToTagsCompanion toCompanion(bool nullToAbsent) {
+    return QuestionsLinkedToTagsCompanion(
+      questionId: Value(questionId),
+      tagId: Value(tagId),
+    );
+  }
+
+  factory QuestionsLinkedToTag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return QuestionsLinkedToTag(
+      questionId: serializer.fromJson<int>(json['questionId']),
+      tagId: serializer.fromJson<int>(json['tagId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'questionId': serializer.toJson<int>(questionId),
+      'tagId': serializer.toJson<int>(tagId),
+    };
+  }
+
+  QuestionsLinkedToTag copyWith({int? questionId, int? tagId}) =>
+      QuestionsLinkedToTag(
+        questionId: questionId ?? this.questionId,
+        tagId: tagId ?? this.tagId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('QuestionsLinkedToTag(')
+          ..write('questionId: $questionId, ')
+          ..write('tagId: $tagId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(questionId, tagId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is QuestionsLinkedToTag &&
+          other.questionId == this.questionId &&
+          other.tagId == this.tagId);
+}
+
+class QuestionsLinkedToTagsCompanion
+    extends UpdateCompanion<QuestionsLinkedToTag> {
+  final Value<int> questionId;
+  final Value<int> tagId;
+  final Value<int> rowid;
+  const QuestionsLinkedToTagsCompanion({
+    this.questionId = const Value.absent(),
+    this.tagId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  QuestionsLinkedToTagsCompanion.insert({
+    required int questionId,
+    required int tagId,
+    this.rowid = const Value.absent(),
+  })  : questionId = Value(questionId),
+        tagId = Value(tagId);
+  static Insertable<QuestionsLinkedToTag> custom({
+    Expression<int>? questionId,
+    Expression<int>? tagId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (questionId != null) 'questionId': questionId,
+      if (tagId != null) 'tagId': tagId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  QuestionsLinkedToTagsCompanion copyWith(
+      {Value<int>? questionId, Value<int>? tagId, Value<int>? rowid}) {
+    return QuestionsLinkedToTagsCompanion(
+      questionId: questionId ?? this.questionId,
+      tagId: tagId ?? this.tagId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (questionId.present) {
+      map['questionId'] = Variable<int>(questionId.value);
+    }
+    if (tagId.present) {
+      map['tagId'] = Variable<int>(tagId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QuestionsLinkedToTagsCompanion(')
+          ..write('questionId: $questionId, ')
+          ..write('tagId: $tagId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermsParentsTable extends TermsParents
+    with TableInfo<$TermsParentsTable, TermsParent> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermsParentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'termId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _parentTermIdMeta =
+      const VerificationMeta('parentTermId');
+  @override
+  late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
+      'parentTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _rootTermIdMeta =
+      const VerificationMeta('rootTermId');
+  @override
+  late final GeneratedColumn<int> rootTermId = GeneratedColumn<int>(
+      'rootTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _creationMeta =
+      const VerificationMeta('creation');
+  @override
+  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+      'creation', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [termId, parentTermId, rootTermId, creation];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsParents';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermsParent> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('termId')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+    } else if (isInserting) {
+      context.missing(_termIdMeta);
+    }
+    if (data.containsKey('parentTermId')) {
+      context.handle(
+          _parentTermIdMeta,
+          parentTermId.isAcceptableOrUnknown(
+              data['parentTermId']!, _parentTermIdMeta));
+    } else if (isInserting) {
+      context.missing(_parentTermIdMeta);
+    }
+    if (data.containsKey('rootTermId')) {
+      context.handle(
+          _rootTermIdMeta,
+          rootTermId.isAcceptableOrUnknown(
+              data['rootTermId']!, _rootTermIdMeta));
+    } else if (isInserting) {
+      context.missing(_rootTermIdMeta);
+    }
+    if (data.containsKey('creation')) {
+      context.handle(_creationMeta,
+          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+    } else if (isInserting) {
+      context.missing(_creationMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId, parentTermId, rootTermId};
+  @override
+  TermsParent map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermsParent(
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      parentTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
+      rootTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}rootTermId'])!,
+      creation: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+    );
+  }
+
+  @override
+  $TermsParentsTable createAlias(String alias) {
+    return $TermsParentsTable(attachedDatabase, alias);
+  }
+}
+
+class TermsParent extends DataClass implements Insertable<TermsParent> {
+  final int termId;
+  final int parentTermId;
+  final int rootTermId;
+  final DateTime creation;
+  const TermsParent(
+      {required this.termId,
+      required this.parentTermId,
+      required this.rootTermId,
+      required this.creation});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['termId'] = Variable<int>(termId);
+    map['parentTermId'] = Variable<int>(parentTermId);
+    map['rootTermId'] = Variable<int>(rootTermId);
+    map['creation'] = Variable<DateTime>(creation);
+    return map;
+  }
+
+  TermsParentsCompanion toCompanion(bool nullToAbsent) {
+    return TermsParentsCompanion(
+      termId: Value(termId),
+      parentTermId: Value(parentTermId),
+      rootTermId: Value(rootTermId),
+      creation: Value(creation),
+    );
+  }
+
+  factory TermsParent.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermsParent(
+      termId: serializer.fromJson<int>(json['termId']),
+      parentTermId: serializer.fromJson<int>(json['parentTermId']),
+      rootTermId: serializer.fromJson<int>(json['rootTermId']),
+      creation: serializer.fromJson<DateTime>(json['creation']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'termId': serializer.toJson<int>(termId),
+      'parentTermId': serializer.toJson<int>(parentTermId),
+      'rootTermId': serializer.toJson<int>(rootTermId),
+      'creation': serializer.toJson<DateTime>(creation),
+    };
+  }
+
+  TermsParent copyWith(
+          {int? termId,
+          int? parentTermId,
+          int? rootTermId,
+          DateTime? creation}) =>
+      TermsParent(
+        termId: termId ?? this.termId,
+        parentTermId: parentTermId ?? this.parentTermId,
+        rootTermId: rootTermId ?? this.rootTermId,
+        creation: creation ?? this.creation,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermsParent(')
+          ..write('termId: $termId, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('rootTermId: $rootTermId, ')
+          ..write('creation: $creation')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(termId, parentTermId, rootTermId, creation);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermsParent &&
+          other.termId == this.termId &&
+          other.parentTermId == this.parentTermId &&
+          other.rootTermId == this.rootTermId &&
+          other.creation == this.creation);
+}
+
+class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
+  final Value<int> termId;
+  final Value<int> parentTermId;
+  final Value<int> rootTermId;
+  final Value<DateTime> creation;
+  final Value<int> rowid;
+  const TermsParentsCompanion({
+    this.termId = const Value.absent(),
+    this.parentTermId = const Value.absent(),
+    this.rootTermId = const Value.absent(),
+    this.creation = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TermsParentsCompanion.insert({
+    required int termId,
+    required int parentTermId,
+    required int rootTermId,
+    required DateTime creation,
+    this.rowid = const Value.absent(),
+  })  : termId = Value(termId),
+        parentTermId = Value(parentTermId),
+        rootTermId = Value(rootTermId),
+        creation = Value(creation);
+  static Insertable<TermsParent> custom({
+    Expression<int>? termId,
+    Expression<int>? parentTermId,
+    Expression<int>? rootTermId,
+    Expression<DateTime>? creation,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (termId != null) 'termId': termId,
+      if (parentTermId != null) 'parentTermId': parentTermId,
+      if (rootTermId != null) 'rootTermId': rootTermId,
+      if (creation != null) 'creation': creation,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TermsParentsCompanion copyWith(
+      {Value<int>? termId,
+      Value<int>? parentTermId,
+      Value<int>? rootTermId,
+      Value<DateTime>? creation,
+      Value<int>? rowid}) {
+    return TermsParentsCompanion(
+      termId: termId ?? this.termId,
+      parentTermId: parentTermId ?? this.parentTermId,
+      rootTermId: rootTermId ?? this.rootTermId,
+      creation: creation ?? this.creation,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['termId'] = Variable<int>(termId.value);
+    }
+    if (parentTermId.present) {
+      map['parentTermId'] = Variable<int>(parentTermId.value);
+    }
+    if (rootTermId.present) {
+      map['rootTermId'] = Variable<int>(rootTermId.value);
+    }
+    if (creation.present) {
+      map['creation'] = Variable<DateTime>(creation.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsParentsCompanion(')
+          ..write('termId: $termId, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('rootTermId: $rootTermId, ')
+          ..write('creation: $creation, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermTagsTable extends TermTags with TableInfo<$TermTagsTable, TermTag> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermTagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _orderingMeta =
+      const VerificationMeta('ordering');
+  @override
+  late final GeneratedColumn<int> ordering = GeneratedColumn<int>(
+      'ordering', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  @override
+  List<GeneratedColumn> get $columns => [id, name, ordering];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsTags';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermTag> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('ordering')) {
+      context.handle(_orderingMeta,
+          ordering.isAcceptableOrUnknown(data['ordering']!, _orderingMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TermTag map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermTag(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      ordering: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ordering'])!,
+    );
+  }
+
+  @override
+  $TermTagsTable createAlias(String alias) {
+    return $TermTagsTable(attachedDatabase, alias);
+  }
+}
+
+class TermTag extends DataClass implements Insertable<TermTag> {
+  final int id;
+  final String name;
+  final int ordering;
+  const TermTag({required this.id, required this.name, required this.ordering});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['ordering'] = Variable<int>(ordering);
+    return map;
+  }
+
+  TermTagsCompanion toCompanion(bool nullToAbsent) {
+    return TermTagsCompanion(
+      id: Value(id),
+      name: Value(name),
+      ordering: Value(ordering),
+    );
+  }
+
+  factory TermTag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermTag(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      ordering: serializer.fromJson<int>(json['ordering']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'ordering': serializer.toJson<int>(ordering),
+    };
+  }
+
+  TermTag copyWith({int? id, String? name, int? ordering}) => TermTag(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        ordering: ordering ?? this.ordering,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermTag(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ordering: $ordering')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, ordering);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermTag &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.ordering == this.ordering);
+}
+
+class TermTagsCompanion extends UpdateCompanion<TermTag> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> ordering;
+  const TermTagsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.ordering = const Value.absent(),
+  });
+  TermTagsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.ordering = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<TermTag> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<int>? ordering,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (ordering != null) 'ordering': ordering,
+    });
+  }
+
+  TermTagsCompanion copyWith(
+      {Value<int>? id, Value<String>? name, Value<int>? ordering}) {
+    return TermTagsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      ordering: ordering ?? this.ordering,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (ordering.present) {
+      map['ordering'] = Variable<int>(ordering.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermTagsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ordering: $ordering')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermsLinkedToTagsTable extends TermsLinkedToTags
+    with TableInfo<$TermsLinkedToTagsTable, TermsLinkedToTag> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermsLinkedToTagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'termId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
+  @override
+  late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
+      'tagId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [termId, tagId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsLinkedToTags';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermsLinkedToTag> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('termId')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+    } else if (isInserting) {
+      context.missing(_termIdMeta);
+    }
+    if (data.containsKey('tagId')) {
+      context.handle(
+          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta));
+    } else if (isInserting) {
+      context.missing(_tagIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId, tagId};
+  @override
+  TermsLinkedToTag map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermsLinkedToTag(
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      tagId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tagId'])!,
+    );
+  }
+
+  @override
+  $TermsLinkedToTagsTable createAlias(String alias) {
+    return $TermsLinkedToTagsTable(attachedDatabase, alias);
+  }
+}
+
+class TermsLinkedToTag extends DataClass
+    implements Insertable<TermsLinkedToTag> {
+  final int termId;
+  final int tagId;
+  const TermsLinkedToTag({required this.termId, required this.tagId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['termId'] = Variable<int>(termId);
+    map['tagId'] = Variable<int>(tagId);
+    return map;
+  }
+
+  TermsLinkedToTagsCompanion toCompanion(bool nullToAbsent) {
+    return TermsLinkedToTagsCompanion(
+      termId: Value(termId),
+      tagId: Value(tagId),
+    );
+  }
+
+  factory TermsLinkedToTag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermsLinkedToTag(
+      termId: serializer.fromJson<int>(json['termId']),
+      tagId: serializer.fromJson<int>(json['tagId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'termId': serializer.toJson<int>(termId),
+      'tagId': serializer.toJson<int>(tagId),
+    };
+  }
+
+  TermsLinkedToTag copyWith({int? termId, int? tagId}) => TermsLinkedToTag(
+        termId: termId ?? this.termId,
+        tagId: tagId ?? this.tagId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermsLinkedToTag(')
+          ..write('termId: $termId, ')
+          ..write('tagId: $tagId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(termId, tagId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermsLinkedToTag &&
+          other.termId == this.termId &&
+          other.tagId == this.tagId);
+}
+
+class TermsLinkedToTagsCompanion extends UpdateCompanion<TermsLinkedToTag> {
+  final Value<int> termId;
+  final Value<int> tagId;
+  final Value<int> rowid;
+  const TermsLinkedToTagsCompanion({
+    this.termId = const Value.absent(),
+    this.tagId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TermsLinkedToTagsCompanion.insert({
+    required int termId,
+    required int tagId,
+    this.rowid = const Value.absent(),
+  })  : termId = Value(termId),
+        tagId = Value(tagId);
+  static Insertable<TermsLinkedToTag> custom({
+    Expression<int>? termId,
+    Expression<int>? tagId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (termId != null) 'termId': termId,
+      if (tagId != null) 'tagId': tagId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TermsLinkedToTagsCompanion copyWith(
+      {Value<int>? termId, Value<int>? tagId, Value<int>? rowid}) {
+    return TermsLinkedToTagsCompanion(
+      termId: termId ?? this.termId,
+      tagId: tagId ?? this.tagId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['termId'] = Variable<int>(termId.value);
+    }
+    if (tagId.present) {
+      map['tagId'] = Variable<int>(tagId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsLinkedToTagsCompanion(')
+          ..write('termId: $termId, ')
+          ..write('tagId: $tagId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermLabelsTable extends TermLabels
+    with TableInfo<$TermLabelsTable, TermLabel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermLabelsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsLabels';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermLabel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TermLabel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermLabel(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $TermLabelsTable createAlias(String alias) {
+    return $TermLabelsTable(attachedDatabase, alias);
+  }
+}
+
+class TermLabel extends DataClass implements Insertable<TermLabel> {
+  final int id;
+  final String name;
+  const TermLabel({required this.id, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    return map;
+  }
+
+  TermLabelsCompanion toCompanion(bool nullToAbsent) {
+    return TermLabelsCompanion(
+      id: Value(id),
+      name: Value(name),
+    );
+  }
+
+  factory TermLabel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermLabel(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+    };
+  }
+
+  TermLabel copyWith({int? id, String? name}) => TermLabel(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermLabel(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermLabel && other.id == this.id && other.name == this.name);
+}
+
+class TermLabelsCompanion extends UpdateCompanion<TermLabel> {
+  final Value<int> id;
+  final Value<String> name;
+  const TermLabelsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  TermLabelsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+  }) : name = Value(name);
+  static Insertable<TermLabel> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+    });
+  }
+
+  TermLabelsCompanion copyWith({Value<int>? id, Value<String>? name}) {
+    return TermLabelsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermLabelsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TermsLinkedToLabelsTable extends TermsLinkedToLabels
+    with TableInfo<$TermsLinkedToLabelsTable, TermsLinkedToLabel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermsLinkedToLabelsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'termId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _labelIdMeta =
+      const VerificationMeta('labelId');
+  @override
+  late final GeneratedColumn<int> labelId = GeneratedColumn<int>(
+      'labelId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [termId, labelId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsLinkedToLabels';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermsLinkedToLabel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('termId')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+    } else if (isInserting) {
+      context.missing(_termIdMeta);
+    }
+    if (data.containsKey('labelId')) {
+      context.handle(_labelIdMeta,
+          labelId.isAcceptableOrUnknown(data['labelId']!, _labelIdMeta));
+    } else if (isInserting) {
+      context.missing(_labelIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId, labelId};
+  @override
+  TermsLinkedToLabel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermsLinkedToLabel(
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      labelId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}labelId'])!,
+    );
+  }
+
+  @override
+  $TermsLinkedToLabelsTable createAlias(String alias) {
+    return $TermsLinkedToLabelsTable(attachedDatabase, alias);
+  }
+}
+
+class TermsLinkedToLabel extends DataClass
+    implements Insertable<TermsLinkedToLabel> {
+  final int termId;
+  final int labelId;
+  const TermsLinkedToLabel({required this.termId, required this.labelId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['termId'] = Variable<int>(termId);
+    map['labelId'] = Variable<int>(labelId);
+    return map;
+  }
+
+  TermsLinkedToLabelsCompanion toCompanion(bool nullToAbsent) {
+    return TermsLinkedToLabelsCompanion(
+      termId: Value(termId),
+      labelId: Value(labelId),
+    );
+  }
+
+  factory TermsLinkedToLabel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermsLinkedToLabel(
+      termId: serializer.fromJson<int>(json['termId']),
+      labelId: serializer.fromJson<int>(json['labelId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'termId': serializer.toJson<int>(termId),
+      'labelId': serializer.toJson<int>(labelId),
+    };
+  }
+
+  TermsLinkedToLabel copyWith({int? termId, int? labelId}) =>
+      TermsLinkedToLabel(
+        termId: termId ?? this.termId,
+        labelId: labelId ?? this.labelId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermsLinkedToLabel(')
+          ..write('termId: $termId, ')
+          ..write('labelId: $labelId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(termId, labelId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermsLinkedToLabel &&
+          other.termId == this.termId &&
+          other.labelId == this.labelId);
+}
+
+class TermsLinkedToLabelsCompanion extends UpdateCompanion<TermsLinkedToLabel> {
+  final Value<int> termId;
+  final Value<int> labelId;
+  final Value<int> rowid;
+  const TermsLinkedToLabelsCompanion({
+    this.termId = const Value.absent(),
+    this.labelId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TermsLinkedToLabelsCompanion.insert({
+    required int termId,
+    required int labelId,
+    this.rowid = const Value.absent(),
+  })  : termId = Value(termId),
+        labelId = Value(labelId);
+  static Insertable<TermsLinkedToLabel> custom({
+    Expression<int>? termId,
+    Expression<int>? labelId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (termId != null) 'termId': termId,
+      if (labelId != null) 'labelId': labelId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TermsLinkedToLabelsCompanion copyWith(
+      {Value<int>? termId, Value<int>? labelId, Value<int>? rowid}) {
+    return TermsLinkedToLabelsCompanion(
+      termId: termId ?? this.termId,
+      labelId: labelId ?? this.labelId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['termId'] = Variable<int>(termId.value);
+    }
+    if (labelId.present) {
+      map['labelId'] = Variable<int>(labelId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsLinkedToLabelsCompanion(')
+          ..write('termId: $termId, ')
+          ..write('labelId: $labelId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
   late final $CouponsTable coupons = $CouponsTable(this);
@@ -4359,20 +6535,48 @@ abstract class _$DatabaseService extends GeneratedDatabase {
       $QuestionTagPropertiesTable(this);
   late final $QuestionPropertiesTable questionProperties =
       $QuestionPropertiesTable(this);
+  late final $HttpRequestsTable httpRequests = $HttpRequestsTable(this);
+  late final $TermsWithQuestionsFilteringEnabledTable
+      termsWithQuestionsFilteringEnabled =
+      $TermsWithQuestionsFilteringEnabledTable(this);
+  late final $FlashcardsTable flashcards = $FlashcardsTable(this);
+  late final $VoiceNotesTable voiceNotes = $VoiceNotesTable(this);
+  late final $RelatedTermsTable relatedTerms = $RelatedTermsTable(this);
+  late final $QuestionsLinkedToTagsTable questionsLinkedToTags =
+      $QuestionsLinkedToTagsTable(this);
+  late final $TermsParentsTable termsParents = $TermsParentsTable(this);
+  late final $TermTagsTable termTags = $TermTagsTable(this);
+  late final $TermsLinkedToTagsTable termsLinkedToTags =
+      $TermsLinkedToTagsTable(this);
+  late final $TermLabelsTable termLabels = $TermLabelsTable(this);
+  late final $TermsLinkedToLabelsTable termsLinkedToLabels =
+      $TermsLinkedToLabelsTable(this);
   late final Index parentQuestionIdIndex = Index('parentQuestionIdIndex',
       'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)');
   late final Index qIndex1 =
       Index('qIndex1', 'CREATE INDEX qIndex1 ON questions (parentTermId)');
   late final Index questionTagsIndex1 = Index('questionTagsIndex1',
-      'CREATE INDEX questionTagsIndex1 ON question_tags (parentTagId)');
+      'CREATE INDEX questionTagsIndex1 ON questionTags (parentTagId)');
   late final Index questionMediasIndex1 = Index('questionMediasIndex1',
-      'CREATE INDEX questionMediasIndex1 ON question_medias (parentQuestionId)');
+      'CREATE INDEX questionMediasIndex1 ON questionMedias (parentQuestionId)');
   late final Index answersIndex1 = Index('answersIndex1',
-      'CREATE INDEX answersIndex1 ON answer_properties (answerId)');
+      'CREATE INDEX answersIndex1 ON answerProperties (answerId)');
   late final Index qtpIndex1 = Index('qtpIndex1',
-      'CREATE INDEX qtpIndex1 ON question_tag_properties (questionTagId)');
+      'CREATE INDEX qtpIndex1 ON questionTagProperties (questionTagId)');
   late final Index qpIndex1 = Index(
-      'qpIndex1', 'CREATE INDEX qpIndex1 ON question_properties (questionId)');
+      'qpIndex1', 'CREATE INDEX qpIndex1 ON questionProperties (questionId)');
+  late final Index qlttIndex1 = Index('qlttIndex1',
+      'CREATE INDEX qlttIndex1 ON questionsLinkedToTags (questionId)');
+  late final Index qlttIndex2 = Index(
+      'qlttIndex2', 'CREATE INDEX qlttIndex2 ON questionsLinkedToTags (tagId)');
+  late final Index tlttIndex1 = Index(
+      'tlttIndex1', 'CREATE INDEX tlttIndex1 ON termsLinkedToTags (termId)');
+  late final Index tlttIndex2 = Index(
+      'tlttIndex2', 'CREATE INDEX tlttIndex2 ON termsLinkedToTags (tagId)');
+  late final Index tltlIndex1 = Index(
+      'tltlIndex1', 'CREATE INDEX tltlIndex1 ON termsLinkedToLabels (termId)');
+  late final Index tltlIndex2 = Index(
+      'tltlIndex2', 'CREATE INDEX tltlIndex2 ON termsLinkedToLabels (labelId)');
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4392,12 +6596,29 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         termsLastAccesses,
         questionTagProperties,
         questionProperties,
+        httpRequests,
+        termsWithQuestionsFilteringEnabled,
+        flashcards,
+        voiceNotes,
+        relatedTerms,
+        questionsLinkedToTags,
+        termsParents,
+        termTags,
+        termsLinkedToTags,
+        termLabels,
+        termsLinkedToLabels,
         parentQuestionIdIndex,
         qIndex1,
         questionTagsIndex1,
         questionMediasIndex1,
         answersIndex1,
         qtpIndex1,
-        qpIndex1
+        qpIndex1,
+        qlttIndex1,
+        qlttIndex2,
+        tlttIndex1,
+        tlttIndex2,
+        tltlIndex1,
+        tltlIndex2
       ];
 }

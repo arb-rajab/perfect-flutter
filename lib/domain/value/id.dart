@@ -14,5 +14,5 @@ class IdJsonConverter extends JsonConverter<Id, int> {
   Id fromJson(int json) => Id(json);
 
   @override
-  int toJson(Id object) => object.value ?? 0;
+  int toJson(Id object) => object.value;
 }

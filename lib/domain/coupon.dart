@@ -1,7 +1,6 @@
 import "package:drift/drift.dart";
 
 //TODO add migration to drop layer, numberOfObjects and rootTermId columns
-@DataClassName('coupons')
 class Coupons extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get serial => text()();
@@ -16,4 +15,7 @@ class Coupons extends Table {
       dateTime().named('activationDate').nullable()();
   IntColumn get expirationDays =>
       integer().withDefault(const Constant(-1)).named('expirationDays')();
+
+  @override
+  String? get tableName => 'coupons';
 }

@@ -24,8 +24,7 @@ class ContactUsScreen extends StatelessWidget {
             if (telegramChannelLink.isNotEmpty) _TelegramChannelTile(),
             if (telegramChatLink.isNotEmpty) _TelegramChatTile(),
             if (facebookPageLink.isNotEmpty) _FacebookPageTile()
-      ],
-    ));
+        ]));
   }
 }
 

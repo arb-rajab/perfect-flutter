@@ -4,7 +4,7 @@ import 'package:beta/presentation/coupons/coupon_widget.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
 import 'package:get/instance_manager.dart';
 
-class CouponsListController extends ListController<coupons> {
+class CouponsListController extends ListController<Coupon> {
   CouponsListController(state)
       : super(
             state: state,
@@ -12,6 +12,7 @@ class CouponsListController extends ListController<coupons> {
             itemBuilder: (context, index) => CouponWidget(index: index),
             plural: null,
             indexUrl: null,
+            fromJson: Coupon.fromJson,
             fetch: () {
               CouponService couponService = Get.find();
               return couponService.getPaidCoupons();

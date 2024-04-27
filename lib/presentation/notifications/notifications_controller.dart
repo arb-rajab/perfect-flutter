@@ -10,5 +10,6 @@ class NotificationsListController extends ListController<Notification> {
             itemBuilder: (context, index) => NotificationWidget(index: index),
             plural: 'notifications',
             indexUrl: ApiConstant.notifications,
+            fromJson: Notification.fromJson,
             fetch: null);
 }

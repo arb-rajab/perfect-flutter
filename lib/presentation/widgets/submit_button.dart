@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:beta/configs/style.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ class SubmitButton extends StatelessWidget {
   final Function onSubmit;
   final bool loading;
   final IconData? icon;
+  final double? progress;
   // final Color color;
   static ValueKey loadingKey = const ValueKey('loading');
 
@@ -19,12 +22,12 @@ class SubmitButton extends StatelessWidget {
       required this.text,
       // this.color = primaryColor,
       required this.onSubmit,
+      this.progress,
       this.icon});
 
   @override
   Widget build(BuildContext context) {
-    BorderSide borderSide =
-        BorderSide(color: Theme.of(context).primaryColorDark);
+    BorderSide borderSide = BorderSide(color: Theme.of(context).primaryColor);
     return OpacityAnimation(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -58,7 +61,10 @@ class SubmitButton extends StatelessWidget {
                       fontWeight: FontWeight.w600, fontSize: 18),
                 ),
                 const Spacer(),
-                if (loading) const CircularProgressIndicator()
+                if (loading)
+                  CircularProgressIndicator(
+                    value: progress,
+                  )
               ],
             ),
           ),

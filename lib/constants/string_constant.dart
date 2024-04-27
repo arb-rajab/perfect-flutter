@@ -23,6 +23,7 @@ class StringConstant {
   static const notValidMD5Format = 'not-valid-md5-format';
   static const doYouNeedHelp = 'do-you-need-help';
   static const scanQr = 'scan-qr';
+  static const doYouWantToProceed = 'do-you-want-to-proceed';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -95,4 +96,10 @@ class StringConstant {
       '$_contactUs.telegram-chat-explanation';
   static const facebook = '$_contactUs.facebook';
   static const facebookExplanation = '$_contactUs.facebook-explanation';
+
+  static const _chooseTerm = 'choose-term';
+  static const aboutToCouponWithTerms =
+      '$_chooseTerm.about-to-coupon-with-terms';
+  static const pleaseFillTheQuestionary =
+      '$_chooseTerm.please-fill-the-questionary';
 }

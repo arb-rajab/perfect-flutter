@@ -13,7 +13,7 @@ class CouponWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CouponsListController couponsListController = Get.find();
-    coupons coupon = coupons.fromJson(couponsListController.items[index]);
+    Coupon coupon = couponsListController.items[index];
     int difference = coupon.activationDate != null
         ? coupon.activationDate!
             .add(Duration(days: coupon.expirationDays))

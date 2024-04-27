@@ -14,5 +14,5 @@ class LayerJsonConverter extends JsonConverter<Layer, int> {
   Layer fromJson(int json) => Layer(json);
 
   @override
-  int toJson(Layer object) => object.value ?? 0;
+  int toJson(Layer object) => object.value;
 }

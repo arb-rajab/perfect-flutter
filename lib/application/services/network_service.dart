@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/device_repository.dart';
@@ -107,13 +108,21 @@ class NetworkService {
     body = FormData.fromMap(body);
     // }
     dio.options.headers = sentHeaders;
-    response = await dio.post(url, data: body);
-    onPostConnect.call();
-    if (response.statusCode == 200) {
-      _handleResponse(response);
-      return;
+    try {
+      response = await dio.post(url, data: body);
+      onPostConnect.call();
+      if (response.statusCode == 200) {
+        _handleResponse(response);
+        return;
+      }
+    } on DioException catch (e) {
+      onPostConnect.call();
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
     }
-    onConnectionFailed.call();
+  
   }
 
   Future get(
@@ -129,13 +138,16 @@ class NetworkService {
     var sentHeaders = getHeaders();
     if (json) sentHeaders['content-type'] = 'application/json';
     dio.options.headers = sentHeaders;
-    response = await dio.get(url, queryParameters: query);
-    onPostConnect.call();
+    try {
+response = await dio.get(url, queryParameters: query);
+      onPostConnect.call();
     if (response.statusCode == 200) {
       _handleResponse(response);
       return;
     }
-    onConnectionFailed.call();
+    } on HttpException {
+      onConnectionFailed.call();
+    }
   }
 
   Future put(

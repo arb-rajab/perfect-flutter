@@ -66,38 +66,39 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
               if (result is String) _controller.setCoupon(result);
             },
             icon: const Icon(ScanQrScreen.icon),
-            label: Text(ScanQrScreen.title)),
-        child: ListView(
-          children: [
-            const NoBackgroundLogo(),
-            Form(
-                key: _controller.formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(margin),
-                  child: Column(
-                    children: [
-                      FormMessageWidget(
-                          message: _controller.message,
-                          onDismiss: _controller.dismissMessage),
-                      _EnterNameInput(),
-                      _EnterCoupon(),
-                      SubmitButton(
-                          loading: _controller.loading && _controller.okClicked,
-                          text: StringConstant.ok.tr(),
-                          onSubmit: _controller.onOkclick),
-                      Text(StringConstant.youCanInstead.tr(),
-                          style: Theme.of(context).textTheme.bodyLarge),
-                      SubmitButton(
-                          loading: _controller.loading &&
-                              _controller.activateFreeVersionClicked,
-                          text: StringConstant.activateFreeVersion.tr(),
-                          onSubmit: _controller.onActivateFreeVersionClick),
-                      _DoYouNeedHelp()
-                    ],
-                  ),
-                ))
-          ],
-        ));
+          label: Text(ScanQrScreen.title)),
+      child: ListView(
+        children: [
+          const NoBackgroundLogo(),
+          Form(
+              key: _controller.formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(margin),
+                child: Column(
+                  children: [
+                    FormMessageWidget(
+                        message: _controller.message,
+                        onDismiss: _controller.dismissMessage),
+                    _EnterNameInput(),
+                    _EnterCoupon(),
+                    SubmitButton(
+                        loading: _controller.loading && _controller.okClicked,
+                        text: StringConstant.ok.tr(),
+                        onSubmit: _controller.onOkclick),
+                    Text(StringConstant.youCanInstead.tr(),
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    SubmitButton(
+                        loading: _controller.loading &&
+                            _controller.activateFreeVersionClicked,
+                        text: StringConstant.activateFreeVersion.tr(),
+                        onSubmit: _controller.onActivateFreeVersionClick),
+                    _DoYouNeedHelp()
+                  ],
+                ),
+              ))
+        ],
+      ),
+    );
   }
 }
 

@@ -5,9 +5,14 @@ class CouponService {
   DatabaseService databaseService;
   CouponService({required this.databaseService});
 
-  Future<List<coupons>> getPaidCoupons() =>
+  Future<List<Coupon>> getPaidCoupons() =>
       (databaseService.select(databaseService.coupons)
             ..where((t) => t.free.equals(0))
             ..orderBy([(t) => OrderingTerm.desc(t.creation)]))
           .get();
+
+  //TODO add test
+  Future addCoupon(Coupon coupon) => databaseService
+      .into(databaseService.coupons)
+      .insertOnConflictUpdate(coupon);
 }

@@ -8,4 +8,7 @@ class ApiConstant {
   static const String activateFreeVersion =
       '${_apiV1}coupons/activate-free-version';
   static const String frequentQuestions = '${_apiV1}frequent-questions';
+  static const String termSubTerms =
+      '${_apiV1}terms/(TERM_ID)/rootTerm/(ROOT_TERM_ID)/coupon/(COUPON_ID)/subTerms';
+  static const String linkCouponWithTerms = '${_apiV1}coupons/(COUPON_ID)/link';
 }

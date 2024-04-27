@@ -5,5 +5,5 @@ abstract class ListControllerBase<T> {
 
   void addItem(T item);
 
-  void editItem(T item);
+  void editItem(T item, index);
 }

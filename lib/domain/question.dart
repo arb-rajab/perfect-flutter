@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('questions')
 @TableIndex(name: 'qIndex1', columns: {#parentTermId})
 class Questions extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -26,4 +25,7 @@ class Questions extends Table {
   //ignore
   // BoolColumn get corrected => boolean().withDefault(Constant(false))();
   // BoolColumn get translated => boolean().withDefault(Constant(false))();
+
+  @override
+  String? get tableName => 'questions';
 }

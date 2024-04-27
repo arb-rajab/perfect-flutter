@@ -53,7 +53,7 @@ android {
         testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: "true"
 
-        multiDexEnabled true
+        // multiDexEnabled true
     }
 
     buildTypes {
@@ -63,6 +63,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    // testBuildType "release"
+
     testOptions {
           execution "ANDROIDX_TEST_ORCHESTRATOR"
     }

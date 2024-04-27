@@ -19,7 +19,7 @@ class _FrequentQuestionWidgetState extends State<FrequentQuestionWidget> {
   Widget build(BuildContext context) {
     FrequestQuestionsScreenController controller = Get.find();
     FrequentQuestion frequentQuestion =
-        FrequentQuestion.fromJson(controller.items[widget.index]);
+        controller.items[widget.index];
     return OpacityAnimation(
       child: Padding(
         padding: const EdgeInsets.all(margin),

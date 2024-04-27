@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('questionProperties')
 @TableIndex(name: 'qpIndex1', columns: {#questionId})
 class QuestionProperties extends Table {
   IntColumn get questionId => integer().named('questionId')();
@@ -9,4 +8,7 @@ class QuestionProperties extends Table {
 
   @override
   Set<Column<Object>>? get primaryKey => {questionId, name};
+
+  @override
+  String? get tableName => 'questionProperties';
 }

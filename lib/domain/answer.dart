@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('answers')
 @TableIndex(name: 'parentQuestionIdIndex', columns: {#parentQuestionId})
 class Answers extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -14,4 +13,7 @@ class Answers extends Table {
   DateTimeColumn get creation => dateTime()();
   IntColumn get checkedCount =>
       integer().withDefault(const Constant(0)).named('checkedCount')();
+
+  @override
+  String? get tableName => 'answers';
 }

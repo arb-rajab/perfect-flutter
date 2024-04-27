@@ -7,14 +7,25 @@ import 'package:beta/domain/coupon.dart';
 import 'package:beta/domain/coupon_linked_to_term.dart';
 import 'package:beta/domain/ebook.dart';
 import 'package:beta/domain/fcm_topic.dart';
+import 'package:beta/domain/flashcard.dart';
+import 'package:beta/domain/http_request.dart';
 import 'package:beta/domain/question.dart';
+import 'package:beta/domain/question_linked_to_tag.dart';
 import 'package:beta/domain/question_media.dart';
 import 'package:beta/domain/question_property.dart';
 import 'package:beta/domain/question_tag.dart';
 import 'package:beta/domain/question_tag_property.dart';
+import 'package:beta/domain/related_term.dart';
 import 'package:beta/domain/term.dart';
+import 'package:beta/domain/term_label.dart';
 import 'package:beta/domain/term_last_access.dart';
+import 'package:beta/domain/term_linked_to_label.dart';
+import 'package:beta/domain/term_linked_to_tag.dart';
+import 'package:beta/domain/term_parent.dart';
+import 'package:beta/domain/term_tag.dart';
 import 'package:beta/domain/term_tree.dart';
+import 'package:beta/domain/term_with_questions_filtering_enabled.dart';
+import 'package:beta/domain/voice_note.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/main_controller.dart';
@@ -45,7 +56,18 @@ part 'database_service.g.dart'; // the generated code will be there
   Ebooks,
   TermsLastAccesses,
   QuestionTagProperties,
-  QuestionProperties
+  QuestionProperties,
+  HttpRequests,
+  TermsWithQuestionsFilteringEnabled,
+  Flashcards,
+  VoiceNotes,
+  RelatedTerms,
+  QuestionsLinkedToTags,
+  TermsParents,
+  TermTags,
+  TermsLinkedToTags,
+  TermLabels,
+  TermsLinkedToLabels
 ])
 class DatabaseService extends _$DatabaseService {
   DatabaseService()

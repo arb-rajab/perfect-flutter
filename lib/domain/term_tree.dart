@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('termTrees')
 class TermTrees extends Table {
   IntColumn get termId => integer().named('termId')();
   IntColumn get parentTermId => integer().named('parentTermId')();
@@ -8,4 +7,7 @@ class TermTrees extends Table {
 
   @override
   Set<Column<Object>>? get primaryKey => {termId, parentTermId, depth};
+
+  @override
+  String? get tableName => 'termTrees';
 }

@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('terms')
 class Terms extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => super.text()();
@@ -18,4 +17,7 @@ class Terms extends Table {
 
   // Ignore column
   // TextColumn get deletedAt => text().named('deleted_at').nullable()();
+
+  @override
+  String? get tableName => 'terms';
 }

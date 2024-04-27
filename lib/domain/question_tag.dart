@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 
-@DataClassName('questionTags')
 @TableIndex(name: 'questionTagsIndex1', columns: {#parentTagId})
 class QuestionTags extends Table {
   IntColumn get id => integer()();
@@ -9,4 +8,10 @@ class QuestionTags extends Table {
   IntColumn get hasInformation =>
       integer().withDefault(const Constant(0)).named('hasInformation')();
   DateTimeColumn get creation => dateTime()();
+
+  @override
+  Set<Column<Object>>? get primaryKey => {id};
+
+  @override
+  String? get tableName => 'questionTags';
 }

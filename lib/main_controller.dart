@@ -1,12 +1,23 @@
 import 'package:beta/application/services/answer_property_service.dart';
+import 'package:beta/application/services/coupon_linked_to_term_service.dart';
 import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
+import 'package:beta/application/services/related_term_service.dart';
+import 'package:beta/application/services/term_label_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/term_linked_to_label_service.dart';
+import 'package:beta/application/services/term_linked_to_tag_service.dart';
+import 'package:beta/application/services/term_service.dart';
+import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/terms_parent_service.dart';
+import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/infrastructure/device_repository.dart';
+import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -53,6 +64,8 @@ class MainController {
     if (testing == false) await EasyLocalization.ensureInitialized();
     Get.put(await DeviceRepository().initialise());
     Get.put(await PackageRepository().initialise());
+    FirebaseRepository firebaseRepository =
+        Get.put(await FirebaseRepository().initialise());
     Get.put(keyValue);
     DatabaseService databaseService = DatabaseService();
     Get.put(databaseService);
@@ -63,6 +76,20 @@ class MainController {
     Get.put(CouponService(databaseService: databaseService));
     Get.put(TutorialService(keyValue: keyValue));
     Get.put(UserService(keyValue: keyValue));
+    Get.put(TermService(
+        databaseService: databaseService,
+        firebaseRepository: firebaseRepository));
+    Get.put(RelatedTermService(databaseService: databaseService));
+    Get.put(TermsWithQuestionsFilteringEnabledService(
+        databaseService: databaseService));
+    Get.put(TermsParentService(databaseService: databaseService));
+    Get.put(TermLinkedToTagService(databaseService: databaseService));
+    Get.put(TermTagService(databaseService: databaseService));
+    Get.put(TermLinkedToLabelService(databaseService: databaseService));
+    Get.put(TermLabelService(databaseService: databaseService));
+    Get.put(FCMTopicService(databaseService: databaseService));
+    Get.put(CouponLinkedToTermService(databaseService: databaseService));
+
     // await Firebase.initializeApp(
     //   options: DefaultFirebaseOptions.currentPlatform,
     // );

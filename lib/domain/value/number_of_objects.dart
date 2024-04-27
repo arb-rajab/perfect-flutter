@@ -14,5 +14,5 @@ class NumberOfObjectsJsonConverter extends JsonConverter<NumberOfObjects, int> {
   NumberOfObjects fromJson(int json) => NumberOfObjects(json);
 
   @override
-  int toJson(NumberOfObjects object) => object.value ?? 0;
+  int toJson(NumberOfObjects object) => object.value;
 }

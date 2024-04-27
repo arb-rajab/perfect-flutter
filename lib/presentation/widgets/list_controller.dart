@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 
 abstract class ListController<T> implements ListControllerBase {
   bool loading = false;
-  List items = [];
+  List<T> items = [];
   String message = '';
 
   List itemsLoading = [];
@@ -23,14 +23,23 @@ abstract class ListController<T> implements ListControllerBase {
   String? plural;
   String? indexUrl;
   Future<List> Function()? fetch;
+  Function()? onConnectionSucceed;
+  Function? onPreFetch;
+  final bool showLoadMore;
+  final bool showRefresh;
+  final T Function(Map<String, dynamic> json) fromJson;
 
   ListController(
       {required this.itemBuilder,
       required this.state,
-      this.remote = true,
       required this.plural,
       required this.indexUrl,
-      required this.fetch});
+      required this.fetch,
+      required this.fromJson,
+      this.onConnectionSucceed,
+      this.remote = true,
+      this.showLoadMore = true,
+      this.showRefresh = true});
 
   Future init({int offset = 0, bool refresh = false}) async {
     if (refresh) {
@@ -77,18 +86,10 @@ abstract class ListController<T> implements ListControllerBase {
     });
   }
 
-  int? getItemIndex(int id) {
-    for (int c = 0; c < items.length; c++) {
-      if (items[c]['id'].toString() == id.toString()) return c;
-    }
-    return null;
-  }
-
   @override
-  void deleteItem(int id) {
-    int? index = getItemIndex(id);
+  void deleteItem(int index) {
     state.setState(() {
-      items.removeAt(index!);
+      items.removeAt(index);
       itemsMessage.removeAt(index);
       itemsLoading.removeAt(index);
     });
@@ -99,37 +100,47 @@ abstract class ListController<T> implements ListControllerBase {
     if (remote) {
       return _getRemoteData(offset: offset, refresh: refresh);
     } else {
-      items = await fetch!.call();
+      List<T> fetched = (await fetch!.call() as List<T>);
+      state.setState(() {
+        if (onPreFetch != null) onPreFetch!.call();
+        items.clear();
+        items.addAll(fetched);
+        itemsMessage.clear();
+        itemsMessage.addAll(List.filled(items.length, ''));
+        itemsLoading.clear();
+        itemsLoading.addAll(List.filled(items.length, false));
+      });
     }
   }
 
   Future? _getRemoteData({required int offset, required bool refresh}) {
     return NetworkService(this.state.context,
-        onConnectionSucceed: (body) {
-          if (state.mounted) {
-            state.setState(() {
-              if (refresh) {
-                items.clear();
-                itemsLoading.clear();
-                itemsMessage.clear();
+            onConnectionSucceed: (body) {
+              if (state.mounted) {
+                state.setState(() {
+                  if (refresh) {
+                    items.clear();
+                    itemsLoading.clear();
+                    itemsMessage.clear();
+                  }
+                  List newItems = body[plural];
+                  int oldCount = itemsLoading.length;
+                  for (int c = 0; c < newItems.length; c++) {
+                    itemsLoading.add(false);
+                    itemsMessage.add('');
+                  }
+                  items.addAll(newItems.map((e) => fromJson(e)).toList());
+                  if (items.length - oldCount < listItemsInitialCount) {
+                    loadMoreVisibility = false;
+                  }
+                });
               }
-              var newItems = body[plural];
-              int oldCount = itemsLoading.length;
-              for (int c = 0; c < newItems.length; c++) {
-                itemsLoading.add(false);
-                itemsMessage.add('');
-              }
-              items.addAll(newItems);
-              if (items.length - oldCount < listItemsInitialCount) {
-                loadMoreVisibility = false;
-              }
-            });
-          }
-        },
-        onMessageReceived: (failureResponse) =>
-            message = failureResponse.content,
-        onConnectionFailed: () => message =
-            StringConstant.noConnection.tr(),
+              if (onConnectionSucceed != null) onConnectionSucceed?.call();
+            },
+            onMessageReceived: (failureResponse) =>
+                message = failureResponse.content,
+            onConnectionFailed: () =>
+                message = StringConstant.noConnection.tr(),
             onPreConnect: () {},
             onPostConnect: () {})
         .get(url: indexUrl!, query: {
@@ -152,10 +163,9 @@ abstract class ListController<T> implements ListControllerBase {
   }
 
   @override
-  void editItem(item) {
+  void editItem(item, index) {
     /// [item] is null when the edit screen is closed without editting an item successfully
     if (item != null) {
-      int index = getItemIndex(item['id'])!;
       items[index] = item;
     }
   }

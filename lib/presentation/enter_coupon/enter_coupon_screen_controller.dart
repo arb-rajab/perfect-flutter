@@ -67,13 +67,13 @@ class EnterCouponScreenController {
   void _processResponse({required bool free, required dynamic body}) {
     UserService userService = Get.find();
     userService.setId(body['deviceId']);
-    coupons coupon = coupons.fromJson(body['coupon']);
+    Coupon coupon = Coupon.fromJson(body['coupon']);
     CouponType couponType = CouponType.fromJson(body['coupon']['coupon_type']);
     List<TermData> terms =
         (body['terms'] as List).map((e) => TermData.fromJson(e)).toList();
     Navigator.pushNamed(state.context, ChooseTermScreen.route,
         arguments: ChooseTermScreenArgument(
-            coupon: coupon, terms: terms, free: true, couponType: couponType));
+            coupon: coupon, terms: terms, free: free, couponType: couponType));
   }
 
   //TODO apply test
