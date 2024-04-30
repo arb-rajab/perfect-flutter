@@ -15,4 +15,7 @@ class MultiSelectSelection with _$MultiSelectSelection {
 
   static MultiSelectSelection fromJson(Map<String, dynamic> json) =>
       _$MultiSelectSelectionFromJson(json);
+      
+  static Map<String, dynamic> toJson(MultiSelectSelection instance) =>
+      _$MultiSelectSelectionToJson(instance);
 }

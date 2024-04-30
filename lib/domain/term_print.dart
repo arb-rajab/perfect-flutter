@@ -14,4 +14,7 @@ class TermPrint with _$TermPrint {
 
   static TermPrint fromJson(Map<String, dynamic> json) =>
       _$TermPrintFromJson(json);
+
+  static Map<String, dynamic> toJson(TermPrint instance) =>
+      _$TermPrintToJson(instance);
 }

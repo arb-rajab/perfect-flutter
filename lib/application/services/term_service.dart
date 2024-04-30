@@ -10,7 +10,6 @@ class TermService {
   TermService(
       {required this.databaseService, required this.firebaseRepository});
 
-  //TODO add tests
   Future addTerms(List<Term> terms) => databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.terms, terms);
         batch.insertAllOnConflictUpdate(
@@ -23,7 +22,6 @@ class TermService {
                 .toList());
       });
 
-  //TODO add tests
   Future subscribeToTermUpdates(Term term) {
     String topic = "termId.${term.id}";
     FCMTopicService fcmTopicService = Get.find();

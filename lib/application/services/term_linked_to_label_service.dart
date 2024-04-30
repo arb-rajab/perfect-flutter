@@ -5,7 +5,6 @@ class TermLinkedToLabelService {
 
   TermLinkedToLabelService({required this.databaseService});
 
-  //TODO add test
   Future addTermsLinkedToLabels(List<TermsLinkedToLabel> termsLinkedToLabels) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.termsLinkedToLabels, termsLinkedToLabels));

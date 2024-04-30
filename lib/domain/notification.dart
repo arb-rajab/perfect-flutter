@@ -22,4 +22,7 @@ class Notification with _$Notification {
 
   static Notification fromJson(Map<String, dynamic> json) =>
       _$NotificationFromJson(json);
+
+  static Map<String, dynamic> toJson(Notification instance) =>
+      _$NotificationToJson(instance);
 }

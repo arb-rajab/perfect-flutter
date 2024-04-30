@@ -22,6 +22,7 @@ import 'package:beta/domain/value/layer.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/presentation/choose_term/check_term_widget.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
+import 'package:beta/presentation/choose_term/term_questions_form.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
@@ -58,18 +59,17 @@ class ChooseTermScreenController extends ListController {
   List<TermData> checkedTerms = [];
   List<TermQuestion> termQuestions = [];
 
-//TODO add test
-  void onOkClicked() {
+  Future<void> onOkClicked() async {
     if (!argument.free) {
       showConfirmationDialog(state.context, sendData,
           content: const ConfirmationDialogueWidget());
     } else {
-      sendData();
+      await sendData();
     }
   }
 
   //TODO add tests
-  void sendData() => NetworkService(state.context,
+  Future sendData() => NetworkService(state.context,
           onPreConnect: () => state.setState(() {
                 message = '';
                 loading = true;
@@ -92,7 +92,7 @@ class ChooseTermScreenController extends ListController {
                       ));
               if (result is List<TermQuestion>) {
                 state.setState(() {
-                  this.termQuestions = result as List<TermQuestion>;
+                  this.termQuestions = result;
                 });
                 sendData();
               }
@@ -236,19 +236,14 @@ class ChooseTermScreenController extends ListController {
     // postItemLoading(index);
   }
 
-  //TODO add test
-  void setLayer(Layer layer) {
+  void _setLayer(Layer layer) {
     state.setState(() {
       this.layer = layer;
     });
   }
 
-  //TODO add test
-  void initLayer() {
-    setLayer(Layer(layer.value + 1));
-    // termsListing.add((jsonDecode(jsonEncode(items)) as List)
-    //     .map((e) => TermData.fromJson(jsonDecode(e)))
-    //     .toList());
+  void _initLayer() {
+    _setLayer(Layer(layer.value + 1));
     termsListing.add([...items]);
   }
 
@@ -261,7 +256,7 @@ class ChooseTermScreenController extends ListController {
   //TODO add test
   void onPopInvoked(bool value) {
     if (!value) {
-      setLayer(Layer(layer.value - 1));
+      _setLayer(Layer(layer.value - 1));
       termsListing.removeLast();
       remote = false;
       fetch = () => Future.value(termsListing.last);
@@ -275,13 +270,14 @@ class ChooseTermScreenController extends ListController {
       checkedTerms.length == argument.couponType.numberOfObjects.value;
 
   @override
-  Function()? get onConnectionSucceed => initLayer;
+  Function()? get onConnectionSucceed => _initLayer;
 
   @override
   Function? get onPreFetch => () {
         if (argument.terms.isNotEmpty) checkedTerms = argument.terms;
       };
 
+  //TODO add test
   bool displayPath(index) {
     TermData currentTermData = items[index];
     if (currentTermData.path == null) return false;

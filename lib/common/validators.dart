@@ -2,7 +2,6 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Validator {
-  //TODO apply test
   static String? empty(String? value) {
     if (value == null || value.trim().isEmpty) {
       return StringConstant.pleaseFillThisField.tr();
@@ -10,7 +9,6 @@ class Validator {
     return null;
   }
 
-  //TODO apply test
   static String? multiValidators(
       List<String? Function(String?)> validators, String? value) {
     String response = '';
@@ -24,7 +22,6 @@ class Validator {
     return null;
   }
 
-  //TODO apply test
   static String? isMD5(String? value) {
     RegExp regExp = RegExp(
         r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$');

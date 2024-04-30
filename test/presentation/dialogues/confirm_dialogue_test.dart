@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -47,5 +48,21 @@ void main() {
 
     expect(find.byType(ConfirmDialogue), findsNothing);
     expect(x, 0);
+  });
+
+  testWidgets('test custom content is visible', (widgetTester) async {
+    const String text = 'custom text';
+    await widgetTester.pumpWidget(MaterialApp(
+        home: Scaffold(
+      body: ConfirmDialogue(
+        onConfirm: () {
+          log('success');
+        },
+        content: const Text(text),
+      ),
+    )));
+    await widgetTester.pump(animationDuration);
+
+    expect(find.text(text), findsOneWidget);
   });
 }

@@ -19,4 +19,7 @@ class CouponType with _$CouponType {
 
   static CouponType fromJson(Map<String, dynamic> json) =>
       _$CouponTypeFromJson(json);
+
+  static Map<String, dynamic> toJson(CouponType instance) =>
+      _$CouponTypeToJson(instance);
 }

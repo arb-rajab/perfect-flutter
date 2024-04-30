@@ -1,7 +1,6 @@
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:flutter/cupertino.dart';
 
-//TODO add test
 class MessageWidget extends StatelessWidget {
   final String message;
 

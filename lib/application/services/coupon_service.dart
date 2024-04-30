@@ -11,7 +11,6 @@ class CouponService {
             ..orderBy([(t) => OrderingTerm.desc(t.creation)]))
           .get();
 
-  //TODO add test
   Future addCoupon(Coupon coupon) => databaseService
       .into(databaseService.coupons)
       .insertOnConflictUpdate(coupon);

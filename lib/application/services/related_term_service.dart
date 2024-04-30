@@ -5,7 +5,6 @@ class RelatedTermService {
 
   RelatedTermService({required this.databaseService});
 
-  //TODO add test
   Future addRelatedTerms(List<RelatedTerm> relatedTerms) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.relatedTerms, relatedTerms));

@@ -2,7 +2,6 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:flutter/material.dart';
 
-//TODO apply test
 class WarningWidget extends StatelessWidget {
   final String text;
 

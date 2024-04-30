@@ -1,5 +1,6 @@
 import 'package:beta/configs/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OpacityAnimation extends StatefulWidget {
   final Widget child;
@@ -14,7 +15,9 @@ class _OpacityAnimationState extends State<OpacityAnimation> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () => setState(() => _opacity = 1));
+    Future.delayed(Duration.zero, () {
+      if (mounted) setState(() => _opacity = 1);
+    });
     super.initState();
   }
 

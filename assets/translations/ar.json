@@ -84,5 +84,14 @@
     "choose-term": {
         "about-to-coupon-with-terms": "أنت على وشك ربط الكرت الخاص بك بالأقسام الدراسية التالية",
         "please-fill-the-questionary": "يرجى ملء الاستبيان التالي"
+    },
+    "whats-new": {
+        "whats-new": "ما الجديد",
+        "whats-new-in-version": "ما الجديد في النسخة (VERSION)",
+        "add-contact-us-screen": "إضافة صفحة معلومات التواصل",
+        "add-frequent-questions-screen": "إضافة صفحة الأسئلة الشائعة",
+        "support-night-mode": "دعم الوضع الليلي",
+        "support-custom-text-size": "السماح بتغيير حجم النص",
+        "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق"
     }
 }

@@ -1,4 +1,5 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
@@ -7,9 +8,8 @@ import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.d
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
-//TODO add what's new
-//TODO add share app
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
 
@@ -23,8 +23,10 @@ class DrawerWidget extends StatelessWidget {
         _ExportBackupTile(),
         _ScanPrintedQRTile(),
         const Divider(),
-        _ContactUsTile(),
-        _FrequestQuestionsTile()
+        const ContactUsTile(),
+        const FrequestQuestionsTile(),
+        const Divider(),
+        const WhatsNewTile()
       ]),
     );
   }
@@ -83,14 +85,14 @@ class _ScanPrintedQRTile extends StatelessWidget {
               tag: PrintedQrScannerScreen.title,
               child: Text(PrintedQrScannerScreen.title)),
           onTap: () =>
-              Navigator.pushNamed(context, PrintedQrScannerScreen.route)
-      ),
+              Navigator.pushNamed(context, PrintedQrScannerScreen.route)),
     );
   }
 }
 
-//TODO apply test
-class _ContactUsTile extends StatelessWidget {
+class ContactUsTile extends StatelessWidget {
+  const ContactUsTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -103,8 +105,9 @@ class _ContactUsTile extends StatelessWidget {
   }
 }
 
-//TODO apply test
-class _FrequestQuestionsTile extends StatelessWidget {
+class FrequestQuestionsTile extends StatelessWidget {
+  const FrequestQuestionsTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -115,6 +118,50 @@ class _FrequestQuestionsTile extends StatelessWidget {
               child: Text(FrequentQuestionsScreen.title)),
           onTap: () =>
               Navigator.pushNamed(context, FrequentQuestionsScreen.route)),
+    );
+  }
+}
+
+class WhatsNewTile extends StatelessWidget {
+  const WhatsNewTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.refresh),
+          title: Text(StringConstant.whatsNew.tr()),
+          onTap: () => showDialog(
+              context: context, builder: (_) => const WhatsNewDialogue())),
+    );
+  }
+}
+
+class WhatsNewDialogue extends StatelessWidget {
+  const WhatsNewDialogue({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(StringConstant.whatsNewInVersion.tr().replaceFirst(
+          '(VERSION)', Get.find<PackageRepository>().getVersionName())),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('* ${StringConstant.addContactUsScreen.tr()}'),
+            Text('* ${StringConstant.addFrequentQuestionsScreen.tr()}'),
+            Text('* ${StringConstant.supportNightMode.tr()}'),
+            Text('* ${StringConstant.supportCustomTextSize.tr()}'),
+            Text('* ${StringConstant.supportUserDataDeletion.tr()}')
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: Navigator.of(context).pop,
+            child: Text(StringConstant.ok.tr()))
+      ],
     );
   }
 }

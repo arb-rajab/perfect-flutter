@@ -54,8 +54,7 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
                     },
                     align: ContentAlign.top)
               ])
-        ],
-        //TODO add test
+      ],
         floatingActionButton: FloatingActionButton.extended(
             key: scanQrKey,
             tooltip: ScanQrScreen.title,
@@ -92,7 +91,7 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
                             _controller.activateFreeVersionClicked,
                         text: StringConstant.activateFreeVersion.tr(),
                         onSubmit: _controller.onActivateFreeVersionClick),
-                    _DoYouNeedHelp()
+                    const DoYouNeedHelp()
                   ],
                 ),
               ))
@@ -128,8 +127,9 @@ class _EnterCoupon extends StatelessWidget {
   }
 }
 
-//TODO apply test
-class _DoYouNeedHelp extends StatelessWidget {
+class DoYouNeedHelp extends StatelessWidget {
+  const DoYouNeedHelp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(

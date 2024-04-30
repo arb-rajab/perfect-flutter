@@ -17,4 +17,7 @@ class FrequentQuestion with _$FrequentQuestion {
 
   static FrequentQuestion fromJson(Map<String, dynamic> json) =>
       _$FrequentQuestionFromJson(json);
+
+  static Map<String, dynamic> toJson(FrequentQuestion instance) =>
+      _$FrequentQuestionToJson(instance);
 }

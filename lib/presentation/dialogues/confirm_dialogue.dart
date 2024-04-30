@@ -3,7 +3,6 @@ import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-//TODO add test with custom content
 Future<void> showConfirmationDialog(BuildContext context, Function onConfirm,
     {Widget? content}) async {
   // Show dialog returns a Future that completes when the dialog is dismissed.

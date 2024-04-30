@@ -5,7 +5,6 @@ class TermsWithQuestionsFilteringEnabledService {
 
   TermsWithQuestionsFilteringEnabledService({required this.databaseService});
 
-  //TODO add test
   Future addTermsWithQuestionsFilteringEnabled(
           List<TermsWithQuestionsFilteringEnabledData>
               termsWithQuestionsFilteringEnabled) =>

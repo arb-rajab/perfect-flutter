@@ -1,11 +1,6 @@
-import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/network_service.dart';
-import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/route_constant.dart';
-import 'package:beta/infrastructure/device_repository.dart';
-import 'package:beta/infrastructure/key_value_repository.dart';
-import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/home/home_screen.dart';
@@ -13,16 +8,12 @@ import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/instance_manager.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 
 Future<void> main() async {
   MainController.testing = true;
-  Get.put(await DeviceRepository().initialise());
-  Get.put(await PackageRepository().initialise());
+  await MainController.initServices();
   final DioAdapter dioAdapter = DioAdapter(dio: NetworkService.dio);
-  Get.put(ThemeService(keyValue: await KeyValue().initialise()));
-  Get.put(DatabaseService());
 
   dioAdapter.onGet(ApiConstant.notifications, (server) {
     server.reply(200,

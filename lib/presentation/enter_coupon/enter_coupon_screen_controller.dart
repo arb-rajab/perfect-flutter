@@ -30,7 +30,6 @@ class EnterCouponScreenController {
   bool loading = false;
   String message = '';
 
-  //TODO apply test
   void onOkclick() {
     if (formKey.currentState!.validate()) {
       NetworkService(state.context,
@@ -71,12 +70,11 @@ class EnterCouponScreenController {
     CouponType couponType = CouponType.fromJson(body['coupon']['coupon_type']);
     List<TermData> terms =
         (body['terms'] as List).map((e) => TermData.fromJson(e)).toList();
-    Navigator.pushNamed(state.context, ChooseTermScreen.route,
-        arguments: ChooseTermScreenArgument(
-            coupon: coupon, terms: terms, free: free, couponType: couponType));
+    Get.put(ChooseTermScreenArgument(
+        coupon: coupon, terms: terms, free: free, couponType: couponType));
+    Navigator.pushNamed(state.context, ChooseTermScreen.route);
   }
 
-  //TODO apply test
   void onActivateFreeVersionClick() {
     if (nameController.text.isNotEmpty) {
       state.setState(() {

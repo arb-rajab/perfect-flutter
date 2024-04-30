@@ -14,12 +14,16 @@ class TermQuestion with _$TermQuestion {
       {@IdJsonConverter() required Id id,
       @TitleJsonConverter() required Title title,
       @TypeJsonConverter() required Type type,
+      // ignore: invalid_annotation_target
       @JsonKey(name: 'multi_selections')
       required List<MultiSelectSelection> multiSelections,
       String? answer}) = _TermQuestion;
 
   static TermQuestion fromJson(Map<String, dynamic> json) =>
       _$TermQuestionFromJson(json);
+
+  static Map<String, dynamic> toJson(TermQuestion instance) =>
+      _$TermQuestionToJson(instance);
 }
 
 class TermQuestionType {

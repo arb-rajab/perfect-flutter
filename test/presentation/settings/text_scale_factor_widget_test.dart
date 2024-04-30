@@ -1,16 +1,13 @@
-import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/settings/text_scale_factor_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/instance_manager.dart';
 
 Future<void> main() async {
   MainController.testing = true;
-  Get.put(ThemeService(keyValue: await KeyValue().initialise()));
+  await MainController.initServices();
   testWidgets('clicking text scale factor invokes dialogue',
       (widgetTester) async {
     await widgetTester.pumpWidget(

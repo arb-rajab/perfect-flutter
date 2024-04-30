@@ -20,7 +20,7 @@ class ContactUsScreen extends StatelessWidget {
         icon: icon,
         child: ListView(
       children: [
-            _FrequesntQuestionsTile(),
+          const FrequesntQuestionsTile(),
             if (telegramChannelLink.isNotEmpty) _TelegramChannelTile(),
             if (telegramChatLink.isNotEmpty) _TelegramChatTile(),
             if (facebookPageLink.isNotEmpty) _FacebookPageTile()
@@ -28,8 +28,9 @@ class ContactUsScreen extends StatelessWidget {
   }
 }
 
-//TODO apply test
-class _FrequesntQuestionsTile extends StatelessWidget {
+class FrequesntQuestionsTile extends StatelessWidget {
+  const FrequesntQuestionsTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(

@@ -2,7 +2,6 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:flutter/material.dart';
 
-//TODO add test to check child exists
 class RectangleWidget extends StatelessWidget {
   final Widget child;
   final int opacity;

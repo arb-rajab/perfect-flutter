@@ -52,7 +52,6 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
   }
 }
 
-//TODO apply testing
 class AllowCameraPermissionInAppSettings extends StatelessWidget {
   const AllowCameraPermissionInAppSettings({super.key});
 

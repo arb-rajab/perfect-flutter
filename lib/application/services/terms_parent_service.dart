@@ -6,7 +6,6 @@ class TermsParentService {
 
   TermsParentService({required this.databaseService});
 
-  //TODO add test
   Future addTermsParents(List<TermsParent> termsParents) {
     databaseService.batch((batch) {
       batch.insertAllOnConflictUpdate(

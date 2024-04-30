@@ -1,33 +1,16 @@
-import 'package:beta/application/services/database_service.dart';
-import 'package:beta/application/services/question_property_service.dart';
-import 'package:beta/application/services/theme_service.dart';
-import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/instance_manager.dart';
 
-void main() {
+Future<void> main() async {
   MainController.testing = true;
-  late DatabaseService databaseService;
-  late KeyValue keyValue;
-
-  setUp(
-    () async {
-      keyValue = await KeyValue().initialise();
-      Get.put(ThemeService(keyValue: keyValue));
-      databaseService = Get.put(DatabaseService());
-      Get.put(TutorialService(keyValue: keyValue));
-    },
-  );
+  await MainController.initServices();
 
   testWidgets('DeleteUserFavoriteQuestionsWidget shows warning notice',
       (widgetTester) async {
-    Get.put(QuestionPropertyService(databaseService: databaseService));
     await widgetTester.pumpWidget(const MaterialApp(home: SettingsScreen()));
 
     await widgetTester
