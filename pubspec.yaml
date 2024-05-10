@@ -67,6 +67,8 @@ dependencies:
   animated_digit: ^3.2.3
   firebase_messaging: ^14.9.1
   firebase_core: ^2.30.1
+  upgrader: ^10.2.0
+  in_app_review: ^2.0.9
 
 
 dev_dependencies:

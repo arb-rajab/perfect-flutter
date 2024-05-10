@@ -12,6 +12,16 @@ class WidgetWrapperWithBorder extends StatelessWidget {
     return WidgetWrapper(
       child: Container(
         decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context)
+                    .primaryColor
+                    .withOpacity(opacity as double),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 2),
+              ),
+            ],
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border(
                 top: borderSide,

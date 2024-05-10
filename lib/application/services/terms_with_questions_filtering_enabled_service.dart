@@ -1,14 +1,43 @@
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dart';
+import 'package:drift/drift.dart';
 
 class TermsWithQuestionsFilteringEnabledService {
   final DatabaseService databaseService;
 
   TermsWithQuestionsFilteringEnabledService({required this.databaseService});
 
+  //TODO add test
   Future addTermsWithQuestionsFilteringEnabled(
-          List<TermsWithQuestionsFilteringEnabledData>
+          List<TermsWithQuestionsFilteringEnabledProperties>
               termsWithQuestionsFilteringEnabled) =>
-      databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
-          databaseService.termsWithQuestionsFilteringEnabled,
-          termsWithQuestionsFilteringEnabled));
+      databaseService.batch((batch) {
+        List<TermsWithQuestionsFilteringEnabledData> updatedItems =
+            termsWithQuestionsFilteringEnabled
+                .where((element) => !element.isDeleted())
+                .map((e) => e.termsWithQuestionsFilteringEnabled)
+                .toList();
+
+        List<TermsWithQuestionsFilteringEnabledData> deletedItems =
+            termsWithQuestionsFilteringEnabled
+                .where((element) => element.isDeleted())
+                .map((e) => e.termsWithQuestionsFilteringEnabled)
+                .toList();
+        batch.insertAllOnConflictUpdate(
+            databaseService.termsWithQuestionsFilteringEnabled, updatedItems);
+        for (TermsWithQuestionsFilteringEnabledData deletedItem
+            in deletedItems) {
+          batch.delete(
+              databaseService.termsWithQuestionsFilteringEnabled, deletedItem);
+        }
+      });
+
+  //TODO add test
+  Future<bool> isTermWithQuestionFilteringEnabled(TermData termData) async {
+    int count = await databaseService.termsWithQuestionsFilteringEnabled
+        .count(where: (row) => row.termId.equals(termData.term.id))
+        .getSingle();
+    return count > 0;
+  }
 }

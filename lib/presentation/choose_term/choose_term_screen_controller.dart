@@ -16,8 +16,15 @@ import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/domain/related_term_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/term_label_data.dart';
+import 'package:beta/domain/term_linked_to_label_data.dart';
+import 'package:beta/domain/term_linked_to_tag_data.dart';
+import 'package:beta/domain/term_parent_data.dart';
 import 'package:beta/domain/term_question.dart';
+import 'package:beta/domain/term_tag_data.dart';
+import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dart';
 import 'package:beta/domain/value/layer.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/presentation/choose_term/check_term_widget.dart';
@@ -108,23 +115,24 @@ class ChooseTermScreenController extends ListController {
             CouponService couponService = Get.find();
             await couponService.addCoupon(argument.coupon);
 
-            List<Term> terms = (data['terms'] as List)
-                .map((e) => TermData.fromJson(e).term)
+            List<TermData> terms = (data['terms'] as List)
+                .map((e) => TermData.fromJson(e))
                 .toList();
             TermService termService = Get.find();
             await termService.addTerms(terms);
 
-            List<RelatedTerm> relatedTerms = (data['related-terms'] as List)
-                .map((e) => RelatedTerm.fromJson(e))
+            List<RelatedTermData> relatedTerms = (data['related-terms'] as List)
+                .map((e) => RelatedTermData.fromJson(e))
                 .toList();
             RelatedTermService relatedTermService = Get.find();
             await relatedTermService.addRelatedTerms(relatedTerms);
 
-            List<TermsWithQuestionsFilteringEnabledData>
+            List<TermsWithQuestionsFilteringEnabledProperties>
                 termsWithQuestionsFilteringEnabled =
                 (data['terms-with-questions-levelling-enabled'] as List)
                     .map((e) =>
-                        TermsWithQuestionsFilteringEnabledData.fromJson(e))
+                        TermsWithQuestionsFilteringEnabledProperties.fromJson(
+                            e))
                     .toList();
             TermsWithQuestionsFilteringEnabledService
                 termsWithQuestionsFilteringEnabledService = Get.find();
@@ -132,46 +140,46 @@ class ChooseTermScreenController extends ListController {
                 .addTermsWithQuestionsFilteringEnabled(
                     termsWithQuestionsFilteringEnabled);
 
-            List<TermsParent> termsParents = (data['terms-parents'] as List)
-                .map((e) => TermsParent.fromJson(e))
+            List<TermsParentData> termsParents = (data['terms-parents'] as List)
+                .map((e) => TermsParentData.fromJson(e))
                 .toList();
             TermsParentService termsParentService = Get.find();
             await termsParentService.addTermsParents(termsParents);
 
-            List<TermsLinkedToTag> termsLinkedToTags =
+            List<TermLinkedToTagData> termsLinkedToTags =
                 (data['terms-linked-to-tags'] as List)
-                    .map((e) => TermsLinkedToTag.fromJson(e))
+                    .map((e) => TermLinkedToTagData.fromJson(e))
                     .toList();
             TermLinkedToTagService termLinkedToTagService = Get.find();
             await termLinkedToTagService
                 .addTermsLinkedToTags(termsLinkedToTags);
 
-            List<TermTag> termsTags = (data['terms-tags'] as List)
-                .map((e) => TermTag.fromJson(e))
+            List<TermTagData> termsTags = (data['terms-tags'] as List)
+                .map((e) => TermTagData.fromJson(e))
                 .toList();
             TermTagService termTagService = Get.find();
             await termTagService.addTermTags(termsTags);
 
-            List<TermsLinkedToLabel> termsLinkedToLabels =
+            List<TermLinkedToLabelData> termsLinkedToLabels =
                 (data['terms-linked-to-labels'] as List)
-                    .map((e) => TermsLinkedToLabel.fromJson(e))
+                    .map((e) => TermLinkedToLabelData.fromJson(e))
                     .toList();
             TermLinkedToLabelService termLinkedToLabelService = Get.find();
             await termLinkedToLabelService
                 .addTermsLinkedToLabels(termsLinkedToLabels);
 
-            List<TermLabel> termsLabels = (data['terms-labels'] as List)
-                .map((e) => TermLabel.fromJson(e))
+            List<TermLabelData> termsLabels = (data['terms-labels'] as List)
+                .map((e) => TermLabelData.fromJson(e))
                 .toList();
             TermLabelService termLabelService = Get.find();
             await termLabelService.addTermLabels(termsLabels);
 
             CouponLinkedToTermService couponLinkedToTermService = Get.find();
-            for (Term term in terms) {
-              termService.subscribeToTermUpdates(term);
+            termService.subscribeToTermsUpdates(terms);
+            for (TermData term in terms) {
               await couponLinkedToTermService.addCouponLinkedToTerm(
                   CouponsLinkedToTerm(
-                      couponId: argument.coupon.id, termId: term.id));
+                      couponId: argument.coupon.id, termId: term.term.id));
             }
             Navigator.popUntil(
                 // ignore: use_build_context_synchronously

@@ -32,7 +32,7 @@ class _TermQuestionsFormState extends State<TermQuestionsForm> {
               label: termQuestion.title.value!,
               selectionId: termQuestion.answer != null
                   ? int.parse(termQuestion.answer!)
-                  : termQuestion.multiSelections[0].id.value,
+                  : termQuestion.multiSelections[0].id.value!,
               selections: termQuestion.multiSelections, //.toList(),
               onChanged: (value) {
                 setState(() {

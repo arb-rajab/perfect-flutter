@@ -1,11 +1,12 @@
 import 'package:beta/configs/links.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:get/instance_manager.dart';
 
 class ContactUsScreen extends StatelessWidget {
   static const route = '/contact-us';
@@ -18,12 +19,11 @@ class ContactUsScreen extends StatelessWidget {
     return ScreenWrapper(
         title: title,
         icon: icon,
-        child: ListView(
-      children: [
+        child: ListView(children: [
           const FrequesntQuestionsTile(),
-            if (telegramChannelLink.isNotEmpty) _TelegramChannelTile(),
-            if (telegramChatLink.isNotEmpty) _TelegramChatTile(),
-            if (facebookPageLink.isNotEmpty) _FacebookPageTile()
+          if (telegramChannelLink.isNotEmpty) _TelegramChannelTile(),
+          if (telegramChatLink.isNotEmpty) _TelegramChatTile(),
+          if (facebookPageLink.isNotEmpty) _FacebookPageTile()
         ]));
   }
 }
@@ -41,7 +41,7 @@ class FrequesntQuestionsTile extends StatelessWidget {
             child: Text(FrequentQuestionsScreen.title)),
         subtitle: Text(StringConstant.frequentlyAskedQuestionsExplanation.tr()),
         onTap: () =>
-            Navigator.pushNamed(context, FrequentQuestionsScreen.route),
+              Navigator.pushNamed(context, FrequentQuestionsScreen.route)
       ),
     );
   }
@@ -55,10 +55,8 @@ class _TelegramChannelTile extends StatelessWidget {
           leading: const Icon(Icons.telegram),
           title: Text(StringConstant.telegram.tr()),
           subtitle: Text(StringConstant.telegramExplanation.tr()),
-          onTap: () async => {
-                if (!await launchUrl(Uri.parse(telegramChannelLink)))
-                  {throw Exception('Could not launch $telegramChannelLink')}
-              }),
+          onTap: () =>
+              Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink)),
     );
   }
 }
@@ -67,15 +65,12 @@ class _TelegramChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
-      child: ListTile(
-          leading: const Icon(Icons.telegram),
-          title: Text(StringConstant.telegram.tr()),
-          subtitle: Text(StringConstant.telegramChatExplanation.tr()),
-          onTap: () async => {
-                if (!await launchUrl(Uri.parse(telegramChatLink)))
-                  {throw Exception('Could not launch $telegramChatLink')}
-              }),
-    );
+        child: ListTile(
+            leading: const Icon(Icons.telegram),
+            title: Text(StringConstant.telegram.tr()),
+            subtitle: Text(StringConstant.telegramChatExplanation.tr()),
+            onTap: () =>
+                Get.find<UrlLauncherRepository>().openUrl(telegramChatLink)));
   }
 }
 
@@ -87,10 +82,8 @@ class _FacebookPageTile extends StatelessWidget {
           leading: const Icon(Icons.facebook),
           title: Text(StringConstant.facebook.tr()),
           subtitle: Text(StringConstant.facebookExplanation.tr()),
-          onTap: () async => {
-                if (!await launchUrl(Uri.parse(facebookPageLink)))
-                  {throw Exception('Could not launch $facebookPageLink')}
-              }),
+            onTap: () =>
+                Get.find<UrlLauncherRepository>().openUrl(facebookPageLink))
     );
   }
 }

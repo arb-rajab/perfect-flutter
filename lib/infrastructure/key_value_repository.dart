@@ -27,4 +27,9 @@ class KeyValue {
 
   Future setStringList(String key, List<String> value) =>
       _pref.setStringList(key, value);
+
+  bool? getBool(String key, [bool? defaultValue]) =>
+      _pref.getBool(key) ?? defaultValue;
+
+  Future setBool(String key, bool value) => _pref.setBool(key, value);
 }

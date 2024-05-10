@@ -70,20 +70,24 @@ part 'database_service.g.dart'; // the generated code will be there
   TermsLinkedToLabels
 ])
 class DatabaseService extends _$DatabaseService {
-  DatabaseService()
+  final PackageRepository packageRepository;
+  final DeviceRepository deviceRepository;
+  DatabaseService(
+      {required this.deviceRepository, required this.packageRepository})
       : super(MainController.testing
             ? NativeDatabase.memory()
-            : _openConnection());
+            : _openConnection(
+                deviceRepository: deviceRepository,
+                packageRepository: packageRepository));
 
   @override
   int get schemaVersion => 37;
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection(
+    {required deviceRepository, required packageRepository}) {
   // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    DeviceRepository deviceRepository = Get.find();
-    PackageRepository packageRepository = Get.find();
     String model = deviceRepository.getModel();
 
     String encryptionKey = model + packageRepository.getPackageName();

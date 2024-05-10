@@ -1,9 +1,17 @@
 import 'package:beta/application/services/answer_property_service.dart';
+import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/coupon_linked_to_term_service.dart';
 import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
+import 'package:beta/application/services/flashcard_service.dart';
+import 'package:beta/application/services/http_request_service.dart';
+import 'package:beta/application/services/question_linked_to_tag_service.dart';
+import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
+import 'package:beta/application/services/question_service.dart';
+import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/related_term_service.dart';
 import 'package:beta/application/services/term_label_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
@@ -16,10 +24,12 @@ import 'package:beta/application/services/terms_with_questions_filtering_enabled
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
+import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -27,47 +37,21 @@ import 'package:get/get.dart';
 class MainController {
   static bool testing = false;
 
-  // static void initialiseLocalNotificationsPlugin() {
-  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  //   flutterLocalNotificationsPlugin
-  //       .resolvePlatformSpecificImplementation<
-  //           AndroidFlutterLocalNotificationsPlugin>()!
-  //       .requestNotificationsPermission();
-
-  //   // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-  //   const AndroidInitializationSettings initializationSettingsAndroid =
-  //       AndroidInitializationSettings('@mipmap/ic_launcher');
-  //   const DarwinInitializationSettings initializationSettingsDarwin =
-  //       DarwinInitializationSettings(
-  //           onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-  //   const LinuxInitializationSettings initializationSettingsLinux =
-  //       LinuxInitializationSettings(defaultActionName: 'Open notification');
-  //   const InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //           android: initializationSettingsAndroid,
-  //           iOS: initializationSettingsDarwin,
-  //           linux: initializationSettingsLinux);
-  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  //   flutterLocalNotificationsPlugin.initialize(
-  //     initializationSettings,
-  //     onDidReceiveNotificationResponse: (details) {
-  //       Navigator.popUntil(Catcher.navigatorKey!.currentContext!,
-  //           ModalRoute.withName(HomeScreen.route));
-  //       Get.find<HomeController>().moveToNotificationsPage();
-  //     },
-  //   );
-  // }
-
   static Future initServices() async {
     if (testing == false) WidgetsFlutterBinding.ensureInitialized();
     KeyValue keyValue = await KeyValue().initialise();
     if (testing == false) await EasyLocalization.ensureInitialized();
-    Get.put(await DeviceRepository().initialise());
-    Get.put(await PackageRepository().initialise());
+    DeviceRepository deviceRepository =
+        Get.put(await DeviceRepository().initialise());
+    PackageRepository packageRepository =
+        Get.put(await PackageRepository().initialise());
     FirebaseRepository firebaseRepository =
         Get.put(await FirebaseRepository().initialise());
     Get.put(keyValue);
-    DatabaseService databaseService = DatabaseService();
+    Get.put(UrlLauncherRepository());
+    DatabaseService databaseService = DatabaseService(
+        packageRepository: packageRepository,
+        deviceRepository: deviceRepository);
     Get.put(databaseService);
     Get.put(ThemeService(keyValue: keyValue));
     Get.put(QuestionPropertyService(databaseService: databaseService));
@@ -89,12 +73,16 @@ class MainController {
     Get.put(TermLabelService(databaseService: databaseService));
     Get.put(FCMTopicService(databaseService: databaseService));
     Get.put(CouponLinkedToTermService(databaseService: databaseService));
+    Get.put(HttpRequestService(databaseService: databaseService));
+    Get.put(EbookService(databaseService: databaseService));
+    Get.put(VoiceNoteService(databaseService: databaseService));
+    Get.put(QuestionService(databaseService: databaseService));
+    Get.put(AnswerService(databaseService: databaseService));
+    Get.put(FlashcardService(databaseService: databaseService));
+    Get.put(QuestionMediaService(databaseService: databaseService));
+    Get.put(QuestionTagService(databaseService: databaseService));
+    Get.put(QuestionLinkedToTagService(databaseService: databaseService));
 
-    // await Firebase.initializeApp(
-    //   options: DefaultFirebaseOptions.currentPlatform,
-    // );
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingHandler);
-    // FirebaseMessaging.onMessage.listen(_firebaseMessagingHandler);
     // await DeviceInfoHelper.configure();
     // initialiseLocalNotificationsPlugin();
     // Get.put(UserController());
@@ -102,39 +90,6 @@ class MainController {
 
   // static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
-
-  // @pragma('vm:entry-point')
-  // static Future<void> _firebaseMessagingHandler(RemoteMessage message) async {
-  //   // Initialize Firebase app
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  //   initialiseLocalNotificationsPlugin();
-  //   // Show a notification
-  //   const AndroidNotificationDetails androidNotificationDetails =
-  //       AndroidNotificationDetails(Configs.appName, Configs.appName,
-  //           channelDescription: '',
-  //           importance: Importance.max,
-  //           priority: Priority.high,
-  //           icon: '@mipmap/ic_launcher'
-  //           // ticker: 'ticker'
-  //           );
-  //   const NotificationDetails notificationDetails =
-  //       NotificationDetails(android: androidNotificationDetails);
-  //   if (message.data.containsKey('notification')) {
-  //     var notification = jsonDecode(message.data['notification']);
-  //     flutterLocalNotificationsPlugin.show(Randoms.getRandomInt(),
-  //         notification['title'], notification['body'], notificationDetails,
-  //         payload: '');
-  //     await SharedPreferencesHelper.init();
-  //     SharedPreferencesHelper.set(
-  //         SharedPreferencesConstant.newNotificationsRecieved, true);
-  //     if (Get.isRegistered<HomeController>()) {
-  //       HomeController homeController = Get.find();
-  //       homeController.showNewNotificationsBadge(true);
-  //     }
-  //   }
-  // }
 
 //   static void onDidReceiveLocalNotification(
 //       int id, String? title, String? body, String? payload) async {

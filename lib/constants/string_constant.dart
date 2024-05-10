@@ -24,6 +24,8 @@ class StringConstant {
   static const doYouNeedHelp = 'do-you-need-help';
   static const scanQr = 'scan-qr';
   static const doYouWantToProceed = 'do-you-want-to-proceed';
+  static const neww = 'new';
+  static const others = 'others';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -113,4 +115,16 @@ class StringConstant {
   static const supportCustomTextSize = '$_whatsNew.support-custom-text-size';
   static const supportUserDataDeletion =
       '$_whatsNew.support-user-data-deletion';
+
+  static const _browseTerms = 'browse-terms';
+  static const browseTerms = '$_browseTerms.browse-terms';
+
+  static const _recentTerms = 'recent-terms';
+  static const recentTerms = '$_recentTerms.recent-terms';
+
+  static const _terms = 'terms';
+  static const unsupportedContent = '$_terms.unsupported-content';
+  static const unsupportedContentExplanation =
+      '$_terms.unsupported-content-explanation';
+  static const contentLocked = '$_terms.content-locked';
 }

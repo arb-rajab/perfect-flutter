@@ -7,7 +7,7 @@ part of 'coupon_type.dart';
 // **************************************************************************
 
 CouponType _$CouponTypeFromJson(Map<String, dynamic> json) => CouponType(
-      id: const IdJsonConverter().fromJson(json['id'] as int),
+      id: const IdJsonConverter().fromJson(json['id'] as int?),
       layer: const LayerJsonConverter().fromJson(json['layer'] as int),
       rootTermId:
           const RootTermIdJsonConverter().fromJson(json['rootTermId'] as int),

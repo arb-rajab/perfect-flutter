@@ -7,5 +7,8 @@ class KeyValueConstant {
 
   static const String dismissedTutorials = 'dismissedTutorials';
 
-  static const String userId = 'userId';
+  static const String userId = 'user_id';
+  static const String userToken = 'user_token';
+  static const String tokenUploaded = 'user_tokenUploaded';
+  static const String isAllTokenSubscribed = 'user_allTokenSubscribed';
 }

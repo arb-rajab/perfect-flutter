@@ -1,0 +1,57 @@
+import 'package:animated_digit/animated_digit.dart';
+import 'package:beta/domain/term_data.dart';
+import 'package:flutter/material.dart';
+
+//TODO add test
+class NumberOfChildrenWidget extends StatelessWidget {
+  final TermData termData;
+
+  const NumberOfChildrenWidget(this.termData, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Icon icon;
+    switch (termData.term.type) {
+      case TermType.questions:
+        icon = const Icon(Icons.question_mark);
+        break;
+      case TermType.ebook:
+        icon = const Icon(Icons.book);
+        break;
+      case TermType.template:
+        icon = const Icon(Icons.quiz);
+        break;
+      case TermType.youtubeVideos:
+        icon = const Icon(Icons.slow_motion_video);
+        break;
+      case TermType.flashcards:
+        icon = const Icon(Icons.style);
+        break;
+      case TermType.voiceNotes:
+        icon = const Icon(Icons.audiotrack);
+        break;
+      default:
+        icon = const Icon(Icons.description);
+    }
+
+    if ([
+      TermType.flashcards,
+      TermType.questions,
+      TermType.template,
+      TermType.term
+    ].contains(termData.term.type)) {
+      return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        icon,
+        const Text('x'),
+        if (termData.term.type == TermType.term)
+          AnimatedDigitWidget(value: termData.numberOfSubTerms!.value!),
+        if (termData.term.type == TermType.questions ||
+            termData.term.type == TermType.template)
+          AnimatedDigitWidget(value: termData.numberOfQuestions!.value!),
+        if (termData.term.type == TermType.flashcards)
+          AnimatedDigitWidget(value: termData.numberOfFlashcards!.value!)
+      ]);
+    }
+    return const SizedBox();
+  }
+}

@@ -21,9 +21,6 @@ class TermQuestion with _$TermQuestion {
 
   static TermQuestion fromJson(Map<String, dynamic> json) =>
       _$TermQuestionFromJson(json);
-
-  static Map<String, dynamic> toJson(TermQuestion instance) =>
-      _$TermQuestionToJson(instance);
 }
 
 class TermQuestionType {

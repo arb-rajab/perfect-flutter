@@ -23,6 +23,8 @@
     "do-you-need-help": "هل تحتاج إلى مساعدة",
     "scan-qr": "مسح رمز QR",
     "do-you-want-to-proceed": "هل تريد المتابعة؟",
+    "new": "جديد",
+    "others": "أخرى",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -93,5 +95,16 @@
         "support-night-mode": "دعم الوضع الليلي",
         "support-custom-text-size": "السماح بتغيير حجم النص",
         "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق"
+    },
+    "browse-terms": {
+        "browse-terms": "تصفح الأقسام الدراسية"
+    },
+    "recent-terms": {
+        "recent-terms": "الأقسام الآخر تصفحاً"
+    },
+    "terms": {
+        "unsupported-content": "محتوى غير مدعوم",
+        "unsupported-content-explanation": "هذا المحتوى غير مدعوم في النسخة الحالية من التطبيق، في حال كان هناك تحديثات، يرجى التحديث. نعدكم بدعم كل المحتوى العلمي في المستقبل",
+        "content-locked": "هذا المحتوى غير متاح في النسخة المجانية، يرجى الضغط على الزر أدناه للتواصل معنا وشراء نسخة مدفوعة"
     }
 }

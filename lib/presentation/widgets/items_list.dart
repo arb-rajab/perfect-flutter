@@ -7,6 +7,7 @@ import 'package:beta/presentation/widgets/no_items_widget.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ItemsList extends StatefulWidget {
   final ListController controller;
@@ -61,23 +62,52 @@ class _ListLocaleState extends State<_ListLocale> {
       if (controller.message != '') return MessageWidget(controller.message);
       return const NoItemsWidget();
     }
-    return ListView(physics: const AlwaysScrollableScrollPhysics(), children: [
-      if (controller.message.isNotEmpty)
-        FormMessageWidget(
-            message: controller.message,
-            onDismiss: () => setState(() {
-                  controller.message = '';
-                })),
-      ListView.builder(
-          itemBuilder: controller.itemBuilder,
-          itemCount: controller.items.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics()),
-      if (controller.loadMoreVisibility && controller.showLoadMore)
-        SubmitButton(
-            text: StringConstant.loadMore.tr(),
-            loading: controller.loading,
-            onSubmit: () => controller.init(offset: controller.items.length))
-    ]);
+    if (controller.itemsPerRow == 1) {
+      return ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            if (controller.message.isNotEmpty)
+              FormMessageWidget(
+                  message: controller.message,
+                  onDismiss: () => setState(() {
+                        controller.message = '';
+                      })),
+            ListView.builder(
+                itemBuilder: controller.itemBuilder,
+                itemCount: controller.items.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics()),
+            if (controller.loadMoreVisibility && controller.showLoadMore)
+              SubmitButton(
+                  text: StringConstant.loadMore.tr(),
+                  loading: controller.loading,
+                  onSubmit: () =>
+                      controller.init(offset: controller.items.length))
+          ]);
+    } else {
+      return ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            if (controller.message.isNotEmpty)
+              FormMessageWidget(
+                  message: controller.message,
+                  onDismiss: () => setState(() {
+                        controller.message = '';
+                      })),
+            GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: controller.itemsPerRow),
+                itemBuilder: controller.itemBuilder,
+                itemCount: controller.items.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics()),
+            if (controller.loadMoreVisibility && controller.showLoadMore)
+              SubmitButton(
+                  text: StringConstant.loadMore.tr(),
+                  loading: controller.loading,
+                  onSubmit: () =>
+                      controller.init(offset: controller.items.length))
+          ]);
+    }
   }
 }

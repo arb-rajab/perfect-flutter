@@ -70,21 +70,21 @@ class NetworkService {
         onConnectionSucceed(body);
         break;
       case "failed":
-          try {
+        try {
           onMessageReceived(FailureResponse(
-                    type: MessageType.error,
-                    content: body['message'],
-                    code: body['code']))
-                .call();
-            // ignore: empty_catches
+                  type: MessageType.error,
+                  content: body['message'],
+                  code: body['code']))
+              .call();
+          // ignore: empty_catches
         } catch (e) {}
         break;
       case 2:
-          onConnectionSucceed(body).call();
+        onConnectionSucceed(body).call();
         onMessageReceived(FailureResponse(
-                  type: MessageType.warning,
-                  content: body['message'],
-                  code: body['code']))
+                type: MessageType.warning,
+                content: body['message'],
+                code: body['code']))
             .call();
         break;
     }
@@ -122,7 +122,6 @@ class NetworkService {
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
     }
-  
   }
 
   Future get(
@@ -139,12 +138,12 @@ class NetworkService {
     if (json) sentHeaders['content-type'] = 'application/json';
     dio.options.headers = sentHeaders;
     try {
-response = await dio.get(url, queryParameters: query);
+      response = await dio.get(url, queryParameters: query);
       onPostConnect.call();
-    if (response.statusCode == 200) {
-      _handleResponse(response);
-      return;
-    }
+      if (response.statusCode == 200) {
+        _handleResponse(response);
+        return;
+      }
     } on HttpException {
       onConnectionFailed.call();
     }
@@ -218,5 +217,15 @@ response = await dio.get(url, queryParameters: query);
       return;
     }
     onConnectionFailed.call();
+  }
+
+  Future download(
+      {required String url,
+      required File file,
+      required Function(int recieved, int total) onRecieveProgress}) async {
+    onPreConnect.call();
+    await dio.download(url, file.path, onReceiveProgress: onRecieveProgress);
+    onPostConnect.call();
+    onConnectionSucceed.call(null);
   }
 }

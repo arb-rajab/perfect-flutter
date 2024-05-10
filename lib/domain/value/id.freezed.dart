@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Id {
-  int get value => throw _privateConstructorUsedError;
+  int? get value => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $IdCopyWith<Id> get copyWith => throw _privateConstructorUsedError;
@@ -27,7 +27,7 @@ abstract class $IdCopyWith<$Res> {
   factory $IdCopyWith(Id value, $Res Function(Id) then) =
       _$IdCopyWithImpl<$Res, Id>;
   @useResult
-  $Res call({int value});
+  $Res call({int? value});
 }
 
 /// @nodoc
@@ -42,13 +42,13 @@ class _$IdCopyWithImpl<$Res, $Val extends Id> implements $IdCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -59,7 +59,7 @@ abstract class _$$IdImplCopyWith<$Res> implements $IdCopyWith<$Res> {
       __$$IdImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int value});
+  $Res call({int? value});
 }
 
 /// @nodoc
@@ -71,13 +71,13 @@ class __$$IdImplCopyWithImpl<$Res> extends _$IdCopyWithImpl<$Res, _$IdImpl>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_$IdImpl(
-      null == value
+      freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -85,10 +85,11 @@ class __$$IdImplCopyWithImpl<$Res> extends _$IdCopyWithImpl<$Res, _$IdImpl>
 /// @nodoc
 
 class _$IdImpl implements _Id {
-  const _$IdImpl(this.value) : assert(value > 0);
+  const _$IdImpl(this.value)
+      : assert((value != null && value > 0) || value == null);
 
   @override
-  final int value;
+  final int? value;
 
   @override
   String toString() {
@@ -114,10 +115,10 @@ class _$IdImpl implements _Id {
 }
 
 abstract class _Id implements Id {
-  const factory _Id(final int value) = _$IdImpl;
+  const factory _Id(final int? value) = _$IdImpl;
 
   @override
-  int get value;
+  int? get value;
   @override
   @JsonKey(ignore: true)
   _$$IdImplCopyWith<_$IdImpl> get copyWith =>

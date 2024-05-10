@@ -3,6 +3,7 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper_controller.dart';
+import 'package:drift/drift.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -17,6 +18,7 @@ class ScreenWrapper extends StatefulWidget {
   final List<Widget>? actions;
   final FloatingActionButton? floatingActionButton;
   final List<TargetFocus> targets;
+  final List<Tab> tabs;
 
   const ScreenWrapper(
       {super.key,
@@ -27,7 +29,8 @@ class ScreenWrapper extends StatefulWidget {
       this.actions,
       this.drawer,
       this.floatingActionButton,
-      this.targets = const []});
+      this.targets = const [],
+      this.tabs = const []});
 
   @override
   State<ScreenWrapper> createState() => _ScreenWrapperState();
@@ -99,30 +102,37 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            drawer: widget.drawer,
-            appBar: widget.title != null ||
-                    widget.drawer != null ||
-                    widget.actions != null
-                ? AppBar(
-                    actions: widget.actions,
-                    leading: widget.icon != null ? Icon(widget.icon) : null,
-                    title: widget.title != null
-                        ? Hero(
-                            tag: widget.title!,
-                            child: Text(widget.title!),
-                          )
-                        : null)
-                : null,
-            body: widget.child,
-            bottomNavigationBar: widget.bottomNavigationBar,
-            floatingActionButton: AnimatedOpacity(
-                opacity: _controller.isVisible ? 1 : 0,
-                duration: animationDuration,
-                child: widget.floatingActionButton),
-            floatingActionButtonLocation: widget.bottomNavigationBar != null
-                ? FloatingActionButtonLocation.miniCenterDocked
-                : FloatingActionButtonLocation.endFloat));
+        child: DefaultTabController(
+      length: widget.tabs.length,
+      child: Scaffold(
+          drawer: widget.drawer,
+          appBar: widget.title != null ||
+                  widget.drawer != null ||
+                  widget.actions != null
+              ? AppBar(
+                  actions: widget.actions,
+                  leading: widget.icon != null ? Icon(widget.icon) : null,
+                  title: widget.title != null
+                      ? Hero(
+                          tag: widget.title!,
+                          child: Text(widget.title!),
+                        )
+                      : null,
+                  bottom: TabBar(
+                    tabs: widget.tabs,
+                  ),
+                )
+              : null,
+          body: widget.child,
+          bottomNavigationBar: widget.bottomNavigationBar,
+          floatingActionButton: AnimatedOpacity(
+              opacity: _controller.isVisible ? 1 : 0,
+              duration: animationDuration,
+              child: widget.floatingActionButton),
+          floatingActionButtonLocation: widget.bottomNavigationBar != null
+              ? FloatingActionButtonLocation.miniCenterDocked
+              : FloatingActionButtonLocation.endFloat),
+    ));
   }
 }
 

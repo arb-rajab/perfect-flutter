@@ -9,7 +9,7 @@ part of 'multi_select_selection.dart';
 MultiSelectSelection _$MultiSelectSelectionFromJson(
         Map<String, dynamic> json) =>
     MultiSelectSelection(
-      id: const IdJsonConverter().fromJson(json['id'] as int),
+      id: const IdJsonConverter().fromJson(json['id'] as int?),
       title: const TitleJsonConverter().fromJson(json['title'] as String),
     );
 

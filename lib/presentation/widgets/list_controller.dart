@@ -11,6 +11,7 @@ abstract class ListController<T> implements ListControllerBase {
   bool loading = false;
   List<T> items = [];
   String message = '';
+  int itemsPerRow;
 
   List itemsLoading = [];
   List itemsMessage = [];
@@ -25,6 +26,7 @@ abstract class ListController<T> implements ListControllerBase {
   Future<List> Function()? fetch;
   Function()? onConnectionSucceed;
   Function? onPreFetch;
+  Function? onPostFetch;
   final bool showLoadMore;
   final bool showRefresh;
   final T Function(Map<String, dynamic> json) fromJson;
@@ -39,7 +41,8 @@ abstract class ListController<T> implements ListControllerBase {
       this.onConnectionSucceed,
       this.remote = true,
       this.showLoadMore = true,
-      this.showRefresh = true});
+      this.showRefresh = true,
+      this.itemsPerRow = 1});
 
   Future init({int offset = 0, bool refresh = false}) async {
     if (refresh) {
@@ -109,6 +112,7 @@ abstract class ListController<T> implements ListControllerBase {
         itemsMessage.addAll(List.filled(items.length, ''));
         itemsLoading.clear();
         itemsLoading.addAll(List.filled(items.length, false));
+        if (onPostFetch != null) onPostFetch!.call();
       });
     }
   }

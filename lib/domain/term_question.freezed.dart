@@ -21,7 +21,8 @@ mixin _$TermQuestion {
   @TitleJsonConverter()
   Title get title => throw _privateConstructorUsedError;
   @TypeJsonConverter()
-  Type get type => throw _privateConstructorUsedError;
+  Type get type =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(name: 'multi_selections')
   List<MultiSelectSelection> get multiSelections =>
       throw _privateConstructorUsedError;
@@ -206,7 +207,9 @@ class _$TermQuestionImpl implements _TermQuestion {
   @override
   @TypeJsonConverter()
   final Type type;
+// ignore: invalid_annotation_target
   final List<MultiSelectSelection> _multiSelections;
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'multi_selections')
   List<MultiSelectSelection> get multiSelections {
@@ -265,7 +268,7 @@ abstract class _TermQuestion implements TermQuestion {
   @override
   @TypeJsonConverter()
   Type get type;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(name: 'multi_selections')
   List<MultiSelectSelection> get multiSelections;
   @override
