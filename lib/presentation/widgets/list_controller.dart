@@ -29,7 +29,7 @@ abstract class ListController<T> implements ListControllerBase {
   Function? onPostFetch;
   final bool showLoadMore;
   final bool showRefresh;
-  final T Function(Map<String, dynamic> json) fromJson;
+  final T Function(Map<String, dynamic> json)? fromJson;
 
   ListController(
       {required this.itemBuilder,
@@ -43,6 +43,8 @@ abstract class ListController<T> implements ListControllerBase {
       this.showLoadMore = true,
       this.showRefresh = true,
       this.itemsPerRow = 1});
+
+  int getLength() => items.length;
 
   Future init({int offset = 0, bool refresh = false}) async {
     if (refresh) {
@@ -133,7 +135,7 @@ abstract class ListController<T> implements ListControllerBase {
                     itemsLoading.add(false);
                     itemsMessage.add('');
                   }
-                  items.addAll(newItems.map((e) => fromJson(e)).toList());
+                  items.addAll(newItems.map((e) => fromJson!(e)).toList());
                   if (items.length - oldCount < listItemsInitialCount) {
                     loadMoreVisibility = false;
                   }

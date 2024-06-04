@@ -6514,6 +6514,226 @@ class TermsLinkedToLabelsCompanion extends UpdateCompanion<TermsLinkedToLabel> {
   }
 }
 
+class $TermPropertiesTable extends TermProperties
+    with TableInfo<$TermPropertiesTable, TermProperty> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermPropertiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+      'termId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
+  @override
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+      'value', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [termId, name, value];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termProperties';
+  @override
+  VerificationContext validateIntegrity(Insertable<TermProperty> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('termId')) {
+      context.handle(_termIdMeta,
+          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+    } else if (isInserting) {
+      context.missing(_termIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+    } else if (isInserting) {
+      context.missing(_valueMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId, name};
+  @override
+  TermProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermProperty(
+      termId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      value: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+    );
+  }
+
+  @override
+  $TermPropertiesTable createAlias(String alias) {
+    return $TermPropertiesTable(attachedDatabase, alias);
+  }
+}
+
+class TermProperty extends DataClass implements Insertable<TermProperty> {
+  final int termId;
+  final String name;
+  final String value;
+  const TermProperty(
+      {required this.termId, required this.name, required this.value});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['termId'] = Variable<int>(termId);
+    map['name'] = Variable<String>(name);
+    map['value'] = Variable<String>(value);
+    return map;
+  }
+
+  TermPropertiesCompanion toCompanion(bool nullToAbsent) {
+    return TermPropertiesCompanion(
+      termId: Value(termId),
+      name: Value(name),
+      value: Value(value),
+    );
+  }
+
+  factory TermProperty.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermProperty(
+      termId: serializer.fromJson<int>(json['termId']),
+      name: serializer.fromJson<String>(json['name']),
+      value: serializer.fromJson<String>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'termId': serializer.toJson<int>(termId),
+      'name': serializer.toJson<String>(name),
+      'value': serializer.toJson<String>(value),
+    };
+  }
+
+  TermProperty copyWith({int? termId, String? name, String? value}) =>
+      TermProperty(
+        termId: termId ?? this.termId,
+        name: name ?? this.name,
+        value: value ?? this.value,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TermProperty(')
+          ..write('termId: $termId, ')
+          ..write('name: $name, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(termId, name, value);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermProperty &&
+          other.termId == this.termId &&
+          other.name == this.name &&
+          other.value == this.value);
+}
+
+class TermPropertiesCompanion extends UpdateCompanion<TermProperty> {
+  final Value<int> termId;
+  final Value<String> name;
+  final Value<String> value;
+  final Value<int> rowid;
+  const TermPropertiesCompanion({
+    this.termId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.value = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TermPropertiesCompanion.insert({
+    required int termId,
+    required String name,
+    required String value,
+    this.rowid = const Value.absent(),
+  })  : termId = Value(termId),
+        name = Value(name),
+        value = Value(value);
+  static Insertable<TermProperty> custom({
+    Expression<int>? termId,
+    Expression<String>? name,
+    Expression<String>? value,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (termId != null) 'termId': termId,
+      if (name != null) 'name': name,
+      if (value != null) 'value': value,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TermPropertiesCompanion copyWith(
+      {Value<int>? termId,
+      Value<String>? name,
+      Value<String>? value,
+      Value<int>? rowid}) {
+    return TermPropertiesCompanion(
+      termId: termId ?? this.termId,
+      name: name ?? this.name,
+      value: value ?? this.value,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['termId'] = Variable<int>(termId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermPropertiesCompanion(')
+          ..write('termId: $termId, ')
+          ..write('name: $name, ')
+          ..write('value: $value, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
   late final $CouponsTable coupons = $CouponsTable(this);
@@ -6551,6 +6771,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
   late final $TermLabelsTable termLabels = $TermLabelsTable(this);
   late final $TermsLinkedToLabelsTable termsLinkedToLabels =
       $TermsLinkedToLabelsTable(this);
+  late final $TermPropertiesTable termProperties = $TermPropertiesTable(this);
   late final Index parentQuestionIdIndex = Index('parentQuestionIdIndex',
       'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)');
   late final Index qIndex1 =
@@ -6577,6 +6798,8 @@ abstract class _$DatabaseService extends GeneratedDatabase {
       'tltlIndex1', 'CREATE INDEX tltlIndex1 ON termsLinkedToLabels (termId)');
   late final Index tltlIndex2 = Index(
       'tltlIndex2', 'CREATE INDEX tltlIndex2 ON termsLinkedToLabels (labelId)');
+  late final Index termsIndex1 = Index(
+      'termsIndex1', 'CREATE INDEX termsIndex1 ON termProperties (termId)');
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6607,6 +6830,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         termsLinkedToTags,
         termLabels,
         termsLinkedToLabels,
+        termProperties,
         parentQuestionIdIndex,
         qIndex1,
         questionTagsIndex1,
@@ -6619,6 +6843,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         tlttIndex1,
         tlttIndex2,
         tltlIndex1,
-        tltlIndex2
+        tltlIndex2,
+        termsIndex1
       ];
 }

@@ -1,48 +1,98 @@
+import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/home/actions_widget.dart';
+import 'package:beta/presentation/home/term_leading_widget.dart';
 import 'package:beta/presentation/home/term_widget_controller.dart';
+import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/widgets/number_of_children_widget.dart';
 import 'package:beta/presentation/widgets/widget_wrapper_with_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-class TermLeadingWidget extends StatelessWidget {
-  final TermData termData;
-  const TermLeadingWidget(
-    this.termData, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const double iconSize = 50;
-    switch (termData.term.type) {
-      case TermType.questions:
-        return const Icon(Icons.question_mark, size: iconSize);
-      case TermType.ebook:
-        return const Icon(Icons.book, size: iconSize);
-      case TermType.template:
-        return const Icon(Icons.quiz, size: iconSize);
-      case TermType.youtubeVideos:
-        return const Icon(Icons.slow_motion_video, size: iconSize);
-      case TermType.flashcards:
-        return const Icon(Icons.style, size: iconSize);
-      case TermType.voiceNotes:
-        return const Icon(Icons.audiotrack, size: iconSize);
-      default:
-        return const Icon(Icons.description, size: iconSize);
-    }
-  }
-}
-
 class TermWidget extends StatefulWidget {
   final int index;
   const TermWidget({super.key, required this.index});
 
   @override
-  State<StatefulWidget> createState() => _TermWidgetState();
+  State<TermWidget> createState() => _TermWidgetState();
+}
+
+class _TermWidgetState extends State<TermWidget> {
+  late TermWidgetController termWidgetController;
+
+  @override
+  void initState() {
+    termWidgetController = TermWidgetController(this, index: widget.index);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    termWidgetController.termsListingController =
+        Get.find<TermsListingController>();
+    termWidgetController.termData =
+        termWidgetController.termsListingController.items[widget.index];
+    TermData termData = termWidgetController.termData;
+    if (![TermType.term, TermType.questions, TermType.template]
+        .contains(termData.term.type)) return const UnsupportedContentWidget();
+    var widgett = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: termWidgetController.onTermClick,
+      child: Column(
+        children: [
+          ListTile(
+            leading: TermLeadingWidget(termData),
+            title: Text(termData.term.name),
+            trailing: termData.term.enabled == 1
+                ? const Icon(Icons.navigate_next)
+                : const Icon(Icons.lock),
+          ),
+          if (termData.term.enabled == 1)
+            Column(
+              children: [
+                const Divider(),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      NumberOfChildrenWidget(termData),
+                      ActionsWidget(
+                        termWidgetController,
+                        downloaded: termWidgetController.isDownloaded,
+                        studied: termWidgetController.isStudied,
+                        downloadProgress: termWidgetController.downloadProgress,
+                        downloading: termWidgetController.downloading,
+                      )
+                    ]),
+              ],
+            )
+        ],
+      ),
+    );
+    if (termWidgetController.isNew) {
+      return Column(
+        children: [
+          if (termWidgetController.displayLabel())
+            LabelWidget(termWidgetController: termWidgetController),
+          WidgetWrapperWithBorder(
+            child: Banner(
+                message: StringConstant.neww.tr(),
+                location: BannerLocation.topStart,
+                child: widgett),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          if (termWidgetController.displayLabel())
+            LabelWidget(termWidgetController: termWidgetController),
+          WidgetWrapperWithBorder(child: widgett),
+        ],
+      );
+    }
+  }
 }
 
 class UnsupportedContentWidget extends StatelessWidget {
@@ -71,65 +121,5 @@ class LabelWidget extends StatelessWidget {
       title: Text(termWidgetController.getLabelText(),
           style: Theme.of(context).textTheme.headlineSmall),
     ));
-  }
-}
-
-class _TermWidgetState extends State<TermWidget> {
-  late TermWidgetController _termWidgetController;
-  late TermData _termData;
-
-  @override
-  Widget build(BuildContext context) {
-    if (_termData.term.type != 0) return const UnsupportedContentWidget();
-    var widget = WidgetWrapperWithBorder(
-        child: ListTile(
-      onTap: _termWidgetController.onTermClick,
-      leading: TermLeadingWidget(_termData),
-      title: Text(_termData.term.name),
-      subtitle: _termData.term.enabled == 1
-          ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              NumberOfChildrenWidget(_termData),
-              ActionsWidget(
-                _termWidgetController,
-                downloaded: _termWidgetController.isDownloaded,
-                studied: _termWidgetController.isStudied,
-                downloadProgress: _termWidgetController.downloadProgress,
-                downloading: _termWidgetController.downloading,
-              )
-            ])
-          : null,
-      trailing: _termData.term.enabled == 1
-          ? const Icon(Icons.navigate_next)
-          : const Icon(Icons.lock),
-    ));
-    if (_termWidgetController.isNew) {
-      return Column(
-        children: [
-          if (_termWidgetController.displayLabel())
-            LabelWidget(termWidgetController: _termWidgetController),
-          Banner(
-              message: StringConstant.neww.tr(),
-              location: BannerLocation.topStart,
-              child: widget),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          if (_termWidgetController.displayLabel())
-            LabelWidget(termWidgetController: _termWidgetController),
-          widget,
-        ],
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    Get.delete<TermWidgetController>(tag: widget.index.toString());
-    _termWidgetController = Get.put(TermWidgetController(index: widget.index),
-        tag: widget.index.toString());
-    _termData = _termWidgetController.termData;
-    super.initState();
   }
 }

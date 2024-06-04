@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_protected_member, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -12,7 +12,9 @@ import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
+import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/common/exceptions.dart';
 import 'package:beta/configs/links.dart';
@@ -20,12 +22,16 @@ import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/ebook_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
+import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
+import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
+import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -38,16 +44,18 @@ class TermWidgetController {
   bool isDownloaded = true;
   bool isNew = false;
   bool isStudied = false;
-  late State state;
+  State state;
   bool downloading = false;
   late File file;
   double downloadProgress = 0;
   late TermsListingController termsListingController;
+  TermService termService = Get.find();
+  TermTagService termTagService = Get.find();
+  TermPropertyService termPropertyService = Get.find();
 
-  TermWidgetController({required this.index}) {
+  TermWidgetController(this.state, {required this.index}) {
     termsListingController = Get.find<TermsListingController>();
     termData = termsListingController.items[index];
-    state = termsListingController.state;
     configureNewBanner();
     configureIsDownloaded();
     configureIsStudied();
@@ -56,42 +64,61 @@ class TermWidgetController {
 //TODO add tests
   Future configureNewBanner() {
     TermLastAccessService termLastAccessService = Get.find();
-    return termLastAccessService
-        .isTermAccessed(termData)
-        .then((value) => state.setState(() => isNew = value));
+    return termLastAccessService.isTermAccessed(termData).then((value) {
+      if (state.mounted) {
+        state.setState(() {
+          isNew = !value;
+        });
+      }
+    });
   }
 
   //TODO add tests
   Future<void> configureIsDownloaded() async {
     if (TermType.hasFile(termData)) {
-      getApplicationSupportDirectory().then((value) {
+      getApplicationSupportDirectory().then((value) async {
         file = File(join(value.path, 'term', termData.term.id.toString()));
-        state.setState(() async {
-          isDownloaded = await file.exists();
-        });
+        isDownloaded = await file.exists();
+        if (state.mounted) state.setState(() {});
       });
     }
     if (termData.term.type == TermType.questions ||
         termData.term.type == TermType.template) {
-      state.setState(() {
+      if (state.mounted) {
+        state.setState(() {
         isDownloaded = termData.numberOfQuestions!.value! > 0;
       });
+      }
     } else if (termData.term.type == TermType.flashcards) {
-      state.setState(() {
+      if (state.mounted) {
+        state.setState(() {
         isDownloaded = termData.numberOfFlashcards!.value! > 0;
       });
+      }
     }
   }
 
   //TODO add tests
-  void updateStudied(bool value) {
-    //TODO implement
+  Future<void> updateStudied(bool value) async {
+    if (value) {
+      await termPropertyService.addTermToStudied(termData);
+    } else {
+      await termPropertyService.removeTermFromStudied(termData);
+    }
+    state.setState(() {
+      isStudied = value;
+    });
   }
 
   //TODO add tests
-  Future<void> configureIsStudied() {
-    //TODO implement
-  }
+  Future configureIsStudied() =>
+      termPropertyService.isTermStudied(termData).then((value) {
+        if (state.mounted) {
+          state.setState(() {
+            isStudied = value;
+          });
+        }
+      });
 
   String _getDownloadApi() {
     if (termData.term.type == TermType.ebook) {
@@ -160,7 +187,7 @@ class TermWidgetController {
     }
     if ([TermType.flashcards, TermType.questions, TermType.template]
         .contains(termData.term.type)) {
-      NetworkService(state.context,
+      return NetworkService(state.context,
               onPreConnect: _onPreConnect,
               onPostConnect: _onPostConnect, onConnectionSucceed: (body) async {
         List<Question> questions = (body['questions'] as List)
@@ -229,12 +256,66 @@ class TermWidgetController {
   }
 
   //TODO add tests
-  void onTermClick() {
+  Future<void> onTermClick() async {
     if (termData.term.enabled != 1) {
       showOkDialogue(
           state.context,
           () => Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink),
           StringConstant.contentLocked.tr());
+      return;
+    }
+    TermLastAccessService termLastAccessService = Get.find();
+    await Get.delete<TermData>();
+    Get.put(termData);
+    if (termData.term.type == TermType.term) {
+      await termLastAccessService.addTermLastAccessed(termData, termData);
+    }
+    List<TermData> subTerms = await termService.getSubTerms(termData.term.id);
+    List<TermTag> termsTags = await termTagService.getTermsTags(subTerms);
+    TermsController termsController = Get.find();
+    if (termsTags.isNotEmpty) {
+      await Get.delete<TermData>(tag: 'source');
+      Get.put(termData, tag: 'source');
+      termsController.state.setState(() {
+        termsController.termsTags = termsTags;
+        termsController.termsDatas = subTerms;
+        termsListingController.termsListing.add(termData);
+        // tagListingController.items = termsTags;
+      });
+      return;
+    }
+    if (subTerms.isNotEmpty) {
+      termsController.state.setState(() {
+        termsController.termsDatas = subTerms;
+        termsListingController.items = subTerms;
+        termsListingController.termsListing.add(termData);
+      });
+      return;
+    }
+    if (termData.term.type == 0) return;
+    Get.delete<QuestionsScreenArgument>();
+    switch (termData.term.type) {
+      case TermType.questions:
+      case TermType.template:
+        if (isDownloaded) {
+          if (termData.numberOfQuestions!.value! > 0) {
+            Get.put(QuestionsScreenArgument(
+                query:
+                    "q.parentTermId= '${termData.term.id}' ORDER BY q.id asc",
+                source: QuestionScreenSource.term,
+                sourceId: Id(termData.term.id),
+                resourceTermId: Id(Get.find<TermData>(tag: 'source').term.id),
+                title: t.Title(termData.term.name),
+                termData: termData));
+            Navigator.pushNamed(state.context, QuestionsScreen.route);
+          }
+        } else {
+          showOkDialogue(
+              state.context, () {}, StringConstant.youHaveToDownloadFirst.tr());
+        }
+        break;
+      default: //TODO implement other terms types
+        throw UnimplementedError();
     }
   }
 }

@@ -176,7 +176,7 @@ class ChooseTermScreenController extends ListController {
 
             CouponLinkedToTermService couponLinkedToTermService = Get.find();
             termService.subscribeToTermsUpdates(terms);
-            for (TermData term in terms) {
+            for (TermData term in checkedTerms) {
               await couponLinkedToTermService.addCouponLinkedToTerm(
                   CouponsLinkedToTerm(
                       couponId: argument.coupon.id, termId: term.term.id));

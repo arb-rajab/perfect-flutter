@@ -22,6 +22,7 @@ import 'package:beta/domain/term_last_access.dart';
 import 'package:beta/domain/term_linked_to_label.dart';
 import 'package:beta/domain/term_linked_to_tag.dart';
 import 'package:beta/domain/term_parent.dart';
+import 'package:beta/domain/term_property.dart';
 import 'package:beta/domain/term_tag.dart';
 import 'package:beta/domain/term_tree.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled.dart';
@@ -32,13 +33,10 @@ import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
-import 'package:get/instance_manager.dart';
-// import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/open.dart';
 import 'package:sqflite/sqflite.dart';
-// import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
@@ -67,7 +65,8 @@ part 'database_service.g.dart'; // the generated code will be there
   TermTags,
   TermsLinkedToTags,
   TermLabels,
-  TermsLinkedToLabels
+  TermsLinkedToLabels,
+  TermProperties
 ])
 class DatabaseService extends _$DatabaseService {
   final PackageRepository packageRepository;

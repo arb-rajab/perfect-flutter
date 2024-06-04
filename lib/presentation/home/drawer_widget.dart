@@ -1,14 +1,29 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:beta/application/services/answer_property_service.dart';
+import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/question_property_service.dart';
+import 'package:beta/application/services/question_tag_property_service.dart';
+import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
+import 'package:beta/presentation/dialogues/success_dialogue.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/instance_manager.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -54,10 +69,67 @@ class _ImportBackupTile extends StatelessWidget {
           Icons.settings_backup_restore, /*color: primaryColorDark*/
         ),
         title: Text(StringConstant.importBackup.tr()),
-        onTap: () {},
+        onTap: () async {
+          final result =
+              await FilePicker.platform.pickFiles(allowMultiple: false);
+          // if no file is picked
+          if (result == null) return;
+          // String content =
+          //     (await OpenFile.open(result.files.first.path)).message;
+          File file = File(result.files.first.path!);
+          String content = await file.readAsString();
+          AnswerPropertyService answerPropertyService = Get.find();
+          QuestionPropertyService questionPropertyService = Get.find();
+          QuestionTagPropertyService questionTagPropertyService = Get.find();
+          TermLastAccessService termLastAccessService = Get.find();
+          TermPropertyService termPropertyService = Get.find();
+
+          dynamic data = jsonDecode(content);
+
+          if (data['answerProperties'] != null) {
+            await answerPropertyService
+                .addAnswerPropertiesFromJson(data['answerProperties']);
+          }
+          if (data['questionProperties'] != null) {
+            await questionPropertyService
+                .addQuestionPropertiesFromJson(data['questionProperties']);
+          }
+          if (data['questionTagProperties'] != null) {
+            await questionTagPropertyService.addQuestionTagPropertiesFromJson(
+                data['questionTagProperties']);
+          }
+          if (data['termsLastAccess'] != null) {
+            await termLastAccessService
+                .addTermLastAccessFromJson(data['termsLastAccess']);
+          }
+          if (data['termProperties'] != null) {
+            await termPropertyService
+                .addTermPropertiesFromJson(data['termProperties']);
+          }
+          if (context.mounted) showSuccessDialogue(context);
+        },
       ),
     );
   }
+}
+
+Future<String?> getDownloadPath() async {
+  Directory? directory;
+  try {
+    if (Platform.isIOS) {
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      // On Android, use the global download folder
+      directory = Directory('/storage/emulated/0/Download');
+      // If it doesn't exist, fallback to external storage directory
+      if (!await directory.exists()) {
+        directory = await getExternalStorageDirectory();
+      }
+    }
+  } catch (err, stack) {
+    print("Cannot get download folder path");
+  }
+  return directory?.path;
 }
 
 class _ExportBackupTile extends StatelessWidget {
@@ -69,7 +141,41 @@ class _ExportBackupTile extends StatelessWidget {
           Icons.sd_storage, /*color: primaryColorDark*/
         ),
         title: Text(StringConstant.exportBackup.tr()),
-        onTap: () {},
+        onTap: () async {
+          AnswerPropertyService answerPropertyService = Get.find();
+          QuestionPropertyService questionPropertyService = Get.find();
+          QuestionTagPropertyService questionTagPropertyService = Get.find();
+          TermLastAccessService termLastAccessService = Get.find();
+          TermPropertyService termPropertyService = Get.find();
+
+          Map<String, dynamic> data = {};
+
+          List<AnswerProperty> answerProperties =
+              await answerPropertyService.getAllAnswerProperties();
+          List<QuestionTagProperty> questionTagProperties =
+              await questionTagPropertyService.getAllQuestionTagProperties();
+          List<QuestionProperty> questionProperties =
+              await questionPropertyService.getAllQuestionProperties();
+          List<TermsLastAccess> termsLastAccesses =
+              await termLastAccessService.getAllTermLastAccesses();
+          List<TermProperty> termProperties =
+              await termPropertyService.getAllTermProperties();
+
+          data['answerProperties'] = answerProperties;
+          data['questionProperties'] = questionProperties;
+          data['questionTagProperties'] = questionTagProperties;
+          data['termsLastAccess'] = termsLastAccesses;
+          data['termProperties'] = termProperties;
+
+          File file = File(
+              '${(await getApplicationCacheDirectory()).path}${separator}temp');
+          await file.writeAsString(jsonEncode(data));
+          String? outputFile = await FlutterFileDialog.saveFile(
+              params: SaveFileDialogParams(
+                  sourceFilePath: file.path, fileName: 'database backup'));
+          if (outputFile == null) return;
+          if (context.mounted) showSuccessDialogue(context);
+        },
       ),
     );
   }
@@ -153,7 +259,8 @@ class WhatsNewDialogue extends StatelessWidget {
             Text('* ${StringConstant.addFrequentQuestionsScreen.tr()}'),
             Text('* ${StringConstant.supportNightMode.tr()}'),
             Text('* ${StringConstant.supportCustomTextSize.tr()}'),
-            Text('* ${StringConstant.supportUserDataDeletion.tr()}')
+            Text('* ${StringConstant.supportUserDataDeletion.tr()}'),
+            Text('* ${StringConstant.addStudiedTermsFeature.tr()}')
           ],
         ),
       ),

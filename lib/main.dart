@@ -32,6 +32,9 @@ class AppWrapper extends StatelessWidget {
   }
 }
 
+// Register the RouteObserver as a navigation observer.
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 class MyApp extends StatelessWidget {
   final Widget? home;
   const MyApp({super.key, this.home});
@@ -48,6 +51,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
+        navigatorObservers: [routeObserver],
         title: 'Flutter Demo',
         // Theme config for FlexColorScheme version 7.3.x. Make sure you use
         // same or higher package version, but still same major version. If you

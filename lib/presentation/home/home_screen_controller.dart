@@ -52,7 +52,7 @@ class HomeScreenController {
       await termService.addTerms(updatedTerms);
 
       List<Id> refreshedTermsIds = (data['refreshed-terms-ids'] as List)
-          .map((e) => const IdJsonConverter().fromJson(e))
+          .map((e) => const IdJsonConverter().fromJson(e['id']))
           .toList();
       await termService.setTermsNeedUpdate(refreshedTermsIds);
 

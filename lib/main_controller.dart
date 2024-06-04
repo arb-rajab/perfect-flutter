@@ -11,12 +11,14 @@ import 'package:beta/application/services/question_linked_to_tag_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/question_service.dart';
+import 'package:beta/application/services/question_tag_property_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/related_term_service.dart';
 import 'package:beta/application/services/term_label_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_linked_to_label_service.dart';
 import 'package:beta/application/services/term_linked_to_tag_service.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
@@ -33,12 +35,17 @@ import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class MainController {
   static bool testing = false;
 
   static Future initServices() async {
     if (testing == false) WidgetsFlutterBinding.ensureInitialized();
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+    }
     KeyValue keyValue = await KeyValue().initialise();
     if (testing == false) await EasyLocalization.ensureInitialized();
     DeviceRepository deviceRepository =
@@ -82,6 +89,8 @@ class MainController {
     Get.put(QuestionMediaService(databaseService: databaseService));
     Get.put(QuestionTagService(databaseService: databaseService));
     Get.put(QuestionLinkedToTagService(databaseService: databaseService));
+    Get.put(TermPropertyService(databaseService: databaseService));
+    Get.put(QuestionTagPropertyService(databaseService: databaseService));
 
     // await DeviceInfoHelper.configure();
     // initialiseLocalNotificationsPlugin();

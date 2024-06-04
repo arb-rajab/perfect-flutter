@@ -21,4 +21,22 @@ class TermLastAccessService {
         .getSingle();
     return childrenCount > 0;
   }
+
+  //TODO add test
+  Future addTermLastAccessed(TermData parentTerm, TermData childTerm) =>
+      databaseService.termsLastAccesses.insertOnConflictUpdate(TermsLastAccess(
+          parentTermId: parentTerm.term.id,
+          childId: childTerm.term.id,
+          lastAccess: DateTime.now()));
+
+  //TODO add test
+  Future addTermLastAccessFromJson(dynamic data) =>
+      databaseService.batch((batch) {
+        batch.insertAllOnConflictUpdate(databaseService.termsLastAccesses,
+            (data as List).map((e) => TermsLastAccess.fromJson(e)).toList());
+      });
+
+  //TODO add test
+  Future<List<TermsLastAccess>> getAllTermLastAccesses() =>
+      databaseService.select(databaseService.termsLastAccesses).get();
 }

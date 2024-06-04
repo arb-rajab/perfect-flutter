@@ -9,5 +9,5 @@ class RectangleWidgetWithOpacity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      RectangleWidget(opacity: opacity, child: child);
+      RectangleWidget(opacity: alpha, child: child);
 }

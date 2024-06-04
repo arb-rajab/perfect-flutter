@@ -1,8 +1,6 @@
-import 'package:animated_digit/animated_digit.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen_controller.dart';
-import 'package:beta/presentation/home/term_widget.dart';
 import 'package:beta/presentation/widgets/number_of_children_widget.dart';
 import 'package:beta/presentation/widgets/widget_wrapper.dart';
 import 'package:flutter/material.dart';

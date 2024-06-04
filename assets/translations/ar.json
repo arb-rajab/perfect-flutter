@@ -25,6 +25,9 @@
     "do-you-want-to-proceed": "هل تريد المتابعة؟",
     "new": "جديد",
     "others": "أخرى",
+    "show-all": "عرض الكل",
+    "search": "البحث",
+    "favorite": "المفضلة",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -43,7 +46,9 @@
         "delete-user-answers": "تصفير الأسئلة المجابة",
         "delete-user-answers-explanation": "تصفير جميع الأسئلة المجابة، فيصبح السؤال غير مجاباً",
         "delete-term-last-access": "حذف الوصول ضمن الأقسام الدراسية",
-        "delete-term-last-access-explanation": "سيتم مسح البيانات المتعلقة بآخر سؤال تم الوصول إليه ضمن الأسئلة المؤتمتة، آخر فلاش كارد تم التصفح ضمن مجموعة الفلاش كارد، آخر ثانية تم الوصول إليها ضمن الفيديو"
+        "delete-term-last-access-explanation": "سيتم مسح البيانات المتعلقة بآخر سؤال تم الوصول إليه ضمن الأسئلة المؤتمتة، آخر فلاش كارد تم التصفح ضمن مجموعة الفلاش كارد، آخر ثانية تم الوصول إليها ضمن الفيديو",
+        "delete-studied-terms": "حذف علامة (مدروس) من الأقسام الدراسية",
+        "delete-studied-terms-explanation": "حذف علامة (مدروس) من الأقسام الدراسية، جميع الأقسام الدراسية هي غير مدروسة الآن"
     },
     "coupons": {
         "coupons": "الكروت",
@@ -94,17 +99,31 @@
         "add-frequent-questions-screen": "إضافة صفحة الأسئلة الشائعة",
         "support-night-mode": "دعم الوضع الليلي",
         "support-custom-text-size": "السماح بتغيير حجم النص",
-        "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق"
+        "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق",
+        "add-studied-terms-feature": "إضافة ميزة الأقسام الدراسية المدروسة"
     },
     "browse-terms": {
-        "browse-terms": "تصفح الأقسام الدراسية"
+        "browse-terms": "تصفح"
     },
     "recent-terms": {
-        "recent-terms": "الأقسام الآخر تصفحاً"
-    },
+        "recent-terms": "الأخيرة"
+        },
+        "new-terms": {
+            "new-terms": "الجديدة"
+        },
+        "unstudied": {
+            "unstudied": "الغير مدروسة"
+        },
     "terms": {
         "unsupported-content": "محتوى غير مدعوم",
         "unsupported-content-explanation": "هذا المحتوى غير مدعوم في النسخة الحالية من التطبيق، في حال كان هناك تحديثات، يرجى التحديث. نعدكم بدعم كل المحتوى العلمي في المستقبل",
-        "content-locked": "هذا المحتوى غير متاح في النسخة المجانية، يرجى الضغط على الزر أدناه للتواصل معنا وشراء نسخة مدفوعة"
+        "content-locked": "هذا المحتوى غير متاح في النسخة المجانية، يرجى الضغط على الزر أدناه للتواصل معنا وشراء نسخة مدفوعة",
+        "question-tags": "التصنيفات",
+        "edited": "المصححة",
+        "easy-questions": "الأسئلة السهلة",
+        "medium-questions": "الأسئلة متوسطة الصعوبة",
+        "difficult-questions": "الأسئلة الصعبة",
+        "wrong-questions": "الأسئلة الخاطئة",
+        "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً"
     }
 }

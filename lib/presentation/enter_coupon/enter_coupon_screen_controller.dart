@@ -63,16 +63,20 @@ class EnterCouponScreenController {
         message = '';
       });
 
-  void _processResponse({required bool free, required dynamic body}) {
+  Future<void> _processResponse(
+      {required bool free, required dynamic body}) async {
     UserService userService = Get.find();
     userService.setId(body['deviceId']);
     Coupon coupon = Coupon.fromJson(body['coupon']);
     CouponType couponType = CouponType.fromJson(body['coupon']['coupon_type']);
     List<TermData> terms =
         (body['terms'] as List).map((e) => TermData.fromJson(e)).toList();
+    await Get.delete<ChooseTermScreenArgument>();
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: terms, free: free, couponType: couponType));
-    Navigator.pushNamed(state.context, ChooseTermScreen.route);
+    if (state.mounted) {
+      Navigator.pushNamed(state.context, ChooseTermScreen.route);
+    }
   }
 
   void onActivateFreeVersionClick() {

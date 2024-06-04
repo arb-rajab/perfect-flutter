@@ -12,6 +12,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.delete<SplashScreenController>();
     SplashScreenController notifier = Get.put(SplashScreenController());
     notifier.startTimer(context);
     return const SafeArea(

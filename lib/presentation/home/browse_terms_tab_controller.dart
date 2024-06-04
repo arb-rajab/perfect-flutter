@@ -1,36 +1,48 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/term_service.dart';
-import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-class BrowseTermsTabController extends TermsListingController {
-  TermTagService termTagService = Get.find();
-  TermService termService = Get.find();
-  BrowseTermsTabController(super.state);
+class BrowseTermsTabController extends TermsController {
+  bool backPressed = false;
+  late TermsListingController termsListingController;
+
+  BrowseTermsTabController(State state) : super(state: state) {
+    termsListingController = Get.find();
+    termsListingController.fetch = fetch;
+  }
 
   @override
-  Future<List> Function()? get fetch => () async {
-        if (termsTags.isEmpty) {
-          List<TermData> terms;
-          termsListing.isEmpty
-              ? terms = await termService.getFirstLayerTerms()
-              : terms =
-                  await termService.getSubTerms(Get.find<TermData>().term.id);
-          if (!reload) termsListing.add(terms);
-          termDatas = terms;
-          return Future.value(terms);
-        }
-        return Future.value([...termsTags, ...termTagButtons]);
-      };
-
-  @override
-  Function? get onPostFetch => () async {
-        if (items is List<TermData>) {
-          termsTags =
-              await termTagService.getTermsTags(items as List<TermData>);
-          super.onPostFetch!();
-        }
-      };
+  Future<List> fetch() async {
+    List superData = await super.fetch();
+    if (superData.isNotEmpty) return Future.value(superData);
+    TermService termService = Get.find();
+    List<TermData> terms;
+    if (termsListingController.termsListing.isEmpty) {
+      terms = await termsListingController.termService.getFirstLayerTerms();
+    } else {
+      TermData termData = Get.find();
+      terms = await termService.getSubTerms(termData.term.id);
+      // if (!reload) termsListing.add(termData);
+    }
+    if (Get.isRegistered<TermTag>()) {
+      TermTag tag = Get.find();
+      terms = terms.where((element) => element.tagId!.value == tag.id).toList();
+      await Get.delete<TermTag>();
+    }
+    // if (terms.length == 1 &&
+    //     terms[0].term.type == TermType.term &&
+    //     Get.isRegistered<BrowseTermsTabController>() &&
+    //     !Get.find<BrowseTermsTabController>().backPressed) {
+    //   await Get.delete<TermData>();
+    //   Get.put(terms[0]);
+    //   termsListing.add(terms[0]);
+    //   // ignore: recursive_getters
+    //   return fetch!();
+    // }
+    return Future.value(terms);
+  }
 }

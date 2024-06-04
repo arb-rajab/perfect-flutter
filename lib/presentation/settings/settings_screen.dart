@@ -1,6 +1,7 @@
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
@@ -32,6 +33,7 @@ class SettingsScreen extends StatelessWidget {
             DeleteUserFavoriteQuestionsWidget(),
             DeleteUserAnswersWidget(),
             DeleteTermLastAccessWidget(),
+          DeleleStudiedTermsWidget(),
             Divider(),
         ]));
   }
@@ -108,6 +110,25 @@ class DeleteTermLastAccessWidget extends StatelessWidget {
           onTap: () => showConfirmationDialog(context, () async {
                 TermLastAccessService termLastAccessService = Get.find();
                 await termLastAccessService.deleteAllTermLastAccess();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
+  }
+}
+
+class DeleleStudiedTermsWidget extends StatelessWidget {
+  const DeleleStudiedTermsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.fact_check_outlined),
+          title: Text(StringConstant.deleteStudiedTerms.tr()),
+          subtitle: Text(StringConstant.deleteStudiedTermsExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                TermPropertyService termPropertyService = Get.find();
+                await termPropertyService.deleteAllUserStudiedTerms();
                 if (context.mounted) showSuccessDialogue(context);
               })),
     );

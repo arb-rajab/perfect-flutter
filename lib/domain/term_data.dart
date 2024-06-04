@@ -4,6 +4,8 @@ import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/domain/value/visible.dart';
+import 'package:drift/drift.dart';
+import 'package:get/instance_manager.dart';
 
 import 'value/path.dart';
 
@@ -60,10 +62,10 @@ class TermData extends ItemData {
     return {
       ...term.toJson(),
       ...super.toJson(),
-      'path': const PathJsonConverter().toJson(path!),
+      'path': const PathJsonConverter().toJson(path),
       'numberOfSubTerms':
           const NumberOfSubTermsJsonConverter().toJson(numberOfSubTerms!),
-      'visible': const VisibleJsonConverter().toJson(visible!),
+      'visible': const VisibleJsonConverter().toJson(visible),
       'tagId': const IdJsonConverter().toJson(tagId!),
       'labelId': const IdJsonConverter().toJson(labelId!),
       'numberOfQuestions':
@@ -73,6 +75,19 @@ class TermData extends ItemData {
       'numberOfRelatedTerms':
           const NumberOfSubTermsJsonConverter().toJson(numberOfRelatedTerms!)
     };
+  }
+
+  static TermData fromMap(QueryRow row) {
+    DatabaseService databaseService = Get.find();
+    return TermData(databaseService.terms.map(row.data),
+        tagId: Id(row.read<int?>('tagId')),
+        labelId: Id(row.read<int?>('labelId')),
+        numberOfSubTerms: NumberOfSubTerms(row.read<int>('numberOfSubTerms')),
+        numberOfQuestions: NumberOfSubTerms(row.read<int>('numberOfQuestions')),
+        numberOfFlashcards:
+            NumberOfSubTerms(row.read<int>('numberOfFlashcards')),
+        numberOfRelatedTerms:
+            NumberOfSubTerms(row.read<int>('numberOfRelatedTerms')));
   }
 
   @override

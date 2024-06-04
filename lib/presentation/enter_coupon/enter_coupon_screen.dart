@@ -6,6 +6,7 @@ import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen_controller.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
+import 'package:beta/presentation/widgets/custom_list_view.dart';
 import 'package:beta/presentation/widgets/form_message_widget.dart';
 import 'package:beta/presentation/widgets/input_widget.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
@@ -66,7 +67,7 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
             },
             icon: const Icon(ScanQrScreen.icon),
           label: Text(ScanQrScreen.title)),
-      child: ListView(
+      child: CustomListView(
         children: [
           const NoBackgroundLogo(),
           Form(

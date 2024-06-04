@@ -1,5 +1,5 @@
-import 'package:animated_digit/animated_digit.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/presentation/widgets/animated_Counter.dart';
 import 'package:flutter/material.dart';
 
 //TODO add test
@@ -13,7 +13,7 @@ class NumberOfChildrenWidget extends StatelessWidget {
     Icon icon;
     switch (termData.term.type) {
       case TermType.questions:
-        icon = const Icon(Icons.question_mark);
+        icon = const Icon(Icons.question_answer);
         break;
       case TermType.ebook:
         icon = const Icon(Icons.book);
@@ -44,12 +44,12 @@ class NumberOfChildrenWidget extends StatelessWidget {
         icon,
         const Text('x'),
         if (termData.term.type == TermType.term)
-          AnimatedDigitWidget(value: termData.numberOfSubTerms!.value!),
+          AnimatedCounter(value: termData.numberOfSubTerms!.value!),
         if (termData.term.type == TermType.questions ||
             termData.term.type == TermType.template)
-          AnimatedDigitWidget(value: termData.numberOfQuestions!.value!),
+          AnimatedCounter(value: termData.numberOfQuestions!.value!),
         if (termData.term.type == TermType.flashcards)
-          AnimatedDigitWidget(value: termData.numberOfFlashcards!.value!)
+          AnimatedCounter(value: termData.numberOfFlashcards!.value!)
       ]);
     }
     return const SizedBox();

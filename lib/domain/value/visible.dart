@@ -8,11 +8,11 @@ class Visible with _$Visible {
   const factory Visible(int value) = _Visible;
 }
 
-class VisibleJsonConverter extends JsonConverter<Visible, int> {
+class VisibleJsonConverter extends JsonConverter<Visible?, int> {
   const VisibleJsonConverter();
   @override
   Visible fromJson(int json) => Visible(json);
 
   @override
-  int toJson(Visible object) => object.value;
+  int toJson(Visible? object) => object != null ? object.value : 0;
 }

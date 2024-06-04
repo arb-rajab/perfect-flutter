@@ -11,11 +11,12 @@ class Path with _$Path {
   ]) = _Path;
 }
 
-class PathJsonConverter extends JsonConverter<Path, String?> {
+class PathJsonConverter extends JsonConverter<Path?, String?> {
   const PathJsonConverter();
   @override
   Path fromJson(String? json) => Path(json);
 
   @override
-  String? toJson(Path object) => jsonEncode(object.value);
+  String? toJson(Path? object) =>
+      object != null ? jsonEncode(object.value) : null;
 }

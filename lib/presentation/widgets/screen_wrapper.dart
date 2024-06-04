@@ -1,9 +1,7 @@
 import 'package:beta/application/services/tutorial_service.dart';
-import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper_controller.dart';
-import 'package:drift/drift.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -40,10 +38,9 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
   late ScreenWrapperController _controller;
   late TutorialService _tutorialService;
   late List<TargetFocus> _targets;
+  late String tag;
   @override
   void initState() {
-    Get.delete<ScreenWrapperController>();
-    _controller = Get.put(ScreenWrapperController(), tag: widget.title);
     _tutorialService = Get.find();
     _targets = widget.targets
         .where((element) =>
@@ -100,7 +97,17 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
   }
 
   @override
+  void dispose() {
+    Get.delete<ScreenWrapperController>(tag: tag);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    tag = ModalRoute.of(context)!.settings.name!;
+    _controller = Get.isRegistered<ScreenWrapperController>(tag: tag)
+        ? Get.find(tag: tag)
+        : Get.put(ScreenWrapperController(this), tag: tag);
     return SafeArea(
         child: DefaultTabController(
       length: widget.tabs.length,
@@ -118,17 +125,17 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
                           child: Text(widget.title!),
                         )
                       : null,
-                  bottom: TabBar(
-                    tabs: widget.tabs,
-                  ),
+                  bottom: widget.tabs.isNotEmpty
+                      ? TabBar(
+                          tabs: widget.tabs,
+                        )
+                      : null,
                 )
               : null,
           body: widget.child,
           bottomNavigationBar: widget.bottomNavigationBar,
-          floatingActionButton: AnimatedOpacity(
-              opacity: _controller.isVisible ? 1 : 0,
-              duration: animationDuration,
-              child: widget.floatingActionButton),
+          floatingActionButton:
+              _controller.isVisible ? widget.floatingActionButton : null,
           floatingActionButtonLocation: widget.bottomNavigationBar != null
               ? FloatingActionButtonLocation.miniCenterDocked
               : FloatingActionButtonLocation.endFloat),

@@ -28,4 +28,47 @@ class QuestionTagService {
                       NumberOfSubTerms(row.read<int?>('numberOfOccurrences'))))
               .toList())
           .first;
+
+  //TODO add test
+  Future<int> getNumberOfAllQuestionsQuestionTag(
+          QuestionTagData questionTagData, TermData termData) async =>
+      (await databaseService
+              .customSelect(
+                  "select count(*) as numberOfAllQuestions from questions where id in (select questionId from questionsLinkedToTags where tagId =${questionTagData.questionTag.id}) "
+                  "and parentTermId in (select termId from termTrees where parentTermId = ${termData.term.id}) ")
+              .watch()
+              .map((rows) => rows
+                  .map((row) => row.read<int>('numberOfAllQuestions'))
+                  .toList())
+              .first)
+          .first;
+
+  //TODO add test
+  Future<List<QuestionTagData>> getAllQuestionsTagChild(
+          QuestionTagData questionTagData) =>
+      databaseService
+          .customSelect(
+              "select qt.*, (select COUNT(*) from questionsLinkedToTags where tagId =qt.id and questionId in (select id from questions where parentTermId in (select id from terms where enabled=1) and parentTermId in (select id from terms where enabled=1))) as numberOfOccurrences,(select count(*) from (select * from questionTags where parentTagId=qt.id and id in (select tagId from questionsLinkedToTags where questionId in (select id from questions where parentTermId in (select id from terms where enabled=1))) group by id)) as numberOfChildTags  from questionTags qt where qt.parentTagId=${questionTagData.questionTag.id}  group by qt.id order by numberOfOccurrences desc ")
+          .watch()
+          .map((rows) => rows
+              .map((row) => QuestionTagData(
+                  databaseService.questionTags.map(row.data),
+                  numberOfChildTags:
+                      NumberOfSubTerms(row.read<int?>('numberOfChildTags')),
+                  numberOfOccurrences:
+                      NumberOfSubTerms(row.read<int?>('numberOfOccurrences'))))
+              .toList())
+          .first;
+
+  Future<int> getNumberOfOtherQuestionsQuestionTag(
+          QuestionTagData questionTagData, TermData termData) async =>
+      (await databaseService
+              .customSelect(
+                  "select count(*) as numberOfAllQuestions from questions where id in (select questionId from questionsLinkedToTags where tagId =${questionTagData.questionTag.id}) and id not in (select questionId from questionsLinkedToTags where tagId in (select id from questionTags where parentTagId=${questionTagData.questionTag.id}))and parentTermId in (select termId from termTrees where parentTermId = ${termData.term.id}) ")
+              .watch()
+              .map((rows) => rows
+                  .map((row) => row.read<int>('numberOfAllQuestions'))
+                  .toList())
+              .first)
+          .first;
 }

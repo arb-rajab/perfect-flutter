@@ -14,9 +14,7 @@ class WidgetWrapperWithBorder extends StatelessWidget {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context)
-                    .primaryColor
-                    .withOpacity(opacity as double),
+                color: Theme.of(context).primaryColor.withOpacity(opacity),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: const Offset(0, 2),

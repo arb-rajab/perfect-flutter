@@ -1,13 +1,16 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/presentation/widgets/custom_list_view.dart';
 import 'package:beta/presentation/widgets/form_message_widget.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
 import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/message_widget.dart';
 import 'package:beta/presentation/widgets/no_items_widget.dart';
+import 'package:beta/presentation/widgets/screen_wrapper_controller.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/instance_manager.dart';
 
 class ItemsList extends StatefulWidget {
   final ListController controller;
@@ -63,7 +66,7 @@ class _ListLocaleState extends State<_ListLocale> {
       return const NoItemsWidget();
     }
     if (controller.itemsPerRow == 1) {
-      return ListView(
+      return CustomListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             if (controller.message.isNotEmpty)
@@ -74,7 +77,7 @@ class _ListLocaleState extends State<_ListLocale> {
                       })),
             ListView.builder(
                 itemBuilder: controller.itemBuilder,
-                itemCount: controller.items.length,
+                itemCount: controller.getLength(),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics()),
             if (controller.loadMoreVisibility && controller.showLoadMore)
@@ -85,7 +88,7 @@ class _ListLocaleState extends State<_ListLocale> {
                       controller.init(offset: controller.items.length))
           ]);
     } else {
-      return ListView(
+      return CustomListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [
             if (controller.message.isNotEmpty)
@@ -94,13 +97,21 @@ class _ListLocaleState extends State<_ListLocale> {
                   onDismiss: () => setState(() {
                         controller.message = '';
                       })),
-            GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: controller.itemsPerRow),
-                itemBuilder: controller.itemBuilder,
-                itemCount: controller.items.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics()),
+            MasonryGridView.count(
+              shrinkWrap: true,
+              crossAxisCount: controller.itemsPerRow,
+              itemCount: controller.getLength(),
+              // mainAxisSpacing: 4,
+              // crossAxisSpacing: 4,
+              itemBuilder: controller.itemBuilder,
+            ),
+            // GridView.builder(
+            //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //         crossAxisCount: controller.itemsPerRow),
+            //     itemBuilder: controller.itemBuilder,
+            //     itemCount: controller.getLength(),
+            //     shrinkWrap: true,
+            //     physics: const NeverScrollableScrollPhysics()),
             if (controller.loadMoreVisibility && controller.showLoadMore)
               SubmitButton(
                   text: StringConstant.loadMore.tr(),

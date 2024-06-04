@@ -13,7 +13,7 @@ class TermService {
 
   final String _termsSelectClause =
       "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) where ";
-  final String _termsOrderClause =
+  static const String _termsOrderClause =
       " order by tl.id desc,ordering desc,creation desc";
   TermService(
       {required this.databaseService, required this.firebaseRepository});
@@ -71,23 +71,17 @@ class TermService {
             ..where((tbl) => tbl.id.isIn(termsIds.map((e) => e.value!))))
           .write(const TermsCompanion(needsUpdate: Value(1)));
 
-  Future<List<TermData>> _queryTerms(String query) => databaseService
-      .customSelect("$_termsSelectClause $query $_termsOrderClause")
-      .watch()
-      .map((rows) => rows
-          .map(
-            (row) => TermData(databaseService.terms.map(row.data),
-                tagId: Id(row.read<int?>('tagId')),
-                labelId: Id(row.read<int?>('labelId')),
-                numberOfSubTerms:
-                    NumberOfSubTerms(row.read<int>('numberOfSubTerms')),
-                numberOfFlashcards:
-                    NumberOfSubTerms(row.read<int>('numberOfFlashcards')),
-                numberOfRelatedTerms:
-                    NumberOfSubTerms(row.read<int>('numberOfRelatedTerms'))),
-          )
-          .toList())
-      .first;
+  Future<List<TermData>> _queryTerms(String query,
+          {String orderByClaus = _termsOrderClause}) =>
+      databaseService
+          .customSelect("$_termsSelectClause $query $orderByClaus")
+          .watch()
+          .map((rows) => rows
+              .map(
+                (row) => TermData.fromMap(row),
+              )
+              .toList())
+          .first;
 
   //TODO add test
   Future<List<TermData>> getFirstLayerTerms() => _queryTerms(
@@ -116,4 +110,21 @@ class TermService {
               .first)
           .first >
       0;
+
+  //TODO add test
+  Future<List<TermData>> getTermRelatedTerms(TermData termData) => _queryTerms(
+      "t.id in (select termId from relatedTerms where anotherTermId=${termData.term.id}) or t.id in (select anotherTermId from relatedTerms where termId=${termData.term.id})");
+
+  Future<List<TermData>> getRecentTerms() => databaseService
+      .customSelect(
+          "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) inner join termsLastAccess on termsLastAccess.parentTermId=t.id  where t.type!=0 group by t.id order by termsLastAccess.lastAccess desc limit 10 ")
+      .watch()
+      .map((rows) => rows.map((row) => TermData.fromMap(row)).toList())
+      .first;
+
+  Future<List<TermData>> getNewTerms() => _queryTerms(
+      "t.id not in (select parentTermId from termsLastAccess) and t.type!=0");
+
+  Future<List<TermData>> getUnstudiedTerms() => _queryTerms(
+      "t.id not in (select termId from termProperties where name='studied') and type!=0");
 }

@@ -26,6 +26,9 @@ class StringConstant {
   static const doYouWantToProceed = 'do-you-want-to-proceed';
   static const neww = 'new';
   static const others = 'others';
+  static const showAll = 'show-all';
+  static const search = 'search';
+  static const favorite = 'favorite';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -54,6 +57,9 @@ class StringConstant {
       '$_settings.delete-question-tags-last-access';
   static const deleteQuestionTagsLastAccessExplanation =
       '$_settings.delete-question-tags-last-access-explanation';
+  static const deleteStudiedTerms = '$_settings.delete-studied-terms';
+  static const deleteStudiedTermsExplanation =
+      '$_settings.delete-studied-terms-explanation';
 
   static const _coupons = 'coupons';
   static const coupons = '$_coupons.coupons';
@@ -115,6 +121,7 @@ class StringConstant {
   static const supportCustomTextSize = '$_whatsNew.support-custom-text-size';
   static const supportUserDataDeletion =
       '$_whatsNew.support-user-data-deletion';
+  static const addStudiedTermsFeature = '$_whatsNew.add-studied-terms-feature';
 
   static const _browseTerms = 'browse-terms';
   static const browseTerms = '$_browseTerms.browse-terms';
@@ -122,9 +129,22 @@ class StringConstant {
   static const _recentTerms = 'recent-terms';
   static const recentTerms = '$_recentTerms.recent-terms';
 
+  static const _newTerms = 'new-terms';
+  static const newTerms = '$_newTerms.new-terms';
+
+  static const _unstudied = 'unstudied';
+  static const unstudied = '$_unstudied.unstudied';
+
   static const _terms = 'terms';
   static const unsupportedContent = '$_terms.unsupported-content';
   static const unsupportedContentExplanation =
       '$_terms.unsupported-content-explanation';
   static const contentLocked = '$_terms.content-locked';
+  static const questionTags = '$_terms.question-tags';
+  static const edited = '$_terms.edited';
+  static const easyQuestions = '$_terms.easy-questions';
+  static const mediumQuestions = '$_terms.medium-questions';
+  static const difficultQuestions = '$_terms.difficult-questions';
+  static const wrongQuestions = '$_terms.wrong-questions';
+  static const youHaveToDownloadFirst = '$_terms.you-have-to-download-first';
 }
