@@ -2,7 +2,6 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
-import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:get/instance_manager.dart';
@@ -127,4 +126,18 @@ class TermService {
 
   Future<List<TermData>> getUnstudiedTerms() => _queryTerms(
       "t.id not in (select termId from termProperties where name='studied') and type!=0");
+
+  Future<Term> getTermById(Id sourceId) =>
+      (databaseService.select(databaseService.terms)
+            ..where((tbl) => tbl.id.equals(sourceId.value!)))
+          .getSingle();
+
+  Future<Term> getTermByQuestionUuid(String uuid) =>
+      (databaseService.select(databaseService.terms)
+            ..where((tbl) => tbl.id.equalsExp(subqueryExpression(
+                databaseService.selectOnly(databaseService.questions)
+                  ..addColumns([databaseService.questions.parentTermId])
+                  ..where(databaseService.questions.uuid.equals(uuid))
+                  ..limit(1)))))
+          .getSingle();
 }

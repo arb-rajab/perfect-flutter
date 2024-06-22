@@ -18,4 +18,7 @@ class ApiConstant {
   static const String getTermContent = '${_apiV1}term/(TERM_ID)/content';
   static const String questionTagInformation =
       '${_apiV1}question-tag/(QUESTION_TAG_ID)/info/ime1/(IME1)/language/(LANGUAGE)';
+  static const String reportQuestion =
+      '${_apiV1}questions/(QUESTION_ID)/report';
+  static const String checkedAnswers = '${_apiV1}answers/checked';
 }

@@ -1,4 +1,6 @@
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/domain/value/id.dart';
+import 'package:drift/drift.dart';
 
 class QuestionTagPropertyService {
   DatabaseService databaseService;
@@ -17,4 +19,19 @@ class QuestionTagPropertyService {
   //TODO add test
   Future<List<QuestionTagProperty>> getAllQuestionTagProperties() =>
       databaseService.select(databaseService.questionTagProperties).get();
+
+  Future addQuestionTagProperty(Id questionTagId, String name, String value) =>
+      databaseService
+          .into(databaseService.questionTagProperties)
+          .insertOnConflictUpdate(QuestionTagProperty(
+              questionTagId: questionTagId.value!, name: name, value: value));
+
+  Future<QuestionTagProperty> getQuestionTagProperty(
+          int questionTagId, String name) =>
+      (databaseService.select(databaseService.questionTagProperties)
+            ..where((tbl) => Expression.and([
+                  tbl.questionTagId.equals(questionTagId),
+                  tbl.name.equals(name)
+                ])))
+          .getSingle();
 }

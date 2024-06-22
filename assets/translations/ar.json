@@ -28,6 +28,10 @@
     "show-all": "عرض الكل",
     "search": "البحث",
     "favorite": "المفضلة",
+    "send": "إرسال",
+    "save": "حفظ",
+    "delete": "حذف",
+    "total": "الكلي",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -125,5 +129,39 @@
         "difficult-questions": "الأسئلة الصعبة",
         "wrong-questions": "الأسئلة الخاطئة",
         "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً"
+    },
+    "questions": {
+        "show-favorite-only": "عرض المفضلة فقط",
+        "show-edited-only": "عرض المصححة فقط",
+        "filter-by-question-tag": "فلترة حسب التصنيفات",
+        "solve-questions": "حل الأسئلة",
+        "correct-questions": "تصحيح الأجوبة",
+        "reset-questions": "تصفير الأجوبة",
+        "timer": "المؤقت",
+        "remaining-time": "الوقت المتبقي (TIME)",
+        "timed-test": "الامتحان موقوت",
+        "timed-test-explanation": "لديك مدة (MINUTES) دقيقة لإنهاء الامتحان",
+        "you-cant-correct-questions": "لن تستطيع تصحيح كل سؤال على حدة كي تعتاد على جو الامتحان",
+        "test-finished": "انتهى الامتحان",
+        "test-finished-explanation": "انتهت المدة المخصصة للامتحان، اضغط الزر أدناه لاستعراض النتائج",
+        "number-of-questions": "عدد الأسئلة: (NUMBER)",
+        "choose-right-answer": "اختر الإجابة المناسبة",
+        "choose-correct-answer": "اختر الإجابة الصحيحة",
+        "choose-wrong-answer": "اختر الإجابة الخاطئة",
+        "choose-different-answer": "اختر الإجابة المخالفة",
+        "choose-key-answer": "سؤال مفتاح",
+        "about-to-move-to-term": "أنت على وشك المغادرة والانتقال إلى قسم دراسي آخر... هل تريد المتابعة؟",
+        "about-to-move-to-question-tag": "أنت على وشك المغادرة والانتقال إلى التصنيف... هل تريد المتابعة؟",
+        "report-question": "التبليغ عن خطأ",
+        "share-question": "مشاركة السؤال",
+        "report-question-number": "التبليغ عن السؤال رقم (NUMBER)",
+        "question-title": "نص السؤال",
+        "enter-suggestion": "أدخل اقتراحك",
+        "share-question-body": "مشاركة السؤال (LINK)",
+        "enter-note": "أدخل ملاحظتك",
+        "answered": "المجابة",
+        "correct": "الصحيحة",
+        "wrong": "الخاطئة",
+        "confirm-template-exist-explanation": "هل أنت متأكد أنك تريدالخروج ومغادرة الامتحان؟ في حال الموافقة سيتم عرض نتيجة الامتحان"
     }
 }

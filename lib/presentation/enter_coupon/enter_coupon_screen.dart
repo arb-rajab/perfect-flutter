@@ -16,6 +16,7 @@ import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class EnterCouponScreen extends StatefulWidget {
@@ -43,29 +44,28 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        targets: [
-          CustomTargetFocus(
-              identify: TutorialConstant.scanQr,
-              keyTarget: scanQrKey,
-              contents: [
-                TargetContent(
-                    builder: (context, controller) {
-                      return RectangleWidget(
-                          child: Text(StringConstant.scanQrDescription.tr()));
-                    },
-                    align: ContentAlign.top)
-              ])
+      targets: [
+        CustomTargetFocus(
+            identify: TutorialConstant.scanQr,
+            keyTarget: scanQrKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child: Text(StringConstant.scanQrDescription.tr()));
+                  },
+                  align: ContentAlign.top)
+            ])
       ],
-        floatingActionButton: FloatingActionButton.extended(
-            key: scanQrKey,
-            tooltip: ScanQrScreen.title,
-            heroTag: ScanQrScreen.title,
-            onPressed: () async {
-              var result =
-                  await Navigator.pushNamed(context, ScanQrScreen.route);
-              if (result is String) _controller.setCoupon(result);
-            },
-            icon: const Icon(ScanQrScreen.icon),
+      floatingActionButton: FloatingActionButton.extended(
+          key: scanQrKey,
+          tooltip: ScanQrScreen.title,
+          heroTag: ScanQrScreen.title,
+          onPressed: () async {
+            var result = await context.push(ScanQrScreen.route);
+            if (result is String) _controller.setCoupon(result);
+          },
+          icon: const Icon(ScanQrScreen.icon),
           label: Text(ScanQrScreen.title)),
       child: CustomListView(
         children: [
@@ -137,7 +137,7 @@ class DoYouNeedHelp extends StatelessWidget {
         child: Padding(
       padding: const EdgeInsets.all(margin),
       child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, ContactUsScreen.route),
+        onTap: () => context.push(ContactUsScreen.route),
         child: Text(
           StringConstant.doYouNeedHelp.tr(),
           style: Theme.of(context)

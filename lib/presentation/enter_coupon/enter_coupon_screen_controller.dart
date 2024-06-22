@@ -13,6 +13,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class EnterCouponScreenController {
   final State<StatefulWidget> state;
@@ -75,7 +76,7 @@ class EnterCouponScreenController {
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: terms, free: free, couponType: couponType));
     if (state.mounted) {
-      Navigator.pushNamed(state.context, ChooseTermScreen.route);
+      state.context.go(ChooseTermScreen.route);
     }
   }
 

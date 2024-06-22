@@ -7,6 +7,7 @@ import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class ContactUsScreen extends StatelessWidget {
   static const route = '/contact-us';
@@ -17,7 +18,7 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: title,
+        titleText: title,
         icon: icon,
         child: ListView(children: [
           const FrequesntQuestionsTile(),
@@ -40,8 +41,7 @@ class FrequesntQuestionsTile extends StatelessWidget {
             tag: FrequentQuestionsScreen.title,
             child: Text(FrequentQuestionsScreen.title)),
         subtitle: Text(StringConstant.frequentlyAskedQuestionsExplanation.tr()),
-        onTap: () =>
-              Navigator.pushNamed(context, FrequentQuestionsScreen.route)
+          onTap: () => context.go(FrequentQuestionsScreen.route)
       ),
     );
   }

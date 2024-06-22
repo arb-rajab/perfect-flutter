@@ -35,6 +35,7 @@ import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -132,9 +133,10 @@ class TermWidgetController {
   void _onPreConnect() => state.setState(() => downloading = true);
   void _onPostConnect() => state.setState(() => downloading = false);
   void _onConnectionFailed() =>
-      showOkDialogue(state.context, () {}, StringConstant.noConnection.tr());
+      showOkDialogue(state.context, () {},
+      content: StringConstant.noConnection.tr());
   void _onMessageReceived(FailureResponse message) =>
-      showOkDialogue(state.context, () {}, message.content);
+      showOkDialogue(state.context, () {}, content: message.content);
 
   Future _setTermUpdated() async {
     TermService termService = Get.find();
@@ -261,14 +263,15 @@ class TermWidgetController {
       showOkDialogue(
           state.context,
           () => Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink),
-          StringConstant.contentLocked.tr());
+          content: StringConstant.contentLocked.tr());
       return;
     }
     TermLastAccessService termLastAccessService = Get.find();
     await Get.delete<TermData>();
     Get.put(termData);
     if (termData.term.type == TermType.term) {
-      await termLastAccessService.addTermLastAccessed(termData, termData);
+      await termLastAccessService.addTermLastAccessed(
+          Id(termData.term.id), Id(termData.term.id));
     }
     List<TermData> subTerms = await termService.getSubTerms(termData.term.id);
     List<TermTag> termsTags = await termTagService.getTermsTags(subTerms);
@@ -307,11 +310,12 @@ class TermWidgetController {
                 resourceTermId: Id(Get.find<TermData>(tag: 'source').term.id),
                 title: t.Title(termData.term.name),
                 termData: termData));
-            Navigator.pushNamed(state.context, QuestionsScreen.route);
+            state.context.go(QuestionsScreen.route);
           }
         } else {
           showOkDialogue(
-              state.context, () {}, StringConstant.youHaveToDownloadFirst.tr());
+              state.context, () {},
+              content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;
       default: //TODO implement other terms types

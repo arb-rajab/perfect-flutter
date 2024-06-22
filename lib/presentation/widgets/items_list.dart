@@ -5,12 +5,10 @@ import 'package:beta/presentation/widgets/list_controller.dart';
 import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/message_widget.dart';
 import 'package:beta/presentation/widgets/no_items_widget.dart';
-import 'package:beta/presentation/widgets/screen_wrapper_controller.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/instance_manager.dart';
 
 class ItemsList extends StatefulWidget {
   final ListController controller;

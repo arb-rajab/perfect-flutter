@@ -31,7 +31,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return ScreenWrapper(
         icon: NotificationsScreen.icon,
-        title: NotificationsScreen.title,
+        titleText: NotificationsScreen.title,
         child: ItemsList(controller: _controller));
   }
 }

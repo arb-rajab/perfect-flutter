@@ -1,5 +1,6 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:drift/drift.dart';
 
 class TermLastAccessService {
@@ -23,10 +24,10 @@ class TermLastAccessService {
   }
 
   //TODO add test
-  Future addTermLastAccessed(TermData parentTerm, TermData childTerm) =>
+  Future addTermLastAccessed(Id parentId, Id childId) =>
       databaseService.termsLastAccesses.insertOnConflictUpdate(TermsLastAccess(
-          parentTermId: parentTerm.term.id,
-          childId: childTerm.term.id,
+          parentTermId: parentId.value!,
+          childId: childId.value!,
           lastAccess: DateTime.now()));
 
   //TODO add test
@@ -39,4 +40,11 @@ class TermLastAccessService {
   //TODO add test
   Future<List<TermsLastAccess>> getAllTermLastAccesses() =>
       databaseService.select(databaseService.termsLastAccesses).get();
+
+  Future<TermsLastAccess> getTermLastAccess(int termId) =>
+      (databaseService.select(databaseService.termsLastAccesses)
+            ..where((tbl) => tbl.parentTermId.equals(termId))
+            ..orderBy([(tbl) => OrderingTerm.desc(tbl.lastAccess)])
+            ..limit(1))
+          .getSingle();
 }

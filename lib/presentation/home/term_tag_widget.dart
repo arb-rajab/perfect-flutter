@@ -4,7 +4,6 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
-import 'package:beta/domain/term_tag_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/presentation/home/term_tag_listing_controller.dart';
@@ -15,6 +14,7 @@ import 'package:beta/presentation/widgets/widget_wrapper_with_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class TermTagWidget extends StatelessWidget {
   final int index;
@@ -119,7 +119,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.search.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.favorite:
             Get.put(QuestionsScreenArgument(
@@ -129,7 +129,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.favorite.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.edited:
             Get.put(QuestionsScreenArgument(
@@ -139,7 +139,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.edited.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.easy:
             Get.put(QuestionsScreenArgument(
@@ -149,7 +149,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.easyQuestions.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.medium:
             Get.put(QuestionsScreenArgument(
@@ -159,7 +159,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.mediumQuestions.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.difficult:
             Get.put(QuestionsScreenArgument(
@@ -169,7 +169,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.difficultQuestions.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
           case TermTagButton.wrong:
             Get.put(QuestionsScreenArgument(
@@ -179,7 +179,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.wrongQuestions.tr())));
-            Navigator.pushNamed(context, QuestionsScreen.route);
+            context.go(QuestionsScreen.route);
             return;
         }
       },

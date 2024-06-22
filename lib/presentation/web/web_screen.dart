@@ -1,11 +1,11 @@
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class WebScreen extends StatefulWidget {
   static const String route = '/web';
@@ -30,22 +30,6 @@ class _WebScreenState extends State<WebScreen> {
 
   InAppWebViewController? webViewController;
 
-  // late WebViewController controller = WebViewController()
-  //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
-  //   ..setNavigationDelegate(
-  //     NavigationDelegate(
-  //         onProgress: (int progress) =>
-  //             setState(() => this.progress = progress.toDouble() / 100.0),
-  //         onWebResourceError: (error) {
-  //           showOkDialogue(
-  //               context, Navigator.of(context).pop, error.description);
-  //           setState(() {
-  //             this.error = true;
-  //           });
-  //         }),
-  //   )
-  //   ..loadRequest(webScreenArgument.uri);
-
   @override
   void dispose() {
     Get.delete<WebScreenArgument>();
@@ -55,7 +39,7 @@ class _WebScreenState extends State<WebScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-      title: webScreenArgument.title.value,
+      titleText: webScreenArgument.title.value,
       child: Column(
         children: [
           if (progress != 1)
@@ -74,7 +58,8 @@ class _WebScreenState extends State<WebScreen> {
               },
               onReceivedError: (controller, request, error) {
                 showOkDialogue(
-                    context, Navigator.of(context).pop, error.description);
+                    context, context.pop,
+                    content: error.description);
                 setState(() {
                   this.error = true;
                 });

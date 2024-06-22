@@ -29,6 +29,9 @@ class StringConstant {
   static const showAll = 'show-all';
   static const search = 'search';
   static const favorite = 'favorite';
+  static const send = 'send';
+  static const save = 'save';
+  static const delete = 'delete';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -91,6 +94,7 @@ class StringConstant {
   static const youCanInstead = '$_addCoupon.you-can-instead';
   static const activateFreeVersion = '$_addCoupon.activate-free-version';
   static const scanQrDescription = '$_addCoupon.scan-qr-description';
+  static const total = 'total';
 
   static const _contactUs = 'contact-us';
   static const contactUs = '$_contactUs.contact-us';
@@ -147,4 +151,42 @@ class StringConstant {
   static const difficultQuestions = '$_terms.difficult-questions';
   static const wrongQuestions = '$_terms.wrong-questions';
   static const youHaveToDownloadFirst = '$_terms.you-have-to-download-first';
+
+  static const _questions = 'questions';
+  static const showFavoriteOnly = '$_questions.show-favorite-only';
+  static const showEditedOnly = '$_questions.show-edited-only';
+  static const filterByQuestionTag = '$_questions.filter-by-question-tag';
+  static const solveQuestions = '$_questions.solve-questions';
+  static const correctQuestions = '$_questions.correct-questions';
+  static const resetQuestions = '$_questions.reset-questions';
+  static const timer = '$_questions.timer';
+  static const remainingTime = '$_questions.remaining-time';
+  static const timedTest = '$_questions.timed-test';
+  static const timedTestExplanation = '$_questions.timed-test-explanation';
+  static const youCantCorrectQuestions =
+      '$_questions.you-cant-correct-questions';
+  static const testFinished = '$_questions.test-finished';
+  static const testFinishedExplanation =
+      '$_questions.test-finished-explanation';
+  static const numberOfQuestions = '$_questions.number-of-questions';
+  static const chooseRightAnswer = '$_questions.choose-right-answer';
+  static const chooseCorrectAnswer = '$_questions.choose-correct-answer';
+  static const chooseWrongAnswer = '$_questions.choose-wrong-answer';
+  static const chooseDifferentAnswer = '$_questions.choose-different-answer';
+  static const chooseKeyAnswer = '$_questions.choose-key-answer';
+  static const aboutToMoveToTerm = '$_questions.about-to-move-to-term';
+  static const aboutToMoveToQuestionTag =
+      '$_questions.about-to-move-to-question-tag';
+  static const reportQuestion = '$_questions.report-question';
+  static const shareQuestion = '$_questions.share-question';
+  static const reportQuestionNumber = '$_questions.report-question-number';
+  static const questionTitle = '$_questions.question-title';
+  static const enterSuggestion = '$_questions.enter-suggestion';
+  static const shareQuestionBody = '$_questions.share-question-body';
+  static const enterNote = '$_questions.enter-note';
+  static const answered = '$_questions.answered';
+  static const correct = '$_questions.correct';
+  static const wrong = '$_questions.wrong';
+  static const confirmTemplateExistExplanation =
+      '$_questions.confirm-template-exist-explanation';
 }

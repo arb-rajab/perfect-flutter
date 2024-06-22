@@ -28,6 +28,8 @@ class NetworkService {
 
   static Dio dio = Dio(BaseOptions(connectTimeout: const Duration(minutes: 1)));
 
+  bool retryOnStartup = false;
+
   NetworkService(
     this.context, {
     required this.onPreConnect,

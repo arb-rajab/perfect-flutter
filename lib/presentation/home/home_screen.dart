@@ -3,7 +3,6 @@ import 'package:beta/constants/tutorial_constant.dart';
 import 'package:beta/main.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/home/browse_terms_tab.dart';
-import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/drawer_widget.dart';
 import 'package:beta/presentation/home/home_screen_controller.dart';
 import 'package:beta/presentation/home/new_terms_tab.dart';
@@ -14,10 +13,10 @@ import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/widgets/rectangle_widget.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
-import 'package:beta/presentation/widgets/screen_wrapper_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -78,11 +77,11 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       actions: [
         IconButton(
             onPressed: () =>
-                Navigator.pushNamed(context, NotificationsScreen.route),
+                context.go(NotificationsScreen.route),
             icon: const Icon(NotificationsScreen.icon)),
         IconButton(
           icon: const Icon(SettingsScreen.icon),
-          onPressed: () => Navigator.pushNamed(context, SettingsScreen.route),
+          onPressed: () => context.go(SettingsScreen.route),
         )
       ],
       drawer: const DrawerWidget(),
@@ -91,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           tooltip: EnterCouponScreen.title,
           heroTag: EnterCouponScreen.title,
           onPressed: () async {
-            await Navigator.pushNamed(context, EnterCouponScreen.route);
+            await context.push(EnterCouponScreen.route);
             Get.find<TermsListingController>().fetch!();
           },
           icon: const Icon(EnterCouponScreen.icon),

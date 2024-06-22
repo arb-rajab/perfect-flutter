@@ -21,6 +21,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
@@ -54,7 +55,7 @@ class _CouponsTile extends StatelessWidget {
       child: ListTile(
         leading: const Icon(CouponsScreen.icon),
         title: Hero(tag: CouponsScreen.title, child: Text(CouponsScreen.title)),
-        onTap: () => Navigator.pushNamed(context, CouponsScreen.route),
+        onTap: () => context.go(CouponsScreen.route),
       ),
     );
   }
@@ -191,7 +192,7 @@ class _ScanPrintedQRTile extends StatelessWidget {
               tag: PrintedQrScannerScreen.title,
               child: Text(PrintedQrScannerScreen.title)),
           onTap: () =>
-              Navigator.pushNamed(context, PrintedQrScannerScreen.route)),
+              context.go(PrintedQrScannerScreen.route)),
     );
   }
 }
@@ -206,7 +207,7 @@ class ContactUsTile extends StatelessWidget {
           leading: const Icon(ContactUsScreen.icon),
           title: Hero(
               tag: ContactUsScreen.title, child: Text(ContactUsScreen.title)),
-          onTap: () => Navigator.pushNamed(context, ContactUsScreen.route)),
+          onTap: () => context.go(ContactUsScreen.route)),
     );
   }
 }
@@ -223,7 +224,7 @@ class FrequestQuestionsTile extends StatelessWidget {
               tag: FrequentQuestionsScreen.title,
               child: Text(FrequentQuestionsScreen.title)),
           onTap: () =>
-              Navigator.pushNamed(context, FrequentQuestionsScreen.route)),
+              context.go(FrequentQuestionsScreen.route)),
     );
   }
 }
@@ -266,7 +267,7 @@ class WhatsNewDialogue extends StatelessWidget {
       ),
       actions: [
         TextButton(
-            onPressed: Navigator.of(context).pop,
+            onPressed: context.pop,
             child: Text(StringConstant.ok.tr()))
       ],
     );

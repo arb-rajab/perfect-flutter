@@ -4,6 +4,7 @@ import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/choose_term/drop_down_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TermQuestionsForm extends StatefulWidget {
   final List<TermQuestion> termQuestions;
@@ -51,7 +52,7 @@ class _TermQuestionsFormState extends State<TermQuestionsForm> {
           SingleChildScrollView(child: Column(children: termQuestionsWidgets)),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context, termQuestions),
+            onPressed: () => context.pop(termQuestions),
             child: Text(StringConstant.ok.tr()))
       ],
     ));

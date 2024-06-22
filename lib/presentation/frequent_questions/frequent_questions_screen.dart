@@ -29,7 +29,7 @@ class _FrequentQuestionsScreenState extends State<FrequentQuestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: FrequentQuestionsScreen.title,
+        titleText: FrequentQuestionsScreen.title,
         icon: FrequentQuestionsScreen.icon,
         child: ItemsList(controller: _controller));
   }

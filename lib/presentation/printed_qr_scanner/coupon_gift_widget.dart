@@ -7,6 +7,7 @@ import 'package:beta/presentation/printed_qr_scanner/coupon_with_copy_widget.dar
 import 'package:beta/presentation/printed_qr_scanner/warning_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 //TODO Apply test to check copying works and back press shows dialogue
 class CouponGiftWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class CouponGiftWidget extends StatelessWidget {
       onPopInvoked: (didPop) {
         if (!didPop) {
           showYesNoDialogueDialog(context,
-              onYesClicked: Navigator.of(context).pop,
+              onYesClicked: context.pop,
               onNoClicked: () {},
               title: StringConstant.confirmExist.tr(),
               description: StringConstant.haveYouCopiedCoupon.tr());

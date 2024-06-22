@@ -2,6 +2,7 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> showConfirmationDialog(BuildContext context, Function onConfirm,
     {Widget? content}) async {
@@ -38,16 +39,13 @@ class ConfirmDialogue extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
+            onPressed: context.pop,
             child: Text(StringConstant.cancel.tr()),
-            onPressed: () {
-              // Dismiss the dialog and return false
-              Navigator.of(context).pop();
-            },
           ),
           TextButton(
             child: Text(StringConstant.ok.tr()),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               onConfirm.call();
             },
           ),

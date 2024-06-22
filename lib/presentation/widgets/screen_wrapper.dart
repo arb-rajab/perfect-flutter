@@ -9,18 +9,20 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ScreenWrapper extends StatefulWidget {
   final Widget child;
-  final String? title;
+  final String? titleText;
+  final Widget? title;
   final IconData? icon;
   final Widget? bottomNavigationBar;
   final Widget? drawer;
   final List<Widget>? actions;
-  final FloatingActionButton? floatingActionButton;
+  final Widget? floatingActionButton;
   final List<TargetFocus> targets;
   final List<Tab> tabs;
 
   const ScreenWrapper(
       {super.key,
       required this.child,
+      this.titleText,
       this.title,
       this.bottomNavigationBar,
       this.icon,
@@ -113,18 +115,19 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
       length: widget.tabs.length,
       child: Scaffold(
           drawer: widget.drawer,
-          appBar: widget.title != null ||
+          appBar: widget.titleText != null ||
+                  widget.title != null ||
                   widget.drawer != null ||
                   widget.actions != null
               ? AppBar(
                   actions: widget.actions,
                   leading: widget.icon != null ? Icon(widget.icon) : null,
-                  title: widget.title != null
+                  title: widget.titleText != null
                       ? Hero(
-                          tag: widget.title!,
-                          child: Text(widget.title!),
+                          tag: widget.titleText!,
+                          child: Text(widget.titleText!),
                         )
-                      : null,
+                      : widget.title,
                   bottom: widget.tabs.isNotEmpty
                       ? TabBar(
                           tabs: widget.tabs,

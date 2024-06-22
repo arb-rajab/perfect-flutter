@@ -8,3 +8,4 @@ const double borderWidth = 10;
 const int alpha = 24;
 double opacity = alpha.toDouble() / 256;
 const Duration animationDuration = Durations.medium4;
+const double lineSpacing = 1.25;

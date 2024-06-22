@@ -30,7 +30,7 @@ class _CouponsScreenState extends State<CouponsScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: CouponsScreen.title,
+        titleText: CouponsScreen.title,
         icon: CouponsScreen.icon,
         child: ItemsList(controller: _controller));
   }

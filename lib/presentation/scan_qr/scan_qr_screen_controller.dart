@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanQrScreenController {
@@ -21,6 +22,6 @@ class ScanQrScreenController {
     if (barcode != null) return;
     final List<Barcode> barcodes = capture.barcodes;
     barcode = barcodes.first.rawValue!;
-    Navigator.pop(state.context, barcode);
+    state.context.pop(barcode);
   }
 }

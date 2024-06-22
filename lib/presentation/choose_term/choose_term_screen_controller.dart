@@ -36,6 +36,8 @@ import 'package:beta/presentation/widgets/list_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 
 class ChooseTermScreenController extends ListController {
   ChooseTermScreenController(state, {required this.argument})
@@ -181,10 +183,9 @@ class ChooseTermScreenController extends ListController {
                   CouponsLinkedToTerm(
                       couponId: argument.coupon.id, termId: term.term.id));
             }
-            Navigator.popUntil(
-                // ignore: use_build_context_synchronously
-                state.context,
-                ModalRoute.withName(HomeScreen.route));
+            if (state.mounted) {
+              GoRouter.of(state.context).popUntil(HomeScreen.route);
+            }
           },
           onConnectionFailed: () =>
               state.setState(() => message = StringConstant.noConnection.tr()),
@@ -292,5 +293,18 @@ class ChooseTermScreenController extends ListController {
     if (index == 0) return true;
     TermData previousTermData = items[index - 1];
     return currentTermData.path != previousTermData.path;
+  }
+}
+
+extension GoRouterExtension on GoRouter {
+  // Navigate back to a specific route
+  void popUntil(String ancestorPath) {
+    while (routerDelegate.currentConfiguration.matches.last.matchedLocation !=
+        ancestorPath) {
+      if (!canPop()) {
+        return;
+      }
+      pop();
+    }
   }
 }

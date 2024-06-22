@@ -6,6 +6,7 @@ import 'package:beta/presentation/printed_qr_scanner/congratulations_widget.dart
 import 'package:beta/presentation/printed_qr_scanner/warning_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 //TODO test if gift text is visible and back press shows dialogue
 class OtherGiftWidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class OtherGiftWidget extends StatelessWidget {
       onPopInvoked: (didPop) {
         if (!didPop) {
           showYesNoDialogueDialog(context,
-              onYesClicked: Navigator.of(context).pop,
+              onYesClicked: context.pop,
               onNoClicked: () {},
               title: StringConstant.confirmExist.tr(),
               description: StringConstant.haveYouRecievedGift.tr());

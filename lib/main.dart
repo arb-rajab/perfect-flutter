@@ -46,12 +46,12 @@ class MyApp extends StatelessWidget {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.linear(themeService.getScaleFactor())),
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: router,
         builder: DevicePreview.appBuilder,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        navigatorObservers: [routeObserver],
         title: 'Flutter Demo',
         // Theme config for FlexColorScheme version 7.3.x. Make sure you use
         // same or higher package version, but still same major version. If you
@@ -93,9 +93,6 @@ class MyApp extends StatelessWidget {
           // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
         themeMode: themeService.getThemeMode(),
-        routes: routes,
-        initialRoute: home == null ? SplashScreen.route : '/',
-        home: home,
       ),
     );
   }

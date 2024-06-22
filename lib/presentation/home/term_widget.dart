@@ -1,4 +1,4 @@
-import 'package:beta/configs/style.dart';
+
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/home/actions_widget.dart';

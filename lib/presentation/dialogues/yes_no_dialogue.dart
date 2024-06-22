@@ -2,6 +2,7 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> showYesNoDialogueDialog(BuildContext context,
     {required Function onYesClicked,
@@ -48,14 +49,14 @@ class YesNoDialogue extends StatelessWidget {
           TextButton(
             child: Text(StringConstant.no.tr()),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               onNoClicked.call();
             },
           ),
           TextButton(
             child: Text(StringConstant.yes.tr()),
             onPressed: () {
-              Navigator.of(context).pop();
+              context.pop();
               onYesClicked.call();
             },
           ),

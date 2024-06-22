@@ -11,6 +11,9 @@ class InputWidget extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final String? error;
+  final int? maxLines;
+  final int? minLines;
+
   const InputWidget(
       {super.key,
       required this.label,
@@ -19,6 +22,8 @@ class InputWidget extends StatefulWidget {
       required this.controller,
       this.inputFormatters,
       this.validator,
+      this.maxLines = 1,
+      this.minLines,
       this.error});
   @override
   State<StatefulWidget> createState() => _InputWidgetState();
@@ -45,6 +50,8 @@ class _InputWidgetState extends State<InputWidget> {
             inputFormatters: widget.inputFormatters,
             keyboardType: widget.keyboardType,
             controller: widget.controller,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
             decoration: InputDecoration(
               errorText: widget.error,
               suffixIcon: widget.obscureText

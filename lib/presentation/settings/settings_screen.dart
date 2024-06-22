@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        title: title,
+        titleText: title,
         icon: icon,
         child: ListView(
           children: const [

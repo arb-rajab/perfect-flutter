@@ -6,6 +6,7 @@ import 'package:beta/presentation/dialogues/changes_applied_upon_restart_dialogu
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectThemeWidget extends StatefulWidget {
   const SelectThemeWidget({super.key});
@@ -26,7 +27,7 @@ class _SelectThemeWidgetState extends State<SelectThemeWidget> {
 
   void _selectTheme(ThemeMode themeMode) {
     _themeService.setThemeMode(themeMode);
-    Navigator.of(context).pop();
+    context.pop();
     setState(() {
       _selectedTheme = _themeService.getThemeString();
     });

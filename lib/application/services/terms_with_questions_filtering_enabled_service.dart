@@ -1,6 +1,7 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:drift/drift.dart';
 
 class TermsWithQuestionsFilteringEnabledService {
@@ -34,9 +35,9 @@ class TermsWithQuestionsFilteringEnabledService {
       });
 
   //TODO add test
-  Future<bool> isTermWithQuestionFilteringEnabled(TermData termData) async {
+  Future<bool> isTermWithQuestionFilteringEnabled(Id termId) async {
     int count = await databaseService.termsWithQuestionsFilteringEnabled
-        .count(where: (row) => row.termId.equals(termData.term.id))
+        .count(where: (row) => row.termId.equals(termId.value!))
         .getSingle();
     return count > 0;
   }

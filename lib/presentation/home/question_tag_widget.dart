@@ -17,6 +17,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class QuestionTagWidget extends StatefulWidget {
   final int index;
@@ -73,27 +74,31 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
     }
   }
 
-  Future startQuestionTagQuiz(
-          QuestionTagData questionTagData, TermData termData) =>
-      Navigator.pushNamed(context, QuestionsScreen.route,
-          arguments: QuestionsScreenArgument(
-              query:
-                  "q.id in (select questionId from questionsLinkedToTags where tagId ='${questionTagData.questionTag.id}') and q.parentTermId in (select termId from termTrees where parentTermId = '${termData.term.id}' and depth>0) order by q.id asc ",
-              source: QuestionScreenSource.questionTag,
-              sourceId: Id(questionTagData.questionTag.id),
-              title: t.Title(questionTagData.questionTag.name),
-              resourceTermId: Id(termData.term.id)));
+  void startQuestionTagQuiz(
+      QuestionTagData questionTagData, TermData termData) {
+    Get.delete<QuestionsScreenArgument>();
+    Get.put(QuestionsScreenArgument(
+        query:
+            "q.id in (select questionId from questionsLinkedToTags where tagId ='${questionTagData.questionTag.id}') and q.parentTermId in (select termId from termTrees where parentTermId = '${termData.term.id}' and depth>0) order by q.id asc ",
+        source: QuestionScreenSource.questionTag,
+        sourceId: Id(questionTagData.questionTag.id),
+        title: t.Title(questionTagData.questionTag.name),
+        resourceTermId: Id(termData.term.id)));
+    context.go(QuestionsScreen.route);
+  }
 
-  Future startQuestionTagOtherQuestionsQuiz(
-          QuestionTagData questionTagData, TermData termData) =>
-      Navigator.pushNamed(context, QuestionsScreen.route,
-          arguments: QuestionsScreenArgument(
-              query:
-                  "q.id in (select questionId from questionsLinkedToTags where tagId ='${questionTagData.questionTag.id}') and q.id not in (select questionId from questionsLinkedToTags where tagId in (select id from questionTags where parentTagId='${questionTagData.questionTag.id}')) and q.parentTermId in (select termId from termTrees where parentTermId = '${termData.term.id}') order by q.id asc ",
-              source: QuestionScreenSource.questionTag,
-              sourceId: Id(questionTagData.questionTag.id),
-              title: t.Title(questionTagData.questionTag.name),
-              resourceTermId: Id(termData.term.id)));
+  void startQuestionTagOtherQuestionsQuiz(
+      QuestionTagData questionTagData, TermData termData) {
+    Get.delete<QuestionsScreenArgument>();
+    Get.put(QuestionsScreenArgument(
+        query:
+            "q.id in (select questionId from questionsLinkedToTags where tagId ='${questionTagData.questionTag.id}') and q.id not in (select questionId from questionsLinkedToTags where tagId in (select id from questionTags where parentTagId='${questionTagData.questionTag.id}')) and q.parentTermId in (select termId from termTrees where parentTermId = '${termData.term.id}') order by q.id asc ",
+        source: QuestionScreenSource.questionTag,
+        sourceId: Id(questionTagData.questionTag.id),
+        title: t.Title(questionTagData.questionTag.name),
+        resourceTermId: Id(termData.term.id)));
+    context.go(QuestionsScreen.route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,29 +180,8 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
       trailing: questionTagData != null &&
               questionTagData!.questionTag.hasInformation != 0
           ? IconButton(
-              onPressed: () {
-                Connectivity().checkConnectivity().then((value) {
-                  bool connected = false;
-                  if (value.contains(ConnectivityResult.mobile) ||
-                      value.contains(ConnectivityResult.wifi)) {
-                    connected = true;
-                  } else {
-                    connected = false;
-                  }
-                  Get.delete<WebScreenArgument>();
-                  Get.put(WebScreenArgument(
-                      connected: connected,
-                      uri: Uri.parse(ApiConstant.questionTagInformation
-                          .replaceFirst('(QUESTION_TAG_ID)',
-                              questionTagData!.questionTag.id.toString())
-                          .replaceFirst(
-                              '(IME1)', Get.find<DeviceRepository>().ime1)
-                          .replaceFirst(
-                              '(LANGUAGE)', context.locale.languageCode)),
-                      title: t.Title(questionTagData!.questionTag.name)));
-                  Navigator.pushNamed(context, WebScreen.route);
-                });
-              },
+              onPressed: () => questionTagService.openQuestionTagInformation(
+                  questionTag: questionTagData!.questionTag, context: context),
               icon: const Icon(Icons.article))
           : null,
     ));

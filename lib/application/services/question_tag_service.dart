@@ -1,7 +1,17 @@
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/constants/api_constant.dart';
 import 'package:beta/domain/question_tag_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/id.dart';
+import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/domain/value/number_of_sub_terms.dart';
+import 'package:beta/infrastructure/device_repository.dart';
+import 'package:beta/presentation/web/web_screen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class QuestionTagService {
   final DatabaseService databaseService;
@@ -71,4 +81,36 @@ class QuestionTagService {
                   .toList())
               .first)
           .first;
+
+  //TODO add test
+  Future<List<QuestionTag>> getQuestionTags(Id questionId) =>
+      (databaseService.select(databaseService.questionTags)
+            ..where((tbl) => tbl.id.isInQuery(databaseService
+                .selectOnly(databaseService.questionsLinkedToTags)
+              ..addColumns([databaseService.questionsLinkedToTags.tagId])
+              ..where(databaseService.questionsLinkedToTags.questionId
+                  .equals(questionId.value!)))))
+          .get();
+
+  void openQuestionTagInformation(
+      {required QuestionTag questionTag, required BuildContext context}) {
+    Connectivity().checkConnectivity().then((value) {
+      bool connected = false;
+      if (value.contains(ConnectivityResult.mobile) ||
+          value.contains(ConnectivityResult.wifi)) {
+        connected = true;
+      } else {
+        connected = false;
+      }
+      Get.delete<WebScreenArgument>();
+      Get.put(WebScreenArgument(
+          connected: connected,
+          uri: Uri.parse(ApiConstant.questionTagInformation
+              .replaceFirst('(QUESTION_TAG_ID)', questionTag.id.toString())
+              .replaceFirst('(IME1)', Get.find<DeviceRepository>().ime1)
+              .replaceFirst('(LANGUAGE)', context.locale.languageCode)),
+          title: t.Title(questionTag.name)));
+      context.go(WebScreen.route);
+    });
+  }
 }
