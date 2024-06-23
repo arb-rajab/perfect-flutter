@@ -5,6 +5,7 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/domain/value/number_of_sub_terms.dart';
+import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/presentation/web/web_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -94,17 +95,11 @@ class QuestionTagService {
 
   void openQuestionTagInformation(
       {required QuestionTag questionTag, required BuildContext context}) {
-    Connectivity().checkConnectivity().then((value) {
-      bool connected = false;
-      if (value.contains(ConnectivityResult.mobile) ||
-          value.contains(ConnectivityResult.wifi)) {
-        connected = true;
-      } else {
-        connected = false;
-      }
+    ConnectionRepository connectionRepository = Get.find();
+    connectionRepository.isConnected().then((value) {
       Get.delete<WebScreenArgument>();
       Get.put(WebScreenArgument(
-          connected: connected,
+          connected: value,
           uri: Uri.parse(ApiConstant.questionTagInformation
               .replaceFirst('(QUESTION_TAG_ID)', questionTag.id.toString())
               .replaceFirst('(IME1)', Get.find<DeviceRepository>().ime1)

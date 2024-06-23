@@ -11,7 +11,7 @@ import 'package:beta/presentation/home/question_tag_listing_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/web/web_screen.dart';
-import 'package:beta/presentation/widgets/animated_Counter.dart';
+import 'package:beta/presentation/widgets/animated_counter.dart';
 import 'package:beta/presentation/widgets/widget_wrapper_with_border.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';

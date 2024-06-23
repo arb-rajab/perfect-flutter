@@ -19,6 +19,7 @@ import 'package:beta/domain/answer_data.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/questions/questions_list.dart';
@@ -32,7 +33,6 @@ import 'package:get/get_navigation/src/root/parse_route.dart';
 import 'package:get/instance_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:screen_protector/screen_protector.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class QuestionsController {
@@ -61,6 +61,7 @@ class QuestionsController {
   AnswerPropertyService answerPropertyService = Get.find();
   TermLastAccessService termLastAccessService = Get.find();
   QuestionTagPropertyService questionTagPropertyService = Get.find();
+  ScreenshotRepository screenshotRepository = Get.find();
 
   ItemScrollController itemScrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
@@ -69,15 +70,15 @@ class QuestionsController {
     if (questionsScreenArgument.query != null) {
       query = preQuery + questionsScreenArgument.query!;
     }
-    _configureArgument().then((v) => _configureScreenShots);
+    _configureArgument().then((v) => configureScreenShots);
   }
 
-  _configureScreenShots() {
+  configureScreenShots() {
     if (!kReleaseMode) return;
     if (questionsScreenArgument.source != QuestionScreenSource.term) {
-      ScreenProtector.preventScreenshotOn();
+      screenshotRepository.preventScreenshot();
     } else if (term!.captureable == 0) {
-      ScreenProtector.preventScreenshotOn();
+      screenshotRepository.preventScreenshot();
     }
   }
 
@@ -436,7 +437,7 @@ class QuestionsController {
 
   void dispose() {
     _updateLastAccess;
-    ScreenProtector.preventScreenshotOff;
+    screenshotRepository.allowScreenshot;
     timer.cancel;
     _uploadCheckedAnswers;
   }

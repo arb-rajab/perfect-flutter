@@ -2,6 +2,7 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
+import 'package:beta/main.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/questions/questions_header.dart';
 import 'package:beta/presentation/widgets/custom_list_view.dart';
@@ -24,7 +25,7 @@ class QuestionsScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _QuestionsScreenState();
 }
 
-class _QuestionsScreenState extends State<QuestionsScreen> {
+class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
   late QuestionsController questionsController;
   @override
   void initState() {
@@ -33,6 +34,15 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         Get.put(QuestionsController(this)..questionUUID = widget.uuid);
     super.initState();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void didPopNext() => questionsController.configureScreenShots;
 
   @override
   void dispose() {

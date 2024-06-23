@@ -5,6 +5,7 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/domain/answer_data.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/user_note_dialogue.dart';
 import 'package:beta/presentation/question_medias/question_medias_screen.dart';

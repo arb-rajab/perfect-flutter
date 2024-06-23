@@ -27,10 +27,12 @@ import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
+import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
@@ -56,6 +58,8 @@ class MainController {
         Get.put(await FirebaseRepository().initialise());
     Get.put(keyValue);
     Get.put(UrlLauncherRepository());
+    Get.put(ScreenshotRepository());
+    Get.put(ConnectionRepository());
     DatabaseService databaseService = DatabaseService(
         packageRepository: packageRepository,
         deviceRepository: deviceRepository);

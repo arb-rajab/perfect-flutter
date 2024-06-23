@@ -1,5 +1,5 @@
 import 'package:beta/domain/term_data.dart';
-import 'package:beta/presentation/widgets/animated_Counter.dart';
+import 'package:beta/presentation/widgets/animated_counter.dart';
 import 'package:flutter/material.dart';
 
 //TODO add test
