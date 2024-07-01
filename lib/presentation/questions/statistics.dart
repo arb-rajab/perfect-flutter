@@ -1,18 +1,16 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/domain/question_statistic.dart';
 import 'package:beta/presentation/questions/indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Statistics extends StatefulWidget {
-  final int total, answered, correct, wrong;
+  final QuestionStatistic questionStatistic;
   const Statistics(
       {super.key,
-      required this.total,
-      required this.answered,
-      required this.correct,
-      required this.wrong});
+      required this.questionStatistic});
 
   @override
   State<StatefulWidget> createState() => _StatisticState();
@@ -144,9 +142,11 @@ class _StatisticState extends State<Statistics> {
         case 0:
           return PieChartSectionData(
             color: Theme.of(context).primaryColor,
-            value: widget.answered * 100 / widget.total,
+            value: widget.questionStatistic.answered *
+                100 /
+                widget.questionStatistic.total,
             title:
-                '${widget.answered * 100 / widget.total}% (${widget.answered}/${widget.total})',
+                '${widget.questionStatistic.answered * 100 / widget.questionStatistic.total}% (${widget.questionStatistic.answered}/${widget.questionStatistic.total})',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -171,9 +171,11 @@ class _StatisticState extends State<Statistics> {
         case 0:
           return PieChartSectionData(
             color: Colors.green,
-            value: widget.correct * 100 / widget.total,
+            value: widget.questionStatistic.correct *
+                100 /
+                widget.questionStatistic.total,
             title:
-                '${widget.correct * 100 / widget.total}% (${widget.correct}/${widget.total})',
+                '${widget.questionStatistic.correct * 100 / widget.questionStatistic.total}% (${widget.questionStatistic.correct}/${widget.questionStatistic.total})',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -185,9 +187,11 @@ class _StatisticState extends State<Statistics> {
         case 1:
           return PieChartSectionData(
             color: Colors.red,
-            value: widget.wrong * 100 / widget.total,
+            value: widget.questionStatistic.wrong *
+                100 /
+                widget.questionStatistic.total,
             title:
-                '${widget.wrong * 100 / widget.total}% (${widget.wrong}/${widget.total})',
+                '${widget.questionStatistic.wrong * 100 / widget.questionStatistic.total}% (${widget.questionStatistic.wrong}/${widget.questionStatistic.total})',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,

@@ -32,6 +32,7 @@ class StringConstant {
   static const send = 'send';
   static const save = 'save';
   static const delete = 'delete';
+  static const seconds = 'seconds';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -189,4 +190,11 @@ class StringConstant {
   static const wrong = '$_questions.wrong';
   static const confirmTemplateExistExplanation =
       '$_questions.confirm-template-exist-explanation';
+
+  static const _quizReport = 'quiz-report';
+  static const quizReport = '$_quizReport.quiz-report';
+  static const expectedMarkPercent = '$_quizReport.expected-mark-percent';
+  static const timePerQuestion = '$_quizReport.time-per-question';
+  static const noTagsQuestions = '$_quizReport.no-tags-questions';
+  static const unknownTag = '$_quizReport.unknown-tag';
 }

@@ -259,31 +259,11 @@ class QuestionsController {
     if (showStatistics) _showStatistics();
   }
 
-  void _showStatistics() {
-    int correctAnswers = 0, wrongAnswers = 0, answeredAnswers = 0;
-    for (QuestionData questionData in questions) {
-      bool correct = true, answered = false;
-      for (AnswerData answerData in questionData.answers) {
-        if (answerData.isChecked()) answered = true;
-        if ((answerData.isChecked() && !(answerData.answer.isCorrect == 1)) ||
-            (!answerData.isChecked() && answerData.answer.isCorrect == 1)) {
-          correct = false;
-        }
-      }
-      if (answered) answeredAnswers++;
-      if (correct) {
-        correctAnswers++;
-      } else {
-        wrongAnswers++;
-      }
-    }
+  void _showStatistics() =>
     showOkDialogue(state.context, () {},
         contentWidget: Statistics(
-            total: questions.length,
-            answered: answeredAnswers,
-            correct: correctAnswers,
-            wrong: wrongAnswers));
-  }
+        questionStatistic: QuestionData.getStatistics(questions),
+      ));
 
   Future resetQuestions() async {
     for (QuestionData questionData in questions) {

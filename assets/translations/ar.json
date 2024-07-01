@@ -32,6 +32,7 @@
     "save": "حفظ",
     "delete": "حذف",
     "total": "الكلي",
+    "seconds": "(SECONDS) ثانية",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -163,5 +164,12 @@
         "correct": "الصحيحة",
         "wrong": "الخاطئة",
         "confirm-template-exist-explanation": "هل أنت متأكد أنك تريدالخروج ومغادرة الامتحان؟ في حال الموافقة سيتم عرض نتيجة الامتحان"
+    },
+    "quiz-report": {
+        "quiz-report": "تقرير الامتحان",
+        "expected-mark-percent": "العلامة المتوقعة",
+        "time-per-question": "متوسط الوقت المستغرق لكل سؤال",
+        "no-tags-questions": "أسئلة بلا تصنيف",
+        "unknown-tag": "تصنيف غير معروف"
     }
 }

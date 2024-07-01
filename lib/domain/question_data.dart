@@ -3,6 +3,7 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/domain/answer_data.dart';
+import 'package:beta/domain/question_statistic.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:drift/drift.dart';
 import 'package:get/instance_manager.dart';
@@ -177,4 +178,29 @@ class QuestionData {
 
   @override
   int get hashCode => Object.hash(question, answers);
+
+  static QuestionStatistic getStatistics(List<QuestionData> questions) {
+    int correctAnswers = 0, wrongAnswers = 0, answeredAnswers = 0;
+    for (QuestionData questionData in questions) {
+      bool correct = true, answered = false;
+      for (AnswerData answerData in questionData.answers) {
+        if (answerData.isChecked()) answered = true;
+        if ((answerData.isChecked() && !(answerData.answer.isCorrect == 1)) ||
+            (!answerData.isChecked() && answerData.answer.isCorrect == 1)) {
+          correct = false;
+        }
+      }
+      if (answered) answeredAnswers++;
+      if (correct) {
+        correctAnswers++;
+      } else {
+        wrongAnswers++;
+      }
+    }
+    return QuestionStatistic(
+        correct: correctAnswers,
+        wrong: wrongAnswers,
+        total: questions.length,
+        answered: answeredAnswers);
+  }
 }
