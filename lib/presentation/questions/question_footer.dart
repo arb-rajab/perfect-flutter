@@ -10,11 +10,11 @@ import 'footer_icons.dart';
 
 class QuestionFooter extends StatelessWidget {
   final QuestionData questionData;
-  const QuestionFooter({super.key, required this.questionData});
+  final QuestionsController questionsController = Get.find();
+  QuestionFooter({super.key, required this.questionData});
 
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
     bool isTemplate = questionsController.term != null &&
         questionsController.term!.type == TermType.template;
     return Padding(

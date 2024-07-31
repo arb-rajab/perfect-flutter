@@ -10,16 +10,16 @@ class QuestionMediaController {
   int page = 0;
 
   QuestionMediaController(this.state) {
-    _preventScreenshot;
+    _preventScreenshot();
     questionMediasScreenArgument = Get.find();
   }
 
-  void _preventScreenshot() => screenshotRepository.preventScreenshot;
+  void _preventScreenshot() => screenshotRepository.preventScreenshot();
 
-  void _allowScreenshot() => screenshotRepository.allowScreenshot;
+  void _allowScreenshot() => screenshotRepository.allowScreenshot();
 
   void dispose() {
-    _allowScreenshot;
+    _allowScreenshot();
   }
 
   // ignore: invalid_use_of_protected_member

@@ -2,6 +2,7 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/coupons/coupons_controller.dart';
+import 'package:beta/presentation/widgets/copy_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -24,6 +25,7 @@ class CouponWidget extends StatelessWidget {
       child: ListTile(
         title: Text(coupon.serial),
         leading: const Icon(Icons.credit_card),
+        trailing: CopyWidget(content: coupon.serial),
         subtitle: coupon.activationDate != null
             ? (difference < 0
                 ? Text(StringConstant.couponExpired.tr(),

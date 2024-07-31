@@ -1,12 +1,10 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
-import 'package:beta/presentation/dialogues/success_dialogue.dart';
+import 'package:beta/presentation/widgets/copy_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CouponWithCopy extends StatelessWidget {
   final String coupon;
-  static const IconData copyIcon = Icons.copy;
 
   const CouponWithCopy(this.coupon, {super.key});
 
@@ -18,16 +16,7 @@ class CouponWithCopy extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            GestureDetector(
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: coupon));
-                showSuccessDialogue(context);
-              },
-              child: const Icon(
-                copyIcon,
-                size: 35,
-              ),
-            ),
+            CopyWidget(content: coupon),
             Text(
               coupon,
               style: Theme.of(context).textTheme.bodyLarge,

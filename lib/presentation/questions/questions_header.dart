@@ -4,6 +4,7 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/questions/question_tags_choice.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
+import 'package:beta/presentation/widgets/custom_check_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -11,7 +12,7 @@ import 'package:get/instance_manager.dart';
 import 'level_group.dart';
 
 class QuestionsHeader extends StatelessWidget {
-  const QuestionsHeader({super.key});
+  QuestionsHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +20,15 @@ class QuestionsHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: halfMargin),
       child: Column(
         children: [
-          Text(
-            Get.find<QuestionsController>()
-                .questionsScreenArgument
-                .title
-                .value!,
-            style: Theme.of(context).textTheme.headlineMedium,
+          NumberOfQuestions(),
+          Row(
+            children: [
+              ShowFavoriteOnly(),
+              ShowEditedOnly(),
+            ],
           ),
-          const NumberOfQuestions(),
-          const ShowFavoriteOnly(),
-          const ShowEditedOnly(),
-          const QuestionTagsChoice(),
-          LevelGroup(),
-          const TermName()
+          QuestionTagsChoice(),
+          LevelGroup()
         ],
       ),
     );
@@ -40,11 +37,10 @@ class QuestionsHeader extends StatelessWidget {
 
 //TODO add test
 class NumberOfQuestions extends StatelessWidget {
-  const NumberOfQuestions({super.key});
-
+  NumberOfQuestions({super.key});
+  final QuestionsController questionsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
     return Padding(
         padding: const EdgeInsets.only(
             top: margin, left: halfMargin, right: halfMargin),
@@ -58,16 +54,13 @@ class NumberOfQuestions extends StatelessWidget {
 
 //TODO add test
 class ShowFavoriteOnly extends StatelessWidget {
-  const ShowFavoriteOnly({super.key});
+  ShowFavoriteOnly({super.key});
+  final QuestionsController questionsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
-    return CheckboxListTile(
-        title: Text(
-          StringConstant.showFavoriteOnly.tr(),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        value: questionsController.isFavoriteOnly(),
+    return CustomCheckbox(
+        label: StringConstant.showFavoriteOnly.tr(),
+        checked: questionsController.isFavoriteOnly(),
         onChanged: (value) {
           questionsController.questionFilters
               .remove(questionsController.favoriteFilter);
@@ -83,16 +76,13 @@ class ShowFavoriteOnly extends StatelessWidget {
 
 //TODO add test
 class ShowEditedOnly extends StatelessWidget {
-  const ShowEditedOnly({super.key});
+  ShowEditedOnly({super.key});
+  final QuestionsController questionsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
-    return CheckboxListTile(
-        title: Text(
-          StringConstant.showEditedOnly.tr(),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        value: questionsController.isEditedOnly(),
+    return CustomCheckbox(
+        label: StringConstant.showEditedOnly.tr(),
+        checked: questionsController.isEditedOnly(),
         onChanged: (value) {
           questionsController.questionFilters
               .remove(questionsController.editedFilter);
@@ -103,25 +93,5 @@ class ShowEditedOnly extends StatelessWidget {
             }
           });
         });
-  }
-}
-
-class TermName extends StatelessWidget {
-  const TermName({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
-    if (questionsController.term != null) {
-      return Padding(
-        padding: const EdgeInsets.only(
-            top: margin, left: halfMargin, right: halfMargin),
-        child: Text(
-          questionsController.term!.name,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-      );
-    }
-    return Container();
   }
 }

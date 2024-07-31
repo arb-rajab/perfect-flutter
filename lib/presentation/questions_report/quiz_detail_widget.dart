@@ -39,21 +39,21 @@ class QuizDetailWidget extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                  flex: correct,
                   child: Text(
                     correct.toString(),
+                textAlign: TextAlign.center,
                     style: TextStyle(color: ColorConstant.darkGreen),
                   )),
               Expanded(
-                  flex: wrong,
                   child: Text(
                     wrong.toString(),
+                textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.red),
                   )),
               Expanded(
-                  flex: unanswered,
                   child: Text(
                     unanswered.toString(),
+                textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.grey),
                   ))
             ],

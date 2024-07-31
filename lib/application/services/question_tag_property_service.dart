@@ -26,12 +26,17 @@ class QuestionTagPropertyService {
           .insertOnConflictUpdate(QuestionTagProperty(
               questionTagId: questionTagId.value!, name: name, value: value));
 
-  Future<QuestionTagProperty> getQuestionTagProperty(
+  Future<QuestionTagProperty?> getQuestionTagProperty(
           int questionTagId, String name) =>
       (databaseService.select(databaseService.questionTagProperties)
             ..where((tbl) => Expression.and([
                   tbl.questionTagId.equals(questionTagId),
                   tbl.name.equals(name)
-                ])))
-          .getSingle();
+                ]))
+            ..limit(1))
+          .get()
+          .then((value) {
+        if (value.isEmpty) return null;
+        return value.first;
+      });
 }

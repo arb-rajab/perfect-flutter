@@ -11,6 +11,7 @@ class NewTermsTabController extends TermsController {
   NewTermsTabController(State state) : super(state: state) {
     termsListingController = Get.find();
     termsListingController.fetch = fetch;
+    termsListingController.showLoadMore = true;
   }
 
   @override
@@ -19,7 +20,8 @@ class NewTermsTabController extends TermsController {
     if (superData.isNotEmpty) return Future.value(superData);
     TermService termService = Get.find();
     List<TermData> terms;
-    terms = await termService.getNewTerms();
-    return Future.value(terms);
+    terms = await termService.getNewTerms(
+        limit: 10, offset: termsListingController.items.length);
+    return Future.value([...termsListingController.items,...terms]);
   }
 }

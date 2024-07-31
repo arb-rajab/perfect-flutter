@@ -127,4 +127,7 @@ class TermType {
 
   static bool hasFile(TermData termData) =>
       [ebook, voiceNotes].contains(termData.term.type);
+
+  static bool hasContent(TermData termData) =>
+      [questions, template, flashcards].contains(termData.term.type);
 }

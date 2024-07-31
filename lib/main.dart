@@ -2,7 +2,6 @@ import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/main_controller.dart';
-import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';

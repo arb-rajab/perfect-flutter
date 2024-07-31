@@ -33,6 +33,7 @@
     "delete": "حذف",
     "total": "الكلي",
     "seconds": "(SECONDS) ثانية",
+    "data-loaded-successfully": "تم تحميل البيانات",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -132,8 +133,8 @@
         "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً"
     },
     "questions": {
-        "show-favorite-only": "عرض المفضلة فقط",
-        "show-edited-only": "عرض المصححة فقط",
+        "show-favorite-only": "المفضلة فقط",
+        "show-edited-only": "المصححة فقط",
         "filter-by-question-tag": "فلترة حسب التصنيفات",
         "solve-questions": "حل الأسئلة",
         "correct-questions": "تصحيح الأجوبة",
@@ -163,7 +164,8 @@
         "answered": "المجابة",
         "correct": "الصحيحة",
         "wrong": "الخاطئة",
-        "confirm-template-exist-explanation": "هل أنت متأكد أنك تريدالخروج ومغادرة الامتحان؟ في حال الموافقة سيتم عرض نتيجة الامتحان"
+        "confirm-template-exist-explanation": "هل أنت متأكد أنك تريدالخروج ومغادرة الامتحان؟ في حال الموافقة سيتم عرض نتيجة الامتحان",
+        "editted-on": "تم التعديل بتاريخ (DATE)"
     },
     "quiz-report": {
         "quiz-report": "تقرير الامتحان",

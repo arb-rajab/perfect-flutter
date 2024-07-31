@@ -71,9 +71,10 @@ class TermService {
           .write(const TermsCompanion(needsUpdate: Value(1)));
 
   Future<List<TermData>> _queryTerms(String query,
-          {String orderByClaus = _termsOrderClause}) =>
+          {String orderByClaus = _termsOrderClause, int? limit, int? offset}) =>
       databaseService
-          .customSelect("$_termsSelectClause $query $orderByClaus")
+          .customSelect(
+              "$_termsSelectClause $query $orderByClaus ${limit != null ? 'limit $limit' : ''} ${offset != null ? 'offset $offset' : ''}")
           .watch()
           .map((rows) => rows
               .map(
@@ -114,18 +115,26 @@ class TermService {
   Future<List<TermData>> getTermRelatedTerms(TermData termData) => _queryTerms(
       "t.id in (select termId from relatedTerms where anotherTermId=${termData.term.id}) or t.id in (select anotherTermId from relatedTerms where termId=${termData.term.id})");
 
-  Future<List<TermData>> getRecentTerms() => databaseService
+  Future<
+      List<
+          TermData>> getRecentTerms({int? limit, int? offset}) => databaseService
       .customSelect(
-          "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) inner join termsLastAccess on termsLastAccess.parentTermId=t.id  where t.type!=0 group by t.id order by termsLastAccess.lastAccess desc limit 10 ")
+          "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) inner join termsLastAccess on termsLastAccess.parentTermId=t.id  where t.type!=0 group by t.id order by termsLastAccess.lastAccess desc ${limit != null ? 'limit $limit' : ''} ${offset != null ? 'offset $offset' : ''}")
       .watch()
       .map((rows) => rows.map((row) => TermData.fromMap(row)).toList())
       .first;
 
-  Future<List<TermData>> getNewTerms() => _queryTerms(
-      "t.id not in (select parentTermId from termsLastAccess) and t.type!=0");
+  Future<List<TermData>> getNewTerms({int? limit, int? offset}) => _queryTerms(
+      "t.id not in (select parentTermId from termsLastAccess) and t.type!=0",
+      limit: limit,
+      offset: offset);
 
-  Future<List<TermData>> getUnstudiedTerms() => _queryTerms(
-      "t.id not in (select termId from termProperties where name='studied') and type!=0");
+  Future<
+      List<
+          TermData>> getUnstudiedTerms({int? limit, int? offset}) => _queryTerms(
+      "t.id not in (select termId from termProperties where name='studied') and type!=0",
+      limit: limit,
+      offset: offset);
 
   Future<Term> getTermById(Id sourceId) =>
       (databaseService.select(databaseService.terms)
@@ -140,4 +149,31 @@ class TermService {
                   ..where(databaseService.questions.uuid.equals(uuid))
                   ..limit(1)))))
           .getSingle();
+
+  Future deleteTermContent(Term term) async {
+    List<int> termIds = await (databaseService.select(databaseService.termTrees)
+          ..where((tbl) => tbl.parentTermId.equals(term.id)))
+        .map((row) => row.termId)
+        .get();
+    List<int> questionIds =
+        await (databaseService.select(databaseService.questions)
+              ..where((question) => question.parentTermId.isIn(termIds)))
+            .map((row) => row.id)
+            .get();
+    await (databaseService.delete(databaseService.answers)
+          ..where((answer) => answer.parentQuestionId.isIn(questionIds)))
+        .go();
+    await (databaseService.delete(databaseService.flashcards)
+          ..where((flashcard) => flashcard.parentTermId.isIn(termIds)))
+        .go();
+    await (databaseService.delete(databaseService.questionsLinkedToTags)
+          ..where((tbl) => tbl.questionId.isIn(questionIds)))
+        .go();
+    await (databaseService.delete(databaseService.questionMedias)
+          ..where((media) => media.parentQuestionId.isIn(questionIds)))
+        .go();
+    await (databaseService.delete(databaseService.questions)
+          ..where((tbl) => tbl.id.isIn(questionIds)))
+        .go();
+  }
 }

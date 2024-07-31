@@ -15,7 +15,7 @@ class QuestionsReportController {
     questionsWithNoQuestionsTagsExists = questionsReportScreenArgument.questions
         .where((element) => element.questionTags.isEmpty)
         .isNotEmpty;
-    _configureQuestionTagList;
+    _configureQuestionTagList();
   }
 
   _configureQuestionTagList() {

@@ -76,7 +76,7 @@ class EnterCouponScreenController {
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: terms, free: free, couponType: couponType));
     if (state.mounted) {
-      state.context.go(ChooseTermScreen.route);
+      state.context.push(ChooseTermScreen.route);
     }
   }
 

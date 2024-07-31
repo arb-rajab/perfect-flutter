@@ -41,7 +41,7 @@ class FrequesntQuestionsTile extends StatelessWidget {
             tag: FrequentQuestionsScreen.title,
             child: Text(FrequentQuestionsScreen.title)),
         subtitle: Text(StringConstant.frequentlyAskedQuestionsExplanation.tr()),
-          onTap: () => context.go(FrequentQuestionsScreen.route)
+          onTap: () => context.push(FrequentQuestionsScreen.route)
       ),
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/http_request_service.dart';
@@ -12,6 +14,7 @@ import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/constants/api_constant.dart';
+import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/related_term_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/term_label_data.dart';
@@ -23,28 +26,44 @@ import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dar
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/instance_manager.dart';
 import 'package:in_app_review/in_app_review.dart';
 
 class HomeScreenController {
-  final BuildContext context;
+  final State state;
   UserService userService = Get.find();
   final PageController pageController = PageController();
-  HomeScreenController(this.context) {
+  bool loading = false;
+  bool error = false;
+  HomeScreenController(this.state) {
     configureUserToken();
     subscribeToTopics();
     subscribeToAllNotifications();
     executePendingRequests();
     recieveNewToken();
     showRequestReview();
-    getTermsUpdates();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getTermsUpdates();
+    });
   }
 
   void getTermsUpdates() {
-    NetworkService(context, onPreConnect: () {}, onPostConnect: () {},
-            onConnectionSucceed: (data) async {
+    NetworkService(state.context, onPreConnect: () {
+      state.setState(() {
+        loading = true;
+        error = false;
+      });
+    }, onPostConnect: () {
+      state.setState(() {
+        loading = false;
+      });
+    }, onConnectionSucceed: (data) async {
+      state.context.showSuccessBar(
+          content: Text(StringConstant.dataLoadedSuccessfully.tr()));
       List<TermData> updatedTerms = (data['updated-terms'] as List)
           .map((e) => TermData.fromJson(e))
           .toList();
@@ -108,10 +127,17 @@ class HomeScreenController {
       await termLabelService.addTermLabels(termsLabels);
 
       termService.subscribeToTermsUpdates(updatedTerms);
-    },
-            onConnectionFailed: () {},
-            onMessageReceived: (FailureResponse message) {})
-        .get(url: ApiConstant.getTermsUpdates);
+    }, onConnectionFailed: () {
+      state.setState(() {
+        error = true;
+      });
+      state.context.showToast(Text(StringConstant.noConnection.tr()));
+    }, onMessageReceived: (FailureResponse message) {
+      state.setState(() {
+        error = true;
+      });
+      state.context.showErrorBar(content: Text(message.content));
+    }).get(url: ApiConstant.getTermsUpdates);
   }
 
   Future<void> showRequestReview() async {
@@ -133,7 +159,7 @@ class HomeScreenController {
   void configureUserToken() {
     if (userService.getId() == null || userService.getToken() == null) return;
     if (userService.tokenUploaded() == false) {
-      NetworkService(context,
+      NetworkService(state.context,
               onPreConnect: () {},
               onPostConnect: () {},
               onConnectionSucceed: (body) => userService.setTokenUploaded(true),
@@ -178,7 +204,7 @@ class HomeScreenController {
     for (HttpRequest httpRequest in httpRequests) {
       NetworkService(
         // ignore: use_build_context_synchronously
-        context,
+        state.context,
         onPreConnect: () {},
         onPostConnect: () {},
         onConnectionSucceed: (body) =>

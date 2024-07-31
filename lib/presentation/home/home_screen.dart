@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:beta/application/services/database_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
 import 'package:beta/main.dart';
@@ -30,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
   final GlobalKey addCouponKey = GlobalKey();
+  late HomeScreenController homeScreenController;
 
   @override
   void didChangeDependencies() {
@@ -50,16 +54,21 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
   @override
   void didPopNext() {
-    if (Get.isRegistered<TermsListingController>()) {
-      TermsListingController browseTermsTabController = Get.find();
-      browseTermsTabController.init();
-    }
+    // if (Get.isRegistered<TermsListingController>()) {
+    //   TermsListingController browseTermsTabController = Get.find();
+    //   browseTermsTabController.init();
+    // }
+  }
+
+  @override
+  void initState() {
+    Get.delete<HomeScreenController>();
+    homeScreenController = Get.put(HomeScreenController(this));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Get.delete<HomeScreenController>();
-    Get.put(HomeScreenController(context));
     return ScreenWrapper(
       targets: [
         CustomTargetFocus(
@@ -75,13 +84,19 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             ])
       ],
       actions: [
+        homeScreenController.loading
+            ? const CircularProgressIndicator()
+            : IconButton(
+                onPressed: homeScreenController.getTermsUpdates,
+                icon: homeScreenController.error
+                    ? const Icon(Icons.warning)
+                    : const Icon(Icons.refresh)),
         IconButton(
-            onPressed: () =>
-                context.go(NotificationsScreen.route),
+            onPressed: () => context.push(NotificationsScreen.route),
             icon: const Icon(NotificationsScreen.icon)),
         IconButton(
           icon: const Icon(SettingsScreen.icon),
-          onPressed: () => context.go(SettingsScreen.route),
+          onPressed: () => context.push(SettingsScreen.route),
         )
       ],
       drawer: const DrawerWidget(),
@@ -91,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
           heroTag: EnterCouponScreen.title,
           onPressed: () async {
             await context.push(EnterCouponScreen.route);
-            Get.find<TermsListingController>().fetch!();
+            // Get.find<TermsListingController>().fetch!();
+            TermsListingController browseTermsTabController = Get.find();
+            browseTermsTabController.init();
           },
           icon: const Icon(EnterCouponScreen.icon),
           label: Text(EnterCouponScreen.title)),

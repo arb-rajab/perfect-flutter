@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/value/id.dart';
@@ -15,7 +18,8 @@ import 'package:go_router/go_router.dart';
 
 class QuestionHeader extends StatelessWidget {
   final QuestionData questionData;
-  const QuestionHeader({super.key, required this.questionData});
+  QuestionHeader({super.key, required this.questionData});
+  final QuestionsController questionsController = Get.find();
 
   String getLabelText() {
     switch (questionData.question.labelId) {
@@ -36,18 +40,19 @@ class QuestionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
     return Column(
       children: [
-        if (questionsController.questions.indexOf(questionData) == 0 ||
-            (questionsController.questions.indexOf(questionData) > 0 &&
-                questionsController
-                        .questions[questionsController.questions
-                                .indexOf(questionData) +
-                            1]
-                        .question
-                        .parentTermId !=
-                    questionData.question.parentTermId))
+        if ((questionsController.questions.indexOf(questionData) == 0 ||
+                (questionsController.questions.indexOf(questionData) > 0 &&
+                    questionsController
+                            .questions[questionsController.questions
+                                    .indexOf(questionData) -
+                                1]
+                            .question
+                            .parentTermId !=
+                        questionData.question.parentTermId)) &&
+            questionsController.questionsScreenArgument!.source !=
+                QuestionScreenSource.term)
           GestureDetector(
             onTap: () {
               showConfirmationDialog(context, () {
@@ -58,15 +63,21 @@ class QuestionHeader extends StatelessWidget {
                     source: QuestionScreenSource.term,
                     sourceId: Id(questionData.question.parentTermId),
                     resourceTermId: questionsController
-                        .questionsScreenArgument.resourceTermId,
+                        .questionsScreenArgument!.resourceTermId,
                     title: t.Title(questionData.parentTermName)));
-                context.go(QuestionsScreen.route);
+                context.pushReplacement(QuestionsScreen.route);
               }, content: Text(StringConstant.aboutToMoveToTerm.tr()));
             },
             child: WidgetWrapperWithBorder(
                 child: Row(
               children: [
+                const SizedBox(
+                  width: halfMargin,
+                ),
                 const Icon(Icons.description),
+                const SizedBox(
+                  width: margin,
+                ),
                 Text(
                   questionData.parentTermName,
                   style: Theme.of(context).textTheme.headlineSmall,
@@ -78,7 +89,7 @@ class QuestionHeader extends StatelessWidget {
             (questionsController.questions.indexOf(questionData) > 0 &&
                 questionsController
                         .questions[questionsController.questions
-                                .indexOf(questionData) +
+                                .indexOf(questionData) -
                             1]
                         .question
                         .labelId !=
@@ -86,7 +97,13 @@ class QuestionHeader extends StatelessWidget {
           WidgetWrapperWithBorder(
               child: Row(
             children: [
+              const SizedBox(
+                width: halfMargin,
+              ),
               const Icon(Icons.info),
+              const SizedBox(
+                width: margin,
+              ),
               Text(
                 getLabelText(),
                 style: Theme.of(context).textTheme.titleLarge,

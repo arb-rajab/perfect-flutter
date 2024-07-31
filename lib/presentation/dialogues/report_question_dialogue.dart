@@ -75,7 +75,9 @@ class _ReportQuestionDialogueState extends State<ReportQuestionDialogue> {
                               setState(() {
                                 message = response.content;
                               })).post(
-                          url: ApiConstant.reportQuestion,
+                          url: ApiConstant.reportQuestion.replaceFirst(
+                              '(QUESTION_ID)',
+                              widget.questionData.question.id.toString()),
                           body: {'suggestion': textEditingController.text});
                     }
                   })

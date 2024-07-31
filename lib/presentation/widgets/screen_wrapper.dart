@@ -130,6 +130,7 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
                       : widget.title,
                   bottom: widget.tabs.isNotEmpty
                       ? TabBar(
+                          isScrollable: true,
                           tabs: widget.tabs,
                         )
                       : null,

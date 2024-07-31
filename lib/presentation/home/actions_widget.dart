@@ -1,5 +1,7 @@
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/number_of_sub_terms.dart';
+import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/home/term_widget_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
@@ -25,16 +27,26 @@ class ActionsWidget extends StatefulWidget {
 }
 
 class _ActionsWidgetState extends State<ActionsWidget> {
+  TermService termService = Get.find();
   @override
   Widget build(BuildContext context) {
     TermData termData = widget.termWidgetController.termData;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (TermType.hasFile(termData) && widget.downloaded)
+        if (TermType.downloadable(termData) && widget.downloaded)
           IconButton(
               onPressed: () {
-                //TODO implement delete term
+                showConfirmationDialog(context, () async {
+                  if (TermType.hasContent(termData)) {
+                    await termService.deleteTermContent(termData.term);
+                    widget.termWidgetController.state.setState(() {
+                      widget.termWidgetController.isDownloaded = false;
+                      termData.numberOfFlashcards = const NumberOfSubTerms(0);
+                      termData.numberOfQuestions = const NumberOfSubTerms(0);
+                    });
+                  }
+                });
               },
               icon: Icon(
                 Icons.delete,
@@ -76,7 +88,6 @@ class _ActionsWidgetState extends State<ActionsWidget> {
         if (termData.numberOfRelatedTerms!.value! > 0)
           IconButton(
               onPressed: () async {
-                TermService termService = Get.find();
                 List<TermData> relatedTerms =
                     await termService.getTermRelatedTerms(termData);
                 TermsController termsController = Get.find();

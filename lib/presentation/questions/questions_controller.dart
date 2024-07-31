@@ -16,29 +16,31 @@ import 'package:beta/configs/style.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/answer_data.dart';
+import 'package:beta/domain/custom_question_tag.dart';
 import 'package:beta/domain/question_data.dart';
+import 'package:beta/domain/question_statistic.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/questions/questions_list.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
-import 'package:beta/presentation/questions/statistics.dart';
 import 'package:beta/presentation/questions_report/questions_report_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get_navigation/src/root/parse_route.dart';
 import 'package:get/instance_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class QuestionsController {
   State state;
   final String preQuery =
-      'select q.*,t.name as parentTermName,(select count(*) from questions where id <q.id and parentTermId=q.parentTermId) as indexInTerm,(select count(*) from questionMedias where parentQuestionId =q.id) as numberOfMedias,case when q.note != '
+      'select q.*,t.name as parentTermName,(select count(*) from questions where id <q.id and parentTermId=q.parentTermId) as indexInTerm,(select count(*) from questionMedias where parentQuestionId =q.id) as numberOfMedias,case when q.note != ""'
       ' then 1 else 0 end as hasNote from questions q join terms t on t.id = q.parentTermId and t.enabled=1 where ';
   late String query;
 
@@ -47,10 +49,10 @@ class QuestionsController {
   List<QuestionData> questions = [];
   bool templateExited = false;
   List<bool Function(QuestionData)> questionFilters = [];
-  List<QuestionTag>? _questionTags;
+  List<CustomQuestionTag>? _questionTags;
 
-  QuestionsScreenArgument questionsScreenArgument = Get.find();
-  List<QuestionTag> selectedTags = [];
+  QuestionsScreenArgument? questionsScreenArgument;
+  List<CustomQuestionTag> selectedTags = [];
   Term? term;
   bool questionsFilteringEnabled = false;
   late Timer timer;
@@ -62,20 +64,52 @@ class QuestionsController {
   TermLastAccessService termLastAccessService = Get.find();
   QuestionTagPropertyService questionTagPropertyService = Get.find();
   ScreenshotRepository screenshotRepository = Get.find();
+  TermService termService = Get.find();
 
   ItemScrollController itemScrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
-  QuestionsController(this.state) {
-    if (questionsScreenArgument.query != null) {
-      query = preQuery + questionsScreenArgument.query!;
+  TextEditingController searchController = TextEditingController();
+  bool searchVisible = false;
+
+  QuestionsController(this.state);
+
+  Future<void> init() async {
+    if (questionUUID == null) {
+      questionsScreenArgument = Get.find<QuestionsScreenArgument>();
+      _configure();
+    } else {
+      await _getUUIDData();
+      _configure();
     }
-    _configureArgument().then((v) => configureScreenShots);
+  }
+
+  Future _getUUIDData() async {
+    term = await termService.getTermByQuestionUuid(questionUUID!);
+    if (term != null) {
+      Get.delete<QuestionsScreenArgument>();
+      questionsScreenArgument = Get.put(QuestionsScreenArgument(
+          query:
+              "q.parentTermId in (select parentTermId from questions where uuid = '$questionUUID') order by id asc",
+          source: QuestionScreenSource.term,
+          sourceId: Id(term!.id),
+          resourceTermId: Id(term!.id),
+          title: t.Title(term!.name)));
+    }
+  }
+
+  _configure() {
+    if (questionsScreenArgument!.query != null) {
+      query = preQuery + questionsScreenArgument!.query!;
+    } else if (questionsScreenArgument!.source == QuestionScreenSource.search) {
+      query = "$preQuery 1=0";
+    }
+    _configureArgument().then((v) => configureScreenShots());
   }
 
   configureScreenShots() {
-    if (!kReleaseMode) return;
-    if (questionsScreenArgument.source != QuestionScreenSource.term) {
+    // if (!kReleaseMode) return;
+    if (questionsScreenArgument!.source != QuestionScreenSource.term) {
       screenshotRepository.preventScreenshot();
     } else if (term!.captureable == 0) {
       screenshotRepository.preventScreenshot();
@@ -83,25 +117,25 @@ class QuestionsController {
   }
 
   Future _configureArgument() async {
-    TermService termService = Get.find();
-    if (questionsScreenArgument.source == QuestionScreenSource.term) {
-      term = await termService.getTermById(questionsScreenArgument.sourceId!);
+    if (questionsScreenArgument!.source == QuestionScreenSource.term) {
+      term = await termService.getTermById(questionsScreenArgument!.sourceId!);
     }
     TermsWithQuestionsFilteringEnabledService
         termsWithQuestionsFilteringEnabledService = Get.find();
     questionsFilteringEnabled = await termsWithQuestionsFilteringEnabledService
         .isTermWithQuestionFilteringEnabled(
-            questionsScreenArgument.resourceTermId);
+            questionsScreenArgument!.resourceTermId);
     if (questionUUID != null) {
-      query =
-          '$preQuery q.parentTermId in (select parentTermId from questions where uuid = \'${questionUUID!}\') order by id asc';
-      term = await termService.getTermByQuestionUuid(questionUUID!);
+      // query =
+      //     '$preQuery q.parentTermId in (select parentTermId from questions where uuid = \'${questionUUID!}\') order by id asc';
+      // term = await termService.getTermByQuestionUuid(questionUUID!);
       state.setState(() {
         deepLinked = true;
       });
     }
     await _configureQuestions();
     _configureDeeplinkAndLastAccess();
+    state.setState(() {});
   }
 
   bool favoriteFilter(QuestionData questionData) {
@@ -198,10 +232,10 @@ class QuestionsController {
   }
 
   bool tagsQuestionFilter(QuestionData questionData) {
-    for (QuestionTag selectedTag in selectedTags) {
+    for (CustomQuestionTag selectedTag in selectedTags) {
       bool tagFound = false;
       for (QuestionTag tag in questionData.questionTags) {
-        if (tag.name.trim() == selectedTag.name.trim()) {
+        if (tag.name.trim() == selectedTag.questionTag.name.trim()) {
           tagFound = true;
           break;
         }
@@ -213,17 +247,21 @@ class QuestionsController {
     return true;
   }
 
-  List<QuestionTag> getQuestionTags() {
-    if (_questionTags != null) return _questionTags!;
-    List<QuestionTag> questionTags = [];
+  List<CustomQuestionTag> getQuestionTags() {
+    if (_questionTags != null && _questionTags!.isNotEmpty) {
+      return _questionTags!;
+    }
+    List<CustomQuestionTag> questionTags = [];
     for (var element in questions) {
-      questionTags.addAll(element.questionTags);
+      for (QuestionTag questionTag in element.questionTags) {
+        questionTags.add(CustomQuestionTag(questionTag));
+      }
     }
     _questionTags = questionTags.toSet().toList();
     return _questionTags!;
   }
 
-  void setSelectedTags(List<QuestionTag> questionTags) {
+  void setSelectedTags(List<CustomQuestionTag> questionTags) {
     state.setState(() {
       selectedTags = questionTags;
     });
@@ -259,11 +297,12 @@ class QuestionsController {
     if (showStatistics) _showStatistics();
   }
 
-  void _showStatistics() =>
+  void _showStatistics() {
+    QuestionStatistic questionStatistic = QuestionData.getStatistics(questions);
     showOkDialogue(state.context, () {},
-        contentWidget: Statistics(
-        questionStatistic: QuestionData.getStatistics(questions),
-      ));
+        contentWidget: Text(
+            "${StringConstant.correct.tr()} : ${questionStatistic.correct}\n${StringConstant.wrong.tr()} : ${questionStatistic.wrong}\n${StringConstant.answered.tr()} : ${questionStatistic.answered}\n${StringConstant.total.tr()} : ${questionStatistic.total}"));
+  }
 
   Future resetQuestions() async {
     for (QuestionData questionData in questions) {
@@ -278,12 +317,11 @@ class QuestionsController {
   void showTimer() {
     int totalTiming = questions.length * 60;
     int remaining = totalTiming - timer.tick;
-    String remainingString = "${remaining / 60}:${remaining % 60}";
-    Fluttertoast.showToast(
-        msg: StringConstant.remainingTime
+    String remainingString = "${remaining ~/ 60}:${remaining % 60}";
+    state.context.showInfoBar(
+        content: Text(StringConstant.remainingTime
             .tr()
-            .replaceFirst('(TIME)', remainingString),
-        toastLength: Toast.LENGTH_LONG);
+            .replaceFirst('(TIME)', remainingString)));
   }
 
   Future _configureQuestions() async {
@@ -295,7 +333,7 @@ class QuestionsController {
     state.setState(() {});
   }
 
-  _configureDeeplinkAndLastAccess() {
+  _configureDeeplinkAndLastAccess() async {
     if (!deepLinked) _showTimedTestDialogue();
     if (deepLinked) {
       QuestionData? foundQuestion;
@@ -306,29 +344,36 @@ class QuestionsController {
         }
       }
       if (foundQuestion != null) {
-        itemScrollController.scrollTo(
-            index: _getQuestionIndex(foundQuestion)!,
-            duration: animationDuration);
+        int index = _getQuestionIndex(foundQuestion)! + 1;
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          itemScrollController.scrollTo(
+              index: index, duration: animationDuration);
+        });
       }
     } else {
       int? lastQuestionId;
-      if (questionsScreenArgument.source == QuestionScreenSource.term) {
-        termLastAccessService
-            .getTermLastAccess(questionsScreenArgument.sourceId!.value!)
-            .then((termLastAccess) => lastQuestionId = termLastAccess.childId);
-      } else if (questionsScreenArgument.source ==
+      if (questionsScreenArgument!.source == QuestionScreenSource.term) {
+        await termLastAccessService
+            .getTermLastAccess(questionsScreenArgument!.sourceId!.value!)
+            .then((termLastAccess) => lastQuestionId = termLastAccess?.childId);
+      } else if (questionsScreenArgument!.source ==
           QuestionScreenSource.questionTag) {
-        questionTagPropertyService
+        await questionTagPropertyService
             .getQuestionTagProperty(
-                questionsScreenArgument.sourceId!.value!, 'lastAccess')
-            .then((property) => lastQuestionId = int.parse(property.value));
+                questionsScreenArgument!.sourceId!.value!, 'lastAccess')
+            .then((property) {
+          if (property != null) lastQuestionId = int.parse(property.value);
+        });
       }
       if (lastQuestionId != null) {
         QuestionData? question = questions.firstWhereOrNull(
             (element) => element.question.id == lastQuestionId);
         if (question != null) {
-          itemScrollController.scrollTo(
-              index: _getQuestionIndex(question)!, duration: animationDuration);
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            itemScrollController.scrollTo(
+                index: _getQuestionIndex(question)!,
+                duration: animationDuration);
+          });
         }
       }
     }
@@ -361,11 +406,11 @@ class QuestionsController {
     timer.cancel();
     Get.delete<QuestionsReportScreenArgument>();
     Get.put(QuestionsReportScreenArgument(questions: questions, timer: timer));
-    state.context.go(QuestionsReportScreen.route);
+    state.context.push(QuestionsReportScreen.route);
   }
 
   void _showTimedTestDialogue() {
-    if (questionsScreenArgument.source == QuestionScreenSource.term &&
+    if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template) {
       showOkDialogue(state.context, () {
         timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -373,6 +418,7 @@ class QuestionsController {
             showOkDialogue(state.context, moveToQuestionsReportScreen,
                 title: StringConstant.testFinished.tr(),
                 content: StringConstant.testFinishedExplanation.tr());
+            timer.cancel();
           }
         });
       },
@@ -401,25 +447,27 @@ class QuestionsController {
       if (getQuestionFragment(itemPosition.index) == QuestionFragment.header) {
         firstVisibleQuestions =
             getAllObjects()[itemPosition.index] as QuestionData;
+        break;
       }
     }
     if (term != null) {
       termLastAccessService.addTermLastAccessed(
           Id(term!.id), Id(firstVisibleQuestions.question.id));
-    } else if (questionsScreenArgument.source ==
+    } else if (questionsScreenArgument!.source ==
         QuestionScreenSource.questionTag) {
       questionTagPropertyService.addQuestionTagProperty(
-          questionsScreenArgument.sourceId!,
+          questionsScreenArgument!.sourceId!,
           'lastAccess',
           firstVisibleQuestions.question.id.toString());
     }
   }
 
   void dispose() {
-    _updateLastAccess;
-    screenshotRepository.allowScreenshot;
-    timer.cancel;
-    _uploadCheckedAnswers;
+    _updateLastAccess();
+    screenshotRepository.allowScreenshot();
+    if (questionsScreenArgument!.source == QuestionScreenSource.term &&
+        term!.type == TermType.template) timer.cancel();
+    _uploadCheckedAnswers();
   }
 
   void _uploadCheckedAnswers() {
@@ -459,7 +507,9 @@ class QuestionsController {
 
   QuestionData? getAnswerParentQuestion(AnswerData answerData) {
     for (QuestionData questionData in questions) {
-      if (questionData.question.id == answerData.answer.id) return questionData;
+      if (questionData.question.id == answerData.answer.parentQuestionId) {
+        return questionData;
+      }
     }
     return null;
   }
@@ -484,7 +534,7 @@ class QuestionsController {
   void searchText(String? text) {
     if (text == null) return;
     search = text;
-    if (questionsScreenArgument.source == QuestionScreenSource.search) {
+    if (questionsScreenArgument!.source == QuestionScreenSource.search) {
       if (text.isEmpty) {
         state.setState(() {
           questions = [];
@@ -492,7 +542,7 @@ class QuestionsController {
         return;
       }
       query =
-          '$preQuery(q.title like "%$text%" or q.id in (select parentQuestionId from answers where title like "%$text%")) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument.sourceId!.value} and depth>0) order by q.id asc ';
+          '$preQuery(q.title like "%$text%" or q.id in (select parentQuestionId from answers where title like "%$text%")) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument!.sourceId!.value} and depth>0) order by q.id asc ';
       _configureQuestions();
       return;
     }
@@ -503,7 +553,7 @@ class QuestionsController {
 
   bool canPop() {
     if (questionUUID != null) return true;
-    if (questionsScreenArgument.source == QuestionScreenSource.term &&
+    if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template &&
         !templateExited) {
       return false;
@@ -511,18 +561,34 @@ class QuestionsController {
     return true;
   }
 
-  void onPopInvoked(bool didPop) {
-    if (!didPop) {
-      if (questionsScreenArgument.source == QuestionScreenSource.term &&
-          term!.type == TermType.template &&
-          !templateExited) {
-        showYesNoDialogueDialog(state.context,
-            onYesClicked: moveToQuestionsReportScreen,
-            onNoClicked: () {},
-            title: StringConstant.confirmExist.tr(),
-            description: StringConstant.confirmTemplateExistExplanation.tr());
-      }
+  bool onPopInvoked(/*bool didPop*/) {
+    // if (!didPop) {
+    if (questionsScreenArgument!.source == QuestionScreenSource.term &&
+        term!.type == TermType.template &&
+        !templateExited) {
+      showYesNoDialogueDialog(state.context,
+          onYesClicked: moveToQuestionsReportScreen,
+          onNoClicked: () {},
+          title: StringConstant.confirmExist.tr(),
+          description: StringConstant.confirmTemplateExistExplanation.tr());
+      return false;
     }
+    return true;
+    // }
+  }
+
+  void clearSearch() {
+    state.setState(() {
+      search = '';
+      searchVisible = false;
+    });
+    searchController.clear();
+  }
+
+  void setSearchVisible(bool value) {
+    state.setState(() {
+      searchVisible = value;
+    });
   }
 }
 

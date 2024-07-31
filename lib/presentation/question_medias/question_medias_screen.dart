@@ -27,6 +27,8 @@ class _QuestionMediasScreenState extends State<QuestionMediasScreen> {
         titleText:
             "${questionMediaController.page + 1}/${questionMediaController.questionMediasScreenArgument.questionMedias.length}",
         child: PageView.builder(
+          itemCount: questionMediaController
+              .questionMediasScreenArgument.questionMedias.length,
           itemBuilder: (context, index) {
             return MediaWidget(
                 questionMedia: questionMediaController

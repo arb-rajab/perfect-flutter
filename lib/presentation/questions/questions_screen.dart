@@ -4,10 +4,7 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/main.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
-import 'package:beta/presentation/questions/questions_header.dart';
-import 'package:beta/presentation/widgets/custom_list_view.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
-import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -32,6 +29,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
     Get.delete<QuestionsController>();
     questionsController =
         Get.put(QuestionsController(this)..questionUUID = widget.uuid);
+    questionsController.init();
     super.initState();
   }
 
@@ -42,7 +40,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
   }
 
   @override
-  void didPopNext() => questionsController.configureScreenShots;
+  void didPopNext() => questionsController.configureScreenShots();
 
   @override
   void dispose() {
@@ -52,48 +50,63 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: questionsController.canPop(),
-      onPopInvoked: questionsController.onPopInvoked,
-      child: ScreenWrapper(
-          title: SearchBar(
-            onChanged: questionsController.searchText,
-          ),
-          floatingActionButton: questionsController.speedDialVisible()
-              ? SpeedDial(
-                  icon: Icons.sort,
-                  children: [
-                    SpeedDialChild(
-                        child: const Icon(Icons.playlist_add_check),
-                        label: StringConstant.solveQuestions.tr(),
-                        onTap: questionsController.solveQuestions),
-                    if (questionsController.correctable())
-                      SpeedDialChild(
-                          child: const Icon(Icons.spellcheck),
-                          label: StringConstant.correctQuestions.tr(),
-                          onTap: () => questionsController.correctQuestions(
-                              showStatistics: true)),
-                    SpeedDialChild(
-                        child: const Icon(Icons.subject),
-                        label: StringConstant.resetQuestions.tr(),
-                        onTap: questionsController.resetQuestions),
-                    if (questionsController.hasTemplate())
-                      SpeedDialChild(
-                          child: const Icon(Icons.timer),
-                          label: StringConstant.timer.tr(),
-                          onTap: questionsController.showTimer)
-                  ],
-                )
-              : null,
-          child: CustomListView(children: [
-            const QuestionsHeader(),
-            const QuestionsList(),
-            if (questionsController.term != null &&
-                questionsController.term!.type == TermType.template)
-              SubmitButton(
-                  text: StringConstant.correctQuestions.tr(),
-                  onSubmit: questionsController.moveToQuestionsReportScreen)
-          ])),
+    return ScreenWrapper(
+      actions: [
+        if (!questionsController.searchVisible)
+          IconButton(
+              onPressed: () => questionsController.setSearchVisible(true),
+              icon: const Icon(Icons.search))
+      ],
+      title: questionsController.searchVisible
+          ? TextFormField(
+              decoration: InputDecoration(
+                  hintText: StringConstant.search.tr(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: questionsController.clearSearch,
+                  )),
+              controller: questionsController.searchController,
+              onChanged: questionsController.searchText,
+            )
+          : null,
+      titleText: !questionsController.searchVisible &&
+              questionsController.questionsScreenArgument != null
+          ? questionsController.questionsScreenArgument!.title.value
+          : null,
+      floatingActionButton: questionsController.speedDialVisible()
+          ? SpeedDial(
+              switchLabelPosition: [
+                'ar', // Arabic
+                'fa', // Farsi
+                'he', // Hebrew
+                'ps', // Pashto
+                'ur', // Urdu
+              ].contains(context.locale.languageCode),
+              icon: Icons.sort,
+              children: [
+                SpeedDialChild(
+                    child: const Icon(Icons.playlist_add_check),
+                    label: StringConstant.solveQuestions.tr(),
+                    onTap: questionsController.solveQuestions),
+                if (questionsController.correctable())
+                  SpeedDialChild(
+                      child: const Icon(Icons.spellcheck),
+                      label: StringConstant.correctQuestions.tr(),
+                      onTap: () => questionsController.correctQuestions(
+                          showStatistics: true)),
+                SpeedDialChild(
+                    child: const Icon(Icons.subject),
+                    label: StringConstant.resetQuestions.tr(),
+                    onTap: questionsController.resetQuestions),
+                if (questionsController.hasTemplate())
+                  SpeedDialChild(
+                      child: const Icon(Icons.timer),
+                      label: StringConstant.timer.tr(),
+                      onTap: questionsController.showTimer)
+              ],
+            )
+          : null,
+      child: QuestionsList(),
     );
   }
 }

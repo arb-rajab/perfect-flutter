@@ -27,7 +27,7 @@ abstract class ListController<T> implements ListControllerBase {
   Function()? onConnectionSucceed;
   Function? onPreFetch;
   Function? onPostFetch;
-  final bool showLoadMore;
+  bool showLoadMore;
   final bool showRefresh;
   final T Function(Map<String, dynamic> json)? fromJson;
 

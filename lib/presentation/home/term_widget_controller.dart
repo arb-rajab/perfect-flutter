@@ -310,7 +310,7 @@ class TermWidgetController {
                 resourceTermId: Id(Get.find<TermData>(tag: 'source').term.id),
                 title: t.Title(termData.term.name),
                 termData: termData));
-            state.context.go(QuestionsScreen.route);
+            state.context.push(QuestionsScreen.route);
           }
         } else {
           showOkDialogue(

@@ -119,7 +119,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.search.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.favorite:
             Get.put(QuestionsScreenArgument(
@@ -129,7 +129,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.favorite.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.edited:
             Get.put(QuestionsScreenArgument(
@@ -139,7 +139,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.edited.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.easy:
             Get.put(QuestionsScreenArgument(
@@ -149,7 +149,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.easyQuestions.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.medium:
             Get.put(QuestionsScreenArgument(
@@ -159,7 +159,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.mediumQuestions.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.difficult:
             Get.put(QuestionsScreenArgument(
@@ -169,7 +169,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.difficultQuestions.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
           case TermTagButton.wrong:
             Get.put(QuestionsScreenArgument(
@@ -179,7 +179,7 @@ class TermTagWidget extends StatelessWidget {
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
                 title: t.Title(StringConstant.wrongQuestions.tr())));
-            context.go(QuestionsScreen.route);
+            context.push(QuestionsScreen.route);
             return;
         }
       },

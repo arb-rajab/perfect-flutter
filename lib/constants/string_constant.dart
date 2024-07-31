@@ -33,6 +33,7 @@ class StringConstant {
   static const save = 'save';
   static const delete = 'delete';
   static const seconds = 'seconds';
+  static const dataLoadedSuccessfully = 'data-loaded-successfully';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -190,6 +191,7 @@ class StringConstant {
   static const wrong = '$_questions.wrong';
   static const confirmTemplateExistExplanation =
       '$_questions.confirm-template-exist-explanation';
+  static const edittedOn = '$_questions.editted-on';
 
   static const _quizReport = 'quiz-report';
   static const quizReport = '$_quizReport.quiz-report';

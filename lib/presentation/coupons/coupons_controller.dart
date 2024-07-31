@@ -13,6 +13,7 @@ class CouponsListController extends ListController<Coupon> {
             plural: null,
             indexUrl: null,
             fromJson: Coupon.fromJson,
+            showLoadMore: false,
             fetch: () {
               CouponService couponService = Get.find();
               return couponService.getPaidCoupons();

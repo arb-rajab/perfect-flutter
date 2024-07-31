@@ -1,3 +1,5 @@
+import 'package:animated_number/animated_number.dart';
+import 'package:beta/configs/style.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/widgets/animated_counter.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +49,9 @@ class NumberOfChildrenWidget extends StatelessWidget {
           AnimatedCounter(value: termData.numberOfSubTerms!.value!),
         if (termData.term.type == TermType.questions ||
             termData.term.type == TermType.template)
-          AnimatedCounter(value: termData.numberOfQuestions!.value!),
+          Text(termData.numberOfQuestions!.value!.toString()),
         if (termData.term.type == TermType.flashcards)
-          AnimatedCounter(value: termData.numberOfFlashcards!.value!)
+          Text(termData.numberOfFlashcards!.value!.toString())
       ]);
     }
     return const SizedBox();

@@ -105,7 +105,7 @@ class QuestionTagService {
               .replaceFirst('(IME1)', Get.find<DeviceRepository>().ime1)
               .replaceFirst('(LANGUAGE)', context.locale.languageCode)),
           title: t.Title(questionTag.name)));
-      context.go(WebScreen.route);
+      context.push(WebScreen.route);
     });
   }
 }

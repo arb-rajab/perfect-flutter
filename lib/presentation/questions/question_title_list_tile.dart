@@ -19,59 +19,56 @@ class QuestionTitleListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     QuestionsController questionsController = Get.find();
     return WidgetWrapper(
-        child: Padding(
-      padding: const EdgeInsets.all(margin),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor,
-          radius: borderRadius,
-          child: Padding(
-            padding: const EdgeInsets.all(halfMargin),
-            child: Text(
-              (questionData.indexInTerm + 1).toString(),
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
+        child: ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor,
+        radius: borderRadius,
+        child: Text(
+          (questionData.indexInTerm + 1).toString(),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(color: Theme.of(context).scaffoldBackgroundColor),
         ),
-        title: QuestionTitle(
-          questionData: questionData,
-        ),
-        trailing: Row(
-          children: [
-            if (questionData.question.imageUrl.isNotEmpty)
-              IconButton(
-                  onPressed: () {
-                    // ignore: invalid_use_of_protected_member
-                    questionsController.state.setState(() {
-                      questionData.imageVisible = !questionData.imageVisible;
-                    });
-                  },
-                  icon: const Icon(Icons.image)),
-            PopupMenuButton<int>(
-              // icon: const Icon(Icons.more_vert),
-              itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
-                  onTap: () =>
-                      showReportQuestionDialogue(context, questionData),
-                  child: ListTile(
-                    leading: const Icon(Icons.report),
-                    title: Text(StringConstant.reportQuestion.tr()),
-                  ),
+      ),
+      title: QuestionTitle(
+        questionData: questionData,
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (questionData.question.imageUrl.isNotEmpty)
+            IconButton(
+                onPressed: () {
+                  // ignore: invalid_use_of_protected_member
+                  questionsController.state.setState(() {
+                    questionData.imageVisible = !questionData.imageVisible;
+                  });
+                },
+                icon: const Icon(Icons.image)),
+          PopupMenuButton<int>(
+            // icon: const Icon(Icons.more_vert),
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                onTap: () => showReportQuestionDialogue(context, questionData),
+                child: ListTile(
+                  leading: const Icon(Icons.report),
+                  title: Text(StringConstant.reportQuestion.tr()),
                 ),
-                PopupMenuItem(
-                  onTap: () => Share.share(StringConstant.shareQuestionBody
-                      .tr()
-                      .replaceAll('(LINK)',
-                          '$scheme://$host/q/${questionData.question.uuid}')),
-                  child: ListTile(
-                    leading: const Icon(Icons.share),
-                    title: Text(StringConstant.shareQuestion.tr()),
-                  ),
+              ),
+              PopupMenuItem(
+                onTap: () => Share.share(StringConstant.shareQuestionBody
+                    .tr()
+                    .replaceAll('(LINK)',
+                        '$scheme://$host/q/${questionData.question.uuid}')),
+                child: ListTile(
+                  leading: const Icon(Icons.share),
+                  title: Text(StringConstant.shareQuestion.tr()),
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     ));
   }

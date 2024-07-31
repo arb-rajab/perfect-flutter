@@ -190,12 +190,14 @@ class QuestionData {
           correct = false;
         }
       }
-      if (answered) answeredAnswers++;
-      if (correct) {
-        correctAnswers++;
-      } else {
-        wrongAnswers++;
-      }
+      if (answered) {
+        answeredAnswers++;
+        if (correct) {
+          correctAnswers++;
+        } else {
+          wrongAnswers++;
+        }
+      } 
     }
     return QuestionStatistic(
         correct: correctAnswers,

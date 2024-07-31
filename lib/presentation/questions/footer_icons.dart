@@ -1,16 +1,16 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
-import 'package:beta/application/services/question_service.dart';
 import 'package:beta/configs/style.dart';
+import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/answer_data.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
-import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/user_note_dialogue.dart';
 import 'package:beta/presentation/question_medias/question_medias_screen.dart';
 import 'package:beta/presentation/questions/question_header.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:get/instance_manager.dart';
@@ -72,7 +72,7 @@ class _FooterIconsState extends State<FooterIcons> {
         Visibility(
             visible:
                 questionData.hasNote && (!isTemplate || questionData.corrected),
-            child: IconButton(
+            child: IconButton.outlined(
                 onPressed: () {
                   showOkDialogue(context, () {},
                       contentWidget: questionData.question.specialCharacter ==
@@ -82,6 +82,8 @@ class _FooterIconsState extends State<FooterIcons> {
                           : questionData.question.specialCharacter ==
                                   SpecialCharacter.math
                               ? TeXView(
+                                  renderingEngine:
+                                      const TeXViewRenderingEngine.katex(),
                                   child: TeXViewDocument(
                                       questionData.getMultiOrientationString(
                                           questionData.getTranslatableNote()),
@@ -89,13 +91,16 @@ class _FooterIconsState extends State<FooterIcons> {
                                           '"line-height":"$lineSpacing"')))
                               : const SizedBox.shrink());
                 },
-                icon: const Icon(Icons.info_outline))),
+                icon: const Icon(Icons.info))),
         Visibility(
             visible: questionData.question.edited == 1,
-            child: IconButton(
-              onPressed: () {
-                QuestionService questionService = Get.find();
-              },
+            child: IconButton.outlined(
+              onPressed: () => showOkDialogue(context, () {},
+                  content: StringConstant.edittedOn.tr().replaceFirst(
+                      '(DATE)',
+                      questionData.question.editionDate
+                          .toString()
+                          .split(' ')[0])),
               icon: const Icon(Icons.rule),
             )),
         Visibility(
@@ -109,7 +114,7 @@ class _FooterIconsState extends State<FooterIcons> {
                   Get.delete<QuestionMediasScreenArgument>();
                   Get.put(QuestionMediasScreenArgument(
                       questionMedias: questionMedias));
-                  if (context.mounted) context.go(QuestionMediasScreen.route);
+                  if (context.mounted) context.push(QuestionMediasScreen.route);
                 },
                 icon: const Icon(Icons.attachment))),
         Visibility(

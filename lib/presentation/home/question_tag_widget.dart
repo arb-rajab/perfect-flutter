@@ -84,7 +84,7 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
         sourceId: Id(questionTagData.questionTag.id),
         title: t.Title(questionTagData.questionTag.name),
         resourceTermId: Id(termData.term.id)));
-    context.go(QuestionsScreen.route);
+    context.push(QuestionsScreen.route);
   }
 
   void startQuestionTagOtherQuestionsQuiz(
@@ -97,7 +97,7 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
         sourceId: Id(questionTagData.questionTag.id),
         title: t.Title(questionTagData.questionTag.name),
         resourceTermId: Id(termData.term.id)));
-    context.go(QuestionsScreen.route);
+    context.push(QuestionsScreen.route);
   }
 
   @override

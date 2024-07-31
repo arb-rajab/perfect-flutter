@@ -146,8 +146,12 @@ class NetworkService {
         _handleResponse(response);
         return;
       }
-    } on HttpException {
-      onConnectionFailed.call();
+    } on DioException catch (e) {
+      onPostConnect.call();
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
     }
   }
 
@@ -169,13 +173,20 @@ class NetworkService {
     body = FormData.fromMap(body);
     // }
     dio.options.headers = sentHeaders;
+    try {
     response = await dio.put(url, data: body);
     onPostConnect.call();
     if (response.statusCode == 200) {
       _handleResponse(response);
       return;
     }
-    onConnectionFailed.call();
+    } on DioException catch (e) {
+      onPostConnect.call();
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
+    }
   }
 
   Future patch({required String url, dynamic body, bool json = false}) async {
@@ -189,13 +200,20 @@ class NetworkService {
     if (json) sentHeaders['content-type'] = 'application/json';
     // sentHeaders.addIf(json, 'content-type', 'application/json');
     dio.options.headers = sentHeaders;
+    try {
     response = await dio.patch(url, data: body);
     onPostConnect.call();
     if (response.statusCode == 200) {
       _handleResponse(response);
       return;
     }
-    onConnectionFailed.call();
+    } on DioException catch (e) {
+      onPostConnect.call();
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
+    }
   }
 
   Future delete(
@@ -212,13 +230,21 @@ class NetworkService {
     // sentHeaders.addIf(json, 'content-type', 'application/json');
     if (json) sentHeaders['content-type'] = 'application/json';
     dio.options.headers = sentHeaders;
+    try {
     response = await dio.delete(url, queryParameters: query);
     onPostConnect.call();
     if (response.statusCode == 200) {
       _handleResponse(response);
       return;
     }
-    onConnectionFailed.call();
+    } on DioException catch (e) {
+      onPostConnect.call();
+      if (e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) onConnectionFailed.call();
+    }
+
   }
 
   Future download(

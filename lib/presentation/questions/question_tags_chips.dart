@@ -10,6 +10,7 @@ import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 class QuestionTagsChips extends StatelessWidget {
   final QuestionData questionData;
@@ -24,7 +25,7 @@ class QuestionTagsChips extends StatelessWidget {
           .map((questionTag) => GestureDetector(
               onTap: () {
                 QuestionsScreenArgument questionsScreenArgument =
-                    questionsController.questionsScreenArgument;
+                    questionsController.questionsScreenArgument!;
                 if (questionsScreenArgument.source ==
                         QuestionScreenSource.questionTag &&
                     questionsScreenArgument.sourceId!.value == questionTag.id) {
@@ -39,6 +40,7 @@ class QuestionTagsChips extends StatelessWidget {
                       sourceId: Id(questionTag.id),
                       resourceTermId: questionsScreenArgument.resourceTermId,
                       title: t.Title(questionTag.name)));
+                  context.pushReplacement(QuestionsScreen.route);
                 }, content: Text(StringConstant.aboutToMoveToQuestionTag.tr()));
               },
               child: Chip(

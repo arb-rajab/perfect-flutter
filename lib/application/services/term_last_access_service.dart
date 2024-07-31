@@ -41,10 +41,16 @@ class TermLastAccessService {
   Future<List<TermsLastAccess>> getAllTermLastAccesses() =>
       databaseService.select(databaseService.termsLastAccesses).get();
 
-  Future<TermsLastAccess> getTermLastAccess(int termId) =>
+  Future<TermsLastAccess?> getTermLastAccess(int termId) =>
       (databaseService.select(databaseService.termsLastAccesses)
             ..where((tbl) => tbl.parentTermId.equals(termId))
             ..orderBy([(tbl) => OrderingTerm.desc(tbl.lastAccess)])
             ..limit(1))
-          .getSingle();
+          .get()
+          .then((value) {
+        if (value.isEmpty) {
+          return null;
+        }
+        return value.first;
+      });
 }

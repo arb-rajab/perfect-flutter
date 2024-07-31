@@ -55,7 +55,7 @@ class _CouponsTile extends StatelessWidget {
       child: ListTile(
         leading: const Icon(CouponsScreen.icon),
         title: Hero(tag: CouponsScreen.title, child: Text(CouponsScreen.title)),
-        onTap: () => context.go(CouponsScreen.route),
+        onTap: () => context.push(CouponsScreen.route),
       ),
     );
   }
@@ -192,7 +192,7 @@ class _ScanPrintedQRTile extends StatelessWidget {
               tag: PrintedQrScannerScreen.title,
               child: Text(PrintedQrScannerScreen.title)),
           onTap: () =>
-              context.go(PrintedQrScannerScreen.route)),
+              context.push(PrintedQrScannerScreen.route)),
     );
   }
 }
@@ -207,7 +207,7 @@ class ContactUsTile extends StatelessWidget {
           leading: const Icon(ContactUsScreen.icon),
           title: Hero(
               tag: ContactUsScreen.title, child: Text(ContactUsScreen.title)),
-          onTap: () => context.go(ContactUsScreen.route)),
+          onTap: () => context.push(ContactUsScreen.route)),
     );
   }
 }
@@ -224,7 +224,7 @@ class FrequestQuestionsTile extends StatelessWidget {
               tag: FrequentQuestionsScreen.title,
               child: Text(FrequentQuestionsScreen.title)),
           onTap: () =>
-              context.go(FrequentQuestionsScreen.route)),
+              context.push(FrequentQuestionsScreen.route)),
     );
   }
 }
