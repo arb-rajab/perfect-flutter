@@ -52,7 +52,7 @@ dependencies:
   shimmer: ^3.0.0
   easy_localization: ^3.0.5
   android_id: ^0.3.6
-  device_preview: ^1.1.0
+  device_preview: ^1.2.0
   safe_device: ^1.1.6
   shared_preferences: ^2.2.2
   dio: ^5.4.1
