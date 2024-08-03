@@ -243,6 +243,8 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 				<string>AppIcon</string>
 				<key>CLANG_ENABLE_MODULES</key>
 				<string>YES</string>
+				<key>CODE_SIGN_ENTITLEMENTS</key>
+				<string>Runner/Runner.entitlements</string>
 				<key>CURRENT_PROJECT_VERSION</key>
 				<string>$(FLUTTER_BUILD_NUMBER)</string>
 				<key>ENABLE_BITCODE</key>
@@ -601,6 +603,17 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 			<string>Pods_RunnerTests.framework</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>5A32CDD92C5E361D00B294F5</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.entitlements</string>
+			<key>path</key>
+			<string>Runner.entitlements</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>6BFD2DA8BDF17FCF580E81A0</key>
 		<dict>
@@ -996,6 +1009,7 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 		<dict>
 			<key>children</key>
 			<array>
+				<string>5A32CDD92C5E361D00B294F5</string>
 				<string>97C146FA1CF9000F007C117D</string>
 				<string>97C146FD1CF9000F007C117D</string>
 				<string>97C146FF1CF9000F007C117D</string>
@@ -1347,6 +1361,8 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 				<string>AppIcon</string>
 				<key>CLANG_ENABLE_MODULES</key>
 				<string>YES</string>
+				<key>CODE_SIGN_ENTITLEMENTS</key>
+				<string>Runner/Runner.entitlements</string>
 				<key>CURRENT_PROJECT_VERSION</key>
 				<string>$(FLUTTER_BUILD_NUMBER)</string>
 				<key>ENABLE_BITCODE</key>
@@ -1386,6 +1402,8 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 				<string>AppIcon</string>
 				<key>CLANG_ENABLE_MODULES</key>
 				<string>YES</string>
+				<key>CODE_SIGN_ENTITLEMENTS</key>
+				<string>Runner/Runner.entitlements</string>
 				<key>CURRENT_PROJECT_VERSION</key>
 				<string>$(FLUTTER_BUILD_NUMBER)</string>
 				<key>ENABLE_BITCODE</key>
@@ -1466,8 +1484,6 @@ echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
 			<key>path</key>
 			<string>Pods</string>
 			<key>sourceTree</key>
