@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
@@ -7,6 +9,8 @@ import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 //TODO add test
 class ActionsWidget extends StatefulWidget {
@@ -44,6 +48,14 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                       widget.termWidgetController.isDownloaded = false;
                       termData.numberOfFlashcards = const NumberOfSubTerms(0);
                       termData.numberOfQuestions = const NumberOfSubTerms(0);
+                    });
+                  } else if (TermType.hasFile(termData)) {
+                    File file = File(join(
+                        (await getApplicationSupportDirectory()).path,
+                        'term$separator${termData.term.id}'));
+                    if (await file.exists()) await file.delete();
+                    widget.termWidgetController.state.setState(() {
+                      widget.termWidgetController.isDownloaded = false;
                     });
                   }
                 });

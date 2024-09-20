@@ -1,4 +1,4 @@
-import 'package:beta/domain/value/title.dart' as t;
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:beta/presentation/widgets/web_widget.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +30,4 @@ class _WebScreenState extends State<WebScreen> {
           connected: webScreenArgument.connected,
         ));
   }
-}
-
-class WebScreenArgument {
-  final Uri uri;
-  final t.Title title;
-  final bool connected;
-
-  WebScreenArgument(
-      {required this.connected, required this.uri, required this.title});
 }

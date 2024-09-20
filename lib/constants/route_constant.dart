@@ -5,6 +5,8 @@ import 'package:beta/main.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
+import 'package:beta/presentation/ebook/ebook_screen.dart';
+import 'package:beta/presentation/ebook/ebook_screen_controller.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
@@ -140,5 +142,13 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
   GoRoute(
     path: QuestionMediasScreen.route,
     builder: (context, state) => const QuestionMediasScreen(),
-  )
+  ),
+  GoRoute(
+      onExit: (context, state) async {
+        EbookScreenController ebookScreenController = Get.find();
+        // await ebookScreenController.saveChanges();
+        return true;
+      },
+      path: EbookScreen.route,
+      builder: (context, state) => const EbookScreen())
 ]);

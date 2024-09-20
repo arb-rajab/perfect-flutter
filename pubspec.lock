@@ -325,18 +325,18 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "50fb435ed30c6d2525cbfaaa0f46851ea6131315f213c0d921b0e407b34e3b84"
+      sha256: a7fd703482b391a87d60b6061d04dfdeab07826b96f9abd8f5ed98068acc0074
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.1"
+    version: "10.1.2"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
       name: device_info_plus_platform_interface
-      sha256: d3b01d5868b50ae571cd1dc6e502fc94d956b665756180f7b16ead09e836fd64
+      sha256: "282d3cf731045a2feb66abfe61bbc40870ae50a3ed10a4d3d217556c35c8c2ba"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "7.0.1"
   device_preview:
     dependency: "direct main"
     description:
@@ -1045,6 +1045,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  pdftron_flutter:
+    dependency: "direct main"
+    description:
+      name: pdftron_flutter
+      sha256: c5db92e4fd4269792ce679b34e94220b06d8e7699875478cba61297b6a11bfee
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1-35"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1169,10 +1177,10 @@ packages:
     dependency: "direct main"
     description:
       name: safe_device
-      sha256: "889ba192a7056b4cedf24cf464226217d8f26a5c007a7b8e50a31f6c44b4def4"
+      sha256: a85161353ae2b69b6473ba420228cac4363612b35266a7bc660a7fb8e5ed792d
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.6"
+    version: "1.1.7"
   screen_protector:
     dependency: "direct main"
     description:

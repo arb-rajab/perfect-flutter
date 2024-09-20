@@ -1,6 +1,6 @@
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/question_data.dart';
-import 'package:beta/presentation/questions_report/questions_report_screen.dart';
 import 'package:get/instance_manager.dart';
 
 class QuestionsReportController {

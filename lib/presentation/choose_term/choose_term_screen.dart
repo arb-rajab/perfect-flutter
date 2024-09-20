@@ -1,4 +1,5 @@
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/coupon_type.dart';
 import 'package:beta/domain/term_data.dart';
@@ -51,19 +52,6 @@ class _ChooseTermScreenState extends State<ChooseTermScreen> {
       )),
     );
   }
-}
-
-class ChooseTermScreenArgument {
-  final Coupon coupon;
-  final List<TermData> terms;
-  final bool free;
-  final CouponType couponType;
-
-  ChooseTermScreenArgument(
-      {required this.coupon,
-      required this.terms,
-      required this.free,
-      required this.couponType});
 }
 
 class ConfirmationDialogueWidget extends StatelessWidget {

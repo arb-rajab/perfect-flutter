@@ -19,6 +19,7 @@ import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/common/exceptions.dart';
 import 'package:beta/configs/links.dart';
 import 'package:beta/constants/api_constant.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/ebook_data.dart';
 import 'package:beta/domain/term_data.dart';
@@ -29,6 +30,7 @@ import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
+import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
@@ -53,6 +55,7 @@ class TermWidgetController {
   TermService termService = Get.find();
   TermTagService termTagService = Get.find();
   TermPropertyService termPropertyService = Get.find();
+  EbookService ebookService = Get.find();
 
   TermWidgetController(this.state, {required this.index}) {
     termsListingController = Get.find<TermsListingController>();
@@ -87,14 +90,14 @@ class TermWidgetController {
         termData.term.type == TermType.template) {
       if (state.mounted) {
         state.setState(() {
-        isDownloaded = termData.numberOfQuestions!.value! > 0;
-      });
+          isDownloaded = termData.numberOfQuestions!.value! > 0;
+        });
       }
     } else if (termData.term.type == TermType.flashcards) {
       if (state.mounted) {
         state.setState(() {
-        isDownloaded = termData.numberOfFlashcards!.value! > 0;
-      });
+          isDownloaded = termData.numberOfFlashcards!.value! > 0;
+        });
       }
     }
   }
@@ -132,8 +135,7 @@ class TermWidgetController {
 
   void _onPreConnect() => state.setState(() => downloading = true);
   void _onPostConnect() => state.setState(() => downloading = false);
-  void _onConnectionFailed() =>
-      showOkDialogue(state.context, () {},
+  void _onConnectionFailed() => showOkDialogue(state.context, () {},
       content: StringConstant.noConnection.tr());
   void _onMessageReceived(FailureResponse message) =>
       showOkDialogue(state.context, () {}, content: message.content);
@@ -159,7 +161,6 @@ class TermWidgetController {
         onConnectionSucceed: (body) {
           String url = '';
           if (termData.term.type == TermType.ebook) {
-            EbookService ebookService = Get.find();
             EbookData ebookData = EbookData.fromJson(body['ebook']);
             ebookService.addEbook(ebookData);
             url = ebookData.url!.toString();
@@ -260,8 +261,7 @@ class TermWidgetController {
   //TODO add tests
   Future<void> onTermClick() async {
     if (termData.term.enabled != 1) {
-      showOkDialogue(
-          state.context,
+      showOkDialogue(state.context,
           () => Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink),
           content: StringConstant.contentLocked.tr());
       return;
@@ -296,12 +296,12 @@ class TermWidgetController {
       return;
     }
     if (termData.term.type == 0) return;
-    Get.delete<QuestionsScreenArgument>();
     switch (termData.term.type) {
       case TermType.questions:
       case TermType.template:
         if (isDownloaded) {
           if (termData.numberOfQuestions!.value! > 0) {
+            Get.delete<QuestionsScreenArgument>();
             Get.put(QuestionsScreenArgument(
                 query:
                     "q.parentTermId= '${termData.term.id}' ORDER BY q.id asc",
@@ -313,8 +313,23 @@ class TermWidgetController {
             state.context.push(QuestionsScreen.route);
           }
         } else {
-          showOkDialogue(
-              state.context, () {},
+          showOkDialogue(state.context, () {},
+              content: StringConstant.youHaveToDownloadFirst.tr());
+        }
+        break;
+      case TermType.ebook:
+        if (isDownloaded) {
+          if (await termService.isUnExpired(termData)) {
+            Ebook ebook = await ebookService.getEbook(termData);
+            Get.delete<EbookScreenArgument>();
+            Get.put(EbookScreenArgument(ebook: ebook, term: termData));
+            state.context.push(EbookScreen.route);
+          } else {
+            showOkDialogue(state.context, () {},
+                content: StringConstant.termIsExpired.tr());
+          }
+        } else {
+          showOkDialogue(state.context, () {},
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;

@@ -95,32 +95,5 @@ class MainController {
     Get.put(QuestionLinkedToTagService(databaseService: databaseService));
     Get.put(TermPropertyService(databaseService: databaseService));
     Get.put(QuestionTagPropertyService(databaseService: databaseService));
-
-    // await DeviceInfoHelper.configure();
-    // initialiseLocalNotificationsPlugin();
-    // Get.put(UserController());
   }
-
-  // static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
-
-//   static void onDidReceiveLocalNotification(
-//       int id, String? title, String? body, String? payload) async {
-//     // display a dialog with the notification details, tap ok to go to another page
-//     const AndroidNotificationDetails androidNotificationDetails =
-//         AndroidNotificationDetails(
-//       Configs.appName, Configs.appName,
-//       channelDescription: '',
-//       importance: Importance.max,
-//       priority: Priority.high,
-//       // ticker: 'ticker'
-//     );
-//     const NotificationDetails notificationDetails =
-//         NotificationDetails(android: androidNotificationDetails);
-//     // if (flutterLocalNotificationsPlugin == null) {
-//     //   initialiseLocalNotificationsPlugin();
-//     // }
-//     await flutterLocalNotificationsPlugin.show(
-//         0, title, body, notificationDetails);
-//   }
 }

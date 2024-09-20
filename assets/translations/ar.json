@@ -130,7 +130,8 @@
         "medium-questions": "الأسئلة متوسطة الصعوبة",
         "difficult-questions": "الأسئلة الصعبة",
         "wrong-questions": "الأسئلة الخاطئة",
-        "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً"
+        "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً",
+        "term-is-expired": "هذا المحتوى العلمي ليس متاحاً بعد الآن، يرجى تفعيل رمز شراء جديد"
     },
     "questions": {
         "show-favorite-only": "المفضلة فقط",

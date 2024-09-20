@@ -30,8 +30,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.example.beta"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion "25.1.8937393"
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -59,7 +59,8 @@ android {
         testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: "true"
 
-        // multiDexEnabled true
+        manifestPlaceholders += [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
+        multiDexEnabled true
     }
 
      signingConfigs {

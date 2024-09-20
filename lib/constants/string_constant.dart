@@ -153,6 +153,7 @@ class StringConstant {
   static const difficultQuestions = '$_terms.difficult-questions';
   static const wrongQuestions = '$_terms.wrong-questions';
   static const youHaveToDownloadFirst = '$_terms.you-have-to-download-first';
+  static const termIsExpired = '$_terms.term-is-expired';
 
   static const _questions = 'questions';
   static const showFavoriteOnly = '$_questions.show-favorite-only';

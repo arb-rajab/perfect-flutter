@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:beta/application/services/database_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
 import 'package:beta/main.dart';

@@ -111,23 +111,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
   }
 }
 
-class QuestionsScreenArgument {
-  final String? query;
-  final QuestionScreenSource source;
-  final Id? sourceId;
-  final Id resourceTermId;
-  final t.Title title;
-  TermData? termData;
-
-  QuestionsScreenArgument(
-      {required this.query,
-      required this.source,
-      required this.sourceId,
-      required this.resourceTermId,
-      required this.title,
-      this.termData});
-}
-
 enum QuestionScreenSource {
   questionTag,
   search,

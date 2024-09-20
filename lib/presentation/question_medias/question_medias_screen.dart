@@ -38,9 +38,3 @@ class _QuestionMediasScreenState extends State<QuestionMediasScreen> {
         ));
   }
 }
-
-class QuestionMediasScreenArgument {
-  final List<QuestionMedia> questionMedias;
-
-  QuestionMediasScreenArgument({required this.questionMedias});
-}

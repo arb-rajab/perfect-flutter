@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/configs/style.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/answer_data.dart';
 import 'package:beta/domain/question_data.dart';
@@ -193,11 +192,4 @@ class QuestionsReportScreen extends StatelessWidget {
           ),
         ));
   }
-}
-
-class QuestionsReportScreenArgument {
-  final List<QuestionData> questions;
-  final Timer timer;
-
-  QuestionsReportScreenArgument({required this.questions, required this.timer});
 }
