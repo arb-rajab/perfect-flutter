@@ -3,7 +3,6 @@ import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/instance_manager.dart';
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdftron_flutter/pdftron_flutter.dart';
 
 class EbookScreen extends StatefulWidget {
@@ -21,33 +20,19 @@ class _EbookScreenState extends State<EbookScreen> {
   @override
   void initState() {
     Get.delete<EbookScreenController>();
-    // ebookScreenController = Get.put(EbookScreenController(this));
+    ebookScreenController = Get.put(EbookScreenController(this));
     super.initState();
   }
 
   @override
   void dispose() async {
-    // ebookScreenController.dispose();
+    ebookScreenController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center();
-    // if (!ebookScreenController.fileLoaded) return const Center();
-    // return ScreenWrapper(
-    //     title: Text(ebookScreenController.ebookScreenArgument.term.term.name),
-    //     child: SfPdfViewer.file(
-    //       ebookScreenController.file,
-    //       pageLayoutMode: PdfPageLayoutMode.single,
-    //       controller: ebookScreenController.pdfViewerController,
-    //       password: ebookScreenController.decryptEncryptionKey(),
-    //       onDocumentLoaded: ebookScreenController.onDocumentLoaded,
-    //       onAnnotationAdded: ebookScreenController.onAnnotationAdded,
-    //       onAnnotationEdited: ebookScreenController.onAnnotationEdited,
-    //       onAnnotationRemoved: ebookScreenController.onAnnotationRemoved,
-    //     )
-    //     // DocumentView(onCreated: ebookScreenController.onCreated)
-    //     );
+    if (!ebookScreenController.fileLoaded) return const Center();
+    return DocumentView(onCreated: ebookScreenController.onCreated);
   }
 }

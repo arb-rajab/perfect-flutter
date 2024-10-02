@@ -6,7 +6,7 @@ class SplashScreenController {
   Duration duration = const Duration(seconds: 1);
   void startTimer(BuildContext context) {
     Future.delayed(duration, () {
-      context.pushReplacement(HomeScreen.route);
+      if (context.mounted) context.pushReplacement(HomeScreen.route);
     });
   }
 }

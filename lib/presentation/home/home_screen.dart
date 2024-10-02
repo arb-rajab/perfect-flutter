@@ -28,34 +28,9 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with RouteAware {
+class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey addCouponKey = GlobalKey();
   late HomeScreenController homeScreenController;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-  }
-
-  @override
-  void dispose() {
-    routeObserver.unsubscribe(this);
-    super.dispose();
-  }
-
-  @override
-  void didPush() {
-    // Route was pushed onto navigator and is now topmost route.
-  }
-
-  @override
-  void didPopNext() {
-    // if (Get.isRegistered<TermsListingController>()) {
-    //   TermsListingController browseTermsTabController = Get.find();
-    //   browseTermsTabController.init();
-    // }
-  }
 
   @override
   void initState() {
@@ -130,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
       child: UpgradeAlert(
         child: const TabBarView(
           children: [
-            BrowseTermsTab(),
+            PopScope(canPop: false, child: BrowseTermsTab()),
             RecentTermsTab(),
             NewTermsTab(),
             UnstudiedTermsTab()

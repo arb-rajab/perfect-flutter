@@ -23,6 +23,7 @@ class _WebWidgetState extends State<WebWidget> {
 
   late InAppWebViewSettings settings = InAppWebViewSettings(
       isInspectable: kDebugMode,
+      disableContextMenu: true,
       cacheMode: widget.connected
           ? CacheMode.LOAD_NO_CACHE
           : CacheMode.LOAD_CACHE_ONLY);
