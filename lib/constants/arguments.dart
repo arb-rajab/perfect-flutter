@@ -66,3 +66,19 @@ class EbookScreenArgument {
 
   EbookScreenArgument({required this.ebook, required this.term});
 }
+
+class YoutubeVideoScreenArgument {
+  final String videoId;
+  final TermData termData;
+
+  YoutubeVideoScreenArgument({required this.videoId, required this.termData});
+}
+
+class DiscussionScreenArgument {
+  final int itemId;
+  final String itemType;
+  final String itemName;
+
+  DiscussionScreenArgument(
+      {required this.itemId, required this.itemType, required this.itemName});
+}

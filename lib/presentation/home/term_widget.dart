@@ -35,7 +35,13 @@ class _TermWidgetState extends State<TermWidget> {
     termWidgetController.termData =
         termWidgetController.termsListingController.items[widget.index];
     TermData termData = termWidgetController.termData;
-    if (![TermType.term, TermType.questions, TermType.template, TermType.ebook]
+    if (![
+      TermType.term,
+      TermType.questions,
+      TermType.template,
+      TermType.ebook,
+      TermType.youtubeVideos
+    ]
         .contains(termData.term.type)) return const UnsupportedContentWidget();
     var widgett = GestureDetector(
       behavior: HitTestBehavior.opaque,

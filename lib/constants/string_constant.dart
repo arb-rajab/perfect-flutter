@@ -34,6 +34,7 @@ class StringConstant {
   static const delete = 'delete';
   static const seconds = 'seconds';
   static const dataLoadedSuccessfully = 'data-loaded-successfully';
+  static const showComments = 'show-comments';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';

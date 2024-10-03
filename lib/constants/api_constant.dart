@@ -21,4 +21,5 @@ class ApiConstant {
   static const String reportQuestion =
       '${_apiV1}questions/(QUESTION_ID)/report';
   static const String checkedAnswers = '${_apiV1}answers/checked';
+  static const String getYoutubeVideo = '${_apiV1}youtubeVideos/(TERM_ID)';
 }

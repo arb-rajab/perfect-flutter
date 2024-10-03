@@ -5,6 +5,7 @@ import 'package:beta/main.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/coupons/coupons_screen.dart';
+import 'package:beta/presentation/discussion/discussion_screen.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
@@ -23,6 +24,7 @@ import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:beta/presentation/web/web_screen.dart';
+import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 
@@ -144,5 +146,11 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
   ),
   GoRoute(
       path: EbookScreen.route,
-      builder: (context, state) => const EbookScreen())
+      builder: (context, state) => const EbookScreen()),
+  GoRoute(
+      path: YoutubeVideoScreen.route,
+      builder: (context, state) => const YoutubeVideoScreen()),
+  GoRoute(
+      path: DiscussionScreen.route,
+      builder: (context, state) => const DiscussionScreen())
 ]);

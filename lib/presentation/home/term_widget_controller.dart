@@ -34,6 +34,7 @@ import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
+import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -331,6 +332,29 @@ class TermWidgetController {
         } else {
           showOkDialogue(state.context, () {},
               content: StringConstant.youHaveToDownloadFirst.tr());
+        }
+        break;
+      case TermType.youtubeVideos:
+        if (await termService.isUnExpired(termData)) {
+          NetworkService(
+            state.context,
+            onPreConnect: _onPreConnect,
+            onConnectionFailed: _onConnectionFailed,
+            onMessageReceived: _onMessageReceived,
+            onPostConnect: _onPostConnect,
+            onConnectionSucceed: (body) {
+              Get.delete<YoutubeVideoScreenArgument>();
+              Get.put(YoutubeVideoScreenArgument(
+                  termData: termData,
+                  videoId: body['youtubeVideo']['videoId']));
+              state.context.push(YoutubeVideoScreen.route);
+            },
+          ).get(
+              url: ApiConstant.getYoutubeVideo
+                  .replaceFirst('(TERM_ID)', termData.term.id.toString()));
+        } else {
+          showOkDialogue(state.context, () {},
+              content: StringConstant.termIsExpired.tr());
         }
         break;
       default: //TODO implement other terms types
