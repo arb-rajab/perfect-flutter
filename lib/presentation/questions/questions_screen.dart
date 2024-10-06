@@ -1,7 +1,4 @@
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/domain/term_data.dart';
-import 'package:beta/domain/value/id.dart';
-import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/main.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';

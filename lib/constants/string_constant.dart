@@ -35,6 +35,7 @@ class StringConstant {
   static const seconds = 'seconds';
   static const dataLoadedSuccessfully = 'data-loaded-successfully';
   static const showComments = 'show-comments';
+  static const you = 'you';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';
@@ -201,4 +202,9 @@ class StringConstant {
   static const timePerQuestion = '$_quizReport.time-per-question';
   static const noTagsQuestions = '$_quizReport.no-tags-questions';
   static const unknownTag = '$_quizReport.unknown-tag';
+
+  static const _comments = 'comments';
+  static const numberOfSubcomments = '$_comments.number-of-subcomments';
+  static const addComment = '$_comments.add-comment';
+  static const commentsRelatedTo = '$_comments.comments-related-to';
 }

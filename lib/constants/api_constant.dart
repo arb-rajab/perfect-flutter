@@ -22,4 +22,6 @@ class ApiConstant {
       '${_apiV1}questions/(QUESTION_ID)/report';
   static const String checkedAnswers = '${_apiV1}answers/checked';
   static const String getYoutubeVideo = '${_apiV1}youtubeVideos/(TERM_ID)';
+  static const String getComments = '${_apiV1}comments/(ITEM_TYPE)/(ITEM_ID)';
+  static const String submitComment = '${_apiV1}comments';
 }

@@ -78,7 +78,11 @@ class DiscussionScreenArgument {
   final int itemId;
   final String itemType;
   final String itemName;
+  final bool commentEnabled;
 
   DiscussionScreenArgument(
-      {required this.itemId, required this.itemType, required this.itemName});
+      {required this.itemId,
+      required this.itemType,
+      required this.itemName,
+      this.commentEnabled = true});
 }

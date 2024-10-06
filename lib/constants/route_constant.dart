@@ -152,5 +152,8 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
       builder: (context, state) => const YoutubeVideoScreen()),
   GoRoute(
       path: DiscussionScreen.route,
-      builder: (context, state) => const DiscussionScreen())
+      builder: (context, state) => DiscussionScreen(
+            type: state.pathParameters['itemType']!,
+            id: state.pathParameters['itemId']!,
+          ))
 ]);

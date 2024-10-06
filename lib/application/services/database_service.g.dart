@@ -226,6 +226,22 @@ class Coupon extends DataClass implements Insertable<Coupon> {
             activationDate.present ? activationDate.value : this.activationDate,
         expirationDays: expirationDays ?? this.expirationDays,
       );
+  Coupon copyWithCompanion(CouponsCompanion data) {
+    return Coupon(
+      id: data.id.present ? data.id.value : this.id,
+      serial: data.serial.present ? data.serial.value : this.serial,
+      type: data.type.present ? data.type.value : this.type,
+      free: data.free.present ? data.free.value : this.free,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      activationDate: data.activationDate.present
+          ? data.activationDate.value
+          : this.activationDate,
+      expirationDays: data.expirationDays.present
+          ? data.expirationDays.value
+          : this.expirationDays,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Coupon(')
@@ -683,6 +699,25 @@ class Term extends DataClass implements Insertable<Term> {
         captureable: captureable ?? this.captureable,
         textCulumn: textCulumn ?? this.textCulumn,
       );
+  Term copyWithCompanion(TermsCompanion data) {
+    return Term(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      name: data.name.present ? data.name.value : this.name,
+      type: data.type.present ? data.type.value : this.type,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      enabled: data.enabled.present ? data.enabled.value : this.enabled,
+      free: data.free.present ? data.free.value : this.free,
+      ordering: data.ordering.present ? data.ordering.value : this.ordering,
+      needsUpdate:
+          data.needsUpdate.present ? data.needsUpdate.value : this.needsUpdate,
+      captureable:
+          data.captureable.present ? data.captureable.value : this.captureable,
+      textCulumn:
+          data.textCulumn.present ? data.textCulumn.value : this.textCulumn,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Term(')
@@ -1156,6 +1191,28 @@ class Answer extends DataClass implements Insertable<Answer> {
         creation: creation ?? this.creation,
         checkedCount: checkedCount ?? this.checkedCount,
       );
+  Answer copyWithCompanion(AnswersCompanion data) {
+    return Answer(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      title: data.title.present ? data.title.value : this.title,
+      titleTranslation: data.titleTranslation.present
+          ? data.titleTranslation.value
+          : this.titleTranslation,
+      isCorrect: data.isCorrect.present ? data.isCorrect.value : this.isCorrect,
+      parentQuestionId: data.parentQuestionId.present
+          ? data.parentQuestionId.value
+          : this.parentQuestionId,
+      specialCharacter: data.specialCharacter.present
+          ? data.specialCharacter.value
+          : this.specialCharacter,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      checkedCount: data.checkedCount.present
+          ? data.checkedCount.value
+          : this.checkedCount,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Answer(')
@@ -1717,6 +1774,34 @@ class Question extends DataClass implements Insertable<Question> {
         creation: creation ?? this.creation,
         editionDate: editionDate ?? this.editionDate,
       );
+  Question copyWithCompanion(QuestionsCompanion data) {
+    return Question(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      title: data.title.present ? data.title.value : this.title,
+      titleTranslation: data.titleTranslation.present
+          ? data.titleTranslation.value
+          : this.titleTranslation,
+      labelId: data.labelId.present ? data.labelId.value : this.labelId,
+      note: data.note.present ? data.note.value : this.note,
+      noteTranslation: data.noteTranslation.present
+          ? data.noteTranslation.value
+          : this.noteTranslation,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      specialCharacter: data.specialCharacter.present
+          ? data.specialCharacter.value
+          : this.specialCharacter,
+      type: data.type.present ? data.type.value : this.type,
+      edited: data.edited.present ? data.edited.value : this.edited,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      editionDate:
+          data.editionDate.present ? data.editionDate.value : this.editionDate,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Question(')
@@ -2141,6 +2226,19 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
         hasInformation: hasInformation ?? this.hasInformation,
         creation: creation ?? this.creation,
       );
+  QuestionTag copyWithCompanion(QuestionTagsCompanion data) {
+    return QuestionTag(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      parentTagId:
+          data.parentTagId.present ? data.parentTagId.value : this.parentTagId,
+      hasInformation: data.hasInformation.present
+          ? data.hasInformation.value
+          : this.hasInformation,
+      creation: data.creation.present ? data.creation.value : this.creation,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('QuestionTag(')
@@ -2403,6 +2501,17 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
         parentQuestionId: parentQuestionId ?? this.parentQuestionId,
         creation: creation ?? this.creation,
       );
+  QuestionMedia copyWithCompanion(QuestionMediasCompanion data) {
+    return QuestionMedia(
+      id: data.id.present ? data.id.value : this.id,
+      url: data.url.present ? data.url.value : this.url,
+      parentQuestionId: data.parentQuestionId.present
+          ? data.parentQuestionId.value
+          : this.parentQuestionId,
+      creation: data.creation.present ? data.creation.value : this.creation,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('QuestionMedia(')
@@ -2623,6 +2732,15 @@ class FcmTopic extends DataClass implements Insertable<FcmTopic> {
         title: title ?? this.title,
         subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
       );
+  FcmTopic copyWithCompanion(FcmTopicsCompanion data) {
+    return FcmTopic(
+      title: data.title.present ? data.title.value : this.title,
+      subscriptionSucceed: data.subscriptionSucceed.present
+          ? data.subscriptionSucceed.value
+          : this.subscriptionSucceed,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('FcmTopic(')
@@ -2831,6 +2949,14 @@ class AnswerProperty extends DataClass implements Insertable<AnswerProperty> {
         name: name ?? this.name,
         value: value ?? this.value,
       );
+  AnswerProperty copyWithCompanion(AnswerPropertiesCompanion data) {
+    return AnswerProperty(
+      answerId: data.answerId.present ? data.answerId.value : this.answerId,
+      name: data.name.present ? data.name.value : this.name,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AnswerProperty(')
@@ -3034,6 +3160,13 @@ class CouponsLinkedToTerm extends DataClass
         couponId: couponId ?? this.couponId,
         termId: termId ?? this.termId,
       );
+  CouponsLinkedToTerm copyWithCompanion(CouponsLinkedToTermsCompanion data) {
+    return CouponsLinkedToTerm(
+      couponId: data.couponId.present ? data.couponId.value : this.couponId,
+      termId: data.termId.present ? data.termId.value : this.termId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('CouponsLinkedToTerm(')
@@ -3241,6 +3374,16 @@ class TermTree extends DataClass implements Insertable<TermTree> {
         parentTermId: parentTermId ?? this.parentTermId,
         depth: depth ?? this.depth,
       );
+  TermTree copyWithCompanion(TermTreesCompanion data) {
+    return TermTree(
+      termId: data.termId.present ? data.termId.value : this.termId,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      depth: data.depth.present ? data.depth.value : this.depth,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermTree(')
@@ -3498,6 +3641,20 @@ class Ebook extends DataClass implements Insertable<Ebook> {
         creation: creation ?? this.creation,
         lastUpdated: lastUpdated ?? this.lastUpdated,
       );
+  Ebook copyWithCompanion(EbooksCompanion data) {
+    return Ebook(
+      encryptionKey: data.encryptionKey.present
+          ? data.encryptionKey.value
+          : this.encryptionKey,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      lastUpdated:
+          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Ebook(')
@@ -3731,6 +3888,17 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
         childId: childId ?? this.childId,
         lastAccess: lastAccess ?? this.lastAccess,
       );
+  TermsLastAccess copyWithCompanion(TermsLastAccessesCompanion data) {
+    return TermsLastAccess(
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      childId: data.childId.present ? data.childId.value : this.childId,
+      lastAccess:
+          data.lastAccess.present ? data.lastAccess.value : this.lastAccess,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermsLastAccess(')
@@ -3956,6 +4124,16 @@ class QuestionTagProperty extends DataClass
         name: name ?? this.name,
         value: value ?? this.value,
       );
+  QuestionTagProperty copyWithCompanion(QuestionTagPropertiesCompanion data) {
+    return QuestionTagProperty(
+      questionTagId: data.questionTagId.present
+          ? data.questionTagId.value
+          : this.questionTagId,
+      name: data.name.present ? data.name.value : this.name,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('QuestionTagProperty(')
@@ -4181,6 +4359,15 @@ class QuestionProperty extends DataClass
         name: name ?? this.name,
         value: value ?? this.value,
       );
+  QuestionProperty copyWithCompanion(QuestionPropertiesCompanion data) {
+    return QuestionProperty(
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
+      name: data.name.present ? data.name.value : this.name,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('QuestionProperty(')
@@ -4400,6 +4587,14 @@ class HttpRequest extends DataClass implements Insertable<HttpRequest> {
         url: url ?? this.url,
         mapp: mapp ?? this.mapp,
       );
+  HttpRequest copyWithCompanion(HttpRequestsCompanion data) {
+    return HttpRequest(
+      id: data.id.present ? data.id.value : this.id,
+      url: data.url.present ? data.url.value : this.url,
+      mapp: data.mapp.present ? data.mapp.value : this.mapp,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('HttpRequest(')
@@ -4573,6 +4768,13 @@ class TermsWithQuestionsFilteringEnabledData extends DataClass
       TermsWithQuestionsFilteringEnabledData(
         termId: termId ?? this.termId,
       );
+  TermsWithQuestionsFilteringEnabledData copyWithCompanion(
+      TermsWithQuestionsFilteringEnabledCompanion data) {
+    return TermsWithQuestionsFilteringEnabledData(
+      termId: data.termId.present ? data.termId.value : this.termId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermsWithQuestionsFilteringEnabledData(')
@@ -4777,6 +4979,17 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
         tail: tail ?? this.tail,
         parentTermId: parentTermId ?? this.parentTermId,
       );
+  Flashcard copyWithCompanion(FlashcardsCompanion data) {
+    return Flashcard(
+      id: data.id.present ? data.id.value : this.id,
+      head: data.head.present ? data.head.value : this.head,
+      tail: data.tail.present ? data.tail.value : this.tail,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Flashcard(')
@@ -5034,6 +5247,20 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
         creation: creation ?? this.creation,
         lastUpdated: lastUpdated ?? this.lastUpdated,
       );
+  VoiceNote copyWithCompanion(VoiceNotesCompanion data) {
+    return VoiceNote(
+      encryptionKey: data.encryptionKey.present
+          ? data.encryptionKey.value
+          : this.encryptionKey,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      lastUpdated:
+          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('VoiceNote(')
@@ -5239,6 +5466,15 @@ class RelatedTerm extends DataClass implements Insertable<RelatedTerm> {
         anotherTermId: anotherTermId ?? this.anotherTermId,
         termId: termId ?? this.termId,
       );
+  RelatedTerm copyWithCompanion(RelatedTermsCompanion data) {
+    return RelatedTerm(
+      anotherTermId: data.anotherTermId.present
+          ? data.anotherTermId.value
+          : this.anotherTermId,
+      termId: data.termId.present ? data.termId.value : this.termId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('RelatedTerm(')
@@ -5428,6 +5664,14 @@ class QuestionsLinkedToTag extends DataClass
         questionId: questionId ?? this.questionId,
         tagId: tagId ?? this.tagId,
       );
+  QuestionsLinkedToTag copyWithCompanion(QuestionsLinkedToTagsCompanion data) {
+    return QuestionsLinkedToTag(
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
+      tagId: data.tagId.present ? data.tagId.value : this.tagId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('QuestionsLinkedToTag(')
@@ -5667,6 +5911,18 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
         rootTermId: rootTermId ?? this.rootTermId,
         creation: creation ?? this.creation,
       );
+  TermsParent copyWithCompanion(TermsParentsCompanion data) {
+    return TermsParent(
+      termId: data.termId.present ? data.termId.value : this.termId,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      rootTermId:
+          data.rootTermId.present ? data.rootTermId.value : this.rootTermId,
+      creation: data.creation.present ? data.creation.value : this.creation,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermsParent(')
@@ -5896,6 +6152,14 @@ class TermTag extends DataClass implements Insertable<TermTag> {
         name: name ?? this.name,
         ordering: ordering ?? this.ordering,
       );
+  TermTag copyWithCompanion(TermTagsCompanion data) {
+    return TermTag(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      ordering: data.ordering.present ? data.ordering.value : this.ordering,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermTag(')
@@ -6081,6 +6345,13 @@ class TermsLinkedToTag extends DataClass
         termId: termId ?? this.termId,
         tagId: tagId ?? this.tagId,
       );
+  TermsLinkedToTag copyWithCompanion(TermsLinkedToTagsCompanion data) {
+    return TermsLinkedToTag(
+      termId: data.termId.present ? data.termId.value : this.termId,
+      tagId: data.tagId.present ? data.tagId.value : this.tagId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermsLinkedToTag(')
@@ -6261,6 +6532,13 @@ class TermLabel extends DataClass implements Insertable<TermLabel> {
         id: id ?? this.id,
         name: name ?? this.name,
       );
+  TermLabel copyWithCompanion(TermLabelsCompanion data) {
+    return TermLabel(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermLabel(')
@@ -6433,6 +6711,13 @@ class TermsLinkedToLabel extends DataClass
         termId: termId ?? this.termId,
         labelId: labelId ?? this.labelId,
       );
+  TermsLinkedToLabel copyWithCompanion(TermsLinkedToLabelsCompanion data) {
+    return TermsLinkedToLabel(
+      termId: data.termId.present ? data.termId.value : this.termId,
+      labelId: data.labelId.present ? data.labelId.value : this.labelId,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermsLinkedToLabel(')
@@ -6637,6 +6922,14 @@ class TermProperty extends DataClass implements Insertable<TermProperty> {
         name: name ?? this.name,
         value: value ?? this.value,
       );
+  TermProperty copyWithCompanion(TermPropertiesCompanion data) {
+    return TermProperty(
+      termId: data.termId.present ? data.termId.value : this.termId,
+      name: data.name.present ? data.name.value : this.name,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('TermProperty(')
@@ -6736,6 +7029,7 @@ class TermPropertiesCompanion extends UpdateCompanion<TermProperty> {
 
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
+  $DatabaseServiceManager get managers => $DatabaseServiceManager(this);
   late final $CouponsTable coupons = $CouponsTable(this);
   late final $TermsTable terms = $TermsTable(this);
   late final $AnswersTable answers = $AnswersTable(this);
@@ -6846,4 +7140,2917 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         tltlIndex2,
         termsIndex1
       ];
+}
+
+typedef $$CouponsTableCreateCompanionBuilder = CouponsCompanion Function({
+  Value<int> id,
+  required String serial,
+  required int type,
+  Value<int> free,
+  required DateTime creation,
+  Value<DateTime?> activationDate,
+  Value<int> expirationDays,
+});
+typedef $$CouponsTableUpdateCompanionBuilder = CouponsCompanion Function({
+  Value<int> id,
+  Value<String> serial,
+  Value<int> type,
+  Value<int> free,
+  Value<DateTime> creation,
+  Value<DateTime?> activationDate,
+  Value<int> expirationDays,
+});
+
+class $$CouponsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $CouponsTable,
+    Coupon,
+    $$CouponsTableFilterComposer,
+    $$CouponsTableOrderingComposer,
+    $$CouponsTableCreateCompanionBuilder,
+    $$CouponsTableUpdateCompanionBuilder> {
+  $$CouponsTableTableManager(_$DatabaseService db, $CouponsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CouponsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CouponsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> serial = const Value.absent(),
+            Value<int> type = const Value.absent(),
+            Value<int> free = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<DateTime?> activationDate = const Value.absent(),
+            Value<int> expirationDays = const Value.absent(),
+          }) =>
+              CouponsCompanion(
+            id: id,
+            serial: serial,
+            type: type,
+            free: free,
+            creation: creation,
+            activationDate: activationDate,
+            expirationDays: expirationDays,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String serial,
+            required int type,
+            Value<int> free = const Value.absent(),
+            required DateTime creation,
+            Value<DateTime?> activationDate = const Value.absent(),
+            Value<int> expirationDays = const Value.absent(),
+          }) =>
+              CouponsCompanion.insert(
+            id: id,
+            serial: serial,
+            type: type,
+            free: free,
+            creation: creation,
+            activationDate: activationDate,
+            expirationDays: expirationDays,
+          ),
+        ));
+}
+
+class $$CouponsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $CouponsTable> {
+  $$CouponsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get serial => $state.composableBuilder(
+      column: $state.table.serial,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get free => $state.composableBuilder(
+      column: $state.table.free,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get activationDate => $state.composableBuilder(
+      column: $state.table.activationDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get expirationDays => $state.composableBuilder(
+      column: $state.table.expirationDays,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$CouponsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $CouponsTable> {
+  $$CouponsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get serial => $state.composableBuilder(
+      column: $state.table.serial,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get free => $state.composableBuilder(
+      column: $state.table.free,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get activationDate => $state.composableBuilder(
+      column: $state.table.activationDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get expirationDays => $state.composableBuilder(
+      column: $state.table.expirationDays,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsTableCreateCompanionBuilder = TermsCompanion Function({
+  Value<int> id,
+  required String uuid,
+  required String name,
+  required int type,
+  required DateTime creation,
+  Value<int> enabled,
+  required int free,
+  required int ordering,
+  Value<int> needsUpdate,
+  Value<int> captureable,
+  required String textCulumn,
+});
+typedef $$TermsTableUpdateCompanionBuilder = TermsCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> name,
+  Value<int> type,
+  Value<DateTime> creation,
+  Value<int> enabled,
+  Value<int> free,
+  Value<int> ordering,
+  Value<int> needsUpdate,
+  Value<int> captureable,
+  Value<String> textCulumn,
+});
+
+class $$TermsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermsTable,
+    Term,
+    $$TermsTableFilterComposer,
+    $$TermsTableOrderingComposer,
+    $$TermsTableCreateCompanionBuilder,
+    $$TermsTableUpdateCompanionBuilder> {
+  $$TermsTableTableManager(_$DatabaseService db, $TermsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> type = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<int> enabled = const Value.absent(),
+            Value<int> free = const Value.absent(),
+            Value<int> ordering = const Value.absent(),
+            Value<int> needsUpdate = const Value.absent(),
+            Value<int> captureable = const Value.absent(),
+            Value<String> textCulumn = const Value.absent(),
+          }) =>
+              TermsCompanion(
+            id: id,
+            uuid: uuid,
+            name: name,
+            type: type,
+            creation: creation,
+            enabled: enabled,
+            free: free,
+            ordering: ordering,
+            needsUpdate: needsUpdate,
+            captureable: captureable,
+            textCulumn: textCulumn,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String name,
+            required int type,
+            required DateTime creation,
+            Value<int> enabled = const Value.absent(),
+            required int free,
+            required int ordering,
+            Value<int> needsUpdate = const Value.absent(),
+            Value<int> captureable = const Value.absent(),
+            required String textCulumn,
+          }) =>
+              TermsCompanion.insert(
+            id: id,
+            uuid: uuid,
+            name: name,
+            type: type,
+            creation: creation,
+            enabled: enabled,
+            free: free,
+            ordering: ordering,
+            needsUpdate: needsUpdate,
+            captureable: captureable,
+            textCulumn: textCulumn,
+          ),
+        ));
+}
+
+class $$TermsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermsTable> {
+  $$TermsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get enabled => $state.composableBuilder(
+      column: $state.table.enabled,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get free => $state.composableBuilder(
+      column: $state.table.free,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get ordering => $state.composableBuilder(
+      column: $state.table.ordering,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get needsUpdate => $state.composableBuilder(
+      column: $state.table.needsUpdate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get captureable => $state.composableBuilder(
+      column: $state.table.captureable,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get textCulumn => $state.composableBuilder(
+      column: $state.table.textCulumn,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermsTable> {
+  $$TermsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get enabled => $state.composableBuilder(
+      column: $state.table.enabled,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get free => $state.composableBuilder(
+      column: $state.table.free,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get ordering => $state.composableBuilder(
+      column: $state.table.ordering,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get needsUpdate => $state.composableBuilder(
+      column: $state.table.needsUpdate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get captureable => $state.composableBuilder(
+      column: $state.table.captureable,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get textCulumn => $state.composableBuilder(
+      column: $state.table.textCulumn,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$AnswersTableCreateCompanionBuilder = AnswersCompanion Function({
+  Value<int> id,
+  required String uuid,
+  required String title,
+  Value<String> titleTranslation,
+  required int isCorrect,
+  required int parentQuestionId,
+  required int specialCharacter,
+  required DateTime creation,
+  Value<int> checkedCount,
+});
+typedef $$AnswersTableUpdateCompanionBuilder = AnswersCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> title,
+  Value<String> titleTranslation,
+  Value<int> isCorrect,
+  Value<int> parentQuestionId,
+  Value<int> specialCharacter,
+  Value<DateTime> creation,
+  Value<int> checkedCount,
+});
+
+class $$AnswersTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $AnswersTable,
+    Answer,
+    $$AnswersTableFilterComposer,
+    $$AnswersTableOrderingComposer,
+    $$AnswersTableCreateCompanionBuilder,
+    $$AnswersTableUpdateCompanionBuilder> {
+  $$AnswersTableTableManager(_$DatabaseService db, $AnswersTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$AnswersTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$AnswersTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<String> titleTranslation = const Value.absent(),
+            Value<int> isCorrect = const Value.absent(),
+            Value<int> parentQuestionId = const Value.absent(),
+            Value<int> specialCharacter = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<int> checkedCount = const Value.absent(),
+          }) =>
+              AnswersCompanion(
+            id: id,
+            uuid: uuid,
+            title: title,
+            titleTranslation: titleTranslation,
+            isCorrect: isCorrect,
+            parentQuestionId: parentQuestionId,
+            specialCharacter: specialCharacter,
+            creation: creation,
+            checkedCount: checkedCount,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String title,
+            Value<String> titleTranslation = const Value.absent(),
+            required int isCorrect,
+            required int parentQuestionId,
+            required int specialCharacter,
+            required DateTime creation,
+            Value<int> checkedCount = const Value.absent(),
+          }) =>
+              AnswersCompanion.insert(
+            id: id,
+            uuid: uuid,
+            title: title,
+            titleTranslation: titleTranslation,
+            isCorrect: isCorrect,
+            parentQuestionId: parentQuestionId,
+            specialCharacter: specialCharacter,
+            creation: creation,
+            checkedCount: checkedCount,
+          ),
+        ));
+}
+
+class $$AnswersTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $AnswersTable> {
+  $$AnswersTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get titleTranslation => $state.composableBuilder(
+      column: $state.table.titleTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get isCorrect => $state.composableBuilder(
+      column: $state.table.isCorrect,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentQuestionId => $state.composableBuilder(
+      column: $state.table.parentQuestionId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get specialCharacter => $state.composableBuilder(
+      column: $state.table.specialCharacter,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get checkedCount => $state.composableBuilder(
+      column: $state.table.checkedCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$AnswersTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $AnswersTable> {
+  $$AnswersTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get titleTranslation => $state.composableBuilder(
+      column: $state.table.titleTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get isCorrect => $state.composableBuilder(
+      column: $state.table.isCorrect,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentQuestionId => $state.composableBuilder(
+      column: $state.table.parentQuestionId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get specialCharacter => $state.composableBuilder(
+      column: $state.table.specialCharacter,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get checkedCount => $state.composableBuilder(
+      column: $state.table.checkedCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionsTableCreateCompanionBuilder = QuestionsCompanion Function({
+  Value<int> id,
+  required String uuid,
+  required String title,
+  Value<String> titleTranslation,
+  required int labelId,
+  required String note,
+  Value<String> noteTranslation,
+  required int parentTermId,
+  required int specialCharacter,
+  required int type,
+  Value<int> edited,
+  Value<String> imageUrl,
+  required DateTime creation,
+  required DateTime editionDate,
+});
+typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> title,
+  Value<String> titleTranslation,
+  Value<int> labelId,
+  Value<String> note,
+  Value<String> noteTranslation,
+  Value<int> parentTermId,
+  Value<int> specialCharacter,
+  Value<int> type,
+  Value<int> edited,
+  Value<String> imageUrl,
+  Value<DateTime> creation,
+  Value<DateTime> editionDate,
+});
+
+class $$QuestionsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionsTable,
+    Question,
+    $$QuestionsTableFilterComposer,
+    $$QuestionsTableOrderingComposer,
+    $$QuestionsTableCreateCompanionBuilder,
+    $$QuestionsTableUpdateCompanionBuilder> {
+  $$QuestionsTableTableManager(_$DatabaseService db, $QuestionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$QuestionsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$QuestionsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<String> titleTranslation = const Value.absent(),
+            Value<int> labelId = const Value.absent(),
+            Value<String> note = const Value.absent(),
+            Value<String> noteTranslation = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<int> specialCharacter = const Value.absent(),
+            Value<int> type = const Value.absent(),
+            Value<int> edited = const Value.absent(),
+            Value<String> imageUrl = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<DateTime> editionDate = const Value.absent(),
+          }) =>
+              QuestionsCompanion(
+            id: id,
+            uuid: uuid,
+            title: title,
+            titleTranslation: titleTranslation,
+            labelId: labelId,
+            note: note,
+            noteTranslation: noteTranslation,
+            parentTermId: parentTermId,
+            specialCharacter: specialCharacter,
+            type: type,
+            edited: edited,
+            imageUrl: imageUrl,
+            creation: creation,
+            editionDate: editionDate,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String title,
+            Value<String> titleTranslation = const Value.absent(),
+            required int labelId,
+            required String note,
+            Value<String> noteTranslation = const Value.absent(),
+            required int parentTermId,
+            required int specialCharacter,
+            required int type,
+            Value<int> edited = const Value.absent(),
+            Value<String> imageUrl = const Value.absent(),
+            required DateTime creation,
+            required DateTime editionDate,
+          }) =>
+              QuestionsCompanion.insert(
+            id: id,
+            uuid: uuid,
+            title: title,
+            titleTranslation: titleTranslation,
+            labelId: labelId,
+            note: note,
+            noteTranslation: noteTranslation,
+            parentTermId: parentTermId,
+            specialCharacter: specialCharacter,
+            type: type,
+            edited: edited,
+            imageUrl: imageUrl,
+            creation: creation,
+            editionDate: editionDate,
+          ),
+        ));
+}
+
+class $$QuestionsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionsTable> {
+  $$QuestionsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get titleTranslation => $state.composableBuilder(
+      column: $state.table.titleTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get labelId => $state.composableBuilder(
+      column: $state.table.labelId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get note => $state.composableBuilder(
+      column: $state.table.note,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get noteTranslation => $state.composableBuilder(
+      column: $state.table.noteTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get specialCharacter => $state.composableBuilder(
+      column: $state.table.specialCharacter,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get edited => $state.composableBuilder(
+      column: $state.table.edited,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get imageUrl => $state.composableBuilder(
+      column: $state.table.imageUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get editionDate => $state.composableBuilder(
+      column: $state.table.editionDate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionsTable> {
+  $$QuestionsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get uuid => $state.composableBuilder(
+      column: $state.table.uuid,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get titleTranslation => $state.composableBuilder(
+      column: $state.table.titleTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get labelId => $state.composableBuilder(
+      column: $state.table.labelId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get note => $state.composableBuilder(
+      column: $state.table.note,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get noteTranslation => $state.composableBuilder(
+      column: $state.table.noteTranslation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get specialCharacter => $state.composableBuilder(
+      column: $state.table.specialCharacter,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get edited => $state.composableBuilder(
+      column: $state.table.edited,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get imageUrl => $state.composableBuilder(
+      column: $state.table.imageUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get editionDate => $state.composableBuilder(
+      column: $state.table.editionDate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionTagsTableCreateCompanionBuilder = QuestionTagsCompanion
+    Function({
+  Value<int> id,
+  required String name,
+  required int parentTagId,
+  Value<int> hasInformation,
+  required DateTime creation,
+});
+typedef $$QuestionTagsTableUpdateCompanionBuilder = QuestionTagsCompanion
+    Function({
+  Value<int> id,
+  Value<String> name,
+  Value<int> parentTagId,
+  Value<int> hasInformation,
+  Value<DateTime> creation,
+});
+
+class $$QuestionTagsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionTagsTable,
+    QuestionTag,
+    $$QuestionTagsTableFilterComposer,
+    $$QuestionTagsTableOrderingComposer,
+    $$QuestionTagsTableCreateCompanionBuilder,
+    $$QuestionTagsTableUpdateCompanionBuilder> {
+  $$QuestionTagsTableTableManager(
+      _$DatabaseService db, $QuestionTagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$QuestionTagsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$QuestionTagsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> parentTagId = const Value.absent(),
+            Value<int> hasInformation = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+          }) =>
+              QuestionTagsCompanion(
+            id: id,
+            name: name,
+            parentTagId: parentTagId,
+            hasInformation: hasInformation,
+            creation: creation,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required int parentTagId,
+            Value<int> hasInformation = const Value.absent(),
+            required DateTime creation,
+          }) =>
+              QuestionTagsCompanion.insert(
+            id: id,
+            name: name,
+            parentTagId: parentTagId,
+            hasInformation: hasInformation,
+            creation: creation,
+          ),
+        ));
+}
+
+class $$QuestionTagsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionTagsTable> {
+  $$QuestionTagsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTagId => $state.composableBuilder(
+      column: $state.table.parentTagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get hasInformation => $state.composableBuilder(
+      column: $state.table.hasInformation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionTagsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionTagsTable> {
+  $$QuestionTagsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTagId => $state.composableBuilder(
+      column: $state.table.parentTagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get hasInformation => $state.composableBuilder(
+      column: $state.table.hasInformation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionMediasTableCreateCompanionBuilder = QuestionMediasCompanion
+    Function({
+  required int id,
+  required String url,
+  required int parentQuestionId,
+  required DateTime creation,
+  Value<int> rowid,
+});
+typedef $$QuestionMediasTableUpdateCompanionBuilder = QuestionMediasCompanion
+    Function({
+  Value<int> id,
+  Value<String> url,
+  Value<int> parentQuestionId,
+  Value<DateTime> creation,
+  Value<int> rowid,
+});
+
+class $$QuestionMediasTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionMediasTable,
+    QuestionMedia,
+    $$QuestionMediasTableFilterComposer,
+    $$QuestionMediasTableOrderingComposer,
+    $$QuestionMediasTableCreateCompanionBuilder,
+    $$QuestionMediasTableUpdateCompanionBuilder> {
+  $$QuestionMediasTableTableManager(
+      _$DatabaseService db, $QuestionMediasTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$QuestionMediasTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$QuestionMediasTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> url = const Value.absent(),
+            Value<int> parentQuestionId = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionMediasCompanion(
+            id: id,
+            url: url,
+            parentQuestionId: parentQuestionId,
+            creation: creation,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int id,
+            required String url,
+            required int parentQuestionId,
+            required DateTime creation,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionMediasCompanion.insert(
+            id: id,
+            url: url,
+            parentQuestionId: parentQuestionId,
+            creation: creation,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$QuestionMediasTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionMediasTable> {
+  $$QuestionMediasTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentQuestionId => $state.composableBuilder(
+      column: $state.table.parentQuestionId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionMediasTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionMediasTable> {
+  $$QuestionMediasTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentQuestionId => $state.composableBuilder(
+      column: $state.table.parentQuestionId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$FcmTopicsTableCreateCompanionBuilder = FcmTopicsCompanion Function({
+  required String title,
+  required bool subscriptionSucceed,
+  Value<int> rowid,
+});
+typedef $$FcmTopicsTableUpdateCompanionBuilder = FcmTopicsCompanion Function({
+  Value<String> title,
+  Value<bool> subscriptionSucceed,
+  Value<int> rowid,
+});
+
+class $$FcmTopicsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $FcmTopicsTable,
+    FcmTopic,
+    $$FcmTopicsTableFilterComposer,
+    $$FcmTopicsTableOrderingComposer,
+    $$FcmTopicsTableCreateCompanionBuilder,
+    $$FcmTopicsTableUpdateCompanionBuilder> {
+  $$FcmTopicsTableTableManager(_$DatabaseService db, $FcmTopicsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$FcmTopicsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$FcmTopicsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> title = const Value.absent(),
+            Value<bool> subscriptionSucceed = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              FcmTopicsCompanion(
+            title: title,
+            subscriptionSucceed: subscriptionSucceed,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String title,
+            required bool subscriptionSucceed,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              FcmTopicsCompanion.insert(
+            title: title,
+            subscriptionSucceed: subscriptionSucceed,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$FcmTopicsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $FcmTopicsTable> {
+  $$FcmTopicsTableFilterComposer(super.$state);
+  ColumnFilters<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get subscriptionSucceed => $state.composableBuilder(
+      column: $state.table.subscriptionSucceed,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$FcmTopicsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $FcmTopicsTable> {
+  $$FcmTopicsTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get subscriptionSucceed => $state.composableBuilder(
+      column: $state.table.subscriptionSucceed,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$AnswerPropertiesTableCreateCompanionBuilder
+    = AnswerPropertiesCompanion Function({
+  required int answerId,
+  required String name,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$AnswerPropertiesTableUpdateCompanionBuilder
+    = AnswerPropertiesCompanion Function({
+  Value<int> answerId,
+  Value<String> name,
+  Value<String> value,
+  Value<int> rowid,
+});
+
+class $$AnswerPropertiesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $AnswerPropertiesTable,
+    AnswerProperty,
+    $$AnswerPropertiesTableFilterComposer,
+    $$AnswerPropertiesTableOrderingComposer,
+    $$AnswerPropertiesTableCreateCompanionBuilder,
+    $$AnswerPropertiesTableUpdateCompanionBuilder> {
+  $$AnswerPropertiesTableTableManager(
+      _$DatabaseService db, $AnswerPropertiesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$AnswerPropertiesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$AnswerPropertiesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> answerId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AnswerPropertiesCompanion(
+            answerId: answerId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int answerId,
+            required String name,
+            required String value,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AnswerPropertiesCompanion.insert(
+            answerId: answerId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$AnswerPropertiesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $AnswerPropertiesTable> {
+  $$AnswerPropertiesTableFilterComposer(super.$state);
+  ColumnFilters<int> get answerId => $state.composableBuilder(
+      column: $state.table.answerId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$AnswerPropertiesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $AnswerPropertiesTable> {
+  $$AnswerPropertiesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get answerId => $state.composableBuilder(
+      column: $state.table.answerId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$CouponsLinkedToTermsTableCreateCompanionBuilder
+    = CouponsLinkedToTermsCompanion Function({
+  required int couponId,
+  required int termId,
+  Value<int> rowid,
+});
+typedef $$CouponsLinkedToTermsTableUpdateCompanionBuilder
+    = CouponsLinkedToTermsCompanion Function({
+  Value<int> couponId,
+  Value<int> termId,
+  Value<int> rowid,
+});
+
+class $$CouponsLinkedToTermsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $CouponsLinkedToTermsTable,
+    CouponsLinkedToTerm,
+    $$CouponsLinkedToTermsTableFilterComposer,
+    $$CouponsLinkedToTermsTableOrderingComposer,
+    $$CouponsLinkedToTermsTableCreateCompanionBuilder,
+    $$CouponsLinkedToTermsTableUpdateCompanionBuilder> {
+  $$CouponsLinkedToTermsTableTableManager(
+      _$DatabaseService db, $CouponsLinkedToTermsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$CouponsLinkedToTermsTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$CouponsLinkedToTermsTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> couponId = const Value.absent(),
+            Value<int> termId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CouponsLinkedToTermsCompanion(
+            couponId: couponId,
+            termId: termId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int couponId,
+            required int termId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CouponsLinkedToTermsCompanion.insert(
+            couponId: couponId,
+            termId: termId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$CouponsLinkedToTermsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $CouponsLinkedToTermsTable> {
+  $$CouponsLinkedToTermsTableFilterComposer(super.$state);
+  ColumnFilters<int> get couponId => $state.composableBuilder(
+      column: $state.table.couponId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$CouponsLinkedToTermsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $CouponsLinkedToTermsTable> {
+  $$CouponsLinkedToTermsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get couponId => $state.composableBuilder(
+      column: $state.table.couponId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermTreesTableCreateCompanionBuilder = TermTreesCompanion Function({
+  required int termId,
+  required int parentTermId,
+  Value<int> depth,
+  Value<int> rowid,
+});
+typedef $$TermTreesTableUpdateCompanionBuilder = TermTreesCompanion Function({
+  Value<int> termId,
+  Value<int> parentTermId,
+  Value<int> depth,
+  Value<int> rowid,
+});
+
+class $$TermTreesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermTreesTable,
+    TermTree,
+    $$TermTreesTableFilterComposer,
+    $$TermTreesTableOrderingComposer,
+    $$TermTreesTableCreateCompanionBuilder,
+    $$TermTreesTableUpdateCompanionBuilder> {
+  $$TermTreesTableTableManager(_$DatabaseService db, $TermTreesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermTreesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermTreesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<int> depth = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermTreesCompanion(
+            termId: termId,
+            parentTermId: parentTermId,
+            depth: depth,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int termId,
+            required int parentTermId,
+            Value<int> depth = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermTreesCompanion.insert(
+            termId: termId,
+            parentTermId: parentTermId,
+            depth: depth,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermTreesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermTreesTable> {
+  $$TermTreesTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get depth => $state.composableBuilder(
+      column: $state.table.depth,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermTreesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermTreesTable> {
+  $$TermTreesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get depth => $state.composableBuilder(
+      column: $state.table.depth,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$EbooksTableCreateCompanionBuilder = EbooksCompanion Function({
+  required String encryptionKey,
+  Value<int> parentTermId,
+  required DateTime creation,
+  required DateTime lastUpdated,
+});
+typedef $$EbooksTableUpdateCompanionBuilder = EbooksCompanion Function({
+  Value<String> encryptionKey,
+  Value<int> parentTermId,
+  Value<DateTime> creation,
+  Value<DateTime> lastUpdated,
+});
+
+class $$EbooksTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $EbooksTable,
+    Ebook,
+    $$EbooksTableFilterComposer,
+    $$EbooksTableOrderingComposer,
+    $$EbooksTableCreateCompanionBuilder,
+    $$EbooksTableUpdateCompanionBuilder> {
+  $$EbooksTableTableManager(_$DatabaseService db, $EbooksTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$EbooksTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$EbooksTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<String> encryptionKey = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<DateTime> lastUpdated = const Value.absent(),
+          }) =>
+              EbooksCompanion(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+          createCompanionCallback: ({
+            required String encryptionKey,
+            Value<int> parentTermId = const Value.absent(),
+            required DateTime creation,
+            required DateTime lastUpdated,
+          }) =>
+              EbooksCompanion.insert(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+        ));
+}
+
+class $$EbooksTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $EbooksTable> {
+  $$EbooksTableFilterComposer(super.$state);
+  ColumnFilters<String> get encryptionKey => $state.composableBuilder(
+      column: $state.table.encryptionKey,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get lastUpdated => $state.composableBuilder(
+      column: $state.table.lastUpdated,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$EbooksTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $EbooksTable> {
+  $$EbooksTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get encryptionKey => $state.composableBuilder(
+      column: $state.table.encryptionKey,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get lastUpdated => $state.composableBuilder(
+      column: $state.table.lastUpdated,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsLastAccessesTableCreateCompanionBuilder
+    = TermsLastAccessesCompanion Function({
+  required int parentTermId,
+  required int childId,
+  Value<DateTime> lastAccess,
+  Value<int> rowid,
+});
+typedef $$TermsLastAccessesTableUpdateCompanionBuilder
+    = TermsLastAccessesCompanion Function({
+  Value<int> parentTermId,
+  Value<int> childId,
+  Value<DateTime> lastAccess,
+  Value<int> rowid,
+});
+
+class $$TermsLastAccessesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermsLastAccessesTable,
+    TermsLastAccess,
+    $$TermsLastAccessesTableFilterComposer,
+    $$TermsLastAccessesTableOrderingComposer,
+    $$TermsLastAccessesTableCreateCompanionBuilder,
+    $$TermsLastAccessesTableUpdateCompanionBuilder> {
+  $$TermsLastAccessesTableTableManager(
+      _$DatabaseService db, $TermsLastAccessesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermsLastAccessesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$TermsLastAccessesTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> parentTermId = const Value.absent(),
+            Value<int> childId = const Value.absent(),
+            Value<DateTime> lastAccess = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLastAccessesCompanion(
+            parentTermId: parentTermId,
+            childId: childId,
+            lastAccess: lastAccess,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int parentTermId,
+            required int childId,
+            Value<DateTime> lastAccess = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLastAccessesCompanion.insert(
+            parentTermId: parentTermId,
+            childId: childId,
+            lastAccess: lastAccess,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermsLastAccessesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermsLastAccessesTable> {
+  $$TermsLastAccessesTableFilterComposer(super.$state);
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get childId => $state.composableBuilder(
+      column: $state.table.childId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get lastAccess => $state.composableBuilder(
+      column: $state.table.lastAccess,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsLastAccessesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermsLastAccessesTable> {
+  $$TermsLastAccessesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get childId => $state.composableBuilder(
+      column: $state.table.childId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get lastAccess => $state.composableBuilder(
+      column: $state.table.lastAccess,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionTagPropertiesTableCreateCompanionBuilder
+    = QuestionTagPropertiesCompanion Function({
+  required int questionTagId,
+  required String name,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$QuestionTagPropertiesTableUpdateCompanionBuilder
+    = QuestionTagPropertiesCompanion Function({
+  Value<int> questionTagId,
+  Value<String> name,
+  Value<String> value,
+  Value<int> rowid,
+});
+
+class $$QuestionTagPropertiesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionTagPropertiesTable,
+    QuestionTagProperty,
+    $$QuestionTagPropertiesTableFilterComposer,
+    $$QuestionTagPropertiesTableOrderingComposer,
+    $$QuestionTagPropertiesTableCreateCompanionBuilder,
+    $$QuestionTagPropertiesTableUpdateCompanionBuilder> {
+  $$QuestionTagPropertiesTableTableManager(
+      _$DatabaseService db, $QuestionTagPropertiesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$QuestionTagPropertiesTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$QuestionTagPropertiesTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> questionTagId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionTagPropertiesCompanion(
+            questionTagId: questionTagId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int questionTagId,
+            required String name,
+            required String value,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionTagPropertiesCompanion.insert(
+            questionTagId: questionTagId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$QuestionTagPropertiesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionTagPropertiesTable> {
+  $$QuestionTagPropertiesTableFilterComposer(super.$state);
+  ColumnFilters<int> get questionTagId => $state.composableBuilder(
+      column: $state.table.questionTagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionTagPropertiesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionTagPropertiesTable> {
+  $$QuestionTagPropertiesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get questionTagId => $state.composableBuilder(
+      column: $state.table.questionTagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionPropertiesTableCreateCompanionBuilder
+    = QuestionPropertiesCompanion Function({
+  required int questionId,
+  required String name,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$QuestionPropertiesTableUpdateCompanionBuilder
+    = QuestionPropertiesCompanion Function({
+  Value<int> questionId,
+  Value<String> name,
+  Value<String> value,
+  Value<int> rowid,
+});
+
+class $$QuestionPropertiesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionPropertiesTable,
+    QuestionProperty,
+    $$QuestionPropertiesTableFilterComposer,
+    $$QuestionPropertiesTableOrderingComposer,
+    $$QuestionPropertiesTableCreateCompanionBuilder,
+    $$QuestionPropertiesTableUpdateCompanionBuilder> {
+  $$QuestionPropertiesTableTableManager(
+      _$DatabaseService db, $QuestionPropertiesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$QuestionPropertiesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$QuestionPropertiesTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> questionId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionPropertiesCompanion(
+            questionId: questionId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int questionId,
+            required String name,
+            required String value,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionPropertiesCompanion.insert(
+            questionId: questionId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$QuestionPropertiesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionPropertiesTable> {
+  $$QuestionPropertiesTableFilterComposer(super.$state);
+  ColumnFilters<int> get questionId => $state.composableBuilder(
+      column: $state.table.questionId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionPropertiesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionPropertiesTable> {
+  $$QuestionPropertiesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get questionId => $state.composableBuilder(
+      column: $state.table.questionId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$HttpRequestsTableCreateCompanionBuilder = HttpRequestsCompanion
+    Function({
+  Value<int> id,
+  required String url,
+  required String mapp,
+});
+typedef $$HttpRequestsTableUpdateCompanionBuilder = HttpRequestsCompanion
+    Function({
+  Value<int> id,
+  Value<String> url,
+  Value<String> mapp,
+});
+
+class $$HttpRequestsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $HttpRequestsTable,
+    HttpRequest,
+    $$HttpRequestsTableFilterComposer,
+    $$HttpRequestsTableOrderingComposer,
+    $$HttpRequestsTableCreateCompanionBuilder,
+    $$HttpRequestsTableUpdateCompanionBuilder> {
+  $$HttpRequestsTableTableManager(
+      _$DatabaseService db, $HttpRequestsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$HttpRequestsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$HttpRequestsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> url = const Value.absent(),
+            Value<String> mapp = const Value.absent(),
+          }) =>
+              HttpRequestsCompanion(
+            id: id,
+            url: url,
+            mapp: mapp,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String url,
+            required String mapp,
+          }) =>
+              HttpRequestsCompanion.insert(
+            id: id,
+            url: url,
+            mapp: mapp,
+          ),
+        ));
+}
+
+class $$HttpRequestsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $HttpRequestsTable> {
+  $$HttpRequestsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get mapp => $state.composableBuilder(
+      column: $state.table.mapp,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$HttpRequestsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $HttpRequestsTable> {
+  $$HttpRequestsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get url => $state.composableBuilder(
+      column: $state.table.url,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get mapp => $state.composableBuilder(
+      column: $state.table.mapp,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder
+    = TermsWithQuestionsFilteringEnabledCompanion Function({
+  Value<int> termId,
+});
+typedef $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder
+    = TermsWithQuestionsFilteringEnabledCompanion Function({
+  Value<int> termId,
+});
+
+class $$TermsWithQuestionsFilteringEnabledTableTableManager
+    extends RootTableManager<
+        _$DatabaseService,
+        $TermsWithQuestionsFilteringEnabledTable,
+        TermsWithQuestionsFilteringEnabledData,
+        $$TermsWithQuestionsFilteringEnabledTableFilterComposer,
+        $$TermsWithQuestionsFilteringEnabledTableOrderingComposer,
+        $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder,
+        $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder> {
+  $$TermsWithQuestionsFilteringEnabledTableTableManager(
+      _$DatabaseService db, $TermsWithQuestionsFilteringEnabledTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermsWithQuestionsFilteringEnabledTableFilterComposer(
+                  ComposerState(db, table)),
+          orderingComposer:
+              $$TermsWithQuestionsFilteringEnabledTableOrderingComposer(
+                  ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+          }) =>
+              TermsWithQuestionsFilteringEnabledCompanion(
+            termId: termId,
+          ),
+          createCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+          }) =>
+              TermsWithQuestionsFilteringEnabledCompanion.insert(
+            termId: termId,
+          ),
+        ));
+}
+
+class $$TermsWithQuestionsFilteringEnabledTableFilterComposer
+    extends FilterComposer<_$DatabaseService,
+        $TermsWithQuestionsFilteringEnabledTable> {
+  $$TermsWithQuestionsFilteringEnabledTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsWithQuestionsFilteringEnabledTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService,
+        $TermsWithQuestionsFilteringEnabledTable> {
+  $$TermsWithQuestionsFilteringEnabledTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$FlashcardsTableCreateCompanionBuilder = FlashcardsCompanion Function({
+  Value<int> id,
+  required String head,
+  required String tail,
+  required int parentTermId,
+});
+typedef $$FlashcardsTableUpdateCompanionBuilder = FlashcardsCompanion Function({
+  Value<int> id,
+  Value<String> head,
+  Value<String> tail,
+  Value<int> parentTermId,
+});
+
+class $$FlashcardsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $FlashcardsTable,
+    Flashcard,
+    $$FlashcardsTableFilterComposer,
+    $$FlashcardsTableOrderingComposer,
+    $$FlashcardsTableCreateCompanionBuilder,
+    $$FlashcardsTableUpdateCompanionBuilder> {
+  $$FlashcardsTableTableManager(_$DatabaseService db, $FlashcardsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$FlashcardsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$FlashcardsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> head = const Value.absent(),
+            Value<String> tail = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+          }) =>
+              FlashcardsCompanion(
+            id: id,
+            head: head,
+            tail: tail,
+            parentTermId: parentTermId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String head,
+            required String tail,
+            required int parentTermId,
+          }) =>
+              FlashcardsCompanion.insert(
+            id: id,
+            head: head,
+            tail: tail,
+            parentTermId: parentTermId,
+          ),
+        ));
+}
+
+class $$FlashcardsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $FlashcardsTable> {
+  $$FlashcardsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get head => $state.composableBuilder(
+      column: $state.table.head,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get tail => $state.composableBuilder(
+      column: $state.table.tail,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$FlashcardsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $FlashcardsTable> {
+  $$FlashcardsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get head => $state.composableBuilder(
+      column: $state.table.head,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get tail => $state.composableBuilder(
+      column: $state.table.tail,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$VoiceNotesTableCreateCompanionBuilder = VoiceNotesCompanion Function({
+  required Uint8List encryptionKey,
+  Value<int> parentTermId,
+  required DateTime creation,
+  required DateTime lastUpdated,
+});
+typedef $$VoiceNotesTableUpdateCompanionBuilder = VoiceNotesCompanion Function({
+  Value<Uint8List> encryptionKey,
+  Value<int> parentTermId,
+  Value<DateTime> creation,
+  Value<DateTime> lastUpdated,
+});
+
+class $$VoiceNotesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $VoiceNotesTable,
+    VoiceNote,
+    $$VoiceNotesTableFilterComposer,
+    $$VoiceNotesTableOrderingComposer,
+    $$VoiceNotesTableCreateCompanionBuilder,
+    $$VoiceNotesTableUpdateCompanionBuilder> {
+  $$VoiceNotesTableTableManager(_$DatabaseService db, $VoiceNotesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$VoiceNotesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$VoiceNotesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<Uint8List> encryptionKey = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<DateTime> lastUpdated = const Value.absent(),
+          }) =>
+              VoiceNotesCompanion(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+          createCompanionCallback: ({
+            required Uint8List encryptionKey,
+            Value<int> parentTermId = const Value.absent(),
+            required DateTime creation,
+            required DateTime lastUpdated,
+          }) =>
+              VoiceNotesCompanion.insert(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+        ));
+}
+
+class $$VoiceNotesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $VoiceNotesTable> {
+  $$VoiceNotesTableFilterComposer(super.$state);
+  ColumnFilters<Uint8List> get encryptionKey => $state.composableBuilder(
+      column: $state.table.encryptionKey,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get lastUpdated => $state.composableBuilder(
+      column: $state.table.lastUpdated,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$VoiceNotesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $VoiceNotesTable> {
+  $$VoiceNotesTableOrderingComposer(super.$state);
+  ColumnOrderings<Uint8List> get encryptionKey => $state.composableBuilder(
+      column: $state.table.encryptionKey,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get lastUpdated => $state.composableBuilder(
+      column: $state.table.lastUpdated,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$RelatedTermsTableCreateCompanionBuilder = RelatedTermsCompanion
+    Function({
+  required int anotherTermId,
+  required int termId,
+  Value<int> rowid,
+});
+typedef $$RelatedTermsTableUpdateCompanionBuilder = RelatedTermsCompanion
+    Function({
+  Value<int> anotherTermId,
+  Value<int> termId,
+  Value<int> rowid,
+});
+
+class $$RelatedTermsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $RelatedTermsTable,
+    RelatedTerm,
+    $$RelatedTermsTableFilterComposer,
+    $$RelatedTermsTableOrderingComposer,
+    $$RelatedTermsTableCreateCompanionBuilder,
+    $$RelatedTermsTableUpdateCompanionBuilder> {
+  $$RelatedTermsTableTableManager(
+      _$DatabaseService db, $RelatedTermsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$RelatedTermsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$RelatedTermsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> anotherTermId = const Value.absent(),
+            Value<int> termId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              RelatedTermsCompanion(
+            anotherTermId: anotherTermId,
+            termId: termId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int anotherTermId,
+            required int termId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              RelatedTermsCompanion.insert(
+            anotherTermId: anotherTermId,
+            termId: termId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$RelatedTermsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $RelatedTermsTable> {
+  $$RelatedTermsTableFilterComposer(super.$state);
+  ColumnFilters<int> get anotherTermId => $state.composableBuilder(
+      column: $state.table.anotherTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$RelatedTermsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $RelatedTermsTable> {
+  $$RelatedTermsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get anotherTermId => $state.composableBuilder(
+      column: $state.table.anotherTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$QuestionsLinkedToTagsTableCreateCompanionBuilder
+    = QuestionsLinkedToTagsCompanion Function({
+  required int questionId,
+  required int tagId,
+  Value<int> rowid,
+});
+typedef $$QuestionsLinkedToTagsTableUpdateCompanionBuilder
+    = QuestionsLinkedToTagsCompanion Function({
+  Value<int> questionId,
+  Value<int> tagId,
+  Value<int> rowid,
+});
+
+class $$QuestionsLinkedToTagsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $QuestionsLinkedToTagsTable,
+    QuestionsLinkedToTag,
+    $$QuestionsLinkedToTagsTableFilterComposer,
+    $$QuestionsLinkedToTagsTableOrderingComposer,
+    $$QuestionsLinkedToTagsTableCreateCompanionBuilder,
+    $$QuestionsLinkedToTagsTableUpdateCompanionBuilder> {
+  $$QuestionsLinkedToTagsTableTableManager(
+      _$DatabaseService db, $QuestionsLinkedToTagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$QuestionsLinkedToTagsTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$QuestionsLinkedToTagsTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> questionId = const Value.absent(),
+            Value<int> tagId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionsLinkedToTagsCompanion(
+            questionId: questionId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int questionId,
+            required int tagId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionsLinkedToTagsCompanion.insert(
+            questionId: questionId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$QuestionsLinkedToTagsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $QuestionsLinkedToTagsTable> {
+  $$QuestionsLinkedToTagsTableFilterComposer(super.$state);
+  ColumnFilters<int> get questionId => $state.composableBuilder(
+      column: $state.table.questionId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$QuestionsLinkedToTagsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $QuestionsLinkedToTagsTable> {
+  $$QuestionsLinkedToTagsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get questionId => $state.composableBuilder(
+      column: $state.table.questionId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsParentsTableCreateCompanionBuilder = TermsParentsCompanion
+    Function({
+  required int termId,
+  required int parentTermId,
+  required int rootTermId,
+  required DateTime creation,
+  Value<int> rowid,
+});
+typedef $$TermsParentsTableUpdateCompanionBuilder = TermsParentsCompanion
+    Function({
+  Value<int> termId,
+  Value<int> parentTermId,
+  Value<int> rootTermId,
+  Value<DateTime> creation,
+  Value<int> rowid,
+});
+
+class $$TermsParentsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermsParentsTable,
+    TermsParent,
+    $$TermsParentsTableFilterComposer,
+    $$TermsParentsTableOrderingComposer,
+    $$TermsParentsTableCreateCompanionBuilder,
+    $$TermsParentsTableUpdateCompanionBuilder> {
+  $$TermsParentsTableTableManager(
+      _$DatabaseService db, $TermsParentsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermsParentsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermsParentsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<int> rootTermId = const Value.absent(),
+            Value<DateTime> creation = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsParentsCompanion(
+            termId: termId,
+            parentTermId: parentTermId,
+            rootTermId: rootTermId,
+            creation: creation,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int termId,
+            required int parentTermId,
+            required int rootTermId,
+            required DateTime creation,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsParentsCompanion.insert(
+            termId: termId,
+            parentTermId: parentTermId,
+            rootTermId: rootTermId,
+            creation: creation,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermsParentsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermsParentsTable> {
+  $$TermsParentsTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get rootTermId => $state.composableBuilder(
+      column: $state.table.rootTermId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsParentsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermsParentsTable> {
+  $$TermsParentsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get parentTermId => $state.composableBuilder(
+      column: $state.table.parentTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get rootTermId => $state.composableBuilder(
+      column: $state.table.rootTermId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+      column: $state.table.creation,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermTagsTableCreateCompanionBuilder = TermTagsCompanion Function({
+  Value<int> id,
+  required String name,
+  Value<int> ordering,
+});
+typedef $$TermTagsTableUpdateCompanionBuilder = TermTagsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<int> ordering,
+});
+
+class $$TermTagsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermTagsTable,
+    TermTag,
+    $$TermTagsTableFilterComposer,
+    $$TermTagsTableOrderingComposer,
+    $$TermTagsTableCreateCompanionBuilder,
+    $$TermTagsTableUpdateCompanionBuilder> {
+  $$TermTagsTableTableManager(_$DatabaseService db, $TermTagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermTagsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermTagsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> ordering = const Value.absent(),
+          }) =>
+              TermTagsCompanion(
+            id: id,
+            name: name,
+            ordering: ordering,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            Value<int> ordering = const Value.absent(),
+          }) =>
+              TermTagsCompanion.insert(
+            id: id,
+            name: name,
+            ordering: ordering,
+          ),
+        ));
+}
+
+class $$TermTagsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermTagsTable> {
+  $$TermTagsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get ordering => $state.composableBuilder(
+      column: $state.table.ordering,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermTagsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermTagsTable> {
+  $$TermTagsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get ordering => $state.composableBuilder(
+      column: $state.table.ordering,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsLinkedToTagsTableCreateCompanionBuilder
+    = TermsLinkedToTagsCompanion Function({
+  required int termId,
+  required int tagId,
+  Value<int> rowid,
+});
+typedef $$TermsLinkedToTagsTableUpdateCompanionBuilder
+    = TermsLinkedToTagsCompanion Function({
+  Value<int> termId,
+  Value<int> tagId,
+  Value<int> rowid,
+});
+
+class $$TermsLinkedToTagsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermsLinkedToTagsTable,
+    TermsLinkedToTag,
+    $$TermsLinkedToTagsTableFilterComposer,
+    $$TermsLinkedToTagsTableOrderingComposer,
+    $$TermsLinkedToTagsTableCreateCompanionBuilder,
+    $$TermsLinkedToTagsTableUpdateCompanionBuilder> {
+  $$TermsLinkedToTagsTableTableManager(
+      _$DatabaseService db, $TermsLinkedToTagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermsLinkedToTagsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$TermsLinkedToTagsTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+            Value<int> tagId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLinkedToTagsCompanion(
+            termId: termId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int termId,
+            required int tagId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLinkedToTagsCompanion.insert(
+            termId: termId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermsLinkedToTagsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermsLinkedToTagsTable> {
+  $$TermsLinkedToTagsTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsLinkedToTagsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermsLinkedToTagsTable> {
+  $$TermsLinkedToTagsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermLabelsTableCreateCompanionBuilder = TermLabelsCompanion Function({
+  Value<int> id,
+  required String name,
+});
+typedef $$TermLabelsTableUpdateCompanionBuilder = TermLabelsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+});
+
+class $$TermLabelsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermLabelsTable,
+    TermLabel,
+    $$TermLabelsTableFilterComposer,
+    $$TermLabelsTableOrderingComposer,
+    $$TermLabelsTableCreateCompanionBuilder,
+    $$TermLabelsTableUpdateCompanionBuilder> {
+  $$TermLabelsTableTableManager(_$DatabaseService db, $TermLabelsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermLabelsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermLabelsTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+          }) =>
+              TermLabelsCompanion(
+            id: id,
+            name: name,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+          }) =>
+              TermLabelsCompanion.insert(
+            id: id,
+            name: name,
+          ),
+        ));
+}
+
+class $$TermLabelsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermLabelsTable> {
+  $$TermLabelsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermLabelsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermLabelsTable> {
+  $$TermLabelsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermsLinkedToLabelsTableCreateCompanionBuilder
+    = TermsLinkedToLabelsCompanion Function({
+  required int termId,
+  required int labelId,
+  Value<int> rowid,
+});
+typedef $$TermsLinkedToLabelsTableUpdateCompanionBuilder
+    = TermsLinkedToLabelsCompanion Function({
+  Value<int> termId,
+  Value<int> labelId,
+  Value<int> rowid,
+});
+
+class $$TermsLinkedToLabelsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermsLinkedToLabelsTable,
+    TermsLinkedToLabel,
+    $$TermsLinkedToLabelsTableFilterComposer,
+    $$TermsLinkedToLabelsTableOrderingComposer,
+    $$TermsLinkedToLabelsTableCreateCompanionBuilder,
+    $$TermsLinkedToLabelsTableUpdateCompanionBuilder> {
+  $$TermsLinkedToLabelsTableTableManager(
+      _$DatabaseService db, $TermsLinkedToLabelsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$TermsLinkedToLabelsTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$TermsLinkedToLabelsTableOrderingComposer(
+              ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+            Value<int> labelId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLinkedToLabelsCompanion(
+            termId: termId,
+            labelId: labelId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int termId,
+            required int labelId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermsLinkedToLabelsCompanion.insert(
+            termId: termId,
+            labelId: labelId,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermsLinkedToLabelsTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermsLinkedToLabelsTable> {
+  $$TermsLinkedToLabelsTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get labelId => $state.composableBuilder(
+      column: $state.table.labelId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermsLinkedToLabelsTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermsLinkedToLabelsTable> {
+  $$TermsLinkedToLabelsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get labelId => $state.composableBuilder(
+      column: $state.table.labelId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$TermPropertiesTableCreateCompanionBuilder = TermPropertiesCompanion
+    Function({
+  required int termId,
+  required String name,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$TermPropertiesTableUpdateCompanionBuilder = TermPropertiesCompanion
+    Function({
+  Value<int> termId,
+  Value<String> name,
+  Value<String> value,
+  Value<int> rowid,
+});
+
+class $$TermPropertiesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $TermPropertiesTable,
+    TermProperty,
+    $$TermPropertiesTableFilterComposer,
+    $$TermPropertiesTableOrderingComposer,
+    $$TermPropertiesTableCreateCompanionBuilder,
+    $$TermPropertiesTableUpdateCompanionBuilder> {
+  $$TermPropertiesTableTableManager(
+      _$DatabaseService db, $TermPropertiesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$TermPropertiesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$TermPropertiesTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> termId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermPropertiesCompanion(
+            termId: termId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int termId,
+            required String name,
+            required String value,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TermPropertiesCompanion.insert(
+            termId: termId,
+            name: name,
+            value: value,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$TermPropertiesTableFilterComposer
+    extends FilterComposer<_$DatabaseService, $TermPropertiesTable> {
+  $$TermPropertiesTableFilterComposer(super.$state);
+  ColumnFilters<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$TermPropertiesTableOrderingComposer
+    extends OrderingComposer<_$DatabaseService, $TermPropertiesTable> {
+  $$TermPropertiesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get termId => $state.composableBuilder(
+      column: $state.table.termId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get value => $state.composableBuilder(
+      column: $state.table.value,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class $DatabaseServiceManager {
+  final _$DatabaseService _db;
+  $DatabaseServiceManager(this._db);
+  $$CouponsTableTableManager get coupons =>
+      $$CouponsTableTableManager(_db, _db.coupons);
+  $$TermsTableTableManager get terms =>
+      $$TermsTableTableManager(_db, _db.terms);
+  $$AnswersTableTableManager get answers =>
+      $$AnswersTableTableManager(_db, _db.answers);
+  $$QuestionsTableTableManager get questions =>
+      $$QuestionsTableTableManager(_db, _db.questions);
+  $$QuestionTagsTableTableManager get questionTags =>
+      $$QuestionTagsTableTableManager(_db, _db.questionTags);
+  $$QuestionMediasTableTableManager get questionMedias =>
+      $$QuestionMediasTableTableManager(_db, _db.questionMedias);
+  $$FcmTopicsTableTableManager get fcmTopics =>
+      $$FcmTopicsTableTableManager(_db, _db.fcmTopics);
+  $$AnswerPropertiesTableTableManager get answerProperties =>
+      $$AnswerPropertiesTableTableManager(_db, _db.answerProperties);
+  $$CouponsLinkedToTermsTableTableManager get couponsLinkedToTerms =>
+      $$CouponsLinkedToTermsTableTableManager(_db, _db.couponsLinkedToTerms);
+  $$TermTreesTableTableManager get termTrees =>
+      $$TermTreesTableTableManager(_db, _db.termTrees);
+  $$EbooksTableTableManager get ebooks =>
+      $$EbooksTableTableManager(_db, _db.ebooks);
+  $$TermsLastAccessesTableTableManager get termsLastAccesses =>
+      $$TermsLastAccessesTableTableManager(_db, _db.termsLastAccesses);
+  $$QuestionTagPropertiesTableTableManager get questionTagProperties =>
+      $$QuestionTagPropertiesTableTableManager(_db, _db.questionTagProperties);
+  $$QuestionPropertiesTableTableManager get questionProperties =>
+      $$QuestionPropertiesTableTableManager(_db, _db.questionProperties);
+  $$HttpRequestsTableTableManager get httpRequests =>
+      $$HttpRequestsTableTableManager(_db, _db.httpRequests);
+  $$TermsWithQuestionsFilteringEnabledTableTableManager
+      get termsWithQuestionsFilteringEnabled =>
+          $$TermsWithQuestionsFilteringEnabledTableTableManager(
+              _db, _db.termsWithQuestionsFilteringEnabled);
+  $$FlashcardsTableTableManager get flashcards =>
+      $$FlashcardsTableTableManager(_db, _db.flashcards);
+  $$VoiceNotesTableTableManager get voiceNotes =>
+      $$VoiceNotesTableTableManager(_db, _db.voiceNotes);
+  $$RelatedTermsTableTableManager get relatedTerms =>
+      $$RelatedTermsTableTableManager(_db, _db.relatedTerms);
+  $$QuestionsLinkedToTagsTableTableManager get questionsLinkedToTags =>
+      $$QuestionsLinkedToTagsTableTableManager(_db, _db.questionsLinkedToTags);
+  $$TermsParentsTableTableManager get termsParents =>
+      $$TermsParentsTableTableManager(_db, _db.termsParents);
+  $$TermTagsTableTableManager get termTags =>
+      $$TermTagsTableTableManager(_db, _db.termTags);
+  $$TermsLinkedToTagsTableTableManager get termsLinkedToTags =>
+      $$TermsLinkedToTagsTableTableManager(_db, _db.termsLinkedToTags);
+  $$TermLabelsTableTableManager get termLabels =>
+      $$TermLabelsTableTableManager(_db, _db.termLabels);
+  $$TermsLinkedToLabelsTableTableManager get termsLinkedToLabels =>
+      $$TermsLinkedToLabelsTableTableManager(_db, _db.termsLinkedToLabels);
+  $$TermPropertiesTableTableManager get termProperties =>
+      $$TermPropertiesTableTableManager(_db, _db.termProperties);
 }

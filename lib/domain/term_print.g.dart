@@ -7,7 +7,8 @@ part of 'term_print.dart';
 // **************************************************************************
 
 TermPrint _$TermPrintFromJson(Map<String, dynamic> json) => TermPrint(
-      gift: const GiftTypeJsonConverter().fromJson(json['gift'] as int),
+      gift:
+          const GiftTypeJsonConverter().fromJson((json['gift'] as num).toInt()),
       otherGift:
           const OtherGiftJsonConverter().fromJson(json['otherGift'] as String?),
     );

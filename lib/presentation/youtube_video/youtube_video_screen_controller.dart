@@ -91,8 +91,10 @@ class YoutubeVideoScreenController {
     Get.delete<DiscussionScreenArgument>();
     Get.put(DiscussionScreenArgument(
         itemId: argument.termData.term.id,
-        itemType: "video",
+        itemType: 'video',
         itemName: argument.termData.term.name));
-    state.context.push(DiscussionScreen.route);
+    state.context.push(DiscussionScreen.route
+        .replaceFirst(':itemType', 'video')
+        .replaceFirst(':itemId', argument.termData.term.id.toString()));
   }
 }

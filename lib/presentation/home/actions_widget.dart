@@ -64,12 +64,14 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                 Icons.delete,
                 color: Theme.of(context).colorScheme.error,
               )),
-        if (TermType.downloadable(termData) && !widget.downloaded)
-          if (!widget.downloading)
+        
+        if (TermType.downloadable(termData) &&
+            !widget.downloaded &&
+            !widget.downloading)
             IconButton(
                 onPressed: widget.termWidgetController.downloadContent,
                 icon: const Icon(Icons.cloud_download))
-          else
+        else if (widget.downloading)
             CircularProgressIndicator(
                 value: TermType.hasFile(termData)
                     ? widget.downloadProgress

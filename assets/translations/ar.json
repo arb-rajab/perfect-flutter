@@ -35,6 +35,7 @@
     "seconds": "(SECONDS) ثانية",
     "data-loaded-successfully": "تم تحميل البيانات",
     "show-comments": "عرض التعليقات",
+    "you": "أنت",
 
     "notifications": {
         "notifications": "الإشعارات"
@@ -175,5 +176,10 @@
         "time-per-question": "متوسط الوقت المستغرق لكل سؤال",
         "no-tags-questions": "أسئلة بلا تصنيف",
         "unknown-tag": "تصنيف غير معروف"
+    },
+    "comments": {
+        "number-of-subcomments": "عدد الردود (SUBCOMMENTS)",
+        "add-comment": "إضافة تعليق",
+        "comments-related-to": "التعليقات المتعلقة ب (TITLE)"
     }
 }

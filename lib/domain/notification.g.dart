@@ -7,7 +7,7 @@ part of 'notification.dart';
 // **************************************************************************
 
 Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
-      id: const IdJsonConverter().fromJson(json['id'] as int?),
+      id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
       title: const TitleJsonConverter().fromJson(json['title'] as String),
       text: const TextJsonConverter().fromJson(json['text'] as String),
       data: const DataJsonConverter().fromJson(json['data'] as String),

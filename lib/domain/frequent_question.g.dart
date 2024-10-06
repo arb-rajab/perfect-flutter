@@ -8,7 +8,7 @@ part of 'frequent_question.dart';
 
 FrequentQuestion _$FrequentQuestionFromJson(Map<String, dynamic> json) =>
     FrequentQuestion(
-      id: const IdJsonConverter().fromJson(json['id'] as int?),
+      id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
       title: const TitleJsonConverter().fromJson(json['title'] as String),
       description: const DescriptionJsonConverter()
           .fromJson(json['description'] as String),

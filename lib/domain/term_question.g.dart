@@ -7,9 +7,9 @@ part of 'term_question.dart';
 // **************************************************************************
 
 TermQuestion _$TermQuestionFromJson(Map<String, dynamic> json) => TermQuestion(
-      id: const IdJsonConverter().fromJson(json['id'] as int?),
+      id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
       title: const TitleJsonConverter().fromJson(json['title'] as String),
-      type: const TypeJsonConverter().fromJson(json['type'] as int),
+      type: const TypeJsonConverter().fromJson((json['type'] as num).toInt()),
       multiSelections: (json['multi_selections'] as List<dynamic>)
           .map((e) => MultiSelectSelection.fromJson(e as Map<String, dynamic>))
           .toList(),
