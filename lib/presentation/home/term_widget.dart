@@ -40,7 +40,8 @@ class _TermWidgetState extends State<TermWidget> {
       TermType.questions,
       TermType.template,
       TermType.ebook,
-      TermType.youtubeVideos
+      TermType.youtubeVideos,
+      TermType.flashcards
     ]
         .contains(termData.term.type)) return const UnsupportedContentWidget();
     var widgett = GestureDetector(

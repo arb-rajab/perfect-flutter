@@ -86,3 +86,12 @@ class DiscussionScreenArgument {
       required this.itemName,
       this.commentEnabled = true});
 }
+
+class FlashcardsScreenArgument {
+  final String query;
+  final String title;
+  final TermData term;
+
+  FlashcardsScreenArgument(
+      {required this.query, required this.title, required this.term});
+}

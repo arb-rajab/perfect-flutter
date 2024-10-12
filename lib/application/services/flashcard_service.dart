@@ -9,4 +9,15 @@ class FlashcardService {
   Future addFlashcards(List<Flashcard> flashcards) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.flashcards, flashcards));
+
+  Future<List<Flashcard>> getFlashcardsFromQuery(String query) =>
+      (databaseService
+          .customSelect(query)
+          .watch()
+          .map((rows) => rows
+              .map(
+                (row) => databaseService.flashcards.map(row.data),
+              )
+              .toList())
+          .first);
 }

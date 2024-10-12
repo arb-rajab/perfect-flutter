@@ -8,6 +8,7 @@ import 'package:beta/presentation/coupons/coupons_screen.dart';
 import 'package:beta/presentation/discussion/discussion_screen.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
+import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/home_screen.dart';
@@ -155,5 +156,8 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
       builder: (context, state) => DiscussionScreen(
             type: state.pathParameters['itemType']!,
             id: state.pathParameters['itemId']!,
-          ))
+          )),
+  GoRoute(
+      path: FlashcardsScreen.route,
+      builder: (context, state) => const FlashcardsScreen())
 ]);

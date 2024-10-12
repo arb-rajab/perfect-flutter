@@ -31,6 +31,7 @@ import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
+import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
@@ -355,6 +356,20 @@ class TermWidgetController {
         } else {
           showOkDialogue(state.context, () {},
               content: StringConstant.termIsExpired.tr());
+        }
+        break;
+      case TermType.flashcards:
+        if (isDownloaded) {
+          Get.delete<FlashcardsScreenArgument>();
+          Get.put(FlashcardsScreenArgument(
+              query:
+                  'select * from flashcards where parentTermId=${termData.term.id}',
+              title: termData.term.name,
+              term: termData));
+          state.context.push(FlashcardsScreen.route);
+        } else {
+          showOkDialogue(state.context, () {},
+              content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;
       default: //TODO implement other terms types

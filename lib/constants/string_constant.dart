@@ -36,6 +36,8 @@ class StringConstant {
   static const dataLoadedSuccessfully = 'data-loaded-successfully';
   static const showComments = 'show-comments';
   static const you = 'you';
+  static const previous = 'previous';
+  static const next = 'next';
 
   static const _notifications = 'notifications';
   static const notifications = '$_notifications.notifications';

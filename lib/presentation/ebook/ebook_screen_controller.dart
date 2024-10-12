@@ -27,7 +27,7 @@ class EbookScreenController {
 
   void dispose() => screenshotRepository.allowScreenshot();
 
-  _configureScreenshots() {
+  void _configureScreenshots() {
     if (ebookScreenArgument.term.term.captureable == 0) {
       screenshotRepository.preventScreenshot();
     } else {

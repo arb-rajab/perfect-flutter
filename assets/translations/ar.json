@@ -36,6 +36,8 @@
     "data-loaded-successfully": "تم تحميل البيانات",
     "show-comments": "عرض التعليقات",
     "you": "أنت",
+    "previous": "السابق",
+    "next": "التالي",
 
     "notifications": {
         "notifications": "الإشعارات"
