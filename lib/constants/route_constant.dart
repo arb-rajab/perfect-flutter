@@ -24,6 +24,7 @@ import 'package:beta/presentation/questions_report/questions_report_screen.dart'
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
+import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/web/web_screen.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:get/instance_manager.dart';
@@ -159,5 +160,8 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
           )),
   GoRoute(
       path: FlashcardsScreen.route,
-      builder: (context, state) => const FlashcardsScreen())
+      builder: (context, state) => const FlashcardsScreen()),
+  GoRoute(
+      path: VoiceNoteScreen.route,
+      builder: (context, state) => const VoiceNoteScreen())
 ]);

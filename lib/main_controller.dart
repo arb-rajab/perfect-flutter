@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/coupon_linked_to_term_service.dart';
@@ -34,11 +35,13 @@ import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
+import 'package:beta/presentation/voice_note/voice_note_screen_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:just_audio/just_audio.dart';
 
 class MainController {
   static bool testing = false;
@@ -95,5 +98,15 @@ class MainController {
     Get.put(QuestionLinkedToTagService(databaseService: databaseService));
     Get.put(TermPropertyService(databaseService: databaseService));
     Get.put(QuestionTagPropertyService(databaseService: databaseService));
+    AudioPlayer audioPlayer = Get.put(AudioPlayer());
+    Get.put(await AudioService.init<AudioHandler>(
+      builder: () => AudioPlayerHandler(audioPlayer),
+      config: AudioServiceConfig(
+        androidNotificationChannelId:
+            '${packageRepository.getPackageName()}.channel.audio',
+        androidNotificationChannelName: packageRepository.getApplicationName(),
+        androidNotificationOngoing: true,
+      ),
+    ));
   }
 }

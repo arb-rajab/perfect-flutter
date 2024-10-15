@@ -35,6 +35,7 @@ import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
+import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -190,8 +191,7 @@ class TermWidgetController {
         onMessageReceived: _onMessageReceived,
       ).get(url: url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
     }
-    if ([TermType.flashcards, TermType.questions, TermType.template]
-        .contains(termData.term.type)) {
+    if (TermType.hasContent(termData)) {
       return NetworkService(state.context,
               onPreConnect: _onPreConnect,
               onPostConnect: _onPostConnect, onConnectionSucceed: (body) async {
@@ -367,6 +367,24 @@ class TermWidgetController {
               title: termData.term.name,
               term: termData));
           state.context.push(FlashcardsScreen.route);
+        } else {
+          showOkDialogue(state.context, () {},
+              content: StringConstant.youHaveToDownloadFirst.tr());
+        }
+        break;
+      case TermType.voiceNotes:
+        if (isDownloaded) {
+          if (await termService.isUnExpired(termData)) {
+            VoiceNoteService voiceNoteService = Get.find();
+            VoiceNote voiceNote = await voiceNoteService.getVoiceNote(termData);
+            Get.delete<VoiceNoteScreenArgument>();
+            Get.put(
+                VoiceNoteScreenArgument(term: termData, voiceNote: voiceNote));
+            state.context.push(VoiceNoteScreen.route);
+          } else {
+            showOkDialogue(state.context, () {},
+                content: StringConstant.termIsExpired.tr());
+          }
         } else {
           showOkDialogue(state.context, () {},
               content: StringConstant.youHaveToDownloadFirst.tr());

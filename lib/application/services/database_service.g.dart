@@ -5098,9 +5098,9 @@ class $VoiceNotesTable extends VoiceNotes
   static const VerificationMeta _encryptionKeyMeta =
       const VerificationMeta('encryptionKey');
   @override
-  late final GeneratedColumn<Uint8List> encryptionKey =
-      GeneratedColumn<Uint8List>('encryptionKey', aliasedName, false,
-          type: DriftSqlType.blob, requiredDuringInsert: true);
+  late final GeneratedColumn<String> encryptionKey = GeneratedColumn<String>(
+      'encryptionKey', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _parentTermIdMeta =
       const VerificationMeta('parentTermId');
   @override
@@ -5170,7 +5170,7 @@ class $VoiceNotesTable extends VoiceNotes
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return VoiceNote(
       encryptionKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}encryptionKey'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
       parentTermId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
       creation: attachedDatabase.typeMapping
@@ -5187,7 +5187,7 @@ class $VoiceNotesTable extends VoiceNotes
 }
 
 class VoiceNote extends DataClass implements Insertable<VoiceNote> {
-  final Uint8List encryptionKey;
+  final String encryptionKey;
   final int parentTermId;
   final DateTime creation;
   final DateTime lastUpdated;
@@ -5199,7 +5199,7 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['encryptionKey'] = Variable<Uint8List>(encryptionKey);
+    map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
     map['creation'] = Variable<DateTime>(creation);
     map['lastUpdated'] = Variable<DateTime>(lastUpdated);
@@ -5219,7 +5219,7 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VoiceNote(
-      encryptionKey: serializer.fromJson<Uint8List>(json['encryptionKey']),
+      encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       creation: serializer.fromJson<DateTime>(json['creation']),
       lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
@@ -5229,7 +5229,7 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'encryptionKey': serializer.toJson<Uint8List>(encryptionKey),
+      'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
       'creation': serializer.toJson<DateTime>(creation),
       'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
@@ -5237,7 +5237,7 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   }
 
   VoiceNote copyWith(
-          {Uint8List? encryptionKey,
+          {String? encryptionKey,
           int? parentTermId,
           DateTime? creation,
           DateTime? lastUpdated}) =>
@@ -5273,20 +5273,20 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   }
 
   @override
-  int get hashCode => Object.hash($driftBlobEquality.hash(encryptionKey),
-      parentTermId, creation, lastUpdated);
+  int get hashCode =>
+      Object.hash(encryptionKey, parentTermId, creation, lastUpdated);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is VoiceNote &&
-          $driftBlobEquality.equals(other.encryptionKey, this.encryptionKey) &&
+          other.encryptionKey == this.encryptionKey &&
           other.parentTermId == this.parentTermId &&
           other.creation == this.creation &&
           other.lastUpdated == this.lastUpdated);
 }
 
 class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
-  final Value<Uint8List> encryptionKey;
+  final Value<String> encryptionKey;
   final Value<int> parentTermId;
   final Value<DateTime> creation;
   final Value<DateTime> lastUpdated;
@@ -5297,7 +5297,7 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     this.lastUpdated = const Value.absent(),
   });
   VoiceNotesCompanion.insert({
-    required Uint8List encryptionKey,
+    required String encryptionKey,
     this.parentTermId = const Value.absent(),
     required DateTime creation,
     required DateTime lastUpdated,
@@ -5305,7 +5305,7 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
         creation = Value(creation),
         lastUpdated = Value(lastUpdated);
   static Insertable<VoiceNote> custom({
-    Expression<Uint8List>? encryptionKey,
+    Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
     Expression<DateTime>? creation,
     Expression<DateTime>? lastUpdated,
@@ -5319,7 +5319,7 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   }
 
   VoiceNotesCompanion copyWith(
-      {Value<Uint8List>? encryptionKey,
+      {Value<String>? encryptionKey,
       Value<int>? parentTermId,
       Value<DateTime>? creation,
       Value<DateTime>? lastUpdated}) {
@@ -5335,7 +5335,7 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (encryptionKey.present) {
-      map['encryptionKey'] = Variable<Uint8List>(encryptionKey.value);
+      map['encryptionKey'] = Variable<String>(encryptionKey.value);
     }
     if (parentTermId.present) {
       map['parentTermId'] = Variable<int>(parentTermId.value);
@@ -9199,13 +9199,13 @@ class $$FlashcardsTableOrderingComposer
 }
 
 typedef $$VoiceNotesTableCreateCompanionBuilder = VoiceNotesCompanion Function({
-  required Uint8List encryptionKey,
+  required String encryptionKey,
   Value<int> parentTermId,
   required DateTime creation,
   required DateTime lastUpdated,
 });
 typedef $$VoiceNotesTableUpdateCompanionBuilder = VoiceNotesCompanion Function({
-  Value<Uint8List> encryptionKey,
+  Value<String> encryptionKey,
   Value<int> parentTermId,
   Value<DateTime> creation,
   Value<DateTime> lastUpdated,
@@ -9228,7 +9228,7 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
           orderingComposer:
               $$VoiceNotesTableOrderingComposer(ComposerState(db, table)),
           updateCompanionCallback: ({
-            Value<Uint8List> encryptionKey = const Value.absent(),
+            Value<String> encryptionKey = const Value.absent(),
             Value<int> parentTermId = const Value.absent(),
             Value<DateTime> creation = const Value.absent(),
             Value<DateTime> lastUpdated = const Value.absent(),
@@ -9240,7 +9240,7 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
             lastUpdated: lastUpdated,
           ),
           createCompanionCallback: ({
-            required Uint8List encryptionKey,
+            required String encryptionKey,
             Value<int> parentTermId = const Value.absent(),
             required DateTime creation,
             required DateTime lastUpdated,
@@ -9257,7 +9257,7 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
 class $$VoiceNotesTableFilterComposer
     extends FilterComposer<_$DatabaseService, $VoiceNotesTable> {
   $$VoiceNotesTableFilterComposer(super.$state);
-  ColumnFilters<Uint8List> get encryptionKey => $state.composableBuilder(
+  ColumnFilters<String> get encryptionKey => $state.composableBuilder(
       column: $state.table.encryptionKey,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -9281,7 +9281,7 @@ class $$VoiceNotesTableFilterComposer
 class $$VoiceNotesTableOrderingComposer
     extends OrderingComposer<_$DatabaseService, $VoiceNotesTable> {
   $$VoiceNotesTableOrderingComposer(super.$state);
-  ColumnOrderings<Uint8List> get encryptionKey => $state.composableBuilder(
+  ColumnOrderings<String> get encryptionKey => $state.composableBuilder(
       column: $state.table.encryptionKey,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));

@@ -95,3 +95,10 @@ class FlashcardsScreenArgument {
   FlashcardsScreenArgument(
       {required this.query, required this.title, required this.term});
 }
+
+class VoiceNoteScreenArgument {
+  final TermData term;
+  final VoiceNote voiceNote;
+
+  VoiceNoteScreenArgument({required this.voiceNote, required this.term});
+}
