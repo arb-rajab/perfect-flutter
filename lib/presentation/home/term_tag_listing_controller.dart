@@ -1,8 +1,6 @@
 import 'package:beta/application/services/question_service.dart';
-import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
-import 'package:beta/domain/question_tag_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/presentation/home/term_tag_widget.dart';
@@ -33,13 +31,10 @@ class TermTagListingController extends ListController {
         QuestionService questionService = Get.find();
         TermsWithQuestionsFilteringEnabledService
             termsWithQuestionsFilteringEnabledService = Get.find();
-        QuestionTagService questionTagService = Get.find();
         TermData termData = Get.find();
         bool termHasQuestionsFilteringEnabled =
             await termsWithQuestionsFilteringEnabledService
                 .isTermWithQuestionFilteringEnabled(Id(termData.term.id));
-        List<QuestionTagData> questionTagDatas =
-            await questionTagService.getTermQuestionsTags(termData);
         bool hasOtherTag = termsController.termsDatas
             .where((element) => element.tagId!.value == null)
             .toList()
@@ -47,9 +42,7 @@ class TermTagListingController extends ListController {
         if (hasOtherTag) {
           termsController.termTagButtons.add(TermTagButton.others);
         }
-        if (questionTagDatas.isNotEmpty) {
-          termsController.termTagButtons.add(TermTagButton.questionTags);
-        }
+        termsController.termTagButtons.add(TermTagButton.questionTags);
         termsController.termTagButtons.add(TermTagButton.search);
         if (termHasQuestionsFilteringEnabled) {
           int easyQuestionsCount =
