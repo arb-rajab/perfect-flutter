@@ -29,6 +29,7 @@ class TermTagWidget extends StatelessWidget {
     String text = '';
     TermsListingController controller = Get.find();
     TermsController termsController = Get.find();
+    TermService termService = Get.find();
     if (index < termsController.termsTags.length) {
       TermTag termTag = termsController.termsTags[index];
       text = termTag.name;
@@ -109,7 +110,6 @@ class TermTagWidget extends StatelessWidget {
             return;
           case TermTagButton.questionTags:
             QuestionTagService questionTagService = Get.find();
-            TermService termService = Get.find();
             int numberOfChildTermsWithNoQuestions = await termService
                 .getTermUndownloadedTermsWithQuestionsCount(termData);
             if (numberOfChildTermsWithNoQuestions == 0) {
@@ -156,14 +156,34 @@ class TermTagWidget extends StatelessWidget {
             context.push(QuestionsScreen.route);
             return;
           case TermTagButton.edited:
-            Get.put(QuestionsScreenArgument(
-                query:
-                    "q.edited =1 and q.parentTermId in (select termId from termTrees where parentTermId =${termData.term.id} and depth>0) order by q.id asc",
-                source: QuestionScreenSource.edited,
-                sourceId: Id(termData.term.id),
-                resourceTermId: Id(termData.term.id),
-                title: t.Title(StringConstant.edited.tr())));
-            context.push(QuestionsScreen.route);
+            int numberOfChildTermsWithNoQuestions = await termService
+                .getTermUndownloadedTermsWithQuestionsCount(termData);
+            if (numberOfChildTermsWithNoQuestions == 0) {
+              Get.put(QuestionsScreenArgument(
+                  query:
+                      "q.edited =1 and q.parentTermId in (select termId from termTrees where parentTermId =${termData.term.id} and depth>0) order by q.id asc",
+                  source: QuestionScreenSource.edited,
+                  sourceId: Id(termData.term.id),
+                  resourceTermId: Id(termData.term.id),
+                  title: t.Title(StringConstant.edited.tr())));
+              if (context.mounted) context.push(QuestionsScreen.route);
+            } else if (context.mounted) {
+              List termsTags = termsController.termsTags
+                  .map((termTag) => termTag.name)
+                  .toList();
+              if (termsController.termTagButtons
+                  .contains(TermTagButton.others)) {
+                termsTags.add(StringConstant.others.tr());
+              }
+              showOkDialogue(context,
+                  contentWidget: Column(
+                    children: [
+                      Text(StringConstant.pleaseDownloadAllTermsWithin
+                          .tr()
+                          .replaceFirst('(TERM_TAGS)', termsTags.join(', ')))
+                    ],
+                  ));
+            }
             return;
           case TermTagButton.easy:
             Get.put(QuestionsScreenArgument(
