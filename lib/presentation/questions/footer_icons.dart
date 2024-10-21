@@ -75,7 +75,7 @@ class _FooterIconsState extends State<FooterIcons> {
                 questionData.hasNote && (!isTemplate || questionData.corrected),
             child: IconButton.outlined(
                 onPressed: () {
-                  showOkDialogue(context, () {},
+                  showOkDialogue(context, 
                       contentWidget: questionData.question.specialCharacter ==
                               SpecialCharacter.none
                           ? Text(questionData.getTranslatableNote(),
@@ -96,7 +96,7 @@ class _FooterIconsState extends State<FooterIcons> {
         Visibility(
             visible: questionData.question.edited == 1,
             child: IconButton.outlined(
-              onPressed: () => showOkDialogue(context, () {},
+              onPressed: () => showOkDialogue(context, 
                   content: StringConstant.edittedOn.tr().replaceFirst(
                       '(DATE)',
                       questionData.question.editionDate

@@ -135,7 +135,8 @@
         "difficult-questions": "الأسئلة الصعبة",
         "wrong-questions": "الأسئلة الخاطئة",
         "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً",
-        "term-is-expired": "هذا المحتوى العلمي ليس متاحاً بعد الآن، يرجى تفعيل رمز شراء جديد"
+        "term-is-expired": "هذا المحتوى العلمي ليس متاحاً بعد الآن، يرجى تفعيل رمز شراء جديد",
+        "please-download-all-terms-within": "يرجى تنزيل كل المحتوى العلمي المتاح المدرج ضمن ((TERM_TAGS))"
     },
     "questions": {
         "show-favorite-only": "المفضلة فقط",

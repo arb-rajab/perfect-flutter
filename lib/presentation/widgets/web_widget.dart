@@ -46,7 +46,8 @@ class _WebWidgetState extends State<WebWidget> {
               webViewController = controller;
             },
             onReceivedError: (controller, request, error) {
-              showOkDialogue(context, context.pop, content: error.description);
+              showOkDialogue(context,
+                  onConfirm: context.pop, content: error.description);
               setState(() {
                 this.error = true;
               });

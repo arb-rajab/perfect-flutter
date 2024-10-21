@@ -138,10 +138,11 @@ class TermWidgetController {
 
   void _onPreConnect() => state.setState(() => downloading = true);
   void _onPostConnect() => state.setState(() => downloading = false);
-  void _onConnectionFailed() => showOkDialogue(state.context, () {},
+  void _onConnectionFailed() =>
+      showOkDialogue(state.context,
       content: StringConstant.noConnection.tr());
   void _onMessageReceived(FailureResponse message) =>
-      showOkDialogue(state.context, () {}, content: message.content);
+      showOkDialogue(state.context, content: message.content);
 
   Future _setTermUpdated() async {
     TermService termService = Get.find();
@@ -264,7 +265,8 @@ class TermWidgetController {
   Future<void> onTermClick() async {
     if (termData.term.enabled != 1) {
       showOkDialogue(state.context,
-          () => Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink),
+          onConfirm: () =>
+              Get.find<UrlLauncherRepository>().openUrl(telegramChannelLink),
           content: StringConstant.contentLocked.tr());
       return;
     }
@@ -315,7 +317,7 @@ class TermWidgetController {
             state.context.push(QuestionsScreen.route);
           }
         } else {
-          showOkDialogue(state.context, () {},
+          showOkDialogue(state.context,
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;
@@ -327,11 +329,11 @@ class TermWidgetController {
             Get.put(EbookScreenArgument(ebook: ebook, term: termData));
             state.context.push(EbookScreen.route);
           } else {
-            showOkDialogue(state.context, () {},
+            showOkDialogue(state.context, 
                 content: StringConstant.termIsExpired.tr());
           }
         } else {
-          showOkDialogue(state.context, () {},
+          showOkDialogue(state.context,
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;
@@ -354,7 +356,7 @@ class TermWidgetController {
               url: ApiConstant.getYoutubeVideo
                   .replaceFirst('(TERM_ID)', termData.term.id.toString()));
         } else {
-          showOkDialogue(state.context, () {},
+          showOkDialogue(state.context,
               content: StringConstant.termIsExpired.tr());
         }
         break;
@@ -368,7 +370,7 @@ class TermWidgetController {
               term: termData));
           state.context.push(FlashcardsScreen.route);
         } else {
-          showOkDialogue(state.context, () {},
+          showOkDialogue(state.context,
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;
@@ -382,11 +384,11 @@ class TermWidgetController {
                 VoiceNoteScreenArgument(term: termData, voiceNote: voiceNote));
             state.context.push(VoiceNoteScreen.route);
           } else {
-            showOkDialogue(state.context, () {},
+            showOkDialogue(state.context,
                 content: StringConstant.termIsExpired.tr());
           }
         } else {
-          showOkDialogue(state.context, () {},
+          showOkDialogue(state.context, 
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;

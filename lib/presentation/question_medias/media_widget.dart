@@ -30,7 +30,8 @@ class _MediaWidgetState extends State<MediaWidget> {
             initialUrlRequest:
                 URLRequest(url: WebUri(widget.questionMedia.url)),
             onReceivedError: (controller, request, error) {
-              showOkDialogue(context, context.pop, content: error.description);
+              showOkDialogue(context,
+                  onConfirm: context.pop, content: error.description);
               setState(() {
                 this.error = true;
               });

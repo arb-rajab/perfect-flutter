@@ -4,8 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showOkDialogue(BuildContext context, Function onConfirm,
+Future<void> showOkDialogue(BuildContext context, 
     {String? content,
+    Function? onConfirm,
     Widget? contentWidget,
     String? okText,
     String? title}) async {
@@ -24,14 +25,14 @@ Future<void> showOkDialogue(BuildContext context, Function onConfirm,
 
 //TODO add test
 class OKDialogue extends StatelessWidget {
-  final Function onConfirm;
+  final Function? onConfirm;
   final String? content;
   final Widget? contentWidget;
   final String? okText;
   final String? title;
   const OKDialogue(
       {super.key,
-      required this.onConfirm,
+      this.onConfirm,
       this.content,
       required this.okText,
       this.title,
@@ -51,7 +52,7 @@ class OKDialogue extends StatelessWidget {
                 child: Text(okText ?? StringConstant.ok.tr()),
                 onPressed: () {
                   context.pop();
-                  onConfirm.call();
+                  onConfirm?.call();
                 })
           ]),
     );

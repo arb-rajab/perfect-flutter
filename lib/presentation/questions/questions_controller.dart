@@ -300,7 +300,7 @@ class QuestionsController {
 
   void _showStatistics() {
     QuestionStatistic questionStatistic = QuestionData.getStatistics(questions);
-    showOkDialogue(state.context, () {},
+    showOkDialogue(state.context, 
         contentWidget: Text(
             "${StringConstant.correct.tr()} : ${questionStatistic.correct}\n${StringConstant.wrong.tr()} : ${questionStatistic.wrong}\n${StringConstant.answered.tr()} : ${questionStatistic.answered}\n${StringConstant.total.tr()} : ${questionStatistic.total}"));
   }
@@ -413,10 +413,11 @@ class QuestionsController {
   void _showTimedTestDialogue() {
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template) {
-      showOkDialogue(state.context, () {
+      showOkDialogue(state.context, onConfirm: () {
         timer = Timer.periodic(const Duration(seconds: 1), (t) {
           if (timer.tick >= questions.length * 60) {
-            showOkDialogue(state.context, moveToQuestionsReportScreen,
+            showOkDialogue(state.context,
+                onConfirm: moveToQuestionsReportScreen,
                 title: StringConstant.testFinished.tr(),
                 content: StringConstant.testFinishedExplanation.tr());
             timer.cancel();
