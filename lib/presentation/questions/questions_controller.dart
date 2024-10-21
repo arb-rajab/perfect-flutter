@@ -300,7 +300,7 @@ class QuestionsController {
 
   void _showStatistics() {
     QuestionStatistic questionStatistic = QuestionData.getStatistics(questions);
-    showOkDialogue(state.context, 
+    showOkDialogue(state.context,
         contentWidget: Text(
             "${StringConstant.correct.tr()} : ${questionStatistic.correct}\n${StringConstant.wrong.tr()} : ${questionStatistic.wrong}\n${StringConstant.answered.tr()} : ${questionStatistic.answered}\n${StringConstant.total.tr()} : ${questionStatistic.total}"));
   }
@@ -443,6 +443,7 @@ class QuestionsController {
   }
 
   _updateLastAccess() {
+    if (getAllObjects().isEmpty) return;
     List<ItemPosition> positions =
         itemPositionsListener.itemPositions.value.toList();
     for (ItemPosition itemPosition in positions) {
@@ -517,8 +518,8 @@ class QuestionsController {
   }
 
   QuestionFragment getQuestionFragment(int position) {
-    if (position == 0) return QuestionFragment.header;
     List<Object> objects = getAllObjects();
+    if (position == 0) return QuestionFragment.header;
     Object currentObject = objects[position];
     Object previousObject = objects[position - 1];
     if (currentObject is QuestionData && previousObject is AnswerData) {

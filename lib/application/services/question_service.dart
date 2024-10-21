@@ -51,19 +51,6 @@ class QuestionService {
           .first;
 
   //TODO add test
-  Future<int> getNumberOfEditedQuestions(TermData termData) async =>
-      (await databaseService
-              .customSelect(
-                  "select count(*) as numberOfEditedQuestions from questions where edited=1 and parentTermId in "
-                  "(select termId from termTrees where parentTermId=${termData.term.id})")
-              .watch()
-              .map((rows) => rows
-                  .map((row) => row.read<int>('numberOfEditedQuestions'))
-                  .toList())
-              .first)
-          .first;
-
-  //TODO add test
   Future<int> getNumberOfWrongQuestions(TermData termData) async =>
       (await databaseService
               .customSelect(

@@ -62,11 +62,7 @@ class TermTagListingController extends ListController {
           }
         }
         termsController.termTagButtons.add(TermTagButton.favorite);
-        int editedQuestionsCount =
-            await questionService.getNumberOfEditedQuestions(termData);
-        if (editedQuestionsCount > 0) {
-          termsController.termTagButtons.add(TermTagButton.edited);
-        }
+        termsController.termTagButtons.add(TermTagButton.edited);
         bool termHasTemplates =
             await Get.find<TermService>().termHasTemplate(termData);
         int numberOfWrongQuestions =
