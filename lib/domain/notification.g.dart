@@ -10,7 +10,8 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
       id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
       title: const TitleJsonConverter().fromJson(json['title'] as String),
       text: const TextJsonConverter().fromJson(json['text'] as String),
-      data: const DataJsonConverter().fromJson(json['data'] as String),
+      data: _$JsonConverterFromJson<String, Data>(
+          json['data'], const DataJsonConverter().fromJson),
       seen: _$JsonConverterFromJson<int, bool>(
           json['seen'], const BooleanConverter().fromJson),
       creation: const DateTimeConverter().fromJson(json['creation'] as String),
@@ -21,7 +22,8 @@ Map<String, dynamic> _$NotificationToJson(Notification instance) =>
       'id': const IdJsonConverter().toJson(instance.id),
       'title': const TitleJsonConverter().toJson(instance.title),
       'text': const TextJsonConverter().toJson(instance.text),
-      'data': const DataJsonConverter().toJson(instance.data),
+      'data': _$JsonConverterToJson<String, Data>(
+          instance.data, const DataJsonConverter().toJson),
       'seen': _$JsonConverterToJson<int, bool>(
           instance.seen, const BooleanConverter().toJson),
       'creation': const DateTimeConverter().toJson(instance.creation),

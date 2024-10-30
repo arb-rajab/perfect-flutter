@@ -16,7 +16,7 @@ class Notification with _$Notification {
       {@IdJsonConverter() required Id id,
       @TitleJsonConverter() required Title title,
       @TextJsonConverter() required Text text,
-      @DataJsonConverter() required Data data,
+      @DataJsonConverter() required Data? data,
       @BooleanConverter() required bool? seen,
       @DateTimeConverter() required DateTime creation}) = _Notification;
 

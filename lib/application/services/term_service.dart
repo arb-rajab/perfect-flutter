@@ -1,5 +1,11 @@
+import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
+import 'package:beta/application/services/flashcard_service.dart';
+import 'package:beta/application/services/question_linked_to_tag_service.dart';
+import 'package:beta/application/services/question_media_service.dart';
+import 'package:beta/application/services/question_service.dart';
+import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
@@ -201,6 +207,40 @@ class TermService {
             .map((rows) => rows.map((row) => row.read<int>('c')).toList())
             .first)
         .first;
-  }     
+  }
 
+  Future storeTermContent(dynamic body) {
+    return databaseService.transaction(() async {
+      List<Question> questions =
+          (body['questions'] as List).map((e) => Question.fromJson(e)).toList();
+      List<Flashcard> flashcards = (body['flashcards'] as List)
+          .map((e) => Flashcard.fromJson(e))
+          .toList();
+      List<Answer> answers =
+          (body['answers'] as List).map((e) => Answer.fromJson(e)).toList();
+      List<QuestionMedia> questionMedias = (body['media'] as List)
+          .map((e) => QuestionMedia.fromJson(e))
+          .toList();
+      List<QuestionTag> questionTags = (body['questionTags'] as List)
+          .map((e) => QuestionTag.fromJson(e))
+          .toList();
+      List<QuestionsLinkedToTag> questionsLinkedToTags =
+          (body['questionsLinkedToTags'] as List)
+              .map((e) => QuestionsLinkedToTag.fromJson(e))
+              .toList();
+      QuestionService questionService = Get.find();
+      await questionService.addQuestions(questions);
+      AnswerService answerService = Get.find();
+      await answerService.addAnswers(answers);
+      FlashcardService flashcardService = Get.find();
+      await flashcardService.addFlashcards(flashcards);
+      QuestionMediaService questionMediaService = Get.find();
+      await questionMediaService.addQuestionMedias(questionMedias);
+      QuestionTagService questionTagService = Get.find();
+      await questionTagService.addQuestionTags(questionTags);
+      QuestionLinkedToTagService questionLinkedToTagService = Get.find();
+      await questionLinkedToTagService
+          .addQuestionsLinkdeToTags(questionsLinkedToTags);
+    });
+  }
 }

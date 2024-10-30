@@ -23,7 +23,7 @@ mixin _$Notification {
   @TextJsonConverter()
   Text get text => throw _privateConstructorUsedError;
   @DataJsonConverter()
-  Data get data => throw _privateConstructorUsedError;
+  Data? get data => throw _privateConstructorUsedError;
   @BooleanConverter()
   bool? get seen => throw _privateConstructorUsedError;
   @DateTimeConverter()
@@ -44,14 +44,14 @@ abstract class $NotificationCopyWith<$Res> {
       {@IdJsonConverter() Id id,
       @TitleJsonConverter() Title title,
       @TextJsonConverter() Text text,
-      @DataJsonConverter() Data data,
+      @DataJsonConverter() Data? data,
       @BooleanConverter() bool? seen,
       @DateTimeConverter() DateTime creation});
 
   $IdCopyWith<$Res> get id;
   $TitleCopyWith<$Res> get title;
   $TextCopyWith<$Res> get text;
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     Object? id = null,
     Object? title = null,
     Object? text = null,
-    Object? data = null,
+    Object? data = freezed,
     Object? seen = freezed,
     Object? creation = null,
   }) {
@@ -87,10 +87,10 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as Text,
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       seen: freezed == seen
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
@@ -128,8 +128,12 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
 
   @override
   @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res> get data {
-    return $DataCopyWith<$Res>(_value.data, (value) {
+  $DataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $DataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -147,7 +151,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
       {@IdJsonConverter() Id id,
       @TitleJsonConverter() Title title,
       @TextJsonConverter() Text text,
-      @DataJsonConverter() Data data,
+      @DataJsonConverter() Data? data,
       @BooleanConverter() bool? seen,
       @DateTimeConverter() DateTime creation});
 
@@ -158,7 +162,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
   @override
   $TextCopyWith<$Res> get text;
   @override
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -175,7 +179,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? text = null,
-    Object? data = null,
+    Object? data = freezed,
     Object? seen = freezed,
     Object? creation = null,
   }) {
@@ -192,10 +196,10 @@ class __$$NotificationImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as Text,
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       seen: freezed == seen
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
@@ -230,7 +234,7 @@ class _$NotificationImpl implements _Notification {
   final Text text;
   @override
   @DataJsonConverter()
-  final Data data;
+  final Data? data;
   @override
   @BooleanConverter()
   final bool? seen;
@@ -273,7 +277,7 @@ abstract class _Notification implements Notification {
           {@IdJsonConverter() required final Id id,
           @TitleJsonConverter() required final Title title,
           @TextJsonConverter() required final Text text,
-          @DataJsonConverter() required final Data data,
+          @DataJsonConverter() required final Data? data,
           @BooleanConverter() required final bool? seen,
           @DateTimeConverter() required final DateTime creation}) =
       _$NotificationImpl;
@@ -289,7 +293,7 @@ abstract class _Notification implements Notification {
   Text get text;
   @override
   @DataJsonConverter()
-  Data get data;
+  Data? get data;
   @override
   @BooleanConverter()
   bool? get seen;

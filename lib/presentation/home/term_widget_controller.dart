@@ -139,13 +139,11 @@ class TermWidgetController {
   void _onPreConnect() => state.setState(() => downloading = true);
   void _onPostConnect() => state.setState(() => downloading = false);
   void _onConnectionFailed() =>
-      showOkDialogue(state.context,
-      content: StringConstant.noConnection.tr());
+      showOkDialogue(state.context, content: StringConstant.noConnection.tr());
   void _onMessageReceived(FailureResponse message) =>
       showOkDialogue(state.context, content: message.content);
 
   Future _setTermUpdated() async {
-    TermService termService = Get.find();
     await termService.setTermUpdated(termData);
     state.setState(() {
       termData.term = termData.term.copyWith(needsUpdate: 0);
@@ -196,45 +194,16 @@ class TermWidgetController {
       return NetworkService(state.context,
               onPreConnect: _onPreConnect,
               onPostConnect: _onPostConnect, onConnectionSucceed: (body) async {
-        List<Question> questions = (body['questions'] as List)
-            .map((e) => Question.fromJson(e))
-            .toList();
-        List<Flashcard> flashcards = (body['flashcards'] as List)
-            .map((e) => Flashcard.fromJson(e))
-            .toList();
-        List<Answer> answers =
-            (body['answers'] as List).map((e) => Answer.fromJson(e)).toList();
-        List<QuestionMedia> questionMedias = (body['media'] as List)
-            .map((e) => QuestionMedia.fromJson(e))
-            .toList();
-        List<QuestionTag> questionTags = (body['questionTags'] as List)
-            .map((e) => QuestionTag.fromJson(e))
-            .toList();
-        List<QuestionsLinkedToTag> questionsLinkedToTags =
-            (body['questionsLinkedToTags'] as List)
-                .map((e) => QuestionsLinkedToTag.fromJson(e))
-                .toList();
-        QuestionService questionService = Get.find();
-        await questionService.addQuestions(questions);
-        AnswerService answerService = Get.find();
-        await answerService.addAnswers(answers);
-        FlashcardService flashcardService = Get.find();
-        await flashcardService.addFlashcards(flashcards);
-        QuestionMediaService questionMediaService = Get.find();
-        await questionMediaService.addQuestionMedias(questionMedias);
-        QuestionTagService questionTagService = Get.find();
-        await questionTagService.addQuestionTags(questionTags);
-        QuestionLinkedToTagService questionLinkedToTagService = Get.find();
-        await questionLinkedToTagService
-            .addQuestionsLinkdeToTags(questionsLinkedToTags);
-        if (termData.term.type == TermType.flashcards) {
-          state.setState(() => termData.numberOfFlashcards =
-              NumberOfSubTerms(flashcards.length));
-        } else {
-          state.setState(() =>
-              termData.numberOfQuestions = NumberOfSubTerms(questions.length));
-        }
-        _setTermUpdated();
+        termService.storeTermContent(body).then((_) {
+          if (termData.term.type == TermType.flashcards) {
+            state.setState(() => termData.numberOfFlashcards =
+                NumberOfSubTerms(body['flashcards'].length));
+          } else {
+            state.setState(() => termData.numberOfQuestions =
+                NumberOfSubTerms(body['questions'].length));
+          }
+          _setTermUpdated();
+        });
       },
               onConnectionFailed: _onConnectionFailed,
               onMessageReceived: _onMessageReceived)
@@ -329,7 +298,7 @@ class TermWidgetController {
             Get.put(EbookScreenArgument(ebook: ebook, term: termData));
             state.context.push(EbookScreen.route);
           } else {
-            showOkDialogue(state.context, 
+            showOkDialogue(state.context,
                 content: StringConstant.termIsExpired.tr());
           }
         } else {
@@ -388,7 +357,7 @@ class TermWidgetController {
                 content: StringConstant.termIsExpired.tr());
           }
         } else {
-          showOkDialogue(state.context, 
+          showOkDialogue(state.context,
               content: StringConstant.youHaveToDownloadFirst.tr());
         }
         break;

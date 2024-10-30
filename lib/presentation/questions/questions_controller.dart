@@ -23,6 +23,7 @@ import 'package:beta/domain/question_statistic.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
+import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
@@ -46,6 +47,7 @@ class QuestionsController {
   late String query;
 
   bool deepLinked = false;
+  bool loading = false;
   String? questionUUID;
   List<QuestionData> questions = [];
   bool templateExited = false;
@@ -80,23 +82,40 @@ class QuestionsController {
       questionsScreenArgument = Get.find<QuestionsScreenArgument>();
       _configure();
     } else {
-      await _getUUIDData();
-      _configure();
+      _getUUIDData();
     }
   }
 
   Future _getUUIDData() async {
-    term = await termService.getTermByQuestionUuid(questionUUID!);
-    if (term != null) {
+    termService.getTermByQuestionUuid(questionUUID!).then((term) {
       Get.delete<QuestionsScreenArgument>();
       questionsScreenArgument = Get.put(QuestionsScreenArgument(
           query:
               "q.parentTermId in (select parentTermId from questions where uuid = '$questionUUID') order by id asc",
           source: QuestionScreenSource.term,
-          sourceId: Id(term!.id),
-          resourceTermId: Id(term!.id),
-          title: t.Title(term!.name)));
-    }
+          sourceId: Id(term.id),
+          resourceTermId: Id(term.id),
+          title: t.Title(term.name)));
+      _configure();
+    }).onError((a, b) async {
+      if (state.mounted) {
+        await NetworkService(
+          state.context,
+          onPreConnect: () => state.setState(() => loading = true),
+          onPostConnect: () => state.setState(() => loading = false),
+          onConnectionFailed: () => state.context
+              .showErrorBar(content: Text(StringConstant.noConnection.tr())),
+          onMessageReceived: (FailureResponse message) =>
+              state.context.showInfoBar(content: Text(message.content)),
+          onConnectionSucceed: (body) async {
+            await termService.storeTermContent(body);
+            return _getUUIDData();
+          },
+        ).get(
+            url: ApiConstant.getQuestionTerm
+                .replaceFirst('(QUESTION_UUID)', questionUUID!));
+      }
+    });
   }
 
   _configure() {

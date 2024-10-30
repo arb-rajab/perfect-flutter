@@ -38,6 +38,7 @@ xmlns:tools="http://schemas.android.com/tools">
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="perfect-app.com" android:pathPrefix="/q"/>
+                <data android:scheme="https" android:host="perfect-app.scienceontheweb.net"/>
             </intent-filter>
 
         </activity>
