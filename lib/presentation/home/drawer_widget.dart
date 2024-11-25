@@ -18,6 +18,7 @@ import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.d
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/instance_manager.dart';
@@ -86,26 +87,76 @@ class _ImportBackupTile extends StatelessWidget {
           TermPropertyService termPropertyService = Get.find();
 
           dynamic data = jsonDecode(content);
+          int totalLength = 0;
+          int finished = 0;
+          if (data['answerProperties'] != null) {
+            totalLength += (data['answerProperties'] as List).length;
+          }
+          if (data['questionProperties'] != null) {
+            totalLength += (data['questionProperties'] as List).length;
+          }
+          if (data['questionTagProperties'] != null) {
+            totalLength += (data['questionTagProperties'] as List).length;
+          }
+          if (data['termsLastAccess'] != null) {
+            totalLength += (data['termsLastAccess'] as List).length;
+          }
+          if (data['termProperties'] != null) {
+            totalLength += (data['termProperties'] as List).length;
+          }
 
           if (data['answerProperties'] != null) {
             await answerPropertyService
                 .addAnswerPropertiesFromJson(data['answerProperties']);
+            finished += (data['answerProperties'] as List).length;
           }
+
+          if (context.mounted) {
+            context.showInfoBar(
+                content: Text(StringConstant.restored.tr().replaceFirst(
+                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
+          }
+
           if (data['questionProperties'] != null) {
             await questionPropertyService
                 .addQuestionPropertiesFromJson(data['questionProperties']);
+            finished += (data['questionProperties'] as List).length;
           }
+
+          if (context.mounted) {
+            context.showInfoBar(
+                content: Text(StringConstant.restored.tr().replaceFirst(
+                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
+          }
+
           if (data['questionTagProperties'] != null) {
             await questionTagPropertyService.addQuestionTagPropertiesFromJson(
                 data['questionTagProperties']);
+            finished += (data['questionTagProperties'] as List).length;
           }
+
+          if (context.mounted) {
+            context.showInfoBar(
+                content: Text(StringConstant.restored.tr().replaceFirst(
+                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
+          }
+
           if (data['termsLastAccess'] != null) {
             await termLastAccessService
                 .addTermLastAccessFromJson(data['termsLastAccess']);
+            finished += (data['termsLastAccess'] as List).length;
           }
+
+          if (context.mounted) {
+            context.showInfoBar(
+                content: Text(StringConstant.restored.tr().replaceFirst(
+                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
+          }
+
           if (data['termProperties'] != null) {
             await termPropertyService
                 .addTermPropertiesFromJson(data['termProperties']);
+            finished += (data['termProperties'] as List).length;
           }
           if (context.mounted) showSuccessDialogue(context);
         },
@@ -191,8 +242,7 @@ class _ScanPrintedQRTile extends StatelessWidget {
           title: Hero(
               tag: PrintedQrScannerScreen.title,
               child: Text(PrintedQrScannerScreen.title)),
-          onTap: () =>
-              context.push(PrintedQrScannerScreen.route)),
+          onTap: () => context.push(PrintedQrScannerScreen.route)),
     );
   }
 }
@@ -223,8 +273,7 @@ class FrequestQuestionsTile extends StatelessWidget {
           title: Hero(
               tag: FrequentQuestionsScreen.title,
               child: Text(FrequentQuestionsScreen.title)),
-          onTap: () =>
-              context.push(FrequentQuestionsScreen.route)),
+          onTap: () => context.push(FrequentQuestionsScreen.route)),
     );
   }
 }
@@ -266,9 +315,7 @@ class WhatsNewDialogue extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(
-            onPressed: context.pop,
-            child: Text(StringConstant.ok.tr()))
+        TextButton(onPressed: context.pop, child: Text(StringConstant.ok.tr()))
       ],
     );
   }

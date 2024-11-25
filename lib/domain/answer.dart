@@ -10,7 +10,7 @@ class Answers extends Table {
   IntColumn get isCorrect => integer().named('isCorrect')();
   IntColumn get parentQuestionId => integer().named('parentQuestionId')();
   IntColumn get specialCharacter => integer().named('specialCharacter')();
-  DateTimeColumn get creation => dateTime()();
+  TextColumn get creation => text()();
   IntColumn get checkedCount =>
       integer().withDefault(const Constant(0)).named('checkedCount')();
 

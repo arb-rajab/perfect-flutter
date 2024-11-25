@@ -78,6 +78,7 @@ class StringConstant {
   static const _backup = 'backup';
   static const importBackup = '$_backup.import';
   static const exportBackup = '$_backup.export';
+  static const restored = '$_backup.restored';
 
   static const _scanPrintedQr = 'scan-printed-qr';
   static const scanPrintedQr = '$_scanPrintedQr.scan-printed-qr';

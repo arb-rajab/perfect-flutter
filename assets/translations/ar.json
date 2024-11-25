@@ -67,7 +67,8 @@
     },
     "backup": {
         "import": "استيراد نسخ احتياطي",
-        "export": "نسخ احتياطي"
+        "export": "نسخ احتياطي",
+        "restored": "تم استرداد (PERCENT)%"
     },
     "scan-printed-qr": {
         "scan-printed-qr": "مسح QR لمحتوى مطبوع",

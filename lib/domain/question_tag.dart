@@ -7,7 +7,7 @@ class QuestionTags extends Table {
   IntColumn get parentTagId => integer().named('parentTagId')();
   IntColumn get hasInformation =>
       integer().withDefault(const Constant(0)).named('hasInformation')();
-  DateTimeColumn get creation => dateTime()();
+  TextColumn get creation => text()();
 
   @override
   Set<Column<Object>>? get primaryKey => {id};

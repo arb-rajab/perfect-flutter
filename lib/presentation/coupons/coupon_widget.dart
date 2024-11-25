@@ -16,7 +16,7 @@ class CouponWidget extends StatelessWidget {
     CouponsListController couponsListController = Get.find();
     Coupon coupon = couponsListController.items[index];
     int difference = coupon.activationDate != null
-        ? coupon.activationDate!
+        ? DateTime.parse(coupon.activationDate!)
             .add(Duration(days: coupon.expirationDays))
             .difference(DateTime.now())
             .inDays

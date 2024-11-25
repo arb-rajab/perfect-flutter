@@ -4,8 +4,9 @@ import 'package:drift/drift.dart';
 class TermsLastAccesses extends Table {
   IntColumn get parentTermId => integer().named('parentTermId')();
   IntColumn get childId => integer().named('childId')();
-  DateTimeColumn get lastAccess =>
-      dateTime().named('lastAccess').withDefault(Constant(DateTime.now()))();
+  IntColumn get lastAccess => integer()
+      .named('lastAccess')
+      .withDefault(Constant(DateTime.now().millisecondsSinceEpoch))();
 
   @override
   Set<Column<Object>>? get primaryKey => {parentTermId, childId};

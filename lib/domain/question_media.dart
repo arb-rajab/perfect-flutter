@@ -5,7 +5,7 @@ class QuestionMedias extends Table {
   IntColumn get id => integer()();
   TextColumn get url => text()();
   IntColumn get parentQuestionId => integer().named('parentQuestionId')();
-  DateTimeColumn get creation => dateTime()();
+  TextColumn get creation => text()();
 
   @override
   Set<Column> get primaryKey => {id, parentQuestionId};

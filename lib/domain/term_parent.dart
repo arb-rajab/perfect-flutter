@@ -4,8 +4,8 @@ class TermsParents extends Table {
   IntColumn get termId => integer().named('termId')();
   IntColumn get parentTermId => integer().named('parentTermId')();
   IntColumn get rootTermId => integer().named('rootTermId')();
-  DateTimeColumn get creation => dateTime()();
-  //string delted_at
+  TextColumn get creation => text()();
+
   @override
   Set<Column<Object>>? get primaryKey => {termId, parentTermId, rootTermId};
 

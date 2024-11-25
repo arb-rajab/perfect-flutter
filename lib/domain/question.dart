@@ -17,14 +17,8 @@ class Questions extends Table {
   IntColumn get edited => integer().withDefault(const Constant(0))();
   TextColumn get imageUrl =>
       text().withDefault(const Constant('')).named('imageUrl')();
-  //ignore
-  // BoolColumn get imageVisible => boolean().withDefault(Constant(false))();
-  DateTimeColumn get creation => dateTime()();
-  DateTimeColumn get editionDate => dateTime().named('editionDate')();
-
-  //ignore
-  // BoolColumn get corrected => boolean().withDefault(Constant(false))();
-  // BoolColumn get translated => boolean().withDefault(Constant(false))();
+  TextColumn get creation => text()();
+  TextColumn get editionDate => text().named('editionDate')();
 
   @override
   String? get tableName => 'questions';

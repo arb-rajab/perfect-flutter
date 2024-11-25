@@ -28,7 +28,7 @@ class TermLastAccessService {
       databaseService.termsLastAccesses.insertOnConflictUpdate(TermsLastAccess(
           parentTermId: parentId.value!,
           childId: childId.value!,
-          lastAccess: DateTime.now()));
+          lastAccess: DateTime.now().millisecondsSinceEpoch));
 
   //TODO add test
   Future addTermLastAccessFromJson(dynamic data) =>

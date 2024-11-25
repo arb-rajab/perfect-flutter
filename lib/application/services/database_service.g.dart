@@ -37,15 +37,15 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, Coupon> {
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _activationDateMeta =
       const VerificationMeta('activationDate');
   @override
-  late final GeneratedColumn<DateTime> activationDate =
-      GeneratedColumn<DateTime>('activationDate', aliasedName, true,
-          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  late final GeneratedColumn<String> activationDate = GeneratedColumn<String>(
+      'activationDate', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _expirationDaysMeta =
       const VerificationMeta('expirationDays');
   @override
@@ -122,9 +122,9 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, Coupon> {
       free: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}free'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
-      activationDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime, data['${effectivePrefix}activationDate']),
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
+      activationDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}activationDate']),
       expirationDays: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}expirationDays'])!,
     );
@@ -141,8 +141,8 @@ class Coupon extends DataClass implements Insertable<Coupon> {
   final String serial;
   final int type;
   final int free;
-  final DateTime creation;
-  final DateTime? activationDate;
+  final String creation;
+  final String? activationDate;
   final int expirationDays;
   const Coupon(
       {required this.id,
@@ -159,9 +159,9 @@ class Coupon extends DataClass implements Insertable<Coupon> {
     map['serial'] = Variable<String>(serial);
     map['type'] = Variable<int>(type);
     map['free'] = Variable<int>(free);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     if (!nullToAbsent || activationDate != null) {
-      map['activationDate'] = Variable<DateTime>(activationDate);
+      map['activationDate'] = Variable<String>(activationDate);
     }
     map['expirationDays'] = Variable<int>(expirationDays);
     return map;
@@ -189,8 +189,8 @@ class Coupon extends DataClass implements Insertable<Coupon> {
       serial: serializer.fromJson<String>(json['serial']),
       type: serializer.fromJson<int>(json['type']),
       free: serializer.fromJson<int>(json['free']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
-      activationDate: serializer.fromJson<DateTime?>(json['activationDate']),
+      creation: serializer.fromJson<String>(json['creation']),
+      activationDate: serializer.fromJson<String?>(json['activationDate']),
       expirationDays: serializer.fromJson<int>(json['expirationDays']),
     );
   }
@@ -202,8 +202,8 @@ class Coupon extends DataClass implements Insertable<Coupon> {
       'serial': serializer.toJson<String>(serial),
       'type': serializer.toJson<int>(type),
       'free': serializer.toJson<int>(free),
-      'creation': serializer.toJson<DateTime>(creation),
-      'activationDate': serializer.toJson<DateTime?>(activationDate),
+      'creation': serializer.toJson<String>(creation),
+      'activationDate': serializer.toJson<String?>(activationDate),
       'expirationDays': serializer.toJson<int>(expirationDays),
     };
   }
@@ -213,8 +213,8 @@ class Coupon extends DataClass implements Insertable<Coupon> {
           String? serial,
           int? type,
           int? free,
-          DateTime? creation,
-          Value<DateTime?> activationDate = const Value.absent(),
+          String? creation,
+          Value<String?> activationDate = const Value.absent(),
           int? expirationDays}) =>
       Coupon(
         id: id ?? this.id,
@@ -277,8 +277,8 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
   final Value<String> serial;
   final Value<int> type;
   final Value<int> free;
-  final Value<DateTime> creation;
-  final Value<DateTime?> activationDate;
+  final Value<String> creation;
+  final Value<String?> activationDate;
   final Value<int> expirationDays;
   const CouponsCompanion({
     this.id = const Value.absent(),
@@ -294,7 +294,7 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
     required String serial,
     required int type,
     this.free = const Value.absent(),
-    required DateTime creation,
+    required String creation,
     this.activationDate = const Value.absent(),
     this.expirationDays = const Value.absent(),
   })  : serial = Value(serial),
@@ -305,8 +305,8 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
     Expression<String>? serial,
     Expression<int>? type,
     Expression<int>? free,
-    Expression<DateTime>? creation,
-    Expression<DateTime>? activationDate,
+    Expression<String>? creation,
+    Expression<String>? activationDate,
     Expression<int>? expirationDays,
   }) {
     return RawValuesInsertable({
@@ -325,8 +325,8 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
       Value<String>? serial,
       Value<int>? type,
       Value<int>? free,
-      Value<DateTime>? creation,
-      Value<DateTime?>? activationDate,
+      Value<String>? creation,
+      Value<String?>? activationDate,
       Value<int>? expirationDays}) {
     return CouponsCompanion(
       id: id ?? this.id,
@@ -355,10 +355,10 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
       map['free'] = Variable<int>(free.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (activationDate.present) {
-      map['activationDate'] = Variable<DateTime>(activationDate.value);
+      map['activationDate'] = Variable<String>(activationDate.value);
     }
     if (expirationDays.present) {
       map['expirationDays'] = Variable<int>(expirationDays.value);
@@ -413,9 +413,9 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _enabledMeta =
       const VerificationMeta('enabled');
   @override
@@ -560,7 +560,7 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
       type: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
       enabled: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}enabled'])!,
       free: attachedDatabase.typeMapping
@@ -587,7 +587,7 @@ class Term extends DataClass implements Insertable<Term> {
   final String uuid;
   final String name;
   final int type;
-  final DateTime creation;
+  final String creation;
   final int enabled;
   final int free;
   final int ordering;
@@ -613,7 +613,7 @@ class Term extends DataClass implements Insertable<Term> {
     map['uuid'] = Variable<String>(uuid);
     map['name'] = Variable<String>(name);
     map['type'] = Variable<int>(type);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     map['enabled'] = Variable<int>(enabled);
     map['free'] = Variable<int>(free);
     map['ordering'] = Variable<int>(ordering);
@@ -647,7 +647,7 @@ class Term extends DataClass implements Insertable<Term> {
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
       type: serializer.fromJson<int>(json['type']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
+      creation: serializer.fromJson<String>(json['creation']),
       enabled: serializer.fromJson<int>(json['enabled']),
       free: serializer.fromJson<int>(json['free']),
       ordering: serializer.fromJson<int>(json['ordering']),
@@ -664,7 +664,7 @@ class Term extends DataClass implements Insertable<Term> {
       'uuid': serializer.toJson<String>(uuid),
       'name': serializer.toJson<String>(name),
       'type': serializer.toJson<int>(type),
-      'creation': serializer.toJson<DateTime>(creation),
+      'creation': serializer.toJson<String>(creation),
       'enabled': serializer.toJson<int>(enabled),
       'free': serializer.toJson<int>(free),
       'ordering': serializer.toJson<int>(ordering),
@@ -679,7 +679,7 @@ class Term extends DataClass implements Insertable<Term> {
           String? uuid,
           String? name,
           int? type,
-          DateTime? creation,
+          String? creation,
           int? enabled,
           int? free,
           int? ordering,
@@ -761,7 +761,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
   final Value<String> uuid;
   final Value<String> name;
   final Value<int> type;
-  final Value<DateTime> creation;
+  final Value<String> creation;
   final Value<int> enabled;
   final Value<int> free;
   final Value<int> ordering;
@@ -786,7 +786,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
     required String uuid,
     required String name,
     required int type,
-    required DateTime creation,
+    required String creation,
     this.enabled = const Value.absent(),
     required int free,
     required int ordering,
@@ -805,7 +805,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
     Expression<String>? uuid,
     Expression<String>? name,
     Expression<int>? type,
-    Expression<DateTime>? creation,
+    Expression<String>? creation,
     Expression<int>? enabled,
     Expression<int>? free,
     Expression<int>? ordering,
@@ -833,7 +833,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
       Value<String>? uuid,
       Value<String>? name,
       Value<int>? type,
-      Value<DateTime>? creation,
+      Value<String>? creation,
       Value<int>? enabled,
       Value<int>? free,
       Value<int>? ordering,
@@ -871,7 +871,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
       map['type'] = Variable<int>(type.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (enabled.present) {
       map['enabled'] = Variable<int>(enabled.value);
@@ -966,9 +966,9 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _checkedCountMeta =
       const VerificationMeta('checkedCount');
   @override
@@ -1078,7 +1078,7 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
       specialCharacter: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}specialCharacter'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
       checkedCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}checkedCount'])!,
     );
@@ -1098,7 +1098,7 @@ class Answer extends DataClass implements Insertable<Answer> {
   final int isCorrect;
   final int parentQuestionId;
   final int specialCharacter;
-  final DateTime creation;
+  final String creation;
   final int checkedCount;
   const Answer(
       {required this.id,
@@ -1120,7 +1120,7 @@ class Answer extends DataClass implements Insertable<Answer> {
     map['isCorrect'] = Variable<int>(isCorrect);
     map['parentQuestionId'] = Variable<int>(parentQuestionId);
     map['specialCharacter'] = Variable<int>(specialCharacter);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     map['checkedCount'] = Variable<int>(checkedCount);
     return map;
   }
@@ -1150,7 +1150,7 @@ class Answer extends DataClass implements Insertable<Answer> {
       isCorrect: serializer.fromJson<int>(json['isCorrect']),
       parentQuestionId: serializer.fromJson<int>(json['parentQuestionId']),
       specialCharacter: serializer.fromJson<int>(json['specialCharacter']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
+      creation: serializer.fromJson<String>(json['creation']),
       checkedCount: serializer.fromJson<int>(json['checkedCount']),
     );
   }
@@ -1165,7 +1165,7 @@ class Answer extends DataClass implements Insertable<Answer> {
       'isCorrect': serializer.toJson<int>(isCorrect),
       'parentQuestionId': serializer.toJson<int>(parentQuestionId),
       'specialCharacter': serializer.toJson<int>(specialCharacter),
-      'creation': serializer.toJson<DateTime>(creation),
+      'creation': serializer.toJson<String>(creation),
       'checkedCount': serializer.toJson<int>(checkedCount),
     };
   }
@@ -1178,7 +1178,7 @@ class Answer extends DataClass implements Insertable<Answer> {
           int? isCorrect,
           int? parentQuestionId,
           int? specialCharacter,
-          DateTime? creation,
+          String? creation,
           int? checkedCount}) =>
       Answer(
         id: id ?? this.id,
@@ -1255,7 +1255,7 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
   final Value<int> isCorrect;
   final Value<int> parentQuestionId;
   final Value<int> specialCharacter;
-  final Value<DateTime> creation;
+  final Value<String> creation;
   final Value<int> checkedCount;
   const AnswersCompanion({
     this.id = const Value.absent(),
@@ -1276,7 +1276,7 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
     required int isCorrect,
     required int parentQuestionId,
     required int specialCharacter,
-    required DateTime creation,
+    required String creation,
     this.checkedCount = const Value.absent(),
   })  : uuid = Value(uuid),
         title = Value(title),
@@ -1292,7 +1292,7 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
     Expression<int>? isCorrect,
     Expression<int>? parentQuestionId,
     Expression<int>? specialCharacter,
-    Expression<DateTime>? creation,
+    Expression<String>? creation,
     Expression<int>? checkedCount,
   }) {
     return RawValuesInsertable({
@@ -1316,7 +1316,7 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
       Value<int>? isCorrect,
       Value<int>? parentQuestionId,
       Value<int>? specialCharacter,
-      Value<DateTime>? creation,
+      Value<String>? creation,
       Value<int>? checkedCount}) {
     return AnswersCompanion(
       id: id ?? this.id,
@@ -1356,7 +1356,7 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
       map['specialCharacter'] = Variable<int>(specialCharacter.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (checkedCount.present) {
       map['checkedCount'] = Variable<int>(checkedCount.value);
@@ -1468,15 +1468,15 @@ class $QuestionsTable extends Questions
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _editionDateMeta =
       const VerificationMeta('editionDate');
   @override
-  late final GeneratedColumn<DateTime> editionDate = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> editionDate = GeneratedColumn<String>(
       'editionDate', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1621,9 +1621,9 @@ class $QuestionsTable extends Questions
       imageUrl: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}imageUrl'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
       editionDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}editionDate'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}editionDate'])!,
     );
   }
 
@@ -1646,8 +1646,8 @@ class Question extends DataClass implements Insertable<Question> {
   final int type;
   final int edited;
   final String imageUrl;
-  final DateTime creation;
-  final DateTime editionDate;
+  final String creation;
+  final String editionDate;
   const Question(
       {required this.id,
       required this.uuid,
@@ -1678,8 +1678,8 @@ class Question extends DataClass implements Insertable<Question> {
     map['type'] = Variable<int>(type);
     map['edited'] = Variable<int>(edited);
     map['imageUrl'] = Variable<String>(imageUrl);
-    map['creation'] = Variable<DateTime>(creation);
-    map['editionDate'] = Variable<DateTime>(editionDate);
+    map['creation'] = Variable<String>(creation);
+    map['editionDate'] = Variable<String>(editionDate);
     return map;
   }
 
@@ -1718,8 +1718,8 @@ class Question extends DataClass implements Insertable<Question> {
       type: serializer.fromJson<int>(json['type']),
       edited: serializer.fromJson<int>(json['edited']),
       imageUrl: serializer.fromJson<String>(json['imageUrl']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
-      editionDate: serializer.fromJson<DateTime>(json['editionDate']),
+      creation: serializer.fromJson<String>(json['creation']),
+      editionDate: serializer.fromJson<String>(json['editionDate']),
     );
   }
   @override
@@ -1738,8 +1738,8 @@ class Question extends DataClass implements Insertable<Question> {
       'type': serializer.toJson<int>(type),
       'edited': serializer.toJson<int>(edited),
       'imageUrl': serializer.toJson<String>(imageUrl),
-      'creation': serializer.toJson<DateTime>(creation),
-      'editionDate': serializer.toJson<DateTime>(editionDate),
+      'creation': serializer.toJson<String>(creation),
+      'editionDate': serializer.toJson<String>(editionDate),
     };
   }
 
@@ -1756,8 +1756,8 @@ class Question extends DataClass implements Insertable<Question> {
           int? type,
           int? edited,
           String? imageUrl,
-          DateTime? creation,
-          DateTime? editionDate}) =>
+          String? creation,
+          String? editionDate}) =>
       Question(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -1872,8 +1872,8 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
   final Value<int> type;
   final Value<int> edited;
   final Value<String> imageUrl;
-  final Value<DateTime> creation;
-  final Value<DateTime> editionDate;
+  final Value<String> creation;
+  final Value<String> editionDate;
   const QuestionsCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -1903,8 +1903,8 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     required int type,
     this.edited = const Value.absent(),
     this.imageUrl = const Value.absent(),
-    required DateTime creation,
-    required DateTime editionDate,
+    required String creation,
+    required String editionDate,
   })  : uuid = Value(uuid),
         title = Value(title),
         labelId = Value(labelId),
@@ -1927,8 +1927,8 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     Expression<int>? type,
     Expression<int>? edited,
     Expression<String>? imageUrl,
-    Expression<DateTime>? creation,
-    Expression<DateTime>? editionDate,
+    Expression<String>? creation,
+    Expression<String>? editionDate,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1961,8 +1961,8 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       Value<int>? type,
       Value<int>? edited,
       Value<String>? imageUrl,
-      Value<DateTime>? creation,
-      Value<DateTime>? editionDate}) {
+      Value<String>? creation,
+      Value<String>? editionDate}) {
     return QuestionsCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -2021,10 +2021,10 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       map['imageUrl'] = Variable<String>(imageUrl.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (editionDate.present) {
-      map['editionDate'] = Variable<DateTime>(editionDate.value);
+      map['editionDate'] = Variable<String>(editionDate.value);
     }
     return map;
   }
@@ -2084,9 +2084,9 @@ class $QuestionTagsTable extends QuestionTags
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, name, parentTagId, hasInformation, creation];
@@ -2147,7 +2147,7 @@ class $QuestionTagsTable extends QuestionTags
       hasInformation: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}hasInformation'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
     );
   }
 
@@ -2162,7 +2162,7 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
   final String name;
   final int parentTagId;
   final int hasInformation;
-  final DateTime creation;
+  final String creation;
   const QuestionTag(
       {required this.id,
       required this.name,
@@ -2176,7 +2176,7 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
     map['name'] = Variable<String>(name);
     map['parentTagId'] = Variable<int>(parentTagId);
     map['hasInformation'] = Variable<int>(hasInformation);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     return map;
   }
 
@@ -2198,7 +2198,7 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
       name: serializer.fromJson<String>(json['name']),
       parentTagId: serializer.fromJson<int>(json['parentTagId']),
       hasInformation: serializer.fromJson<int>(json['hasInformation']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
+      creation: serializer.fromJson<String>(json['creation']),
     );
   }
   @override
@@ -2209,7 +2209,7 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
       'name': serializer.toJson<String>(name),
       'parentTagId': serializer.toJson<int>(parentTagId),
       'hasInformation': serializer.toJson<int>(hasInformation),
-      'creation': serializer.toJson<DateTime>(creation),
+      'creation': serializer.toJson<String>(creation),
     };
   }
 
@@ -2218,7 +2218,7 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
           String? name,
           int? parentTagId,
           int? hasInformation,
-          DateTime? creation}) =>
+          String? creation}) =>
       QuestionTag(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -2270,7 +2270,7 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
   final Value<String> name;
   final Value<int> parentTagId;
   final Value<int> hasInformation;
-  final Value<DateTime> creation;
+  final Value<String> creation;
   const QuestionTagsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -2283,7 +2283,7 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     required String name,
     required int parentTagId,
     this.hasInformation = const Value.absent(),
-    required DateTime creation,
+    required String creation,
   })  : name = Value(name),
         parentTagId = Value(parentTagId),
         creation = Value(creation);
@@ -2292,7 +2292,7 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     Expression<String>? name,
     Expression<int>? parentTagId,
     Expression<int>? hasInformation,
-    Expression<DateTime>? creation,
+    Expression<String>? creation,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2308,7 +2308,7 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
       Value<String>? name,
       Value<int>? parentTagId,
       Value<int>? hasInformation,
-      Value<DateTime>? creation}) {
+      Value<String>? creation}) {
     return QuestionTagsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -2334,7 +2334,7 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
       map['hasInformation'] = Variable<int>(hasInformation.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     return map;
   }
@@ -2377,9 +2377,9 @@ class $QuestionMediasTable extends QuestionMedias
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, parentQuestionId, creation];
   @override
@@ -2433,7 +2433,7 @@ class $QuestionMediasTable extends QuestionMedias
       parentQuestionId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parentQuestionId'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
     );
   }
 
@@ -2447,7 +2447,7 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
   final int id;
   final String url;
   final int parentQuestionId;
-  final DateTime creation;
+  final String creation;
   const QuestionMedia(
       {required this.id,
       required this.url,
@@ -2459,7 +2459,7 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
     map['id'] = Variable<int>(id);
     map['url'] = Variable<String>(url);
     map['parentQuestionId'] = Variable<int>(parentQuestionId);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     return map;
   }
 
@@ -2479,7 +2479,7 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
       id: serializer.fromJson<int>(json['id']),
       url: serializer.fromJson<String>(json['url']),
       parentQuestionId: serializer.fromJson<int>(json['parentQuestionId']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
+      creation: serializer.fromJson<String>(json['creation']),
     );
   }
   @override
@@ -2489,12 +2489,12 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
       'id': serializer.toJson<int>(id),
       'url': serializer.toJson<String>(url),
       'parentQuestionId': serializer.toJson<int>(parentQuestionId),
-      'creation': serializer.toJson<DateTime>(creation),
+      'creation': serializer.toJson<String>(creation),
     };
   }
 
   QuestionMedia copyWith(
-          {int? id, String? url, int? parentQuestionId, DateTime? creation}) =>
+          {int? id, String? url, int? parentQuestionId, String? creation}) =>
       QuestionMedia(
         id: id ?? this.id,
         url: url ?? this.url,
@@ -2539,7 +2539,7 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
   final Value<int> id;
   final Value<String> url;
   final Value<int> parentQuestionId;
-  final Value<DateTime> creation;
+  final Value<String> creation;
   final Value<int> rowid;
   const QuestionMediasCompanion({
     this.id = const Value.absent(),
@@ -2552,7 +2552,7 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
     required int id,
     required String url,
     required int parentQuestionId,
-    required DateTime creation,
+    required String creation,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         url = Value(url),
@@ -2562,7 +2562,7 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
     Expression<int>? id,
     Expression<String>? url,
     Expression<int>? parentQuestionId,
-    Expression<DateTime>? creation,
+    Expression<String>? creation,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2578,7 +2578,7 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
       {Value<int>? id,
       Value<String>? url,
       Value<int>? parentQuestionId,
-      Value<DateTime>? creation,
+      Value<String>? creation,
       Value<int>? rowid}) {
     return QuestionMediasCompanion(
       id: id ?? this.id,
@@ -2602,7 +2602,7 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
       map['parentQuestionId'] = Variable<int>(parentQuestionId.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3504,15 +3504,15 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _lastUpdatedMeta =
       const VerificationMeta('lastUpdated');
   @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
       'lastUpdated', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [encryptionKey, parentTermId, creation, lastUpdated];
@@ -3568,9 +3568,9 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
       parentTermId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
       lastUpdated: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}lastUpdated'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
     );
   }
 
@@ -3583,8 +3583,8 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
 class Ebook extends DataClass implements Insertable<Ebook> {
   final String encryptionKey;
   final int parentTermId;
-  final DateTime creation;
-  final DateTime lastUpdated;
+  final String creation;
+  final String lastUpdated;
   const Ebook(
       {required this.encryptionKey,
       required this.parentTermId,
@@ -3595,8 +3595,8 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     final map = <String, Expression>{};
     map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
-    map['creation'] = Variable<DateTime>(creation);
-    map['lastUpdated'] = Variable<DateTime>(lastUpdated);
+    map['creation'] = Variable<String>(creation);
+    map['lastUpdated'] = Variable<String>(lastUpdated);
     return map;
   }
 
@@ -3615,8 +3615,8 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     return Ebook(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+      creation: serializer.fromJson<String>(json['creation']),
+      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
     );
   }
   @override
@@ -3625,16 +3625,16 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     return <String, dynamic>{
       'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
-      'creation': serializer.toJson<DateTime>(creation),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+      'creation': serializer.toJson<String>(creation),
+      'lastUpdated': serializer.toJson<String>(lastUpdated),
     };
   }
 
   Ebook copyWith(
           {String? encryptionKey,
           int? parentTermId,
-          DateTime? creation,
-          DateTime? lastUpdated}) =>
+          String? creation,
+          String? lastUpdated}) =>
       Ebook(
         encryptionKey: encryptionKey ?? this.encryptionKey,
         parentTermId: parentTermId ?? this.parentTermId,
@@ -3682,8 +3682,8 @@ class Ebook extends DataClass implements Insertable<Ebook> {
 class EbooksCompanion extends UpdateCompanion<Ebook> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
-  final Value<DateTime> creation;
-  final Value<DateTime> lastUpdated;
+  final Value<String> creation;
+  final Value<String> lastUpdated;
   const EbooksCompanion({
     this.encryptionKey = const Value.absent(),
     this.parentTermId = const Value.absent(),
@@ -3693,16 +3693,16 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
   EbooksCompanion.insert({
     required String encryptionKey,
     this.parentTermId = const Value.absent(),
-    required DateTime creation,
-    required DateTime lastUpdated,
+    required String creation,
+    required String lastUpdated,
   })  : encryptionKey = Value(encryptionKey),
         creation = Value(creation),
         lastUpdated = Value(lastUpdated);
   static Insertable<Ebook> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
-    Expression<DateTime>? creation,
-    Expression<DateTime>? lastUpdated,
+    Expression<String>? creation,
+    Expression<String>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (encryptionKey != null) 'encryptionKey': encryptionKey,
@@ -3715,8 +3715,8 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
   EbooksCompanion copyWith(
       {Value<String>? encryptionKey,
       Value<int>? parentTermId,
-      Value<DateTime>? creation,
-      Value<DateTime>? lastUpdated}) {
+      Value<String>? creation,
+      Value<String>? lastUpdated}) {
     return EbooksCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -3735,10 +3735,10 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
       map['parentTermId'] = Variable<int>(parentTermId.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (lastUpdated.present) {
-      map['lastUpdated'] = Variable<DateTime>(lastUpdated.value);
+      map['lastUpdated'] = Variable<String>(lastUpdated.value);
     }
     return map;
   }
@@ -3776,11 +3776,11 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   static const VerificationMeta _lastAccessMeta =
       const VerificationMeta('lastAccess');
   @override
-  late final GeneratedColumn<DateTime> lastAccess = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<int> lastAccess = GeneratedColumn<int>(
       'lastAccess', aliasedName, false,
-      type: DriftSqlType.dateTime,
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: Constant(DateTime.now().millisecondsSinceEpoch));
   @override
   List<GeneratedColumn> get $columns => [parentTermId, childId, lastAccess];
   @override
@@ -3827,7 +3827,7 @@ class $TermsLastAccessesTable extends TermsLastAccesses
       childId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}childId'])!,
       lastAccess: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}lastAccess'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}lastAccess'])!,
     );
   }
 
@@ -3840,7 +3840,7 @@ class $TermsLastAccessesTable extends TermsLastAccesses
 class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
   final int parentTermId;
   final int childId;
-  final DateTime lastAccess;
+  final int lastAccess;
   const TermsLastAccess(
       {required this.parentTermId,
       required this.childId,
@@ -3850,7 +3850,7 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
     final map = <String, Expression>{};
     map['parentTermId'] = Variable<int>(parentTermId);
     map['childId'] = Variable<int>(childId);
-    map['lastAccess'] = Variable<DateTime>(lastAccess);
+    map['lastAccess'] = Variable<int>(lastAccess);
     return map;
   }
 
@@ -3868,7 +3868,7 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
     return TermsLastAccess(
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       childId: serializer.fromJson<int>(json['childId']),
-      lastAccess: serializer.fromJson<DateTime>(json['lastAccess']),
+      lastAccess: serializer.fromJson<int>(json['lastAccess']),
     );
   }
   @override
@@ -3877,12 +3877,12 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
     return <String, dynamic>{
       'parentTermId': serializer.toJson<int>(parentTermId),
       'childId': serializer.toJson<int>(childId),
-      'lastAccess': serializer.toJson<DateTime>(lastAccess),
+      'lastAccess': serializer.toJson<int>(lastAccess),
     };
   }
 
   TermsLastAccess copyWith(
-          {int? parentTermId, int? childId, DateTime? lastAccess}) =>
+          {int? parentTermId, int? childId, int? lastAccess}) =>
       TermsLastAccess(
         parentTermId: parentTermId ?? this.parentTermId,
         childId: childId ?? this.childId,
@@ -3923,7 +3923,7 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
 class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
   final Value<int> parentTermId;
   final Value<int> childId;
-  final Value<DateTime> lastAccess;
+  final Value<int> lastAccess;
   final Value<int> rowid;
   const TermsLastAccessesCompanion({
     this.parentTermId = const Value.absent(),
@@ -3941,7 +3941,7 @@ class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
   static Insertable<TermsLastAccess> custom({
     Expression<int>? parentTermId,
     Expression<int>? childId,
-    Expression<DateTime>? lastAccess,
+    Expression<int>? lastAccess,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3955,7 +3955,7 @@ class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
   TermsLastAccessesCompanion copyWith(
       {Value<int>? parentTermId,
       Value<int>? childId,
-      Value<DateTime>? lastAccess,
+      Value<int>? lastAccess,
       Value<int>? rowid}) {
     return TermsLastAccessesCompanion(
       parentTermId: parentTermId ?? this.parentTermId,
@@ -3975,7 +3975,7 @@ class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
       map['childId'] = Variable<int>(childId.value);
     }
     if (lastAccess.present) {
-      map['lastAccess'] = Variable<DateTime>(lastAccess.value);
+      map['lastAccess'] = Variable<int>(lastAccess.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -5110,15 +5110,15 @@ class $VoiceNotesTable extends VoiceNotes
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _lastUpdatedMeta =
       const VerificationMeta('lastUpdated');
   @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
       'lastUpdated', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [encryptionKey, parentTermId, creation, lastUpdated];
@@ -5174,9 +5174,9 @@ class $VoiceNotesTable extends VoiceNotes
       parentTermId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
       lastUpdated: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}lastUpdated'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
     );
   }
 
@@ -5189,8 +5189,8 @@ class $VoiceNotesTable extends VoiceNotes
 class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   final String encryptionKey;
   final int parentTermId;
-  final DateTime creation;
-  final DateTime lastUpdated;
+  final String creation;
+  final String lastUpdated;
   const VoiceNote(
       {required this.encryptionKey,
       required this.parentTermId,
@@ -5201,8 +5201,8 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     final map = <String, Expression>{};
     map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
-    map['creation'] = Variable<DateTime>(creation);
-    map['lastUpdated'] = Variable<DateTime>(lastUpdated);
+    map['creation'] = Variable<String>(creation);
+    map['lastUpdated'] = Variable<String>(lastUpdated);
     return map;
   }
 
@@ -5221,8 +5221,8 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     return VoiceNote(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+      creation: serializer.fromJson<String>(json['creation']),
+      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
     );
   }
   @override
@@ -5231,16 +5231,16 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     return <String, dynamic>{
       'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
-      'creation': serializer.toJson<DateTime>(creation),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+      'creation': serializer.toJson<String>(creation),
+      'lastUpdated': serializer.toJson<String>(lastUpdated),
     };
   }
 
   VoiceNote copyWith(
           {String? encryptionKey,
           int? parentTermId,
-          DateTime? creation,
-          DateTime? lastUpdated}) =>
+          String? creation,
+          String? lastUpdated}) =>
       VoiceNote(
         encryptionKey: encryptionKey ?? this.encryptionKey,
         parentTermId: parentTermId ?? this.parentTermId,
@@ -5288,8 +5288,8 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
 class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
-  final Value<DateTime> creation;
-  final Value<DateTime> lastUpdated;
+  final Value<String> creation;
+  final Value<String> lastUpdated;
   const VoiceNotesCompanion({
     this.encryptionKey = const Value.absent(),
     this.parentTermId = const Value.absent(),
@@ -5299,16 +5299,16 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   VoiceNotesCompanion.insert({
     required String encryptionKey,
     this.parentTermId = const Value.absent(),
-    required DateTime creation,
-    required DateTime lastUpdated,
+    required String creation,
+    required String lastUpdated,
   })  : encryptionKey = Value(encryptionKey),
         creation = Value(creation),
         lastUpdated = Value(lastUpdated);
   static Insertable<VoiceNote> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
-    Expression<DateTime>? creation,
-    Expression<DateTime>? lastUpdated,
+    Expression<String>? creation,
+    Expression<String>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (encryptionKey != null) 'encryptionKey': encryptionKey,
@@ -5321,8 +5321,8 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   VoiceNotesCompanion copyWith(
       {Value<String>? encryptionKey,
       Value<int>? parentTermId,
-      Value<DateTime>? creation,
-      Value<DateTime>? lastUpdated}) {
+      Value<String>? creation,
+      Value<String>? lastUpdated}) {
     return VoiceNotesCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -5341,10 +5341,10 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
       map['parentTermId'] = Variable<int>(parentTermId.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (lastUpdated.present) {
-      map['lastUpdated'] = Variable<DateTime>(lastUpdated.value);
+      map['lastUpdated'] = Variable<String>(lastUpdated.value);
     }
     return map;
   }
@@ -5780,9 +5780,9 @@ class $TermsParentsTable extends TermsParents
   static const VerificationMeta _creationMeta =
       const VerificationMeta('creation');
   @override
-  late final GeneratedColumn<DateTime> creation = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
       'creation', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [termId, parentTermId, rootTermId, creation];
@@ -5840,7 +5840,7 @@ class $TermsParentsTable extends TermsParents
       rootTermId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}rootTermId'])!,
       creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}creation'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
     );
   }
 
@@ -5854,7 +5854,7 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
   final int termId;
   final int parentTermId;
   final int rootTermId;
-  final DateTime creation;
+  final String creation;
   const TermsParent(
       {required this.termId,
       required this.parentTermId,
@@ -5866,7 +5866,7 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
     map['termId'] = Variable<int>(termId);
     map['parentTermId'] = Variable<int>(parentTermId);
     map['rootTermId'] = Variable<int>(rootTermId);
-    map['creation'] = Variable<DateTime>(creation);
+    map['creation'] = Variable<String>(creation);
     return map;
   }
 
@@ -5886,7 +5886,7 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
       termId: serializer.fromJson<int>(json['termId']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       rootTermId: serializer.fromJson<int>(json['rootTermId']),
-      creation: serializer.fromJson<DateTime>(json['creation']),
+      creation: serializer.fromJson<String>(json['creation']),
     );
   }
   @override
@@ -5896,7 +5896,7 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
       'termId': serializer.toJson<int>(termId),
       'parentTermId': serializer.toJson<int>(parentTermId),
       'rootTermId': serializer.toJson<int>(rootTermId),
-      'creation': serializer.toJson<DateTime>(creation),
+      'creation': serializer.toJson<String>(creation),
     };
   }
 
@@ -5904,7 +5904,7 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
           {int? termId,
           int? parentTermId,
           int? rootTermId,
-          DateTime? creation}) =>
+          String? creation}) =>
       TermsParent(
         termId: termId ?? this.termId,
         parentTermId: parentTermId ?? this.parentTermId,
@@ -5950,7 +5950,7 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
   final Value<int> termId;
   final Value<int> parentTermId;
   final Value<int> rootTermId;
-  final Value<DateTime> creation;
+  final Value<String> creation;
   final Value<int> rowid;
   const TermsParentsCompanion({
     this.termId = const Value.absent(),
@@ -5963,7 +5963,7 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
     required int termId,
     required int parentTermId,
     required int rootTermId,
-    required DateTime creation,
+    required String creation,
     this.rowid = const Value.absent(),
   })  : termId = Value(termId),
         parentTermId = Value(parentTermId),
@@ -5973,7 +5973,7 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
     Expression<int>? termId,
     Expression<int>? parentTermId,
     Expression<int>? rootTermId,
-    Expression<DateTime>? creation,
+    Expression<String>? creation,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -5989,7 +5989,7 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
       {Value<int>? termId,
       Value<int>? parentTermId,
       Value<int>? rootTermId,
-      Value<DateTime>? creation,
+      Value<String>? creation,
       Value<int>? rowid}) {
     return TermsParentsCompanion(
       termId: termId ?? this.termId,
@@ -6013,7 +6013,7 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
       map['rootTermId'] = Variable<int>(rootTermId.value);
     }
     if (creation.present) {
-      map['creation'] = Variable<DateTime>(creation.value);
+      map['creation'] = Variable<String>(creation.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -7147,8 +7147,8 @@ typedef $$CouponsTableCreateCompanionBuilder = CouponsCompanion Function({
   required String serial,
   required int type,
   Value<int> free,
-  required DateTime creation,
-  Value<DateTime?> activationDate,
+  required String creation,
+  Value<String?> activationDate,
   Value<int> expirationDays,
 });
 typedef $$CouponsTableUpdateCompanionBuilder = CouponsCompanion Function({
@@ -7156,8 +7156,8 @@ typedef $$CouponsTableUpdateCompanionBuilder = CouponsCompanion Function({
   Value<String> serial,
   Value<int> type,
   Value<int> free,
-  Value<DateTime> creation,
-  Value<DateTime?> activationDate,
+  Value<String> creation,
+  Value<String?> activationDate,
   Value<int> expirationDays,
 });
 
@@ -7182,8 +7182,8 @@ class $$CouponsTableTableManager extends RootTableManager<
             Value<String> serial = const Value.absent(),
             Value<int> type = const Value.absent(),
             Value<int> free = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
-            Value<DateTime?> activationDate = const Value.absent(),
+            Value<String> creation = const Value.absent(),
+            Value<String?> activationDate = const Value.absent(),
             Value<int> expirationDays = const Value.absent(),
           }) =>
               CouponsCompanion(
@@ -7200,8 +7200,8 @@ class $$CouponsTableTableManager extends RootTableManager<
             required String serial,
             required int type,
             Value<int> free = const Value.absent(),
-            required DateTime creation,
-            Value<DateTime?> activationDate = const Value.absent(),
+            required String creation,
+            Value<String?> activationDate = const Value.absent(),
             Value<int> expirationDays = const Value.absent(),
           }) =>
               CouponsCompanion.insert(
@@ -7239,12 +7239,12 @@ class $$CouponsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get activationDate => $state.composableBuilder(
+  ColumnFilters<String> get activationDate => $state.composableBuilder(
       column: $state.table.activationDate,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -7278,12 +7278,12 @@ class $$CouponsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get activationDate => $state.composableBuilder(
+  ColumnOrderings<String> get activationDate => $state.composableBuilder(
       column: $state.table.activationDate,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -7299,7 +7299,7 @@ typedef $$TermsTableCreateCompanionBuilder = TermsCompanion Function({
   required String uuid,
   required String name,
   required int type,
-  required DateTime creation,
+  required String creation,
   Value<int> enabled,
   required int free,
   required int ordering,
@@ -7312,7 +7312,7 @@ typedef $$TermsTableUpdateCompanionBuilder = TermsCompanion Function({
   Value<String> uuid,
   Value<String> name,
   Value<int> type,
-  Value<DateTime> creation,
+  Value<String> creation,
   Value<int> enabled,
   Value<int> free,
   Value<int> ordering,
@@ -7342,7 +7342,7 @@ class $$TermsTableTableManager extends RootTableManager<
             Value<String> uuid = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<int> type = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
+            Value<String> creation = const Value.absent(),
             Value<int> enabled = const Value.absent(),
             Value<int> free = const Value.absent(),
             Value<int> ordering = const Value.absent(),
@@ -7368,7 +7368,7 @@ class $$TermsTableTableManager extends RootTableManager<
             required String uuid,
             required String name,
             required int type,
-            required DateTime creation,
+            required String creation,
             Value<int> enabled = const Value.absent(),
             required int free,
             required int ordering,
@@ -7415,7 +7415,7 @@ class $$TermsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -7474,7 +7474,7 @@ class $$TermsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -7518,7 +7518,7 @@ typedef $$AnswersTableCreateCompanionBuilder = AnswersCompanion Function({
   required int isCorrect,
   required int parentQuestionId,
   required int specialCharacter,
-  required DateTime creation,
+  required String creation,
   Value<int> checkedCount,
 });
 typedef $$AnswersTableUpdateCompanionBuilder = AnswersCompanion Function({
@@ -7529,7 +7529,7 @@ typedef $$AnswersTableUpdateCompanionBuilder = AnswersCompanion Function({
   Value<int> isCorrect,
   Value<int> parentQuestionId,
   Value<int> specialCharacter,
-  Value<DateTime> creation,
+  Value<String> creation,
   Value<int> checkedCount,
 });
 
@@ -7557,7 +7557,7 @@ class $$AnswersTableTableManager extends RootTableManager<
             Value<int> isCorrect = const Value.absent(),
             Value<int> parentQuestionId = const Value.absent(),
             Value<int> specialCharacter = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
+            Value<String> creation = const Value.absent(),
             Value<int> checkedCount = const Value.absent(),
           }) =>
               AnswersCompanion(
@@ -7579,7 +7579,7 @@ class $$AnswersTableTableManager extends RootTableManager<
             required int isCorrect,
             required int parentQuestionId,
             required int specialCharacter,
-            required DateTime creation,
+            required String creation,
             Value<int> checkedCount = const Value.absent(),
           }) =>
               AnswersCompanion.insert(
@@ -7634,7 +7634,7 @@ class $$AnswersTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -7683,7 +7683,7 @@ class $$AnswersTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -7707,8 +7707,8 @@ typedef $$QuestionsTableCreateCompanionBuilder = QuestionsCompanion Function({
   required int type,
   Value<int> edited,
   Value<String> imageUrl,
-  required DateTime creation,
-  required DateTime editionDate,
+  required String creation,
+  required String editionDate,
 });
 typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
   Value<int> id,
@@ -7723,8 +7723,8 @@ typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
   Value<int> type,
   Value<int> edited,
   Value<String> imageUrl,
-  Value<DateTime> creation,
-  Value<DateTime> editionDate,
+  Value<String> creation,
+  Value<String> editionDate,
 });
 
 class $$QuestionsTableTableManager extends RootTableManager<
@@ -7756,8 +7756,8 @@ class $$QuestionsTableTableManager extends RootTableManager<
             Value<int> type = const Value.absent(),
             Value<int> edited = const Value.absent(),
             Value<String> imageUrl = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
-            Value<DateTime> editionDate = const Value.absent(),
+            Value<String> creation = const Value.absent(),
+            Value<String> editionDate = const Value.absent(),
           }) =>
               QuestionsCompanion(
             id: id,
@@ -7788,8 +7788,8 @@ class $$QuestionsTableTableManager extends RootTableManager<
             required int type,
             Value<int> edited = const Value.absent(),
             Value<String> imageUrl = const Value.absent(),
-            required DateTime creation,
-            required DateTime editionDate,
+            required String creation,
+            required String editionDate,
           }) =>
               QuestionsCompanion.insert(
             id: id,
@@ -7873,12 +7873,12 @@ class $$QuestionsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get editionDate => $state.composableBuilder(
+  ColumnFilters<String> get editionDate => $state.composableBuilder(
       column: $state.table.editionDate,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -7947,12 +7947,12 @@ class $$QuestionsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get editionDate => $state.composableBuilder(
+  ColumnOrderings<String> get editionDate => $state.composableBuilder(
       column: $state.table.editionDate,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -7964,7 +7964,7 @@ typedef $$QuestionTagsTableCreateCompanionBuilder = QuestionTagsCompanion
   required String name,
   required int parentTagId,
   Value<int> hasInformation,
-  required DateTime creation,
+  required String creation,
 });
 typedef $$QuestionTagsTableUpdateCompanionBuilder = QuestionTagsCompanion
     Function({
@@ -7972,7 +7972,7 @@ typedef $$QuestionTagsTableUpdateCompanionBuilder = QuestionTagsCompanion
   Value<String> name,
   Value<int> parentTagId,
   Value<int> hasInformation,
-  Value<DateTime> creation,
+  Value<String> creation,
 });
 
 class $$QuestionTagsTableTableManager extends RootTableManager<
@@ -7997,7 +7997,7 @@ class $$QuestionTagsTableTableManager extends RootTableManager<
             Value<String> name = const Value.absent(),
             Value<int> parentTagId = const Value.absent(),
             Value<int> hasInformation = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
+            Value<String> creation = const Value.absent(),
           }) =>
               QuestionTagsCompanion(
             id: id,
@@ -8011,7 +8011,7 @@ class $$QuestionTagsTableTableManager extends RootTableManager<
             required String name,
             required int parentTagId,
             Value<int> hasInformation = const Value.absent(),
-            required DateTime creation,
+            required String creation,
           }) =>
               QuestionTagsCompanion.insert(
             id: id,
@@ -8046,7 +8046,7 @@ class $$QuestionTagsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -8075,7 +8075,7 @@ class $$QuestionTagsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -8086,7 +8086,7 @@ typedef $$QuestionMediasTableCreateCompanionBuilder = QuestionMediasCompanion
   required int id,
   required String url,
   required int parentQuestionId,
-  required DateTime creation,
+  required String creation,
   Value<int> rowid,
 });
 typedef $$QuestionMediasTableUpdateCompanionBuilder = QuestionMediasCompanion
@@ -8094,7 +8094,7 @@ typedef $$QuestionMediasTableUpdateCompanionBuilder = QuestionMediasCompanion
   Value<int> id,
   Value<String> url,
   Value<int> parentQuestionId,
-  Value<DateTime> creation,
+  Value<String> creation,
   Value<int> rowid,
 });
 
@@ -8119,7 +8119,7 @@ class $$QuestionMediasTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String> url = const Value.absent(),
             Value<int> parentQuestionId = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
+            Value<String> creation = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               QuestionMediasCompanion(
@@ -8133,7 +8133,7 @@ class $$QuestionMediasTableTableManager extends RootTableManager<
             required int id,
             required String url,
             required int parentQuestionId,
-            required DateTime creation,
+            required String creation,
             Value<int> rowid = const Value.absent(),
           }) =>
               QuestionMediasCompanion.insert(
@@ -8164,7 +8164,7 @@ class $$QuestionMediasTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -8188,7 +8188,7 @@ class $$QuestionMediasTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -8547,14 +8547,14 @@ class $$TermTreesTableOrderingComposer
 typedef $$EbooksTableCreateCompanionBuilder = EbooksCompanion Function({
   required String encryptionKey,
   Value<int> parentTermId,
-  required DateTime creation,
-  required DateTime lastUpdated,
+  required String creation,
+  required String lastUpdated,
 });
 typedef $$EbooksTableUpdateCompanionBuilder = EbooksCompanion Function({
   Value<String> encryptionKey,
   Value<int> parentTermId,
-  Value<DateTime> creation,
-  Value<DateTime> lastUpdated,
+  Value<String> creation,
+  Value<String> lastUpdated,
 });
 
 class $$EbooksTableTableManager extends RootTableManager<
@@ -8576,8 +8576,8 @@ class $$EbooksTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> encryptionKey = const Value.absent(),
             Value<int> parentTermId = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
-            Value<DateTime> lastUpdated = const Value.absent(),
+            Value<String> creation = const Value.absent(),
+            Value<String> lastUpdated = const Value.absent(),
           }) =>
               EbooksCompanion(
             encryptionKey: encryptionKey,
@@ -8588,8 +8588,8 @@ class $$EbooksTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required String encryptionKey,
             Value<int> parentTermId = const Value.absent(),
-            required DateTime creation,
-            required DateTime lastUpdated,
+            required String creation,
+            required String lastUpdated,
           }) =>
               EbooksCompanion.insert(
             encryptionKey: encryptionKey,
@@ -8613,12 +8613,12 @@ class $$EbooksTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get lastUpdated => $state.composableBuilder(
+  ColumnFilters<String> get lastUpdated => $state.composableBuilder(
       column: $state.table.lastUpdated,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -8637,12 +8637,12 @@ class $$EbooksTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get lastUpdated => $state.composableBuilder(
+  ColumnOrderings<String> get lastUpdated => $state.composableBuilder(
       column: $state.table.lastUpdated,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -8652,14 +8652,14 @@ typedef $$TermsLastAccessesTableCreateCompanionBuilder
     = TermsLastAccessesCompanion Function({
   required int parentTermId,
   required int childId,
-  Value<DateTime> lastAccess,
+  Value<int> lastAccess,
   Value<int> rowid,
 });
 typedef $$TermsLastAccessesTableUpdateCompanionBuilder
     = TermsLastAccessesCompanion Function({
   Value<int> parentTermId,
   Value<int> childId,
-  Value<DateTime> lastAccess,
+  Value<int> lastAccess,
   Value<int> rowid,
 });
 
@@ -8683,7 +8683,7 @@ class $$TermsLastAccessesTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<int> parentTermId = const Value.absent(),
             Value<int> childId = const Value.absent(),
-            Value<DateTime> lastAccess = const Value.absent(),
+            Value<int> lastAccess = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               TermsLastAccessesCompanion(
@@ -8695,7 +8695,7 @@ class $$TermsLastAccessesTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required int parentTermId,
             required int childId,
-            Value<DateTime> lastAccess = const Value.absent(),
+            Value<int> lastAccess = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               TermsLastAccessesCompanion.insert(
@@ -8720,7 +8720,7 @@ class $$TermsLastAccessesTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get lastAccess => $state.composableBuilder(
+  ColumnFilters<int> get lastAccess => $state.composableBuilder(
       column: $state.table.lastAccess,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -8739,7 +8739,7 @@ class $$TermsLastAccessesTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get lastAccess => $state.composableBuilder(
+  ColumnOrderings<int> get lastAccess => $state.composableBuilder(
       column: $state.table.lastAccess,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -9201,14 +9201,14 @@ class $$FlashcardsTableOrderingComposer
 typedef $$VoiceNotesTableCreateCompanionBuilder = VoiceNotesCompanion Function({
   required String encryptionKey,
   Value<int> parentTermId,
-  required DateTime creation,
-  required DateTime lastUpdated,
+  required String creation,
+  required String lastUpdated,
 });
 typedef $$VoiceNotesTableUpdateCompanionBuilder = VoiceNotesCompanion Function({
   Value<String> encryptionKey,
   Value<int> parentTermId,
-  Value<DateTime> creation,
-  Value<DateTime> lastUpdated,
+  Value<String> creation,
+  Value<String> lastUpdated,
 });
 
 class $$VoiceNotesTableTableManager extends RootTableManager<
@@ -9230,8 +9230,8 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> encryptionKey = const Value.absent(),
             Value<int> parentTermId = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
-            Value<DateTime> lastUpdated = const Value.absent(),
+            Value<String> creation = const Value.absent(),
+            Value<String> lastUpdated = const Value.absent(),
           }) =>
               VoiceNotesCompanion(
             encryptionKey: encryptionKey,
@@ -9242,8 +9242,8 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required String encryptionKey,
             Value<int> parentTermId = const Value.absent(),
-            required DateTime creation,
-            required DateTime lastUpdated,
+            required String creation,
+            required String lastUpdated,
           }) =>
               VoiceNotesCompanion.insert(
             encryptionKey: encryptionKey,
@@ -9267,12 +9267,12 @@ class $$VoiceNotesTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get lastUpdated => $state.composableBuilder(
+  ColumnFilters<String> get lastUpdated => $state.composableBuilder(
       column: $state.table.lastUpdated,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -9291,12 +9291,12 @@ class $$VoiceNotesTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get lastUpdated => $state.composableBuilder(
+  ColumnOrderings<String> get lastUpdated => $state.composableBuilder(
       column: $state.table.lastUpdated,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
@@ -9469,7 +9469,7 @@ typedef $$TermsParentsTableCreateCompanionBuilder = TermsParentsCompanion
   required int termId,
   required int parentTermId,
   required int rootTermId,
-  required DateTime creation,
+  required String creation,
   Value<int> rowid,
 });
 typedef $$TermsParentsTableUpdateCompanionBuilder = TermsParentsCompanion
@@ -9477,7 +9477,7 @@ typedef $$TermsParentsTableUpdateCompanionBuilder = TermsParentsCompanion
   Value<int> termId,
   Value<int> parentTermId,
   Value<int> rootTermId,
-  Value<DateTime> creation,
+  Value<String> creation,
   Value<int> rowid,
 });
 
@@ -9502,7 +9502,7 @@ class $$TermsParentsTableTableManager extends RootTableManager<
             Value<int> termId = const Value.absent(),
             Value<int> parentTermId = const Value.absent(),
             Value<int> rootTermId = const Value.absent(),
-            Value<DateTime> creation = const Value.absent(),
+            Value<String> creation = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               TermsParentsCompanion(
@@ -9516,7 +9516,7 @@ class $$TermsParentsTableTableManager extends RootTableManager<
             required int termId,
             required int parentTermId,
             required int rootTermId,
-            required DateTime creation,
+            required String creation,
             Value<int> rowid = const Value.absent(),
           }) =>
               TermsParentsCompanion.insert(
@@ -9547,7 +9547,7 @@ class $$TermsParentsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<DateTime> get creation => $state.composableBuilder(
+  ColumnFilters<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
@@ -9571,7 +9571,7 @@ class $$TermsParentsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<DateTime> get creation => $state.composableBuilder(
+  ColumnOrderings<String> get creation => $state.composableBuilder(
       column: $state.table.creation,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
