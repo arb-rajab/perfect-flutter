@@ -1,6 +1,5 @@
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
-import 'package:beta/main.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/home/browse_terms_tab.dart';
 import 'package:beta/presentation/home/drawer_widget.dart';
@@ -9,6 +8,7 @@ import 'package:beta/presentation/home/new_terms_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
+import 'package:beta/presentation/home/updateable_terms_tab.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/widgets/rectangle_widget.dart';
@@ -100,7 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Tab(
           icon: const Icon(Icons.fact_check_outlined),
           text: StringConstant.unstudied.tr(),
-        )
+        ),
+        Tab(
+          icon: const Icon(Icons.update),
+          text: StringConstant.updateable.tr(),
+        ),
       ],
       child: UpgradeAlert(
         child: const TabBarView(
@@ -108,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
             PopScope(canPop: false, child: BrowseTermsTab()),
             RecentTermsTab(),
             NewTermsTab(),
-            UnstudiedTermsTab()
+            UnstudiedTermsTab(),
+            UpdateableTermsTab()
           ],
         ),
       ),

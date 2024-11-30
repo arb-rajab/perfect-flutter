@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
       data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.linear(themeService.getScaleFactor())),
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         routerConfig: router,
         builder: DevicePreview.appBuilder,
         localizationsDelegates: context.localizationDelegates,

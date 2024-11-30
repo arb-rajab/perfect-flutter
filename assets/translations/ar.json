@@ -118,13 +118,16 @@
     },
     "recent-terms": {
         "recent-terms": "الأخيرة"
-        },
-        "new-terms": {
-            "new-terms": "الجديدة"
-        },
-        "unstudied": {
-            "unstudied": "الغير مدروسة"
-        },
+    },
+    "new-terms": {
+        "new-terms": "الجديدة"
+    },
+    "unstudied": {
+        "unstudied": "الغير مدروسة"
+    },
+    "updateable": {
+        "updateable": "تحديث متاح"
+    },
     "terms": {
         "unsupported-content": "محتوى غير مدعوم",
         "unsupported-content-explanation": "هذا المحتوى غير مدعوم في النسخة الحالية من التطبيق، في حال كان هناك تحديثات، يرجى التحديث. نعدكم بدعم كل المحتوى العلمي في المستقبل",
@@ -137,7 +140,7 @@
         "wrong-questions": "الأسئلة الخاطئة",
         "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً",
         "term-is-expired": "هذا المحتوى العلمي ليس متاحاً بعد الآن، يرجى تفعيل رمز شراء جديد",
-        "please-download-all-terms-within": "يرجى تنزيل كل المحتوى العلمي المتاح المدرج ضمن ((TERM_TAGS))"
+        "please-download-all-terms-within": "يرجى تنزيل أو تحديث كل المحتوى العلمي المتاح المدرج ضمن ((TERM_TAGS))"
     },
     "questions": {
         "show-favorite-only": "المفضلة فقط",

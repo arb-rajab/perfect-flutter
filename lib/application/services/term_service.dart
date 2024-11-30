@@ -142,6 +142,10 @@ class TermService {
       limit: limit,
       offset: offset);
 
+  Future<List<TermData>> getUpdateableTerms({int? limit, int? offset}) =>
+      _queryTerms("t.enabled=1 and t.needsUpdate=1 and t.type!=0",
+          limit: limit, offset: offset);
+
   Future<Term> getTermById(Id sourceId) =>
       (databaseService.select(databaseService.terms)
             ..where((tbl) => tbl.id.equals(sourceId.value!)))
@@ -202,7 +206,7 @@ class TermService {
       TermData termData) async {
     return (await databaseService
             .customSelect(
-                "select count(*) as c from terms t where type in (1,3) and id in (select termId from termTrees where parentTermId=${termData.term.id}) and (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id)=0 and enabled=1")
+                "select count(*) as c from terms t where type in (1,3) and (needsUpdate=1 or id in (select termId from termTrees where parentTermId=${termData.term.id}) and (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id)=0 ) and enabled=1")
             .watch()
             .map((rows) => rows.map((row) => row.read<int>('c')).toList())
             .first)

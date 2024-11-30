@@ -146,6 +146,9 @@ class StringConstant {
   static const _unstudied = 'unstudied';
   static const unstudied = '$_unstudied.unstudied';
 
+  static const _updateable = 'updateable';
+  static const updateable = '$_updateable.updateable';
+
   static const _terms = 'terms';
   static const unsupportedContent = '$_terms.unsupported-content';
   static const unsupportedContentExplanation =
