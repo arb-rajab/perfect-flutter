@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  gtk
   sqlcipher_flutter_libs
   url_launcher_linux
 )
