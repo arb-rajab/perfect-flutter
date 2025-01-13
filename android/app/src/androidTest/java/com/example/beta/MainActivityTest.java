@@ -1,4 +1,4 @@
-package com.example.beta; // replace "com.example.myapp" with your app's package
+package edu.perfect; // replace "com.example.myapp" with your app's package
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;

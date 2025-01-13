@@ -37,6 +37,7 @@ class HomeScreenController {
   final State state;
   UserService userService = Get.find();
   final PageController pageController = PageController();
+  FirebaseRepository firebaseRepository = Get.find();
   bool loading = false;
   bool error = false;
   HomeScreenController(this.state) {
@@ -148,16 +149,16 @@ class HomeScreenController {
   }
 
   void recieveNewToken() {
-    FirebaseRepository firebaseRepository = Get.find();
-    firebaseRepository.onTokenRefresh().listen((event) {
-      userService.setToken(event);
-      userService.setTokenUploaded(false);
-    });
+    firebaseRepository
+        .onTokenRefresh()
+        .listen((event) => userService.setTokenUploaded(false));
   }
 
   //TODO apply test
-  void configureUserToken() {
-    if (userService.getId() == null || userService.getToken() == null) return;
+  Future configureUserToken() async {
+    String? id = userService.getId();
+    String? token = await firebaseRepository.getToken();
+    if (id == null || token == null) return;
     if (userService.tokenUploaded() == false) {
       NetworkService(state.context,
               onPreConnect: () {},
@@ -167,7 +168,7 @@ class HomeScreenController {
               onMessageReceived: (FailureResponse message) {})
           .patch(
               url: ApiConstant.updateToken,
-              body: {'token': userService.getToken()});
+              body: {'token': token});
     }
   }
 

@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAPxNCjlSqHZ1F1P8k0uOK8v1Qbn2kUAXY',
-    appId: '1:804244993457:web:49b1092b8691c83a2cf990',
-    messagingSenderId: '804244993457',
-    projectId: 'beta-flutter-250e5',
-    authDomain: 'beta-flutter-250e5.firebaseapp.com',
-    storageBucket: 'beta-flutter-250e5.appspot.com',
-    measurementId: 'G-G1R8LBYK8H',
+    apiKey: 'AIzaSyD-AWy1ikonyZCTVwCGJvj5oY0zkzPaWO8',
+    appId: '1:668087891792:web:3bc0c36a28908d9c4a5e55',
+    messagingSenderId: '668087891792',
+    projectId: 'perfect-27218',
+    authDomain: 'perfect-27218.firebaseapp.com',
+    storageBucket: 'perfect-27218.firebasestorage.app',
+    measurementId: 'G-MYVP1GZXHW',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDlmwks5P9jIARrQFYpxAkuQbFEMyZgE2U',
-    appId: '1:804244993457:android:8e3449fefded74ec2cf990',
-    messagingSenderId: '804244993457',
-    projectId: 'beta-flutter-250e5',
-    storageBucket: 'beta-flutter-250e5.appspot.com',
+    apiKey: 'AIzaSyBnJzQeUEUg-oKxx6mjQ3v-ijG_FiZl3nc',
+    appId: '1:668087891792:android:27a44af3ed2898ad4a5e55',
+    messagingSenderId: '668087891792',
+    projectId: 'perfect-27218',
+    storageBucket: 'perfect-27218.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAiXNWyIAIvYQaD0bBQlICf8wLS-eTSg1s',
-    appId: '1:804244993457:ios:7d88a3c98c97be4b2cf990',
-    messagingSenderId: '804244993457',
-    projectId: 'beta-flutter-250e5',
-    storageBucket: 'beta-flutter-250e5.appspot.com',
-    iosBundleId: 'com.example.beta',
+    apiKey: 'AIzaSyBXOlVpfmeTzXbZqojbMhqDHhQrXNQPOy0',
+    appId: '1:668087891792:ios:bffa6a826d95b3424a5e55',
+    messagingSenderId: '668087891792',
+    projectId: 'perfect-27218',
+    storageBucket: 'perfect-27218.firebasestorage.app',
+    iosBundleId: 'edu.perfect',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAiXNWyIAIvYQaD0bBQlICf8wLS-eTSg1s',
-    appId: '1:804244993457:ios:462cf58fa2b9b7fc2cf990',
-    messagingSenderId: '804244993457',
-    projectId: 'beta-flutter-250e5',
-    storageBucket: 'beta-flutter-250e5.appspot.com',
-    iosBundleId: 'com.example.beta.RunnerTests',
+    apiKey: 'AIzaSyBXOlVpfmeTzXbZqojbMhqDHhQrXNQPOy0',
+    appId: '1:668087891792:ios:b942d48111fbe15d4a5e55',
+    messagingSenderId: '668087891792',
+    projectId: 'perfect-27218',
+    storageBucket: 'perfect-27218.firebasestorage.app',
+    iosBundleId: 'edu.perfect.RunnerTests',
   );
 }

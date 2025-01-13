@@ -9,14 +9,7 @@ class UserService {
       keyValue.setString(KeyValueConstant.userId, id.toString());
 
   //TODO add test
-  Future setToken(String token) =>
-      keyValue.setString(KeyValueConstant.userId, token);
-
-  //TODO add test
   String? getId() => keyValue.getString(KeyValueConstant.userId);
-
-  //TODO add test
-  String? getToken() => keyValue.getString(KeyValueConstant.userToken);
 
   //TODO add test
   bool tokenUploaded() =>

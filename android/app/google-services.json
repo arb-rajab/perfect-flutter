@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "804244993457",
-    "project_id": "beta-flutter-250e5",
-    "storage_bucket": "beta-flutter-250e5.appspot.com"
+    "project_number": "668087891792",
+    "project_id": "perfect-27218",
+    "storage_bucket": "perfect-27218.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:804244993457:android:8e3449fefded74ec2cf990",
+        "mobilesdk_app_id": "1:668087891792:android:27a44af3ed2898ad4a5e55",
         "android_client_info": {
-          "package_name": "com.example.beta"
+          "package_name": "edu.perfect"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDlmwks5P9jIARrQFYpxAkuQbFEMyZgE2U"
+          "current_key": "AIzaSyBnJzQeUEUg-oKxx6mjQ3v-ijG_FiZl3nc"
         }
       ],
       "services": {

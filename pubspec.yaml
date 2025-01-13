@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+67
+version: 6.7.0+67
 
 environment:
   sdk: ">=3.4.4 <4.0.0"
@@ -83,12 +83,13 @@ dependencies:
   share_plus: ^9.0.0
   fl_chart: ^0.68.0
   screen_protector: ^1.4.2+1
-  pdftron_flutter: ^1.0.1-35
+  pdftron_flutter: ^1.0.1-38
   flutter_html: ^3.0.0-beta.2
   just_audio: ^0.9.41
   audio_service: ^0.18.15
   archive: ^3.6.1
   app_links: ^6.3.2
+  flutter_local_notifications: ^18.0.1
 
 dependency_overrides:
   webview_flutter_android: 3.16.1
@@ -119,11 +120,11 @@ dev_dependencies:
 patrol:
   app_name: My App
   android:
-    package_name: com.example.beta
+    package_name: edu.perfect
   ios:
-    bundle_id: com.example.beta
+    bundle_id: edu.perfect
   macos:
-    bundle_id: com.example.beta
+    bundle_id: edu.perfect
 
 
 # For information on the generic Dart part of this file, see the
@@ -155,10 +156,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: jf_flat
+      fonts:
+        - asset: assets/fonts/jf_flat_regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

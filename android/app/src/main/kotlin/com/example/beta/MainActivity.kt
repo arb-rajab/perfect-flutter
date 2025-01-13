@@ -1,4 +1,4 @@
-package com.example.beta
+package edu.perfect
 
 //import io.flutter.embedding.android.FlutterActivity
 import androidx.annotation.NonNull
