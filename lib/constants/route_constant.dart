@@ -1,6 +1,7 @@
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/domain/question_tag_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:beta/main.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
@@ -12,11 +13,14 @@ import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/home_screen.dart';
+import 'package:beta/presentation/home/home_screen_controller.dart';
 import 'package:beta/presentation/home/question_tag_listing_controller.dart';
+import 'package:beta/presentation/home/store_tab_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
+import 'package:beta/presentation/product/product_screen.dart';
 import 'package:beta/presentation/question_medias/question_medias_screen.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
@@ -39,6 +43,17 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
   GoRoute(
       path: HomeScreen.route,
       onExit: (context, state) async {
+        HomeScreenController homeScreenController = Get.find();
+        if (homeScreenController.selectedBottomNavigationIndex ==
+            HomeScreenController.storeBottomNavigationIndex) {
+          StoreTabController storeTabController = Get.find();
+          if (storeTabController.listingApis.length < 2) return true;
+          storeTabController.listingApis.removeLast();
+          storeTabController.typeIds.removeLast();
+          storeTabController.typeId = storeTabController.typeIds.last;
+          storeTabController.getData(api: storeTabController.listingApis.last);
+          return false;
+        }
         BrowseTermsTabController controller = Get.find();
         QuestionTagListingController questionTagListingController = Get.find();
         TermsListingController termsListingController = Get.find();
@@ -61,6 +76,7 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
                   questionTagListingController.questionTagListing.last;
               QuestionTagData questionTagData =
                   questionTagListingItem.questionTagData;
+              Get.delete<QuestionTagData>();
               Get.put(questionTagData);
 
               questionTagDatas = await questionTagService
@@ -163,5 +179,9 @@ final router = GoRouter(initialLocation: SplashScreen.route, observers: [
       builder: (context, state) => const FlashcardsScreen()),
   GoRoute(
       path: VoiceNoteScreen.route,
-      builder: (context, state) => const VoiceNoteScreen())
+      builder: (context, state) => const VoiceNoteScreen()),
+  GoRoute(
+      path: ProductScreen.route,
+      builder: (context, state) => ProductScreen(
+          id: Id(int.tryParse(state.pathParameters['productId']!))))
 ]);

@@ -15,7 +15,7 @@ class QuestionTagPathWidget extends StatelessWidget {
       children: questionTagListingItems
           .map((questionTagListingItem) => GestureDetector(
                 onTap: () {
-                  Get.delete<QuestionTagData>();
+                  Get.delete<QuestionTagListingItem>();
                   Get.put(questionTagListingItem);
                   QuestionTagListingController questionTagListingController =
                       Get.find();

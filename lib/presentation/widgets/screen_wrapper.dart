@@ -131,6 +131,7 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
                   bottom: widget.tabs.isNotEmpty
                       ? TabBar(
                           isScrollable: true,
+                          tabAlignment: TabAlignment.center,
                           tabs: widget.tabs,
                         )
                       : null,
@@ -140,9 +141,11 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
           bottomNavigationBar: widget.bottomNavigationBar,
           floatingActionButton:
               _controller.isVisible ? widget.floatingActionButton : null,
-          floatingActionButtonLocation: widget.bottomNavigationBar != null
-              ? FloatingActionButtonLocation.miniCenterDocked
-              : FloatingActionButtonLocation.endFloat),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat
+          //  widget.bottomNavigationBar != null
+          //     ? FloatingActionButtonLocation.miniCenterDocked
+          //     : FloatingActionButtonLocation.endFloat
+          ),
     ));
   }
 }

@@ -17,6 +17,7 @@ class _QuestionMediasScreenState extends State<QuestionMediasScreen> {
   late QuestionMediaController questionMediaController;
   @override
   void initState() {
+    Get.delete<QuestionMediaController>();
     questionMediaController = Get.put(QuestionMediaController(this));
     super.initState();
   }

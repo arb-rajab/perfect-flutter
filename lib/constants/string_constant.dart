@@ -215,4 +215,15 @@ class StringConstant {
   static const numberOfSubcomments = '$_comments.number-of-subcomments';
   static const addComment = '$_comments.add-comment';
   static const commentsRelatedTo = '$_comments.comments-related-to';
+
+  static const String _educationalContent = 'educational-content';
+  static const String educationalContent =
+      '$_educationalContent.educational-content';
+
+  static const String _store = 'store';
+  static const String store = '$_store.store';
+  static const String latestProducts = '$_store.latest-products';
+  static const String mostSeenProducts = '$_store.most-seen-products';
+  static const String createdOn = '$_store.created_on';
+  static const String price = '$_store.price';
 }

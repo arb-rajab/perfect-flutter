@@ -27,4 +27,12 @@ class ApiConstant {
 
   static const String getQuestionTerm =
       '${_apiV1}questions/(QUESTION_UUID)/parent-term';
+
+  static const String products = '${_apiV1}products';
+  static const String productTypes = '${_apiV1}product-types/(PRODUCT_TYPE)';
+  static const String latestProducts = '${_apiV1}products/latest';
+  static const String mostSeenProducts = '${_apiV1}products/most-seen';
+  static const String productTypesProducts =
+      '${_apiV1}product-types/(PRODUCT_TYPE)/products';
+  static const String product = '$products/(PRODUCT_ID)';
 }

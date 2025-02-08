@@ -38,10 +38,7 @@ class NotificationWidget extends StatelessWidget {
             child: ListTile(
                 leading: const Icon(
                   Icons.notifications, /*color: primaryColor*/
-                ),
-                trailing: const Icon(
-                  Icons.navigate_next, /*color: primaryColor*/
-                ),
+                  ),
                 title: Text(notification.title.value!),
                 subtitle: SelectableLinkify(
                       onOpen: (link) =>

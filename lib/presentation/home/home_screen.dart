@@ -1,3 +1,4 @@
+import 'package:beta/configs/app.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
@@ -6,6 +7,7 @@ import 'package:beta/presentation/home/drawer_widget.dart';
 import 'package:beta/presentation/home/home_screen_controller.dart';
 import 'package:beta/presentation/home/new_terms_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
+import 'package:beta/presentation/home/store_tab.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
 import 'package:beta/presentation/home/updateable_terms_tab.dart';
@@ -14,11 +16,11 @@ import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/widgets/rectangle_widget.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:upgrader/upgrader.dart';
 
 class HomeScreen extends StatefulWidget {
   static String route = '/home';
@@ -56,13 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ])
       ],
       actions: [
-        homeScreenController.loading
-            ? const CircularProgressIndicator()
-            : IconButton(
-                onPressed: homeScreenController.getTermsUpdates,
-                icon: homeScreenController.error
-                    ? const Icon(Icons.warning)
-                    : const Icon(Icons.refresh)),
+        if (homeScreenController.loading &&
+            homeScreenController.selectedBottomNavigationIndex == 0)
+          const CircularProgressIndicator()
+        else if (homeScreenController.selectedBottomNavigationIndex == 0)
+          IconButton(
+              onPressed: homeScreenController.getTermsUpdates,
+              icon: homeScreenController.error
+                  ? const Icon(Icons.warning)
+                  : const Icon(Icons.refresh)),
         IconButton(
             onPressed: () => context.push(NotificationsScreen.route),
             icon: const Icon(NotificationsScreen.icon)),
@@ -72,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
       drawer: const DrawerWidget(),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton:
+          homeScreenController.selectedBottomNavigationIndex == 0
+              ? FloatingActionButton.extended(
           key: addCouponKey,
           tooltip: EnterCouponScreen.title,
           heroTag: EnterCouponScreen.title,
@@ -83,8 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
             browseTermsTabController.init();
           },
           icon: const Icon(EnterCouponScreen.icon),
-          label: Text(EnterCouponScreen.title)),
-      tabs: [
+                  label: Text(EnterCouponScreen.title))
+              : null,
+      tabs: homeScreenController.selectedBottomNavigationIndex == 0
+          ? [
         Tab(
           icon: const Icon(Icons.article),
           text: StringConstant.browseTerms.tr(),
@@ -105,18 +113,37 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: const Icon(Icons.update),
           text: StringConstant.updateable.tr(),
         ),
-      ],
-      child: UpgradeAlert(
-        child: const TabBarView(
-          children: [
-            PopScope(canPop: false, child: BrowseTermsTab()),
-            RecentTermsTab(),
-            NewTermsTab(),
-            UnstudiedTermsTab(),
-            UpdateableTermsTab()
-          ],
-        ),
-      ),
+            ]
+          : [],
+      bottomNavigationBar: hasStore
+          ? BottomNavigationBar(
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.book_solid),
+                  label: StringConstant.educationalContent.tr(),
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.bag_fill),
+                  label: StringConstant.store.tr(),
+                ),
+              ],
+              currentIndex: homeScreenController.selectedBottomNavigationIndex,
+              onTap: (index) {
+                setState(() {
+                  homeScreenController.selectedBottomNavigationIndex = index;
+                });
+              },
+            )
+          : null,
+      child: homeScreenController.selectedBottomNavigationIndex == 0
+          ? const TabBarView(children: [
+              PopScope(canPop: false, child: BrowseTermsTab()),
+              RecentTermsTab(),
+              NewTermsTab(),
+              UnstudiedTermsTab(),
+              UpdateableTermsTab()
+            ])
+          : const PopScope(canPop: false, child: StoreTab()),
     );
   }
 }

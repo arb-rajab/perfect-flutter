@@ -14,7 +14,7 @@ class Admin with _$Admin {
 
   static Admin fromJson(Map<String, dynamic> json) => _$AdminFromJson(json);
 
-  static Map<String, dynamic> toJson(Admin instance) => _$AdminToJson(instance);
+  // static Map<String, dynamic> toJson(Admin instance) => _$AdminToJson(instance);
 }
 
 class AdminJsonConverter extends JsonConverter {

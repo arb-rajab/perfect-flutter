@@ -15,8 +15,8 @@ class Device with _$Device {
 
   static Device fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
-  static Map<String, dynamic> toJson(Device instance) =>
-      _$DeviceToJson(instance);
+  // static Map<String, dynamic> toJson(Device instance) =>
+  //     _$DeviceToJson(instance);
 }
 
 class DeviceJsonConverter extends JsonConverter {

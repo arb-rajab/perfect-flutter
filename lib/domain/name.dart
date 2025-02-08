@@ -13,7 +13,7 @@ class Name with _$Name {
 
   static Name fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
 
-  static Map<String, dynamic> toJson(Name instance) => _$NameToJson(instance);
+  // static Map<String, dynamic> toJson(Name instance) => _$NameToJson(instance);
 }
 
 class NameJsonConverter extends JsonConverter {

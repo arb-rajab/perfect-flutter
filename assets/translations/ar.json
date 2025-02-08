@@ -128,6 +128,16 @@
     "updateable": {
         "updateable": "تحديث متاح"
     },
+    "educational-content": {
+        "educational-content": "المحتوى التعليمي"
+    },
+    "store": {
+        "store": "المتجر",
+        "latest-products": "آخر المنتجات",
+        "most-seen-products": "الأكثر مشاهدة",
+        "created_on": "تاريخ الإضافة",
+        "price": "السعر"
+    },
     "terms": {
         "unsupported-content": "محتوى غير مدعوم",
         "unsupported-content-explanation": "هذا المحتوى غير مدعوم في النسخة الحالية من التطبيق، في حال كان هناك تحديثات، يرجى التحديث. نعدكم بدعم كل المحتوى العلمي في المستقبل",

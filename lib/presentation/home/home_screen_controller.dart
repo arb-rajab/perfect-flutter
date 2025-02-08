@@ -36,7 +36,9 @@ import 'package:in_app_review/in_app_review.dart';
 class HomeScreenController {
   final State state;
   UserService userService = Get.find();
-  final PageController pageController = PageController();
+  static const int educationalContentBottomNavigationIndex = 0;
+  static const int storeBottomNavigationIndex = 1;
+  int selectedBottomNavigationIndex = 0;
   FirebaseRepository firebaseRepository = Get.find();
   bool loading = false;
   bool error = false;
@@ -47,9 +49,7 @@ class HomeScreenController {
     executePendingRequests();
     recieveNewToken();
     showRequestReview();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      getTermsUpdates();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => getTermsUpdates());
   }
 
   void getTermsUpdates() {
@@ -166,9 +166,7 @@ class HomeScreenController {
               onConnectionSucceed: (body) => userService.setTokenUploaded(true),
               onConnectionFailed: () {},
               onMessageReceived: (FailureResponse message) {})
-          .patch(
-              url: ApiConstant.updateToken,
-              body: {'token': token});
+          .patch(url: ApiConstant.updateToken, body: {'token': token});
     }
   }
 

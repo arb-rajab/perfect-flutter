@@ -99,6 +99,7 @@ class _ListLocaleState extends State<_ListLocale> {
               shrinkWrap: true,
               crossAxisCount: controller.itemsPerRow,
               itemCount: controller.getLength(),
+              physics: const NeverScrollableScrollPhysics(),
               // mainAxisSpacing: 4,
               // crossAxisSpacing: 4,
               itemBuilder: controller.itemBuilder,
