@@ -14,6 +14,8 @@ class Terms extends Table {
   IntColumn get captureable => integer().withDefault(const Constant(1))();
   @JsonKey('text')
   TextColumn get textCulumn => super.text().named('text')();
+  TextColumn get outerNote =>
+      super.text().named('outerNote').withDefault(const Constant(''))();
 
   @override
   String? get tableName => 'terms';

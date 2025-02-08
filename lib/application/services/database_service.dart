@@ -80,7 +80,7 @@ class DatabaseService extends _$DatabaseService {
                 packageRepository: packageRepository));
 
   @override
-  int get schemaVersion => 38;
+  int get schemaVersion => 39;
 
   @override
   MigrationStrategy get migration {
@@ -362,7 +362,9 @@ class DatabaseService extends _$DatabaseService {
               "insert into voiceNotes (encryptionKey,parentTermId,creation,lastUpdated) select CAST(encryptionKey as TEXT),parentTermId,creation,lastUpdated from temp_table");
           await m.database.executor.runCustom("DROP TABLE temp_table");
         }
-        // });
+        if (from == 38) {
+          await m.addColumn(terms, terms.outerNote);
+        }
       },
     );
   }

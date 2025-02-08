@@ -53,6 +53,9 @@ class _TermWidgetState extends State<TermWidget> {
           ListTile(
             leading: TermLeadingWidget(termData),
             title: Text(termData.term.name),
+            subtitle: termData.term.outerNote.isNotEmpty
+                ? Text(termData.term.outerNote)
+                : null,
             trailing: termData.term.enabled == 1
                 ? const Icon(Icons.navigate_next)
                 : const Icon(Icons.lock),

@@ -23,8 +23,7 @@ mixin _$Product {
   @IdJsonConverter()
   Id get id => throw _privateConstructorUsedError;
   @TitleJsonConverter()
-  Title get name =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  Title get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_url')
   String get imageUrl => throw _privateConstructorUsedError;
   @PriceJsonConverter()
@@ -236,7 +235,6 @@ class _$ProductImpl implements _Product {
   @override
   @TitleJsonConverter()
   final Title name;
-// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'image_url')
   final String imageUrl;
@@ -310,7 +308,7 @@ abstract class _Product implements Product {
   @override
   @TitleJsonConverter()
   Title get name;
-  @override // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'image_url')
   String get imageUrl;
   @override

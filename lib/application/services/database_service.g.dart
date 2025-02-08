@@ -457,6 +457,14 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
   late final GeneratedColumn<String> textCulumn = GeneratedColumn<String>(
       'text', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _outerNoteMeta =
+      const VerificationMeta('outerNote');
+  @override
+  late final GeneratedColumn<String> outerNote = GeneratedColumn<String>(
+      'outerNote', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -469,7 +477,8 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
         ordering,
         needsUpdate,
         captureable,
-        textCulumn
+        textCulumn,
+        outerNote
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -542,6 +551,10 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
     } else if (isInserting) {
       context.missing(_textCulumnMeta);
     }
+    if (data.containsKey('outerNote')) {
+      context.handle(_outerNoteMeta,
+          outerNote.isAcceptableOrUnknown(data['outerNote']!, _outerNoteMeta));
+    }
     return context;
   }
 
@@ -573,6 +586,8 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
           .read(DriftSqlType.int, data['${effectivePrefix}captureable'])!,
       textCulumn: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}text'])!,
+      outerNote: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}outerNote'])!,
     );
   }
 
@@ -594,6 +609,7 @@ class Term extends DataClass implements Insertable<Term> {
   final int needsUpdate;
   final int captureable;
   final String textCulumn;
+  final String outerNote;
   const Term(
       {required this.id,
       required this.uuid,
@@ -605,7 +621,8 @@ class Term extends DataClass implements Insertable<Term> {
       required this.ordering,
       required this.needsUpdate,
       required this.captureable,
-      required this.textCulumn});
+      required this.textCulumn,
+      required this.outerNote});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -620,6 +637,7 @@ class Term extends DataClass implements Insertable<Term> {
     map['needsUpdate'] = Variable<int>(needsUpdate);
     map['captureable'] = Variable<int>(captureable);
     map['text'] = Variable<String>(textCulumn);
+    map['outerNote'] = Variable<String>(outerNote);
     return map;
   }
 
@@ -636,6 +654,7 @@ class Term extends DataClass implements Insertable<Term> {
       needsUpdate: Value(needsUpdate),
       captureable: Value(captureable),
       textCulumn: Value(textCulumn),
+      outerNote: Value(outerNote),
     );
   }
 
@@ -654,6 +673,7 @@ class Term extends DataClass implements Insertable<Term> {
       needsUpdate: serializer.fromJson<int>(json['needsUpdate']),
       captureable: serializer.fromJson<int>(json['captureable']),
       textCulumn: serializer.fromJson<String>(json['text']),
+      outerNote: serializer.fromJson<String>(json['outerNote']),
     );
   }
   @override
@@ -671,6 +691,7 @@ class Term extends DataClass implements Insertable<Term> {
       'needsUpdate': serializer.toJson<int>(needsUpdate),
       'captureable': serializer.toJson<int>(captureable),
       'text': serializer.toJson<String>(textCulumn),
+      'outerNote': serializer.toJson<String>(outerNote),
     };
   }
 
@@ -685,7 +706,8 @@ class Term extends DataClass implements Insertable<Term> {
           int? ordering,
           int? needsUpdate,
           int? captureable,
-          String? textCulumn}) =>
+          String? textCulumn,
+          String? outerNote}) =>
       Term(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -698,6 +720,7 @@ class Term extends DataClass implements Insertable<Term> {
         needsUpdate: needsUpdate ?? this.needsUpdate,
         captureable: captureable ?? this.captureable,
         textCulumn: textCulumn ?? this.textCulumn,
+        outerNote: outerNote ?? this.outerNote,
       );
   Term copyWithCompanion(TermsCompanion data) {
     return Term(
@@ -715,6 +738,7 @@ class Term extends DataClass implements Insertable<Term> {
           data.captureable.present ? data.captureable.value : this.captureable,
       textCulumn:
           data.textCulumn.present ? data.textCulumn.value : this.textCulumn,
+      outerNote: data.outerNote.present ? data.outerNote.value : this.outerNote,
     );
   }
 
@@ -731,14 +755,15 @@ class Term extends DataClass implements Insertable<Term> {
           ..write('ordering: $ordering, ')
           ..write('needsUpdate: $needsUpdate, ')
           ..write('captureable: $captureable, ')
-          ..write('textCulumn: $textCulumn')
+          ..write('textCulumn: $textCulumn, ')
+          ..write('outerNote: $outerNote')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, uuid, name, type, creation, enabled, free,
-      ordering, needsUpdate, captureable, textCulumn);
+      ordering, needsUpdate, captureable, textCulumn, outerNote);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -753,7 +778,8 @@ class Term extends DataClass implements Insertable<Term> {
           other.ordering == this.ordering &&
           other.needsUpdate == this.needsUpdate &&
           other.captureable == this.captureable &&
-          other.textCulumn == this.textCulumn);
+          other.textCulumn == this.textCulumn &&
+          other.outerNote == this.outerNote);
 }
 
 class TermsCompanion extends UpdateCompanion<Term> {
@@ -768,6 +794,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
   final Value<int> needsUpdate;
   final Value<int> captureable;
   final Value<String> textCulumn;
+  final Value<String> outerNote;
   const TermsCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -780,6 +807,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
     this.needsUpdate = const Value.absent(),
     this.captureable = const Value.absent(),
     this.textCulumn = const Value.absent(),
+    this.outerNote = const Value.absent(),
   });
   TermsCompanion.insert({
     this.id = const Value.absent(),
@@ -793,6 +821,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
     this.needsUpdate = const Value.absent(),
     this.captureable = const Value.absent(),
     required String textCulumn,
+    this.outerNote = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name),
         type = Value(type),
@@ -812,6 +841,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
     Expression<int>? needsUpdate,
     Expression<int>? captureable,
     Expression<String>? textCulumn,
+    Expression<String>? outerNote,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -825,6 +855,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
       if (needsUpdate != null) 'needsUpdate': needsUpdate,
       if (captureable != null) 'captureable': captureable,
       if (textCulumn != null) 'text': textCulumn,
+      if (outerNote != null) 'outerNote': outerNote,
     });
   }
 
@@ -839,7 +870,8 @@ class TermsCompanion extends UpdateCompanion<Term> {
       Value<int>? ordering,
       Value<int>? needsUpdate,
       Value<int>? captureable,
-      Value<String>? textCulumn}) {
+      Value<String>? textCulumn,
+      Value<String>? outerNote}) {
     return TermsCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -852,6 +884,7 @@ class TermsCompanion extends UpdateCompanion<Term> {
       needsUpdate: needsUpdate ?? this.needsUpdate,
       captureable: captureable ?? this.captureable,
       textCulumn: textCulumn ?? this.textCulumn,
+      outerNote: outerNote ?? this.outerNote,
     );
   }
 
@@ -891,6 +924,9 @@ class TermsCompanion extends UpdateCompanion<Term> {
     if (textCulumn.present) {
       map['text'] = Variable<String>(textCulumn.value);
     }
+    if (outerNote.present) {
+      map['outerNote'] = Variable<String>(outerNote.value);
+    }
     return map;
   }
 
@@ -907,7 +943,8 @@ class TermsCompanion extends UpdateCompanion<Term> {
           ..write('ordering: $ordering, ')
           ..write('needsUpdate: $needsUpdate, ')
           ..write('captureable: $captureable, ')
-          ..write('textCulumn: $textCulumn')
+          ..write('textCulumn: $textCulumn, ')
+          ..write('outerNote: $outerNote')
           ..write(')'))
         .toString();
   }
@@ -7306,6 +7343,7 @@ typedef $$TermsTableCreateCompanionBuilder = TermsCompanion Function({
   Value<int> needsUpdate,
   Value<int> captureable,
   required String textCulumn,
+  Value<String> outerNote,
 });
 typedef $$TermsTableUpdateCompanionBuilder = TermsCompanion Function({
   Value<int> id,
@@ -7319,6 +7357,7 @@ typedef $$TermsTableUpdateCompanionBuilder = TermsCompanion Function({
   Value<int> needsUpdate,
   Value<int> captureable,
   Value<String> textCulumn,
+  Value<String> outerNote,
 });
 
 class $$TermsTableTableManager extends RootTableManager<
@@ -7349,6 +7388,7 @@ class $$TermsTableTableManager extends RootTableManager<
             Value<int> needsUpdate = const Value.absent(),
             Value<int> captureable = const Value.absent(),
             Value<String> textCulumn = const Value.absent(),
+            Value<String> outerNote = const Value.absent(),
           }) =>
               TermsCompanion(
             id: id,
@@ -7362,6 +7402,7 @@ class $$TermsTableTableManager extends RootTableManager<
             needsUpdate: needsUpdate,
             captureable: captureable,
             textCulumn: textCulumn,
+            outerNote: outerNote,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -7375,6 +7416,7 @@ class $$TermsTableTableManager extends RootTableManager<
             Value<int> needsUpdate = const Value.absent(),
             Value<int> captureable = const Value.absent(),
             required String textCulumn,
+            Value<String> outerNote = const Value.absent(),
           }) =>
               TermsCompanion.insert(
             id: id,
@@ -7388,6 +7430,7 @@ class $$TermsTableTableManager extends RootTableManager<
             needsUpdate: needsUpdate,
             captureable: captureable,
             textCulumn: textCulumn,
+            outerNote: outerNote,
           ),
         ));
 }
@@ -7449,6 +7492,11 @@ class $$TermsTableFilterComposer
       column: $state.table.textCulumn,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get outerNote => $state.composableBuilder(
+      column: $state.table.outerNote,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$TermsTableOrderingComposer
@@ -7506,6 +7554,11 @@ class $$TermsTableOrderingComposer
 
   ColumnOrderings<String> get textCulumn => $state.composableBuilder(
       column: $state.table.textCulumn,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get outerNote => $state.composableBuilder(
+      column: $state.table.outerNote,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
