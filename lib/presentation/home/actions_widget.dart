@@ -105,7 +105,6 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                 List<TermData> relatedTerms =
                     await termService.getTermRelatedTerms(termData);
                 TermsController termsController = Get.find();
-                TermsListingController termsListingController = Get.find();
                 Get.delete<TermData>(tag: 'relatedTerm');
                 Get.put(termData, tag: 'relatedTerm');
                 termsController.state.setState(() {

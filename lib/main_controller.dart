@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/answer_service.dart';
@@ -28,6 +30,7 @@ import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
+import 'package:beta/helper/http_overrides.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/device_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
@@ -48,6 +51,8 @@ class MainController {
 
   static Future initServices() async {
     if (testing == false) WidgetsFlutterBinding.ensureInitialized();
+    HttpOverrides.global =
+        MyHttpOverrides(); //In order to make post requests work with android api 23
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
     }
