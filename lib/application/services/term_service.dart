@@ -191,9 +191,9 @@ class TermService {
     return (await databaseService
                 .customSelect(
                     "select count(*) as c from terms where id=${termData.term.id} and (id in "
-                    "(select termId from couponsLinkedToTerms where couponId in "
+                    "(select termId from termTrees where parentTermId in (select termId from couponsLinkedToTerms where couponId in "
                     "(select id from coupons where activationDate='' or "
-                    "(activationDate!='' and CURRENT_TIMESTAMP<DATETIME(activationDate,'+'||expirationDays||' days')))) or free=1)")
+                    "(activationDate!='' and CURRENT_TIMESTAMP<DATETIME(activationDate,'+'||expirationDays||' days'))))) or free=1)")
                 .watch()
                 .map((rows) => rows.map((row) => row.read<int>('c')).toList())
                 .first)

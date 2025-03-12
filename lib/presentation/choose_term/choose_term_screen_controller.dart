@@ -38,7 +38,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 
 class ChooseTermScreenController extends ListController {
   ChooseTermScreenController(state, {required this.argument})

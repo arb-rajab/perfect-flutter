@@ -66,7 +66,8 @@ class EbookScreenController {
           ..multiTabEnabled = false
           ..layoutMode = LayoutModes.single
           ..hideViewModeItems = [ViewModePickerItem.VerticalScrolling]
-          ..openSavedCopyInNewTab = false);
+          ..openSavedCopyInNewTab = false
+          ..thumbnailViewEditingEnabled = false);
   }
 
   Future _configureFile() async {

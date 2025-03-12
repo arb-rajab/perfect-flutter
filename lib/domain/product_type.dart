@@ -20,7 +20,7 @@ class ProductType with _$ProductType {
     @Default([]) List<Product> products,
   }) = _ProductType;
 
-  factory ProductType.fromJson(Map<String, dynamic> json) =>
+  factory ProductType.fromJson(dynamic json) =>
       _$ProductTypeFromJson(json);
 }
 

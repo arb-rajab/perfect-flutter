@@ -22,6 +22,6 @@ class Product with _$Product {
       @DateTimeConverter()
       DateTime? createdAt}) = _Product;
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
+  factory Product.fromJson(dynamic json) =>
       _$ProductFromJson(json);
 }

@@ -19,7 +19,6 @@ class QuestionTitle extends StatelessWidget {
     } else if (questionData.question.specialCharacter ==
         SpecialCharacter.math) {
       return TeXView(
-          renderingEngine: const TeXViewRenderingEngine.katex(),
           child: TeXViewDocument(
               questionData.getMultiOrientationString(
                   questionData.getTranslatableTitle()),

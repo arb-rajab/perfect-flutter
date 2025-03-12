@@ -5,11 +5,13 @@ import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/coupon_linked_to_term_service.dart';
 import 'package:beta/application/services/coupon_service.dart';
+import 'package:beta/application/services/database/shared.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
 import 'package:beta/application/services/http_request_service.dart';
+import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/question_linked_to_tag_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
@@ -41,6 +43,7 @@ import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_tex/flutter_tex.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -58,8 +61,7 @@ class MainController {
     }
     KeyValue keyValue = await KeyValue().initialise();
     if (testing == false) await EasyLocalization.ensureInitialized();
-    DeviceRepository deviceRepository =
-        Get.put(await DeviceRepository().initialise());
+    Get.put(await DeviceRepository().initialise());
     PackageRepository packageRepository =
         Get.put(await PackageRepository().initialise());
     FirebaseRepository firebaseRepository =
@@ -68,9 +70,7 @@ class MainController {
     Get.put(UrlLauncherRepository());
     Get.put(ScreenshotRepository());
     Get.put(ConnectionRepository());
-    DatabaseService databaseService = DatabaseService(
-        packageRepository: packageRepository,
-        deviceRepository: deviceRepository);
+    DatabaseService databaseService = constructDb();
     Get.put(databaseService);
     Get.put(ThemeService(keyValue: keyValue));
     Get.put(QuestionPropertyService(databaseService: databaseService));
@@ -113,5 +113,11 @@ class MainController {
         androidNotificationOngoing: true,
       ),
     ));
+    Get.put(PathService());
+    TeXRederingServer.renderingEngine = const TeXViewRenderingEngine.katex();
+    if (!kIsWeb) {
+      await TeXRederingServer.run();
+      await TeXRederingServer.initController();
+    }
   }
 }

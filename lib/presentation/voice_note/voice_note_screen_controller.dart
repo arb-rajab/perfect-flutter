@@ -6,6 +6,7 @@ import 'package:archive/archive_io.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
+import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/infrastructure/package_repository.dart';
@@ -43,7 +44,9 @@ class VoiceNoteScreenController {
   Future<void> _initAudioService() async {
     File file = File(join((await getApplicationSupportDirectory()).path,
         'term$separator${argument.term.term.id}'));
-    String password = _decryptEncryptionKey(argument.voiceNote.encryptionKey);
+    VoiceNoteService voiceNoteService = Get.find();
+    VoiceNote voiceNote = await voiceNoteService.getVoiceNote(argument.term);
+    String password = _decryptEncryptionKey(voiceNote.encryptionKey);
     InputFileStream inputStream = InputFileStream(file.path);
     Archive archive =
         ZipDecoder().decodeBuffer(inputStream, password: password);

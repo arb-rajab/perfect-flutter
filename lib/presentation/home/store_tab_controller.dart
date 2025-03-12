@@ -64,22 +64,22 @@ class StoreTabController {
           }
           if (data['latest-products'] != null) {
             latestProducts = (data['latest-products'] as List)
-                .map((_) => Product.fromJson(_))
+                .map(Product.fromJson)
                 .toList();
           }
           if (data['most-seen-products'] != null) {
             mostSeenProducts = (data['most-seen-products'] as List)
-                .map((_) => Product.fromJson(_))
+                .map(Product.fromJson)
                 .toList();
           }
           if (data['product-types'] != null) {
             productTypes = (data['product-types'] as List)
-                .map((_) => ProductType.fromJson(_))
+                .map(ProductType.fromJson)
                 .toList();
           }
           if (data['products'] != null) {
             newProducts = (data['products'] as List)
-                .map((_) => Product.fromJson(_))
+                .map(Product.fromJson)
                 .toList();
             if (latestProducts.isEmpty &&
                 productTypes.isEmpty &&

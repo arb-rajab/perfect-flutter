@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/question_tag_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
@@ -20,12 +21,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -165,24 +162,24 @@ class _ImportBackupTile extends StatelessWidget {
   }
 }
 
-Future<String?> getDownloadPath() async {
-  Directory? directory;
-  try {
-    if (Platform.isIOS) {
-      directory = await getApplicationDocumentsDirectory();
-    } else {
-      // On Android, use the global download folder
-      directory = Directory('/storage/emulated/0/Download');
-      // If it doesn't exist, fallback to external storage directory
-      if (!await directory.exists()) {
-        directory = await getExternalStorageDirectory();
-      }
-    }
-  } catch (err, stack) {
-    print("Cannot get download folder path");
-  }
-  return directory?.path;
-}
+// Future<String?> getDownloadPath() async {
+//   Directory? directory;
+//   try {
+//     if (Platform.isIOS) {
+//       directory = await getApplicationDocumentsDirectory();
+//     } else {
+//       // On Android, use the global download folder
+//       directory = Directory('/storage/emulated/0/Download');
+//       // If it doesn't exist, fallback to external storage directory
+//       if (!await directory.exists()) {
+//         directory = await getExternalStorageDirectory();
+//       }
+//     }
+//   } catch (err, stack) {
+//     print("Cannot get download folder path");
+//   }
+//   return directory?.path;
+// }
 
 class _ExportBackupTile extends StatelessWidget {
   @override
@@ -219,13 +216,10 @@ class _ExportBackupTile extends StatelessWidget {
           data['termsLastAccess'] = termsLastAccesses;
           data['termProperties'] = termProperties;
 
-          File file = File(
-              '${(await getApplicationCacheDirectory()).path}${separator}temp');
-          await file.writeAsString(jsonEncode(data));
-          String? outputFile = await FlutterFileDialog.saveFile(
-              params: SaveFileDialogParams(
-                  sourceFilePath: file.path, fileName: 'database backup'));
-          if (outputFile == null) return;
+          PathService pathService = Get.find();
+          bool saved = await pathService.saveFile(
+              fileName: 'database backup', content: jsonEncode(data));
+          if (!saved) return;
           if (context.mounted) showSuccessDialogue(context);
         },
       ),

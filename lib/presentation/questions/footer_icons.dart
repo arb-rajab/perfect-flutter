@@ -83,8 +83,6 @@ class _FooterIconsState extends State<FooterIcons> {
                           : questionData.question.specialCharacter ==
                                   SpecialCharacter.math
                               ? TeXView(
-                                  renderingEngine:
-                                      const TeXViewRenderingEngine.katex(),
                                   child: TeXViewDocument(
                                       questionData.getMultiOrientationString(
                                           questionData.getTranslatableNote()),
