@@ -20,4 +20,8 @@ class PathService implements PathBase {
   @override
   Future<String> getFileSupportPath(List<String> parts) =>
       throw UnimplementedError();
+      
+  @override
+  Future deleteFileFromCache(String fileName) => throw UnimplementedError();
+  
 }

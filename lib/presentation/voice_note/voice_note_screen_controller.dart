@@ -1,20 +1,15 @@
-// ignore_for_file: invalid_use_of_protected_member
-
-import 'dart:io';
-
-import 'package:archive/archive_io.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/presentation/voice_note/platforms/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class VoiceNoteScreenController {
   final State state;
@@ -35,30 +30,20 @@ class VoiceNoteScreenController {
 
   PackageRepository packageRepository = Get.find();
   TermLastAccessService termLastAccessService = Get.find();
-  late File temp;
 
   VoiceNoteScreenController(this.state) {
     _initAudioService();
   }
 
   Future<void> _initAudioService() async {
-    File file = File(join((await getApplicationSupportDirectory()).path,
-        'term$separator${argument.term.term.id}'));
     VoiceNoteService voiceNoteService = Get.find();
     VoiceNote voiceNote = await voiceNoteService.getVoiceNote(argument.term);
     String password = _decryptEncryptionKey(voiceNote.encryptionKey);
-    InputFileStream inputStream = InputFileStream(file.path);
-    Archive archive =
-        ZipDecoder().decodeBuffer(inputStream, password: password);
-    ArchiveFile archiveFile = archive.first;
-    temp =
-        File('${(await getApplicationCacheDirectory()).path}${separator}temp');
-    if (temp.existsSync()) await temp.delete();
-    OutputFileStream outputFileStream = OutputFileStream(temp.path);
-    archiveFile.writeContent(outputFileStream);
-    await audioPlayer.setFilePath(
-      temp.path,
-    );
+
+    if (state.mounted) {
+      await configurePlayer(
+          context: state.context, password: password, audioPlayer: audioPlayer);
+    }
     int second = await getLastSecond() ?? 0;
     audioHandler.play();
     audioHandler.seek(Duration(seconds: second));
@@ -171,9 +156,8 @@ class AudioPlayerHandler extends BaseAudioHandler {
   @override
   Future<void> stop() async {
     VoiceNoteScreenController voiceNoteScreenController = Get.find();
-    File file =
-        File('${(await getApplicationCacheDirectory()).path}${separator}temp');
-    await file.delete();
+    PathService pathService = Get.find();
+    await pathService.deleteFileFromCache('temp');
     await termLastAccessService.addTermLastAccessed(
         Id(voiceNoteScreenController.argument.term.term.id),
         Id(_audioPlayer.position.inSeconds));
