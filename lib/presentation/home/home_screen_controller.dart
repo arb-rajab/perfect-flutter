@@ -214,23 +214,4 @@ class HomeScreenController {
       ).post(url: httpRequest.url, body: httpRequest.mapp);
     }
   }
-
-  bool canStoreTabPop() {
-    if (Get.isRegistered<StoreTabController>()) {
-      StoreTabController storeTabController = Get.find();
-      if (storeTabController.listingApis.length > 1) return false;
-    }
-    return true;
-  }
-
-  void onStoreTabPopInvoked(bool didPop, result) {
-    if (didPop) return;
-    if (Get.isRegistered<StoreTabController>()) {
-      StoreTabController storeTabController = Get.find();
-      storeTabController.listingApis.removeLast();
-      storeTabController.typeIds.removeLast();
-      storeTabController.typeId = storeTabController.typeIds.last;
-      storeTabController.getData(api: storeTabController.listingApis.last);
-    }
-  }
 }

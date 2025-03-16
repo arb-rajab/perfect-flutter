@@ -94,4 +94,14 @@ class StoreTabController {
               onConnectionFailed: onConnectionFailed,
               onMessageReceived: onMessageRecieved)
           .get(url: api);
+
+  bool canPop() => listingApis.length < 2;
+
+  void onPopInvoked(bool didPop, result) {
+    if (didPop) return;
+    listingApis.removeLast();
+    typeIds.removeLast();
+    typeId = typeIds.last;
+    getData(api: listingApis.last);
+  }
 }

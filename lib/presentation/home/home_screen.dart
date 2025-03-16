@@ -143,10 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
               UnstudiedTermsTab(),
               UpdateableTermsTab()
             ])
-          : PopScope(
-              canPop: homeScreenController.canStoreTabPop(),
-              onPopInvokedWithResult: homeScreenController.onStoreTabPopInvoked,
-              child: const StoreTab()),
+          : const StoreTab(),
     );
   }
 }
