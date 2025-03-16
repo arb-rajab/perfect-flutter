@@ -234,8 +234,6 @@ class TermWidgetController {
       return;
     }
     TermLastAccessService termLastAccessService = Get.find();
-    await Get.delete<TermData>();
-    Get.put(termData);
     if (termData.term.type == TermType.term) {
       await termLastAccessService.addTermLastAccessed(
           Id(termData.term.id), Id(termData.term.id));
@@ -262,7 +260,11 @@ class TermWidgetController {
       });
       return;
     }
-    if (termData.term.type == 0) return;
+    if (termData.term.type == TermType.term) {
+      await Get.delete<TermData>();
+      Get.put(termData);
+      return;
+    }
     switch (termData.term.type) {
       case TermType.questions:
       case TermType.template:

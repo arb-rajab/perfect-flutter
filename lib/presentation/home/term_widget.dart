@@ -44,7 +44,9 @@ class _TermWidgetState extends State<TermWidget> {
       TermType.flashcards,
       TermType.voiceNotes
     ]
-        .contains(termData.term.type)) return const UnsupportedContentWidget();
+        .contains(termData.term.type)) {
+      return const UnsupportedContentWidget();
+    }
     var widgett = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: termWidgetController.onTermClick,
