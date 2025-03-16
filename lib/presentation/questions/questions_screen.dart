@@ -48,64 +48,69 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenWrapper(
-      actions: [
-        if (!questionsController.searchVisible)
-          IconButton(
-              onPressed: () => questionsController.setSearchVisible(true),
-              icon: const Icon(Icons.search))
-      ],
-      title: questionsController.searchVisible
-          ? TextFormField(
-              decoration: InputDecoration(
-                  hintText: StringConstant.search.tr(),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: questionsController.clearSearch,
-                  )),
-              controller: questionsController.searchController,
-              onChanged: questionsController.searchText,
-            )
-          : null,
-      titleText: !questionsController.searchVisible &&
-              questionsController.questionsScreenArgument != null
-          ? questionsController.questionsScreenArgument!.title.value
-          : null,
-      floatingActionButton: questionsController.speedDialVisible()
-          ? SpeedDial(
-              switchLabelPosition: [
-                'ar', // Arabic
-                'fa', // Farsi
-                'he', // Hebrew
-                'ps', // Pashto
-                'ur', // Urdu
-              ].contains(context.locale.languageCode),
-              icon: Icons.sort,
-              children: [
-                SpeedDialChild(
-                    child: const Icon(Icons.playlist_add_check),
-                    label: StringConstant.solveQuestions.tr(),
-                    onTap: questionsController.solveQuestions),
-                if (questionsController.correctable())
+    return PopScope(
+      canPop: questionsController.canPop(),
+      onPopInvokedWithResult: questionsController.onPopInvoked,
+      child: ScreenWrapper(
+        actions: [
+          if (!questionsController.searchVisible)
+            IconButton(
+                onPressed: () => questionsController.setSearchVisible(true),
+                icon: const Icon(Icons.search))
+        ],
+        title: questionsController.searchVisible
+            ? TextFormField(
+                decoration: InputDecoration(
+                    hintText: StringConstant.search.tr(),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: questionsController.clearSearch,
+                    )),
+                controller: questionsController.searchController,
+                onChanged: questionsController.searchText,
+              )
+            : null,
+        titleText: !questionsController.searchVisible &&
+                questionsController.questionsScreenArgument != null
+            ? questionsController.questionsScreenArgument!.title.value
+            : null,
+        floatingActionButton: questionsController.speedDialVisible()
+            ? SpeedDial(
+                switchLabelPosition: [
+                  'ar', // Arabic
+                  'fa', // Farsi
+                  'he', // Hebrew
+                  'ps', // Pashto
+                  'ur', // Urdu
+                ].contains(context.locale.languageCode),
+                icon: Icons.sort,
+                children: [
                   SpeedDialChild(
-                      child: const Icon(Icons.spellcheck),
-                      label: StringConstant.correctQuestions.tr(),
-                      onTap: () => questionsController.correctQuestions(
-                          showStatistics: true)),
-                SpeedDialChild(
-                    child: const Icon(Icons.subject),
-                    label: StringConstant.resetQuestions.tr(),
-                    onTap: questionsController.resetQuestions),
-                if (questionsController.hasTemplate())
+                      child: const Icon(Icons.playlist_add_check),
+                      label: StringConstant.solveQuestions.tr(),
+                      onTap: questionsController.solveQuestions),
+                  if (questionsController.correctable())
+                    SpeedDialChild(
+                        child: const Icon(Icons.spellcheck),
+                        label: StringConstant.correctQuestions.tr(),
+                        onTap: () => questionsController.correctQuestions(
+                            showStatistics: true)),
                   SpeedDialChild(
-                      child: const Icon(Icons.timer),
-                      label: StringConstant.timer.tr(),
-                      onTap: questionsController.showTimer)
-              ],
-            )
-          : null,
-      child:
-          questionsController.loading ? const LoadingWidget() : QuestionsList(),
+                      child: const Icon(Icons.subject),
+                      label: StringConstant.resetQuestions.tr(),
+                      onTap: questionsController.resetQuestions),
+                  if (questionsController.hasTemplate())
+                    SpeedDialChild(
+                        child: const Icon(Icons.timer),
+                        label: StringConstant.timer.tr(),
+                        onTap: questionsController.showTimer)
+                ],
+              )
+            : null,
+        child: questionsController.loading
+            ? const LoadingWidget()
+            : QuestionsList(),
+      ),
     );
   }
 }

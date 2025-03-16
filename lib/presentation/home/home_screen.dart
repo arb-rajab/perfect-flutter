@@ -137,13 +137,16 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       child: homeScreenController.selectedBottomNavigationIndex == 0
           ? const TabBarView(children: [
-              PopScope(canPop: false, child: BrowseTermsTab()),
+              BrowseTermsTab(),
               RecentTermsTab(),
               NewTermsTab(),
               UnstudiedTermsTab(),
               UpdateableTermsTab()
             ])
-          : const PopScope(canPop: false, child: StoreTab()),
+          : PopScope(
+              canPop: homeScreenController.canStoreTabPop(),
+              onPopInvokedWithResult: homeScreenController.onStoreTabPopInvoked,
+              child: const StoreTab()),
     );
   }
 }

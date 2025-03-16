@@ -2,15 +2,10 @@
 
 import 'dart:io';
 
-import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
-import 'package:beta/application/services/flashcard_service.dart';
 import 'package:beta/application/services/network_service.dart';
-import 'package:beta/application/services/question_linked_to_tag_service.dart';
-import 'package:beta/application/services/question_media_service.dart';
-import 'package:beta/application/services/question_service.dart';
-import 'package:beta/application/services/question_tag_service.dart';
+import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
@@ -42,7 +37,6 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class TermWidgetController {
   final int index;
@@ -52,13 +46,13 @@ class TermWidgetController {
   bool isStudied = false;
   State state;
   bool downloading = false;
-  late File file;
   double downloadProgress = 0;
   late TermsListingController termsListingController;
   TermService termService = Get.find();
   TermTagService termTagService = Get.find();
   TermPropertyService termPropertyService = Get.find();
   EbookService ebookService = Get.find();
+  PathService pathService = Get.find();
 
   TermWidgetController(this.state, {required this.index}) {
     termsListingController = Get.find<TermsListingController>();
@@ -83,11 +77,9 @@ class TermWidgetController {
   //TODO add tests
   Future<void> configureIsDownloaded() async {
     if (TermType.hasFile(termData)) {
-      getApplicationSupportDirectory().then((value) async {
-        file = File(join(value.path, 'term', termData.term.id.toString()));
-        isDownloaded = await file.exists();
-        if (state.mounted) state.setState(() {});
-      });
+      isDownloaded = await pathService
+          .isFilePartsInSupport(['term', termData.term.id.toString()]);
+      if (state.mounted) state.setState(() {});
     }
     if (termData.term.type == TermType.questions ||
         termData.term.type == TermType.template) {
@@ -160,7 +152,7 @@ class TermWidgetController {
         state.context,
         onPreConnect: () => _onPreConnect(),
         onPostConnect: () => _onPostConnect(),
-        onConnectionSucceed: (body) {
+        onConnectionSucceed: (body) async {
           String url = '';
           if (termData.term.type == TermType.ebook) {
             EbookData ebookData = EbookData.fromJson(body['ebook']);
@@ -173,6 +165,8 @@ class TermWidgetController {
             voiceNoteService.addVoiceNote(voiceNoteData);
             url = voiceNoteData.url!.toString();
           }
+          String filePath = await pathService
+              .getFileSupportPath(['term', termData.term.id.toString()]);
           NetworkService(state.context,
                   onPreConnect: _onPreConnect,
                   onPostConnect: _onPostConnect,
@@ -181,7 +175,7 @@ class TermWidgetController {
                   onMessageReceived: _onMessageReceived)
               .download(
                   url: url,
-                  file: file,
+                  filePath: filePath,
                   onRecieveProgress: (int progress, int total) =>
                       state.setState(() => downloadProgress =
                           progress.toDouble() / total.toDouble()));

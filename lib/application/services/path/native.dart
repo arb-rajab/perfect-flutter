@@ -30,4 +30,24 @@ class PathService implements PathBase {
             sourceFilePath: file.path, fileName: fileName));
     return Future.value(outputFile != null);
   }
+
+  @override
+  Future<bool> isFilePartsInSupport(List<String> parts) async {
+    if (parts.isEmpty) return Future.value(true);
+    String path = (await getApplicationSupportDirectory()).path;
+    for (String part in parts) {
+      path = join(path, part);
+    }
+    File file = File(path);
+    return file.exists();
+  }
+
+  @override
+  Future<String> getFileSupportPath(List<String> parts) async {
+    String path = (await getApplicationSupportDirectory()).path;
+    for (String part in parts) {
+      path = join(path, part);
+    }
+    return Future.value(path);
+  }
 }

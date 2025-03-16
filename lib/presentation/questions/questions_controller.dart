@@ -575,15 +575,17 @@ class QuestionsController {
 
   bool canPop() {
     if (questionUUID != null) return true;
-    if (questionsScreenArgument!.source == QuestionScreenSource.term &&
-        term!.type == TermType.template &&
-        !templateExited) {
-      return false;
-    }
+    if (questionsScreenArgument != null) {
+if (questionsScreenArgument!.source == QuestionScreenSource.term &&
+          term!.type == TermType.template &&
+          !templateExited) {
+        return false;
+      }
+    } 
     return true;
   }
 
-  bool onPopInvoked(/*bool didPop*/) {
+  bool onPopInvoked(bool didPop, result) {
     // if (!didPop) {
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template &&

@@ -26,6 +26,7 @@ import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dar
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
+import 'package:beta/presentation/home/store_tab_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
@@ -211,6 +212,25 @@ class HomeScreenController {
         onConnectionFailed: () {},
         onMessageReceived: (FailureResponse message) {},
       ).post(url: httpRequest.url, body: httpRequest.mapp);
+    }
+  }
+
+  bool canStoreTabPop() {
+    if (Get.isRegistered<StoreTabController>()) {
+      StoreTabController storeTabController = Get.find();
+      if (storeTabController.listingApis.length > 1) return false;
+    }
+    return true;
+  }
+
+  void onStoreTabPopInvoked(bool didPop, result) {
+    if (didPop) return;
+    if (Get.isRegistered<StoreTabController>()) {
+      StoreTabController storeTabController = Get.find();
+      storeTabController.listingApis.removeLast();
+      storeTabController.typeIds.removeLast();
+      storeTabController.typeId = storeTabController.typeIds.last;
+      storeTabController.getData(api: storeTabController.listingApis.last);
     }
   }
 }

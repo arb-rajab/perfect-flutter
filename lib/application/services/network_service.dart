@@ -249,10 +249,10 @@ class NetworkService {
 
   Future download(
       {required String url,
-      required File file,
+      required String filePath,
       required Function(int recieved, int total) onRecieveProgress}) async {
     onPreConnect.call();
-    await dio.download(url, file.path, onReceiveProgress: onRecieveProgress);
+    await dio.download(url, filePath, onReceiveProgress: onRecieveProgress);
     onPostConnect.call();
     onConnectionSucceed.call(null);
   }

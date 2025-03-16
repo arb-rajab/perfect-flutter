@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
@@ -50,10 +51,9 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                       termData.numberOfQuestions = const NumberOfSubTerms(0);
                     });
                   } else if (TermType.hasFile(termData)) {
-                    File file = File(join(
-                        (await getApplicationSupportDirectory()).path,
-                        'term$separator${termData.term.id}'));
-                    if (await file.exists()) await file.delete();
+                    PathService pathService = Get.find();
+                    await pathService.deleteFileFromSupport(
+                        'term$separator${termData.term.id}');
                     widget.termWidgetController.state.setState(() {
                       widget.termWidgetController.isDownloaded = false;
                     });
@@ -64,18 +64,16 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                 Icons.delete,
                 color: Theme.of(context).colorScheme.error,
               )),
-        
         if (TermType.downloadable(termData) &&
             !widget.downloaded &&
             !widget.downloading)
-            IconButton(
-                onPressed: widget.termWidgetController.downloadContent,
-                icon: const Icon(Icons.cloud_download))
+          IconButton(
+              onPressed: widget.termWidgetController.downloadContent,
+              icon: const Icon(Icons.cloud_download))
         else if (widget.downloading)
-            CircularProgressIndicator(
-                value: TermType.hasFile(termData)
-                    ? widget.downloadProgress
-                    : null),
+          CircularProgressIndicator(
+              value:
+                  TermType.hasFile(termData) ? widget.downloadProgress : null),
         if (TermType.downloadable(termData) &&
             termData.term.needsUpdate == 1 &&
             widget.downloaded)

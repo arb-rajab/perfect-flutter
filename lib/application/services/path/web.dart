@@ -18,4 +18,16 @@ class PathService implements PathBase {
     // TODO: implement saveFile
     throw UnimplementedError();
   }
+  
+  @override
+  Future<bool> isFilePartsInSupport(List<String> parts) {
+    // TODO: implement isFilePartsInSupport
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getFileSupportPath(List<String> parts) {
+    // TODO: implement getFileSupportPath
+    throw UnimplementedError();
+  }
 }
