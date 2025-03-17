@@ -1,6 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member, use_build_context_synchronously
-
-import 'dart:io';
+// ignore_for_file: invalid_use_of_protected_member
 
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
@@ -36,7 +34,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 
 class TermWidgetController {
   final int index;
@@ -235,6 +232,8 @@ class TermWidgetController {
     }
     TermLastAccessService termLastAccessService = Get.find();
     if (termData.term.type == TermType.term) {
+      await Get.delete<TermData>();
+      Get.put(termData);
       await termLastAccessService.addTermLastAccessed(
           Id(termData.term.id), Id(termData.term.id));
     }
@@ -261,8 +260,6 @@ class TermWidgetController {
       return;
     }
     if (termData.term.type == TermType.term) {
-      await Get.delete<TermData>();
-      Get.put(termData);
       return;
     }
     switch (termData.term.type) {

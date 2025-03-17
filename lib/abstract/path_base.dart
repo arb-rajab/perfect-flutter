@@ -4,5 +4,4 @@ abstract class PathBase {
   Future<bool> isFilePartsInSupport(List<String> parts);
   Future<bool> saveFile({required String fileName, required String content});
   Future<String> getFileSupportPath(List<String> parts);
-  Future deleteFileFromCache(String fileName);
 }

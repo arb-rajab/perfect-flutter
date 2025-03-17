@@ -50,11 +50,4 @@ class PathService implements PathBase {
     }
     return Future.value(path);
   }
-  
-  @override
-  Future deleteFileFromCache(String fileName) async {
-    File file = File(
-        '${(await getApplicationCacheDirectory()).path}$separator$fileName');
-    return file.delete();
-  }
 }

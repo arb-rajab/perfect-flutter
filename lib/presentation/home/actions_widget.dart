@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/domain/term_data.dart';
@@ -7,11 +5,9 @@ import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/home/term_widget_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
-import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 //TODO add test
 class ActionsWidget extends StatefulWidget {

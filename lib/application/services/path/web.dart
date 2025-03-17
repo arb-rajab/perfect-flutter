@@ -30,7 +30,4 @@ class PathService implements PathBase {
     // TODO: implement getFileSupportPath
     throw UnimplementedError();
   }
-  
-  @override
-  Future deleteFileFromCache(String fileName) => throw UnimplementedError();
 }

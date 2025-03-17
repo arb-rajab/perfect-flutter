@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/device_repository.dart';

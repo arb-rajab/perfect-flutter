@@ -156,8 +156,6 @@ class AudioPlayerHandler extends BaseAudioHandler {
   @override
   Future<void> stop() async {
     VoiceNoteScreenController voiceNoteScreenController = Get.find();
-    PathService pathService = Get.find();
-    await pathService.deleteFileFromCache('temp');
     await termLastAccessService.addTermLastAccessed(
         Id(voiceNoteScreenController.argument.term.term.id),
         Id(_audioPlayer.position.inSeconds));
