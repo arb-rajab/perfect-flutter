@@ -7,9 +7,8 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
-import 'package:beta/infrastructure/device_repository.dart';
+import 'package:beta/infrastructure/device/shared.dart';
 import 'package:beta/presentation/web/web_screen.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -98,6 +97,7 @@ class QuestionTagService {
       {required QuestionTag questionTag, required BuildContext context}) {
     ConnectionRepository connectionRepository = Get.find();
     connectionRepository.isConnected().then((value) {
+      if (!context.mounted) return;
       Get.delete<WebScreenArgument>();
       Get.put(WebScreenArgument(
           connected: value,

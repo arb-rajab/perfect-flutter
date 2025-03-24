@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/infrastructure/device_repository.dart';
+import 'package:beta/infrastructure/device/shared.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';

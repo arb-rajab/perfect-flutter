@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/database_service.dart';
@@ -70,13 +70,13 @@ class _ImportBackupTile extends StatelessWidget {
         title: Text(StringConstant.importBackup.tr()),
         onTap: () async {
           final result =
-              await FilePicker.platform.pickFiles(allowMultiple: false);
+              await FilePicker.platform
+              .pickFiles(allowMultiple: false, withData: true);
           // if no file is picked
           if (result == null) return;
-          // String content =
-          //     (await OpenFile.open(result.files.first.path)).message;
-          File file = File(result.files.first.path!);
-          String content = await file.readAsString();
+          Uint8List? fileBytes = result.files.first.bytes;
+          if (fileBytes == null) return;
+          String content = String.fromCharCodes(fileBytes);
           AnswerPropertyService answerPropertyService = Get.find();
           QuestionPropertyService questionPropertyService = Get.find();
           QuestionTagPropertyService questionTagPropertyService = Get.find();
