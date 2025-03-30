@@ -47,6 +47,8 @@ import 'package:just_audio/just_audio.dart';
 import 'infrastructure/device/shared.dart';
 import 'package:beta/infrastructure/screenshot/shared.dart';
 
+import 'infrastructure/notification/shared.dart';
+
 class MainController {
   static bool testing = false;
 
@@ -115,5 +117,6 @@ class MainController {
       await TeXRederingServer.run();
       await TeXRederingServer.initController();
     }
+    Get.put(NotificationRepository);
   }
 }
