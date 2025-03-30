@@ -34,7 +34,6 @@ import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/infrastructure/package_repository.dart';
-import 'package:beta/infrastructure/screenshot_repository.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -46,6 +45,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'infrastructure/device/shared.dart';
+import 'package:beta/infrastructure/screenshot/shared.dart';
 
 class MainController {
   static bool testing = false;

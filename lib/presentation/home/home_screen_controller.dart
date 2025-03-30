@@ -26,13 +26,12 @@ import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dar
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
-import 'package:beta/presentation/home/store_tab_controller.dart';
+import 'package:beta/presentation/home/review/shared.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/instance_manager.dart';
-import 'package:in_app_review/in_app_review.dart';
 
 class HomeScreenController {
   final State state;
@@ -140,13 +139,6 @@ class HomeScreenController {
       });
       state.context.showErrorBar(content: Text(message.content));
     }).get(url: ApiConstant.getTermsUpdates);
-  }
-
-  Future<void> showRequestReview() async {
-    final InAppReview inAppReview = InAppReview.instance;
-    if (await inAppReview.isAvailable()) {
-      inAppReview.requestReview();
-    }
   }
 
   void recieveNewToken() {

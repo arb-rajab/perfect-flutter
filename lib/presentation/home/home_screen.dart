@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:upgrader/upgrader.dart';
 
 class HomeScreen extends StatefulWidget {
   static String route = '/home';
@@ -136,13 +137,15 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : null,
       child: homeScreenController.selectedBottomNavigationIndex == 0
-          ? const TabBarView(children: [
-              BrowseTermsTab(),
-              RecentTermsTab(),
-              NewTermsTab(),
-              UnstudiedTermsTab(),
-              UpdateableTermsTab()
-            ])
+          ? UpgradeAlert(
+              child: const TabBarView(children: [
+                BrowseTermsTab(),
+                RecentTermsTab(),
+                NewTermsTab(),
+                UnstudiedTermsTab(),
+                UpdateableTermsTab()
+              ]),
+            )
           : const StoreTab(),
     );
   }

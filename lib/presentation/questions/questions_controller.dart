@@ -24,7 +24,7 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/helper/failure_response.dart';
-import 'package:beta/infrastructure/screenshot_repository.dart';
+import 'package:beta/infrastructure/screenshot/shared.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/questions/questions_list.dart';
@@ -161,7 +161,9 @@ class QuestionsController {
   bool favoriteFilter(QuestionData questionData) {
     for (QuestionProperty questionProperty in questionData.questionProperties) {
       if (questionProperty.name == 'favorite' &&
-          questionProperty.value == 'true') return true;
+          questionProperty.value == 'true') {
+        return true;
+      }
     }
     return false;
   }
@@ -196,7 +198,9 @@ class QuestionsController {
     if (totalCheckedAnswers <= 25) return false;
     for (AnswerData answer in answers) {
       if (answer.answer.isCorrect == 1 &&
-          answer.answer.checkedCount == maxCheckedAnswer) return true;
+          answer.answer.checkedCount == maxCheckedAnswer) {
+        return true;
+      }
     }
     return false;
   }
@@ -220,7 +224,9 @@ class QuestionsController {
     if (totalCheckedAnswers <= 25) return false;
     for (AnswerData answerData in answers) {
       if (answerData.answer.isCorrect == 1 &&
-          answerData.answer.checkedCount == minCheckedAnswer) return true;
+          answerData.answer.checkedCount == minCheckedAnswer) {
+        return true;
+      }
     }
     return false;
   }
@@ -246,7 +252,9 @@ class QuestionsController {
       if (answerData.answer.isCorrect == 1 &&
               answerData.answer.checkedCount == maxCheckedAnswer ||
           answerData.answer.isCorrect == 1 &&
-              answerData.answer.checkedCount == minCheckedAnswer) return false;
+              answerData.answer.checkedCount == minCheckedAnswer) {
+        return false;
+      }
     }
     return true;
   }
@@ -488,7 +496,9 @@ class QuestionsController {
     _updateLastAccess();
     screenshotRepository.allowScreenshot();
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
-        term!.type == TermType.template) timer.cancel();
+        term!.type == TermType.template) {
+      timer.cancel();
+    }
     _uploadCheckedAnswers();
   }
 

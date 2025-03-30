@@ -10,7 +10,6 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:upgrader/upgrader.dart';
 
 Future<void> main() async {
   await MainController.initServices();
@@ -76,13 +75,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: router,
-        builder: (context, child) => DevicePreview.appBuilder(
-            context,
-            UpgradeAlert(
-              shouldPopScope: () => true,
-              navigatorKey: router.routerDelegate.navigatorKey,
-              child: child,
-            )),
+        builder: DevicePreview.appBuilder,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

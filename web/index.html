@@ -23,7 +23,7 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="beta">
+  <meta name="apple-mobile-web-app-title" content="Perfect">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
@@ -31,15 +31,24 @@
 
   <title>Perfect</title>
   <link rel="manifest" href="manifest.json">
+  <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js"
+    defer></script>
+  <script src="assets/packages/flutter_tex/js/flutter_tex.js"></script>
+  <script type="text/javascript">window.flutterWebRenderer = "canvaskit";</script>
 
+  <script src="Webviewer/lib/webviewer.min.js"></script>
+  
+  
+  <!-- Remove comment if you want to revert back to old template sample
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+  // This script adds the flutter initialization JS code
+  <script src="flutter.js" defer></script> -->
 </head>
 <body>
+  <!-- Remove comment if you want to revert back to old template sample
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,6 +63,15 @@
         }
       });
     });
+  </script> -->
+  <script src="flutter_bootstrap.js" async>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('firebase-messaging-sw.js', {
+            scope: '/firebase-cloud-messaging-push-scope',
+          });
+        });
+    }
   </script>
   <script src="https://unpkg.com/@zxing/library@0.19.1" type="application/javascript"></script>
 </body>

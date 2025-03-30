@@ -45,7 +45,8 @@ class FirebaseRepository {
     return const Stream.empty();
   }
 
-  Future<String?> getToken() => FirebaseMessaging.instance.getToken();
+  Future<String?> getToken() =>
+      FirebaseMessaging.instance.getToken(vapidKey: vapidKey);
 
   @pragma('vm:entry-point')
   static Future<void> _firebaseMessagingHandler(RemoteMessage message) async {

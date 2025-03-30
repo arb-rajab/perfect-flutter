@@ -1,5 +1,5 @@
 import 'package:beta/constants/arguments.dart';
-import 'package:beta/infrastructure/screenshot_repository.dart';
+import 'package:beta/infrastructure/screenshot/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 

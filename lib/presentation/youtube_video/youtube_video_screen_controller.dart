@@ -3,7 +3,7 @@ import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/domain/value/id.dart';
-import 'package:beta/infrastructure/screenshot_repository.dart';
+import 'package:beta/infrastructure/screenshot/shared.dart';
 import 'package:beta/presentation/discussion/discussion_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
