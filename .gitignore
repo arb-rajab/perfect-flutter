@@ -13,6 +13,9 @@
 .swiftpm/
 migrate_working_dir/
 
+#In order to ignore webviewer required for rendering pdf files
+WebViewer
+
 # IntelliJ related
 *.iml
 *.ipr
