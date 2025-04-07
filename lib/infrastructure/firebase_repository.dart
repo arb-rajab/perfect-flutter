@@ -48,7 +48,8 @@ class FirebaseRepository {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    NotificationRepository notificationRepository = Get.find();
+    NotificationRepository notificationRepository =
+        Get.put(NotificationRepository());
     notificationRepository.initialise();
     notificationRepository.showNotification(message);
   }

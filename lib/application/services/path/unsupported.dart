@@ -8,10 +8,6 @@ class PathService implements PathBase {
 
   @override
   Future<bool> isFileInSupport(String file) => throw UnimplementedError();
-
-  @override
-  Future<bool> saveFile({required String fileName, required String content}) =>
-      throw UnimplementedError();
       
   @override
   Future<bool> isFilePartsInSupport(List<String> parts) =>

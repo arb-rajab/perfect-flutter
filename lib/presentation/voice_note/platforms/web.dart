@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:archive/archive_io.dart';
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/helper/failure_response.dart';
-import 'package:beta/helper/js_helper.dart';
+import 'package:beta/helper/in_memory_audio_source.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -28,13 +28,19 @@ Future configurePlayer(
 
     // Create a Blob URL to handle in-memory data for Web
     // Use modern web APIs for Blob and Object URL
-    final blob = Blob([audioData]);
-    final url = createObjectURL(blob);
+    // final blob = Blob([audioData]);
+    // final url = createObjectURL(blob);
 
     // Initialize the audio player
-    AudioPlayer audioPlayer = AudioPlayer();
-    await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(url)));
-    revokeObjectURL(url);
+    // AudioPlayer audioPlayer = AudioPlayer();
+    // Play the audio using an in-memory approach
+    // Ensure your audio player supports in-memory playback
+    final audioSource = InMemoryAudioSource(audioData);
+
+    await audioPlayer.setAudioSource(audioSource);
+    await audioPlayer.play();
+
+    // revokeObjectURL(url);
   }, onConnectionFailed: () {}, onMessageReceived: (FailureResponse message) {})
       .get(url: fileUrl);
 }

@@ -1,7 +1,7 @@
 import 'package:beta/abstract/notification_repository_base.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class NotifiationRepository implements NotificationRepositoryBase {
+class NotificationRepository implements NotificationRepositoryBase {
   @override
   void initialise() {}
 

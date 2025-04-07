@@ -19,7 +19,9 @@ import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.d
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flash/flash_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -69,8 +71,7 @@ class _ImportBackupTile extends StatelessWidget {
         ),
         title: Text(StringConstant.importBackup.tr()),
         onTap: () async {
-          final result =
-              await FilePicker.platform
+          final result = await FilePicker.platform
               .pickFiles(allowMultiple: false, withData: true);
           // if no file is picked
           if (result == null) return;
@@ -216,11 +217,27 @@ class _ExportBackupTile extends StatelessWidget {
           data['termsLastAccess'] = termsLastAccesses;
           data['termProperties'] = termProperties;
 
-          PathService pathService = Get.find();
-          bool saved = await pathService.saveFile(
-              fileName: 'database backup', content: jsonEncode(data));
-          if (!saved) return;
-          if (context.mounted) showSuccessDialogue(context);
+          Uint8List contentBytes =
+              Uint8List.fromList(jsonEncode(data).codeUnits);
+          String fileName = 'database backup';
+          Future saver;
+          if (kIsWeb) {
+            // Use FileSaver to save the file
+            saver = FileSaver.instance.saveFile(
+              name: fileName, // Name of the file
+              bytes: contentBytes, // File content in bytes
+              mimeType: MimeType.text, // MIME type
+            );
+          } else {
+            saver = FileSaver.instance.saveAs(
+                name: fileName, // Name of the file
+                bytes: contentBytes, // File content in bytes
+                mimeType: MimeType.text, // MIME type
+                ext: '.txt');
+          }
+          saver.then((value) {
+            if (context.mounted) showSuccessDialogue(context);
+          });
         },
       ),
     );

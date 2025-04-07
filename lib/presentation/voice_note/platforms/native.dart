@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:beta/constants/arguments.dart';
+import 'package:beta/helper/in_memory_audio_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:just_audio/just_audio.dart';
@@ -33,25 +34,4 @@ Future configurePlayer(
 
   await audioPlayer.setAudioSource(audioSource);
   await audioPlayer.play();
-}
-
-class InMemoryAudioSource extends StreamAudioSource {
-  final Uint8List audioData;
-
-  InMemoryAudioSource(this.audioData);
-
-  @override
-  Future<StreamAudioResponse> request([int? start, int? end]) async {
-    start ??= 0;
-    end ??= audioData.length;
-    return StreamAudioResponse(
-      sourceLength: audioData.length,
-      contentLength: end - start,
-      offset: start,
-      contentType: 'audio/mpeg',
-      stream: Stream.fromIterable(
-        [audioData.sublist(start, end)],
-      ),
-    );
-  }
 }

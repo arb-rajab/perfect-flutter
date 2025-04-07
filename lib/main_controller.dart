@@ -117,6 +117,6 @@ class MainController {
       await TeXRederingServer.run();
       await TeXRederingServer.initController();
     }
-    Get.put(NotificationRepository);
+    Get.put(NotificationRepository());
   }
 }
