@@ -1,6 +1,5 @@
-// web.dart
+import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/infrastructure/device/shared.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
@@ -18,7 +17,7 @@ DatabaseConnection connectOnWeb() {
       sqlite3Uri: Uri.parse('sqlite3.wasm'),
       driftWorkerUri: Uri.parse('drift_worker.js'),
       localSetup: (database) {
-        DeviceRepository deviceRepository = Get.find();
+        DeviceRepositoryBase deviceRepository = Get.find();
         PackageRepository packageRepository = Get.find();
         String model = deviceRepository.getModel();
 

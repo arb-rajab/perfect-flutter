@@ -10,7 +10,7 @@ class DeviceRepository extends DeviceRepositoryBase {
   late AndroidDeviceInfo _androidDeviceInfo;
   late IosDeviceInfo _iosDeviceInfo;
   @override
-  Future<DeviceRepository> initialise() async {
+  Future<DeviceRepositoryBase> initialise() async {
     // if (MainController.testing) WidgetsFlutterBinding.ensureInitialized();
     if (Platform.isAndroid) {
       _androidDeviceInfo = await deviceInfoPlugin.androidInfo;
@@ -49,7 +49,7 @@ class DeviceRepository extends DeviceRepositoryBase {
       return _androidDeviceInfo.version.sdkInt.toString();
     }
     if (MainController.testing) return '25';
-    return '';
+    return '0';
   }
 
   @override
@@ -58,6 +58,6 @@ class DeviceRepository extends DeviceRepositoryBase {
       return _iosDeviceInfo.systemVersion;
     }
     if (MainController.testing) return '25';
-    return '';
+    return '0';
   }
 }

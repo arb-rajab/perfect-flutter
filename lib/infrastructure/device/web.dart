@@ -5,10 +5,10 @@ import 'package:uuid/uuid.dart';
 class DeviceRepository extends DeviceRepositoryBase {
   late WebBrowserInfo _webBrowserInfo;
   @override
-  String getAndroidApi() => '';
+  String getAndroidApi() => '0';
 
   @override
-  String getIosVersion() => '';
+  String getIosVersion() => '0';
 
   @override
   String getModel() => _webBrowserInfo.browserName.name;

@@ -4,7 +4,7 @@ import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/main_controller.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
@@ -13,33 +13,19 @@ import 'package:get/instance_manager.dart';
 
 Future<void> main() async {
   await MainController.initServices();
-  runApp(const AppWrapper());
-}
-
-//TODO delete if not used
-class AppWrapper extends StatelessWidget {
-  final Widget? home;
-  const AppWrapper({super.key, this.home});
-
-  @override
-  Widget build(BuildContext context) {
-    return DevicePreview(
-        enabled: false,
-        builder: (context) => EasyLocalization(
-              supportedLocales: supportedLocals,
-              path: 'assets/translations',
-              fallbackLocale: supportedLocals[0],
-              child: MyApp(home: home),
-            ));
-  }
+  runApp(EasyLocalization(
+      supportedLocales: supportedLocals,
+      path: 'assets/translations',
+      fallbackLocale: supportedLocals[0],
+      child: const MyApp()));
 }
 
 // Register the RouteObserver as a navigation observer.
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class MyApp extends StatefulWidget {
-  final Widget? home;
-  const MyApp({super.key, this.home});
+  final String defaultRoute;
+  const MyApp({super.key, this.defaultRoute = SplashScreen.route});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -49,7 +35,8 @@ class _MyAppState extends State<MyApp> {
   void _handleIncomingLinks() {
     AppLinks().uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
-        router.go(uri.path); // Navigate to the corresponding route
+        router(widget.defaultRoute)
+            .go(uri.path); // Navigate to the corresponding route
       }
     }, onError: (Object err) {
       if (kDebugMode) {
@@ -74,11 +61,13 @@ class _MyAppState extends State<MyApp> {
           textScaler: TextScaler.linear(themeService.getScaleFactor())),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        routerConfig: router,
-        builder: DevicePreview.appBuilder,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
+        routerConfig: router(widget.defaultRoute),
+        localizationsDelegates:
+            MainController.testing ? null : context.localizationDelegates,
+        supportedLocales: MainController.testing
+            ? const <Locale>[Locale('en', 'US')]
+            : context.supportedLocales,
+        locale: MainController.testing ? supportedLocals[0] : context.locale,
         title: 'Perfect',
         // Theme config for FlexColorScheme version 7.3.x. Make sure you use
         // same or higher package version, but still same major version. If you

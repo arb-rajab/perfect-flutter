@@ -30,6 +30,7 @@ import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
+import 'package:beta/helper/webview_mockup.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
@@ -43,6 +44,7 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/src/streams/value_stream.dart';
 
 import 'infrastructure/device/shared.dart';
 import 'package:beta/infrastructure/screenshot/shared.dart';
@@ -53,9 +55,17 @@ class MainController {
   static bool testing = false;
 
   static Future initServices() async {
-    if (testing == false) WidgetsFlutterBinding.ensureInitialized();
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+    // if (testing) InAppWebViewPlatform.instance = MockWebViewPlatform();
+    if (testing == false) {
+      WidgetsFlutterBinding.ensureInitialized();
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+        await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+      }
+      TeXRederingServer.renderingEngine = const TeXViewRenderingEngine.katex();
+      if (!kIsWeb) {
+        await TeXRederingServer.run();
+        await TeXRederingServer.initController();
+      }
     }
     KeyValue keyValue = await KeyValue().initialise();
     if (testing == false) await EasyLocalization.ensureInitialized();
@@ -102,7 +112,10 @@ class MainController {
     Get.put(TermPropertyService(databaseService: databaseService));
     Get.put(QuestionTagPropertyService(databaseService: databaseService));
     AudioPlayer audioPlayer = Get.put(AudioPlayer());
-    Get.put(await AudioService.init<AudioHandler>(
+    if (testing) {
+      Get.put<AudioHandler>(MockAudioHandler());
+    } else {
+      Get.put(await AudioService.init<AudioHandler>(
       builder: () => AudioPlayerHandler(audioPlayer),
       config: AudioServiceConfig(
         androidNotificationChannelId:
@@ -111,12 +124,287 @@ class MainController {
         androidNotificationOngoing: true,
       ),
     ));
-    Get.put(PathService());
-    TeXRederingServer.renderingEngine = const TeXViewRenderingEngine.katex();
-    if (!kIsWeb) {
-      await TeXRederingServer.run();
-      await TeXRederingServer.initController();
     }
+    Get.put(PathService());
     Get.put(NotificationRepository());
+  }
+}
+
+class MockAudioHandler implements AudioHandler {
+  @override
+  Future<void> addQueueItem(MediaItem mediaItem) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addQueueItems(List<MediaItem> mediaItems) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> androidAdjustRemoteVolume(AndroidVolumeDirection direction) {
+    throw UnimplementedError();
+  }
+
+  @override
+  ValueStream<AndroidPlaybackInfo> get androidPlaybackInfo =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> androidSetRemoteVolume(int volumeIndex) {
+    // TODO: implement androidSetRemoteVolume
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> click([MediaButton button = MediaButton.media]) {
+    // TODO: implement click
+    throw UnimplementedError();
+  }
+
+  @override
+  Future customAction(String name, [Map<String, dynamic>? extras]) {
+    // TODO: implement customAction
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement customEvent
+  Stream get customEvent => throw UnimplementedError();
+
+  @override
+  // TODO: implement customState
+  ValueStream get customState => throw UnimplementedError();
+
+  @override
+  Future<void> fastForward() {
+    // TODO: implement fastForward
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<MediaItem>> getChildren(String parentMediaId,
+      [Map<String, dynamic>? options]) {
+    // TODO: implement getChildren
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<MediaItem?> getMediaItem(String mediaId) {
+    // TODO: implement getMediaItem
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> insertQueueItem(int index, MediaItem mediaItem) {
+    // TODO: implement insertQueueItem
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement mediaItem
+  ValueStream<MediaItem?> get mediaItem => throw UnimplementedError();
+
+  @override
+  Future<void> onNotificationDeleted() {
+    // TODO: implement onNotificationDeleted
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onTaskRemoved() {
+    // TODO: implement onTaskRemoved
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> pause() {
+    // TODO: implement pause
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> play() {
+    // TODO: implement play
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playFromMediaId(String mediaId, [Map<String, dynamic>? extras]) {
+    // TODO: implement playFromMediaId
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playFromSearch(String query, [Map<String, dynamic>? extras]) {
+    // TODO: implement playFromSearch
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playFromUri(Uri uri, [Map<String, dynamic>? extras]) {
+    // TODO: implement playFromUri
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playMediaItem(MediaItem mediaItem) {
+    // TODO: implement playMediaItem
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement playbackState
+  ValueStream<PlaybackState> get playbackState => throw UnimplementedError();
+
+  @override
+  Future<void> prepare() {
+    // TODO: implement prepare
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> prepareFromMediaId(String mediaId,
+      [Map<String, dynamic>? extras]) {
+    // TODO: implement prepareFromMediaId
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> prepareFromSearch(String query, [Map<String, dynamic>? extras]) {
+    // TODO: implement prepareFromSearch
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> prepareFromUri(Uri uri, [Map<String, dynamic>? extras]) {
+    // TODO: implement prepareFromUri
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement queue
+  ValueStream<List<MediaItem>> get queue => throw UnimplementedError();
+
+  @override
+  // TODO: implement queueTitle
+  ValueStream<String> get queueTitle => throw UnimplementedError();
+
+  @override
+  // TODO: implement ratingStyle
+  ValueStream<RatingStyle> get ratingStyle => throw UnimplementedError();
+
+  @override
+  Future<void> removeQueueItem(MediaItem mediaItem) {
+    // TODO: implement removeQueueItem
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeQueueItemAt(int index) {
+    // TODO: implement removeQueueItemAt
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> rewind() {
+    // TODO: implement rewind
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<MediaItem>> search(String query, [Map<String, dynamic>? extras]) {
+    // TODO: implement search
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> seek(Duration position) {
+    // TODO: implement seek
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> seekBackward(bool begin) {
+    // TODO: implement seekBackward
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> seekForward(bool begin) {
+    // TODO: implement seekForward
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setCaptioningEnabled(bool enabled) {
+    // TODO: implement setCaptioningEnabled
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setRating(Rating rating, [Map<String, dynamic>? extras]) {
+    // TODO: implement setRating
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) {
+    // TODO: implement setRepeatMode
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) {
+    // TODO: implement setShuffleMode
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setSpeed(double speed) {
+    // TODO: implement setSpeed
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> skipToNext() {
+    // TODO: implement skipToNext
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> skipToPrevious() {
+    // TODO: implement skipToPrevious
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> skipToQueueItem(int index) {
+    // TODO: implement skipToQueueItem
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> stop() {
+    // TODO: implement stop
+    throw UnimplementedError();
+  }
+
+  @override
+  ValueStream<Map<String, dynamic>> subscribeToChildren(String parentMediaId) {
+    // TODO: implement subscribeToChildren
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateMediaItem(MediaItem mediaItem) {
+    // TODO: implement updateMediaItem
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateQueue(List<MediaItem> queue) {
+    // TODO: implement updateQueue
+    throw UnimplementedError();
   }
 }

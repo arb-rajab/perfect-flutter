@@ -76,9 +76,7 @@ class EnterCouponScreenController {
     await Get.delete<ChooseTermScreenArgument>();
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: terms, free: free, couponType: couponType));
-    if (state.mounted) {
-      state.context.push(ChooseTermScreen.route);
-    }
+    if (state.mounted) state.context.push(ChooseTermScreen.route);
   }
 
   void onActivateFreeVersionClick() {

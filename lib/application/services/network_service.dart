@@ -1,13 +1,12 @@
 import 'dart:convert';
 
+import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/network/shared.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-
-import '../../infrastructure/device/shared.dart';
 
 class NetworkService {
   /// show loading dialogue, hide old results or errors, etc
@@ -44,7 +43,7 @@ class NetworkService {
 
   Map<String, String> getHeaders() {
     String info = '';
-    DeviceRepository deviceRepository = Get.find();
+    DeviceRepositoryBase deviceRepository = Get.find();
     // if (keyValue.getString('deviceInfo') != null) {
     //   info = keyValue.getString('deviceInfo')!;
     // } else {
@@ -121,6 +120,9 @@ class NetworkService {
         return;
       }
     } on DioException catch (e) {
+      if (kDebugMode) {
+        print(e.error);
+      }
       onPostConnect.call();
       if (e.type == DioExceptionType.connectionError ||
           e.type == DioExceptionType.connectionTimeout ||

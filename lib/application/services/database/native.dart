@@ -1,8 +1,7 @@
-// native.dart
 import 'dart:io';
 
+import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/infrastructure/device/shared.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -15,7 +14,7 @@ import 'package:sqlite3/open.dart';
 
 DatabaseService constructDb() {
   var db = LazyDatabase(() async {
-    DeviceRepository deviceRepository = Get.find();
+    DeviceRepositoryBase deviceRepository = Get.find();
     PackageRepository packageRepository = Get.find();
     String model = deviceRepository.getModel();
 

@@ -1,8 +1,5 @@
-import 'package:beta/application/services/database_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/domain/coupon_type.dart';
-import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen_controller.dart';
 import 'package:beta/presentation/widgets/items_list.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';

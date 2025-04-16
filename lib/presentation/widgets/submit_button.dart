@@ -49,21 +49,26 @@ class SubmitButton extends StatelessWidget {
             elevation: 0,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            child: Row(
-              children: [
-                if (icon != null) Icon(icon),
-                const Spacer(),
-                Text(
-                  text,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-                const Spacer(),
-                if (loading)
-                  CircularProgressIndicator(
-                    value: progress,
-                  )
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) Icon(icon),
+                  // const Spacer(),
+                  Text(
+                    text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  // const Spacer(),
+                  Visibility(
+                      visible: loading,
+                      child: CircularProgressIndicator(
+                        value: progress,
+                      ))
+                ],
+              ),
             ),
           ),
         ),

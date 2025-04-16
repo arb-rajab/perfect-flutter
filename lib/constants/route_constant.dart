@@ -23,7 +23,8 @@ import 'package:beta/presentation/web/web_screen.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:go_router/go_router.dart';
 
-final router = GoRouter(initialLocation: SplashScreen.route, observers: [
+GoRouter router(defaultRoute) =>
+    GoRouter(initialLocation: defaultRoute, observers: [
   routeObserver
 ], routes: [
   GoRoute(

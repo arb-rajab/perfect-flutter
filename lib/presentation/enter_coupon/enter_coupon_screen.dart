@@ -1,18 +1,13 @@
-import 'package:beta/common/validators.dart';
-import 'package:beta/configs/style.dart';
+
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
-import 'package:beta/presentation/animations/opacity_animation.dart';
-import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen_controller.dart';
+import 'package:beta/presentation/enter_coupon/submit_form.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:beta/presentation/widgets/custom_list_view.dart';
-import 'package:beta/presentation/widgets/form_message_widget.dart';
-import 'package:beta/presentation/widgets/input_widget.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:beta/presentation/widgets/rectangle_widget.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
-import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -43,6 +38,7 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLargeScreen = MediaQuery.of(context).size.width > 600;
     return ScreenWrapper(
       targets: [
         CustomTargetFocus(
@@ -68,84 +64,30 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
           icon: const Icon(ScanQrScreen.icon),
           label: Text(ScanQrScreen.title)),
       child: CustomListView(
-        children: [
-          const NoBackgroundLogo(),
-          Form(
-              key: _controller.formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(margin),
-                child: Column(
-                  children: [
-                    FormMessageWidget(
-                        message: _controller.message,
-                        onDismiss: _controller.dismissMessage),
-                    _EnterNameInput(),
-                    _EnterCoupon(),
-                    SubmitButton(
-                        loading: _controller.loading && _controller.okClicked,
-                        text: StringConstant.ok.tr(),
-                        onSubmit: _controller.onOkclick),
-                    Text(StringConstant.youCanInstead.tr(),
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    SubmitButton(
-                        loading: _controller.loading &&
-                            _controller.activateFreeVersionClicked,
-                        text: StringConstant.activateFreeVersion.tr(),
-                        onSubmit: _controller.onActivateFreeVersionClick),
-                    const DoYouNeedHelp()
-                  ],
-                ),
-              ))
-        ],
+        children: [isLargeScreen ? _DesktopLayout() : _MobileLayout()],
       ),
     );
   }
 }
 
-//TODO apply test
-class _EnterNameInput extends StatelessWidget {
+class _MobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    EnterCouponScreenController controller =
-        Get.find<EnterCouponScreenController>();
-    return InputWidget(
-        error: controller.nameError,
-        label: StringConstant.firstAndLastName.tr(),
-        validator: Validator.empty,
-        controller: controller.nameController);
+    return Column(
+      children: [const NoBackgroundLogo(), SubmitForm()],
+    );
   }
 }
 
-//TODO apply test
-class _EnterCoupon extends StatelessWidget {
+class _DesktopLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return InputWidget(
-        label: StringConstant.coupon.tr(),
-        validator: (value) => Validator.multiValidators(
-            [Validator.empty, Validator.isMD5], value),
-        controller: Get.find<EnterCouponScreenController>().couponController);
-  }
-}
-
-class DoYouNeedHelp extends StatelessWidget {
-  const DoYouNeedHelp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return OpacityAnimation(
-        child: Padding(
-      padding: const EdgeInsets.all(margin),
-      child: GestureDetector(
-        onTap: () => context.push(ContactUsScreen.route),
-        child: Text(
-          StringConstant.doYouNeedHelp.tr(),
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: Theme.of(context).primaryColor),
-        ),
-      ),
-    ));
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Expanded(flex: 1, child: NoBackgroundLogo()),
+        Expanded(flex: 2, child: SubmitForm())
+      ],
+    );
   }
 }
