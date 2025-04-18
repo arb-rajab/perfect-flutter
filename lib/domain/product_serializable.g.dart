@@ -12,7 +12,7 @@ ProductSerializable _$ProductSerializableFromJson(Map<String, dynamic> json) =>
       name: const TitleJsonConverter().fromJson(json['name'] as String),
       imageUrl: json['image_url'] as String,
       price:
-          const PriceJsonConverter().fromJson((json['price'] as num).toInt()),
+          const PriceJsonConverter().fromJson((json['price'] as num?)?.toInt()),
       description: _$JsonConverterFromJson<String, Description>(
           json['description'], const DescriptionJsonConverter().fromJson),
       createdAt: _$JsonConverterFromJson<String, DateTime>(

@@ -17,6 +17,7 @@ class StoreTabController {
   ProductTypeId? typeId;
   List<Product> latestProducts = [];
   List<Product> mostSeenProducts = [];
+  List<Product> offers = [];
   List<Product> products = [];
   List<Product> newProducts = [];
   List<ProductType> productTypes = [];
@@ -47,6 +48,7 @@ class StoreTabController {
 
   void clearData() {
     latestProducts.clear();
+    offers.clear();
     mostSeenProducts.clear();
     products.clear();
     productTypes.clear();
@@ -67,6 +69,9 @@ class StoreTabController {
                 .map(Product.fromJson)
                 .toList();
           }
+          if (data['offers'] != null) {
+            offers = (data['offers'] as List).map(Product.fromJson).toList();
+          }
           if (data['most-seen-products'] != null) {
             mostSeenProducts = (data['most-seen-products'] as List)
                 .map(Product.fromJson)
@@ -78,12 +83,12 @@ class StoreTabController {
                 .toList();
           }
           if (data['products'] != null) {
-            newProducts = (data['products'] as List)
-                .map(Product.fromJson)
-                .toList();
+            newProducts =
+                (data['products'] as List).map(Product.fromJson).toList();
             if (latestProducts.isEmpty &&
                 productTypes.isEmpty &&
-                mostSeenProducts.isEmpty) {
+                mostSeenProducts.isEmpty &&
+                offers.isEmpty) {
               products.addAll(newProducts);
             } else {
               products = [...newProducts];

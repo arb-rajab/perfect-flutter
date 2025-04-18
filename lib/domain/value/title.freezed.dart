@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Title {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Title
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TitleCopyWith<Title> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$TitleCopyWithImpl<$Res, $Val extends Title>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Title
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,6 +76,8 @@ class __$$TitleImplCopyWithImpl<$Res>
       _$TitleImpl _value, $Res Function(_$TitleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Title
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -110,7 +116,9 @@ class _$TitleImpl implements _Title {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Title
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TitleImplCopyWith<_$TitleImpl> get copyWith =>
@@ -122,8 +130,11 @@ abstract class _Title implements Title {
 
   @override
   String? get value;
+
+  /// Create a copy of Title
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TitleImplCopyWith<_$TitleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

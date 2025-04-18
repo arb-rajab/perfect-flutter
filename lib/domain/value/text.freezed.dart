@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Text {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Text
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TextCopyWith<Text> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$TextCopyWithImpl<$Res, $Val extends Text>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Text
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -71,6 +75,8 @@ class __$$TextImplCopyWithImpl<$Res>
   __$$TextImplCopyWithImpl(_$TextImpl _value, $Res Function(_$TextImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Text
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,7 +115,9 @@ class _$TextImpl implements _Text {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Text
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TextImplCopyWith<_$TextImpl> get copyWith =>
@@ -121,8 +129,11 @@ abstract class _Text implements Text {
 
   @override
   String? get value;
+
+  /// Create a copy of Text
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TextImplCopyWith<_$TextImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

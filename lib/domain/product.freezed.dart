@@ -28,14 +28,25 @@ mixin _$Product {
   String get imageUrl => throw _privateConstructorUsedError;
   @PriceJsonConverter()
   Price get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'offer_price')
+  @PriceJsonConverter()
+  Price get offerPrice => throw _privateConstructorUsedError;
+  @UnitJsonConverter()
+  Unit get unit => throw _privateConstructorUsedError;
   @DescriptionJsonConverter()
   Description? get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<String>? get images => throw _privateConstructorUsedError;
 
+  /// Serializes this Product to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -49,12 +60,18 @@ abstract class $ProductCopyWith<$Res> {
       @TitleJsonConverter() Title name,
       @JsonKey(name: 'image_url') String imageUrl,
       @PriceJsonConverter() Price price,
+      @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
+      @UnitJsonConverter() Unit unit,
       @DescriptionJsonConverter() Description? description,
-      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt});
+      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<String>? images});
 
   $IdCopyWith<$Res> get id;
   $TitleCopyWith<$Res> get name;
   $PriceCopyWith<$Res> get price;
+  $PriceCopyWith<$Res> get offerPrice;
+  $UnitCopyWith<$Res> get unit;
   $DescriptionCopyWith<$Res>? get description;
 }
 
@@ -68,6 +85,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,8 +94,11 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? name = null,
     Object? imageUrl = null,
     Object? price = null,
+    Object? offerPrice = null,
+    Object? unit = null,
     Object? description = freezed,
     Object? createdAt = freezed,
+    Object? images = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -95,6 +117,14 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as Price,
+      offerPrice: null == offerPrice
+          ? _value.offerPrice
+          : offerPrice // ignore: cast_nullable_to_non_nullable
+              as Price,
+      unit: null == unit
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as Unit,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -103,9 +133,15 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      images: freezed == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -114,6 +150,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     });
   }
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get name {
@@ -122,6 +160,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     });
   }
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PriceCopyWith<$Res> get price {
@@ -130,6 +170,28 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     });
   }
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PriceCopyWith<$Res> get offerPrice {
+    return $PriceCopyWith<$Res>(_value.offerPrice, (value) {
+      return _then(_value.copyWith(offerPrice: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UnitCopyWith<$Res> get unit {
+    return $UnitCopyWith<$Res>(_value.unit, (value) {
+      return _then(_value.copyWith(unit: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DescriptionCopyWith<$Res>? get description {
@@ -155,8 +217,12 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       @TitleJsonConverter() Title name,
       @JsonKey(name: 'image_url') String imageUrl,
       @PriceJsonConverter() Price price,
+      @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
+      @UnitJsonConverter() Unit unit,
       @DescriptionJsonConverter() Description? description,
-      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt});
+      @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<String>? images});
 
   @override
   $IdCopyWith<$Res> get id;
@@ -164,6 +230,10 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   $TitleCopyWith<$Res> get name;
   @override
   $PriceCopyWith<$Res> get price;
+  @override
+  $PriceCopyWith<$Res> get offerPrice;
+  @override
+  $UnitCopyWith<$Res> get unit;
   @override
   $DescriptionCopyWith<$Res>? get description;
 }
@@ -176,6 +246,8 @@ class __$$ProductImplCopyWithImpl<$Res>
       _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -183,8 +255,11 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? name = null,
     Object? imageUrl = null,
     Object? price = null,
+    Object? offerPrice = null,
+    Object? unit = null,
     Object? description = freezed,
     Object? createdAt = freezed,
+    Object? images = freezed,
   }) {
     return _then(_$ProductImpl(
       id: null == id
@@ -203,6 +278,14 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as Price,
+      offerPrice: null == offerPrice
+          ? _value.offerPrice
+          : offerPrice // ignore: cast_nullable_to_non_nullable
+              as Price,
+      unit: null == unit
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as Unit,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -211,6 +294,10 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      images: freezed == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -223,8 +310,15 @@ class _$ProductImpl implements _Product {
       @TitleJsonConverter() required this.name,
       @JsonKey(name: 'image_url') required this.imageUrl,
       @PriceJsonConverter() required this.price,
+      @JsonKey(name: 'offer_price')
+      @PriceJsonConverter()
+      required this.offerPrice,
+      @UnitJsonConverter() required this.unit,
       @DescriptionJsonConverter() this.description,
-      @JsonKey(name: 'created_at') @DateTimeConverter() this.createdAt});
+      @JsonKey(name: 'created_at') @DateTimeConverter() this.createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<String>? images})
+      : _images = images;
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductImplFromJson(json);
@@ -242,16 +336,33 @@ class _$ProductImpl implements _Product {
   @PriceJsonConverter()
   final Price price;
   @override
+  @JsonKey(name: 'offer_price')
+  @PriceJsonConverter()
+  final Price offerPrice;
+  @override
+  @UnitJsonConverter()
+  final Unit unit;
+  @override
   @DescriptionJsonConverter()
   final Description? description;
   @override
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
   final DateTime? createdAt;
+  final List<String>? _images;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<String>? get images {
+    final value = _images;
+    if (value == null) return null;
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, description: $description, createdAt: $createdAt)';
+    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, offerPrice: $offerPrice, unit: $unit, description: $description, createdAt: $createdAt, images: $images)';
   }
 
   @override
@@ -264,18 +375,33 @@ class _$ProductImpl implements _Product {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.offerPrice, offerPrice) ||
+                other.offerPrice == offerPrice) &&
+            (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, imageUrl, price, description, createdAt);
+      runtimeType,
+      id,
+      name,
+      imageUrl,
+      price,
+      offerPrice,
+      unit,
+      description,
+      createdAt,
+      const DeepCollectionEquality().hash(_images));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
@@ -295,10 +421,16 @@ abstract class _Product implements Product {
       @TitleJsonConverter() required final Title name,
       @JsonKey(name: 'image_url') required final String imageUrl,
       @PriceJsonConverter() required final Price price,
+      @JsonKey(name: 'offer_price')
+      @PriceJsonConverter()
+      required final Price offerPrice,
+      @UnitJsonConverter() required final Unit unit,
       @DescriptionJsonConverter() final Description? description,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
-      final DateTime? createdAt}) = _$ProductImpl;
+      final DateTime? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<String>? images}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
@@ -315,6 +447,13 @@ abstract class _Product implements Product {
   @PriceJsonConverter()
   Price get price;
   @override
+  @JsonKey(name: 'offer_price')
+  @PriceJsonConverter()
+  Price get offerPrice;
+  @override
+  @UnitJsonConverter()
+  Unit get unit;
+  @override
   @DescriptionJsonConverter()
   Description? get description;
   @override
@@ -322,7 +461,13 @@ abstract class _Product implements Product {
   @DateTimeConverter()
   DateTime? get createdAt;
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<String>? get images;
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

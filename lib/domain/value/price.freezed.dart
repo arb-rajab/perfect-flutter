@@ -16,9 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Price {
-  int get value => throw _privateConstructorUsedError;
+  int? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Price
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PriceCopyWith<Price> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -27,7 +29,7 @@ abstract class $PriceCopyWith<$Res> {
   factory $PriceCopyWith(Price value, $Res Function(Price) then) =
       _$PriceCopyWithImpl<$Res, Price>;
   @useResult
-  $Res call({int value});
+  $Res call({int? value});
 }
 
 /// @nodoc
@@ -40,16 +42,18 @@ class _$PriceCopyWithImpl<$Res, $Val extends Price>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Price
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -61,7 +65,7 @@ abstract class _$$PriceImplCopyWith<$Res> implements $PriceCopyWith<$Res> {
       __$$PriceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int value});
+  $Res call({int? value});
 }
 
 /// @nodoc
@@ -72,16 +76,18 @@ class __$$PriceImplCopyWithImpl<$Res>
       _$PriceImpl _value, $Res Function(_$PriceImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Price
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_$PriceImpl(
-      null == value
+      freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -89,10 +95,11 @@ class __$$PriceImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PriceImpl implements _Price {
-  const _$PriceImpl(this.value) : assert(value >= 0);
+  const _$PriceImpl(this.value)
+      : assert((value != null && value >= 0) || value == null);
 
   @override
-  final int value;
+  final int? value;
 
   @override
   String toString() {
@@ -110,7 +117,9 @@ class _$PriceImpl implements _Price {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Price
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PriceImplCopyWith<_$PriceImpl> get copyWith =>
@@ -118,12 +127,15 @@ class _$PriceImpl implements _Price {
 }
 
 abstract class _Price implements Price {
-  const factory _Price(final int value) = _$PriceImpl;
+  const factory _Price(final int? value) = _$PriceImpl;
 
   @override
-  int get value;
+  int? get value;
+
+  /// Create a copy of Price
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PriceImplCopyWith<_$PriceImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

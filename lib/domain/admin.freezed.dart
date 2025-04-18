@@ -21,7 +21,9 @@ mixin _$Admin {
   @TitleJsonConverter()
   Title get username => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AdminCopyWith<Admin> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -46,6 +48,8 @@ class _$AdminCopyWithImpl<$Res, $Val extends Admin>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -64,6 +68,8 @@ class _$AdminCopyWithImpl<$Res, $Val extends Admin>
     ) as $Val);
   }
 
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -72,6 +78,8 @@ class _$AdminCopyWithImpl<$Res, $Val extends Admin>
     });
   }
 
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get username {
@@ -104,6 +112,8 @@ class __$$AdminImplCopyWithImpl<$Res>
       _$AdminImpl _value, $Res Function(_$AdminImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,7 +165,9 @@ class _$AdminImpl implements _Admin {
   @override
   int get hashCode => Object.hash(runtimeType, id, username);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AdminImplCopyWith<_$AdminImpl> get copyWith =>
@@ -173,8 +185,11 @@ abstract class _Admin implements Admin {
   @override
   @TitleJsonConverter()
   Title get username;
+
+  /// Create a copy of Admin
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AdminImplCopyWith<_$AdminImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

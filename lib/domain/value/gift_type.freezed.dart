@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GiftType {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GiftType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GiftTypeCopyWith<GiftType> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,6 +43,8 @@ class _$GiftTypeCopyWithImpl<$Res, $Val extends GiftType>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GiftType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +78,8 @@ class __$$GiftTypeImplCopyWithImpl<$Res>
       _$GiftTypeImpl _value, $Res Function(_$GiftTypeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GiftType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,7 +118,9 @@ class _$GiftTypeImpl implements _GiftType {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GiftType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GiftTypeImplCopyWith<_$GiftTypeImpl> get copyWith =>
@@ -124,8 +132,11 @@ abstract class _GiftType implements GiftType {
 
   @override
   int get value;
+
+  /// Create a copy of GiftType
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GiftTypeImplCopyWith<_$GiftTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -27,7 +27,9 @@ mixin _$Comment {
   @NumberOfSubTermsJsonConverter()
   NumberOfSubTerms get numberOfComments => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CommentCopyWith<Comment> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -60,6 +62,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -93,6 +97,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     ) as $Val);
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -101,6 +107,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     });
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TextCopyWith<$Res> get content {
@@ -109,6 +117,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     });
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DeviceCopyWith<$Res>? get device {
@@ -121,6 +131,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     });
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AdminCopyWith<$Res>? get admin {
@@ -133,6 +145,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     });
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NumberOfSubTermsCopyWith<$Res> get numberOfComments {
@@ -176,6 +190,8 @@ class __$$CommentImplCopyWithImpl<$Res>
       _$CommentImpl _value, $Res Function(_$CommentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -258,7 +274,9 @@ class _$CommentImpl implements _Comment {
   int get hashCode =>
       Object.hash(runtimeType, id, content, device, admin, numberOfComments);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
@@ -289,8 +307,11 @@ abstract class _Comment implements Comment {
   @override
   @NumberOfSubTermsJsonConverter()
   NumberOfSubTerms get numberOfComments;
+
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

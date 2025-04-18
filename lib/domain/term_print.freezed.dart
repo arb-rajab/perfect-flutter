@@ -21,7 +21,9 @@ mixin _$TermPrint {
   @OtherGiftJsonConverter()
   OtherGift get otherGift => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TermPrintCopyWith<TermPrint> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +51,8 @@ class _$TermPrintCopyWithImpl<$Res, $Val extends TermPrint>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -67,6 +71,8 @@ class _$TermPrintCopyWithImpl<$Res, $Val extends TermPrint>
     ) as $Val);
   }
 
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $GiftTypeCopyWith<$Res> get gift {
@@ -75,6 +81,8 @@ class _$TermPrintCopyWithImpl<$Res, $Val extends TermPrint>
     });
   }
 
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $OtherGiftCopyWith<$Res> get otherGift {
@@ -110,6 +118,8 @@ class __$$TermPrintImplCopyWithImpl<$Res>
       _$TermPrintImpl _value, $Res Function(_$TermPrintImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -161,7 +171,9 @@ class _$TermPrintImpl implements _TermPrint {
   @override
   int get hashCode => Object.hash(runtimeType, gift, otherGift);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TermPrintImplCopyWith<_$TermPrintImpl> get copyWith =>
@@ -180,8 +192,11 @@ abstract class _TermPrint implements TermPrint {
   @override
   @OtherGiftJsonConverter()
   OtherGift get otherGift;
+
+  /// Create a copy of TermPrint
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TermPrintImplCopyWith<_$TermPrintImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Layer {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Layer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LayerCopyWith<Layer> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$LayerCopyWithImpl<$Res, $Val extends Layer>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Layer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,6 +76,8 @@ class __$$LayerImplCopyWithImpl<$Res>
       _$LayerImpl _value, $Res Function(_$LayerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Layer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -110,7 +116,9 @@ class _$LayerImpl implements _Layer {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Layer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LayerImplCopyWith<_$LayerImpl> get copyWith =>
@@ -122,8 +130,11 @@ abstract class _Layer implements Layer {
 
   @override
   int get value;
+
+  /// Create a copy of Layer
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LayerImplCopyWith<_$LayerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

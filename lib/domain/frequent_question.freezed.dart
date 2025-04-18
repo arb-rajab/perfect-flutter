@@ -23,7 +23,9 @@ mixin _$FrequentQuestion {
   @DescriptionJsonConverter()
   Description get description => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FrequentQuestionCopyWith<FrequentQuestion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,6 +56,8 @@ class _$FrequentQuestionCopyWithImpl<$Res, $Val extends FrequentQuestion>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -77,6 +81,8 @@ class _$FrequentQuestionCopyWithImpl<$Res, $Val extends FrequentQuestion>
     ) as $Val);
   }
 
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -85,6 +91,8 @@ class _$FrequentQuestionCopyWithImpl<$Res, $Val extends FrequentQuestion>
     });
   }
 
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get title {
@@ -93,6 +101,8 @@ class _$FrequentQuestionCopyWithImpl<$Res, $Val extends FrequentQuestion>
     });
   }
 
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DescriptionCopyWith<$Res> get description {
@@ -131,6 +141,8 @@ class __$$FrequentQuestionImplCopyWithImpl<$Res>
       $Res Function(_$FrequentQuestionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -192,7 +204,9 @@ class _$FrequentQuestionImpl implements _FrequentQuestion {
   @override
   int get hashCode => Object.hash(runtimeType, id, title, description);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FrequentQuestionImplCopyWith<_$FrequentQuestionImpl> get copyWith =>
@@ -216,8 +230,11 @@ abstract class _FrequentQuestion implements FrequentQuestion {
   @override
   @DescriptionJsonConverter()
   Description get description;
+
+  /// Create a copy of FrequentQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FrequentQuestionImplCopyWith<_$FrequentQuestionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

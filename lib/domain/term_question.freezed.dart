@@ -28,7 +28,9 @@ mixin _$TermQuestion {
       throw _privateConstructorUsedError;
   String? get answer => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TermQuestionCopyWith<TermQuestion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,6 +64,8 @@ class _$TermQuestionCopyWithImpl<$Res, $Val extends TermQuestion>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -95,6 +99,8 @@ class _$TermQuestionCopyWithImpl<$Res, $Val extends TermQuestion>
     ) as $Val);
   }
 
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -103,6 +109,8 @@ class _$TermQuestionCopyWithImpl<$Res, $Val extends TermQuestion>
     });
   }
 
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get title {
@@ -111,6 +119,8 @@ class _$TermQuestionCopyWithImpl<$Res, $Val extends TermQuestion>
     });
   }
 
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TypeCopyWith<$Res> get type {
@@ -152,6 +162,8 @@ class __$$TermQuestionImplCopyWithImpl<$Res>
       _$TermQuestionImpl _value, $Res Function(_$TermQuestionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -243,7 +255,9 @@ class _$TermQuestionImpl implements _TermQuestion {
   int get hashCode => Object.hash(runtimeType, id, title, type,
       const DeepCollectionEquality().hash(_multiSelections), answer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TermQuestionImplCopyWith<_$TermQuestionImpl> get copyWith =>
@@ -267,14 +281,17 @@ abstract class _TermQuestion implements TermQuestion {
   Title get title;
   @override
   @TypeJsonConverter()
-  Type get type;
-  @override // ignore: invalid_annotation_target
+  Type get type; // ignore: invalid_annotation_target
+  @override
   @JsonKey(name: 'multi_selections')
   List<MultiSelectSelection> get multiSelections;
   @override
   String? get answer;
+
+  /// Create a copy of TermQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TermQuestionImplCopyWith<_$TermQuestionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

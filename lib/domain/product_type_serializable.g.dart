@@ -20,7 +20,7 @@ ProductTypeSerializable _$ProductTypeSerializableFromJson(
               .toList() ??
           const [],
       products: (json['products'] as List<dynamic>?)
-              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+              ?.map(Product.fromJson)
               .toList() ??
           const [],
     );

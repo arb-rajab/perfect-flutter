@@ -8,7 +8,7 @@ import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/user_note_dialogue.dart';
-import 'package:beta/presentation/question_medias/question_medias_screen.dart';
+import 'package:beta/presentation/media_slider/media_slider_screen.dart';
 import 'package:beta/presentation/questions/question_header.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -110,10 +110,10 @@ class _FooterIconsState extends State<FooterIcons> {
                   List<QuestionMedia> questionMedias =
                       await questionMediaService
                           .getAllQuestionMedias(questionData);
-                  Get.delete<QuestionMediasScreenArgument>();
-                  Get.put(QuestionMediasScreenArgument(
-                      questionMedias: questionMedias));
-                  if (context.mounted) context.push(QuestionMediasScreen.route);
+                  Get.delete<MediaSliderScreenArgument>();
+                  Get.put(MediaSliderScreenArgument(
+                      mediaUrls: questionMedias.map((qm) => qm.url).toList()));
+                  if (context.mounted) context.push(MediaSliderScreen.route);
                 },
                 icon: const Icon(Icons.attachment))),
         Visibility(

@@ -5,6 +5,7 @@ import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/product.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,9 @@ class ProductScreenController {
   Product? product;
   final ScrollController scrollController = ScrollController();
   Color titleBackgroundColor = Colors.white.withValues(alpha: 0.5);
+  final CarouselSliderController carouselController =
+      CarouselSliderController();
+  int currentImageIndex = 0;
 
   ProductScreenController(this.state, this.id) {
     WidgetsBinding.instance.addPostFrameCallback((_) => getData());

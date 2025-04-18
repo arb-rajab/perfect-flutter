@@ -1,12 +1,17 @@
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/product.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:beta/presentation/media_slider/media_slider_screen.dart';
 import 'package:beta/presentation/product/product_screen_controller.dart';
+import 'package:beta/presentation/widgets/product_price.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductScreen extends StatefulWidget {
   static const String route = '/products/:productId';
@@ -46,7 +51,10 @@ class _ProductScreenState extends State<ProductScreen> {
       );
     }
     if (controller.product == null) return const Center();
+
     Product product = controller.product!;
+    List<String> imageUrls = [product.imageUrl, ...product.images!];
+
     return ScreenWrapper(
       child: CustomScrollView(
         controller: controller.scrollController,
@@ -56,33 +64,68 @@ class _ProductScreenState extends State<ProductScreen> {
             floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Container(
-                color: controller.titleBackgroundColor,
-                child: Text(
-                  product.name.value.toString(),
-                  style: const TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: product.imageUrl,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black54],
+                  GestureDetector(
+                    onTap: () {
+                      Get.delete<MediaSliderScreen>();
+                      Get.put(MediaSliderScreenArgument(mediaUrls: imageUrls));
+                      context.push(MediaSliderScreen.route);
+                    },
+                    child: CarouselSlider(
+                      carouselController: controller.carouselController,
+                      items: imageUrls.map((url) {
+                        return CachedNetworkImage(
+                          imageUrl: url,
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fit: BoxFit.cover,
+                        );
+                      }).toList(),
+                      options: CarouselOptions(
+                        height: 300,
+                        viewportFraction: 1.0,
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            controller.currentImageIndex = index;
+                          });
+                        },
                       ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: imageUrls.asMap().entries.map((entry) {
+                        return GestureDetector(
+                          onTap: () => controller.carouselController
+                              .animateToPage(entry.key),
+                          child: Container(
+                            width: 8.0,
+                            height: 8.0,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black)
+                                  .withValues(
+                                      alpha: controller.currentImageIndex ==
+                                              entry.key
+                                          ? 0.9
+                                          : 0.4),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],
@@ -97,6 +140,13 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Text(
+                        product.name.value.toString(),
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 10.0),
                       Text(
                         product.description!.value!,
@@ -113,11 +163,9 @@ class _ProductScreenState extends State<ProductScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            product.price.value.toString(),
-                            style: const TextStyle(
-                                fontSize: 18.0, color: Colors.red),
-                          ),
+                          ProductPrice(
+                            product: product,
+                          )
                         ],
                       ),
                       const SizedBox(height: 10.0),

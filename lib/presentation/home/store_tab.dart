@@ -45,7 +45,8 @@ if (controller.loading) {
           }
           if (controller.latestProducts.isNotEmpty ||
               controller.mostSeenProducts.isNotEmpty ||
-              controller.productTypes.isNotEmpty) {
+              controller.productTypes.isNotEmpty ||
+              controller.offers.isNotEmpty) {
             return ListView(
               shrinkWrap: true,
               children: [
@@ -60,6 +61,12 @@ if (controller.loading) {
                     label: StringConstant.mostSeenProducts.tr(),
                     items: controller.mostSeenProducts,
                     loadMoreApi: ApiConstant.mostSeenProducts,
+                  ),
+                if (controller.offers.isNotEmpty)
+                  RowList(
+                    label: StringConstant.offers.tr(),
+                    items: controller.offers,
+                    loadMoreApi: ApiConstant.offers,
                   ),
                 ...controller.productTypes.map((productType) => RowList(
                       label: productType.name.value!,

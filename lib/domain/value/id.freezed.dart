@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Id {
   int? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Id
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $IdCopyWith<Id> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -39,6 +41,8 @@ class _$IdCopyWithImpl<$Res, $Val extends Id> implements $IdCopyWith<$Res> {
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Id
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +72,8 @@ class __$$IdImplCopyWithImpl<$Res> extends _$IdCopyWithImpl<$Res, _$IdImpl>
   __$$IdImplCopyWithImpl(_$IdImpl _value, $Res Function(_$IdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Id
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -107,7 +113,9 @@ class _$IdImpl implements _Id {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Id
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$IdImplCopyWith<_$IdImpl> get copyWith =>
@@ -119,8 +127,11 @@ abstract class _Id implements Id {
 
   @override
   int? get value;
+
+  /// Create a copy of Id
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$IdImplCopyWith<_$IdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

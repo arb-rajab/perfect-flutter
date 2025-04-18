@@ -21,7 +21,9 @@ mixin _$MultiSelectSelection {
   @TitleJsonConverter()
   Title get title => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MultiSelectSelectionCopyWith<MultiSelectSelection> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +51,8 @@ class _$MultiSelectSelectionCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -67,6 +71,8 @@ class _$MultiSelectSelectionCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -75,6 +81,8 @@ class _$MultiSelectSelectionCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get title {
@@ -108,6 +116,8 @@ class __$$MultiSelectSelectionImplCopyWithImpl<$Res>
       $Res Function(_$MultiSelectSelectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -158,7 +168,9 @@ class _$MultiSelectSelectionImpl implements _MultiSelectSelection {
   @override
   int get hashCode => Object.hash(runtimeType, id, title);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MultiSelectSelectionImplCopyWith<_$MultiSelectSelectionImpl>
@@ -179,8 +191,11 @@ abstract class _MultiSelectSelection implements MultiSelectSelection {
   @override
   @TitleJsonConverter()
   Title get title;
+
+  /// Create a copy of MultiSelectSelection
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MultiSelectSelectionImplCopyWith<_$MultiSelectSelectionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

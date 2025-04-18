@@ -1,5 +1,6 @@
 import 'package:beta/domain/product.dart';
 import 'package:beta/presentation/product/product_screen.dart';
+import 'package:beta/presentation/widgets/product_price.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,13 +29,7 @@ class ProductWidget extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Text(product.name.value!),
-            Text(
-              product.price.value.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-              ),
-            ),
+            ProductPrice(product: product)
           ],
         ),
       ),

@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RootTermId {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RootTermId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RootTermIdCopyWith<RootTermId> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$RootTermIdCopyWithImpl<$Res, $Val extends RootTermId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RootTermId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$RootTermIdImplCopyWithImpl<$Res>
       _$RootTermIdImpl _value, $Res Function(_$RootTermIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RootTermId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,7 +119,9 @@ class _$RootTermIdImpl implements _RootTermId {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RootTermId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RootTermIdImplCopyWith<_$RootTermIdImpl> get copyWith =>
@@ -125,8 +133,11 @@ abstract class _RootTermId implements RootTermId {
 
   @override
   int get value;
+
+  /// Create a copy of RootTermId
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RootTermIdImplCopyWith<_$RootTermIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

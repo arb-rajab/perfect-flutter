@@ -155,6 +155,9 @@ class NetworkService {
       }
     } on DioException catch (e) {
       onPostConnect.call();
+      if (kDebugMode) {
+        print(e.error);
+      }
       if (e.type == DioExceptionType.connectionError ||
           e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||

@@ -25,7 +25,9 @@ mixin _$CouponType {
   @NumberOfObjectsJsonConverter()
   NumberOfObjects get numberOfObjects => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CouponTypeCopyWith<CouponType> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +60,8 @@ class _$CouponTypeCopyWithImpl<$Res, $Val extends CouponType>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +90,8 @@ class _$CouponTypeCopyWithImpl<$Res, $Val extends CouponType>
     ) as $Val);
   }
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -94,6 +100,8 @@ class _$CouponTypeCopyWithImpl<$Res, $Val extends CouponType>
     });
   }
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LayerCopyWith<$Res> get layer {
@@ -102,6 +110,8 @@ class _$CouponTypeCopyWithImpl<$Res, $Val extends CouponType>
     });
   }
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RootTermIdCopyWith<$Res> get rootTermId {
@@ -110,6 +120,8 @@ class _$CouponTypeCopyWithImpl<$Res, $Val extends CouponType>
     });
   }
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NumberOfObjectsCopyWith<$Res> get numberOfObjects {
@@ -151,6 +163,8 @@ class __$$CouponTypeImplCopyWithImpl<$Res>
       _$CouponTypeImpl _value, $Res Function(_$CouponTypeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -224,7 +238,9 @@ class _$CouponTypeImpl implements _CouponType {
   int get hashCode =>
       Object.hash(runtimeType, id, layer, rootTermId, numberOfObjects);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CouponTypeImplCopyWith<_$CouponTypeImpl> get copyWith =>
@@ -251,8 +267,11 @@ abstract class _CouponType implements CouponType {
   @override
   @NumberOfObjectsJsonConverter()
   NumberOfObjects get numberOfObjects;
+
+  /// Create a copy of CouponType
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CouponTypeImplCopyWith<_$CouponTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

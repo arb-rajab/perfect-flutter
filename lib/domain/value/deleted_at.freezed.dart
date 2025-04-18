@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$DeletedAt {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DeletedAt
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DeletedAtCopyWith<DeletedAt> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,6 +43,8 @@ class _$DeletedAtCopyWithImpl<$Res, $Val extends DeletedAt>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DeletedAt
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +78,8 @@ class __$$DeletedAtImplCopyWithImpl<$Res>
       _$DeletedAtImpl _value, $Res Function(_$DeletedAtImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DeletedAt
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,7 +118,9 @@ class _$DeletedAtImpl implements _DeletedAt {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DeletedAt
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DeletedAtImplCopyWith<_$DeletedAtImpl> get copyWith =>
@@ -124,8 +132,11 @@ abstract class _DeletedAt implements DeletedAt {
 
   @override
   String? get value;
+
+  /// Create a copy of DeletedAt
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeletedAtImplCopyWith<_$DeletedAtImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

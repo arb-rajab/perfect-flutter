@@ -21,10 +21,10 @@ class ChooseTermScreenArgument {
       required this.couponType});
 }
 
-class QuestionMediasScreenArgument {
-  final List<QuestionMedia> questionMedias;
+class MediaSliderScreenArgument {
+  final List<String> mediaUrls;
 
-  QuestionMediasScreenArgument({required this.questionMedias});
+  MediaSliderScreenArgument({required this.mediaUrls});
 }
 
 class QuestionsScreenArgument {

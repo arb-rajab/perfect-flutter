@@ -12,7 +12,7 @@ import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/product/product_screen.dart';
-import 'package:beta/presentation/question_medias/question_medias_screen.dart';
+import 'package:beta/presentation/media_slider/media_slider_screen.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/questions_report/questions_report_screen.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
@@ -74,8 +74,8 @@ GoRouter router(defaultRoute) =>
       path: QuestionsReportScreen.route,
       builder: (context, state) => QuestionsReportScreen()),
   GoRoute(
-    path: QuestionMediasScreen.route,
-    builder: (context, state) => const QuestionMediasScreen(),
+        path: MediaSliderScreen.route,
+        builder: (context, state) => const MediaSliderScreen(),
   ),
   GoRoute(
       path: EbookScreen.route,

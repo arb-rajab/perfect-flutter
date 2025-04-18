@@ -1,4 +1,3 @@
-import 'package:beta/application/services/database_service.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +5,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 
 class MediaWidget extends StatefulWidget {
-  final QuestionMedia questionMedia;
-  const MediaWidget({super.key, required this.questionMedia});
+  final String url;
+  const MediaWidget({super.key, required this.url});
 
   @override
   State<MediaWidget> createState() => _MediaWidgetState();
@@ -27,8 +26,7 @@ class _MediaWidgetState extends State<MediaWidget> {
         if (!error)
           Expanded(
               child: InAppWebView(
-            initialUrlRequest:
-                URLRequest(url: WebUri(widget.questionMedia.url)),
+            initialUrlRequest: URLRequest(url: WebUri(widget.url)),
             onReceivedError: (controller, request, error) {
               showOkDialogue(context,
                   onConfirm: context.pop, content: error.description);

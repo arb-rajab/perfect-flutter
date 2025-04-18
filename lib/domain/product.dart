@@ -5,6 +5,7 @@ import 'package:beta/domain/value/description.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/price.dart';
 import 'package:beta/domain/value/title.dart';
+import 'package:beta/domain/value/unit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product.freezed.dart';
@@ -17,11 +18,21 @@ class Product with _$Product {
       @TitleJsonConverter() required Title name,
       @JsonKey(name: 'image_url') required String imageUrl,
       @PriceJsonConverter() required Price price,
+      @JsonKey(name: 'offer_price')
+      @PriceJsonConverter()
+      required Price offerPrice,
+      @UnitJsonConverter() required Unit unit,
       @DescriptionJsonConverter() Description? description,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
-      DateTime? createdAt}) = _Product;
+      DateTime? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<String>? images}) = _Product;
 
-  factory Product.fromJson(dynamic json) =>
-      _$ProductFromJson(json);
+  factory Product.fromJson(dynamic json) => _$ProductFromJson(json).copyWith(
+      images: (json['images'] as List?)
+          ?.map((image) => image['image_url'] as String)
+          .toList());
+
+
 }

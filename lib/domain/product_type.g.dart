@@ -14,11 +14,11 @@ _$ProductTypeImpl _$$ProductTypeImplFromJson(Map<String, dynamic> json) =>
           .fromJson((json['parent_type_id'] as num).toInt()),
       name: const TitleJsonConverter().fromJson(json['name'] as String),
       subtypes: (json['sub_types'] as List<dynamic>?)
-              ?.map((e) => ProductType.fromJson(e as Map<String, dynamic>))
+              ?.map(ProductType.fromJson)
               .toList() ??
           const [],
       products: (json['products'] as List<dynamic>?)
-              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+              ?.map(Product.fromJson)
               .toList() ??
           const [],
     );

@@ -223,7 +223,10 @@ class StringConstant {
   static const String _store = 'store';
   static const String store = '$_store.store';
   static const String latestProducts = '$_store.latest-products';
+  static const String offers = '$_store.offers';
   static const String mostSeenProducts = '$_store.most-seen-products';
   static const String createdOn = '$_store.created_on';
   static const String price = '$_store.price';
+  static const String syp = '$_store.syp';
+  static const String usd = '$_store.usd';
 }

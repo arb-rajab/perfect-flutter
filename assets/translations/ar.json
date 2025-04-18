@@ -135,8 +135,11 @@
         "store": "المتجر",
         "latest-products": "آخر المنتجات",
         "most-seen-products": "الأكثر مشاهدة",
+        "offers": "العروض",
         "created_on": "تاريخ الإضافة",
-        "price": "السعر"
+        "price": "السعر",
+        "syp": "ل.س",
+        "usd": "$"
     },
     "terms": {
         "unsupported-content": "محتوى غير مدعوم",

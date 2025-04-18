@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Path {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Path
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PathCopyWith<Path> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$PathCopyWithImpl<$Res, $Val extends Path>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Path
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -71,6 +75,8 @@ class __$$PathImplCopyWithImpl<$Res>
   __$$PathImplCopyWithImpl(_$PathImpl _value, $Res Function(_$PathImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Path
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,7 +115,9 @@ class _$PathImpl implements _Path {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Path
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PathImplCopyWith<_$PathImpl> get copyWith =>
@@ -121,8 +129,11 @@ abstract class _Path implements Path {
 
   @override
   String? get value;
+
+  /// Create a copy of Path
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PathImplCopyWith<_$PathImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

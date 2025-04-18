@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ProductTypeId {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductTypeId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductTypeIdCopyWith<ProductTypeId> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$ProductTypeIdCopyWithImpl<$Res, $Val extends ProductTypeId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProductTypeId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$ProductTypeIdImplCopyWithImpl<$Res>
       _$ProductTypeIdImpl _value, $Res Function(_$ProductTypeIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProductTypeId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,7 +119,9 @@ class _$ProductTypeIdImpl implements _ProductTypeId {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductTypeId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductTypeIdImplCopyWith<_$ProductTypeIdImpl> get copyWith =>
@@ -125,8 +133,11 @@ abstract class _ProductTypeId implements ProductTypeId {
 
   @override
   int get value;
+
+  /// Create a copy of ProductTypeId
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductTypeIdImplCopyWith<_$ProductTypeIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

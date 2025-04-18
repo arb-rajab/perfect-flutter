@@ -3,15 +3,15 @@ import 'package:beta/infrastructure/screenshot/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-class QuestionMediaController {
+class MediaSliderController {
   State state;
   ScreenshotRepository screenshotRepository = Get.find();
-  late QuestionMediasScreenArgument questionMediasScreenArgument;
+  late MediaSliderScreenArgument mediaSlidersScreenArgument;
   int page = 0;
 
-  QuestionMediaController(this.state) {
+  MediaSliderController(this.state) {
     _preventScreenshot();
-    questionMediasScreenArgument = Get.find();
+    mediaSlidersScreenArgument = Get.find();
   }
 
   void _preventScreenshot() => screenshotRepository.preventScreenshot();

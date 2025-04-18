@@ -29,7 +29,9 @@ mixin _$Notification {
   @DateTimeConverter()
   DateTime get creation => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NotificationCopyWith<Notification> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,6 +66,8 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -102,6 +106,8 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     ) as $Val);
   }
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IdCopyWith<$Res> get id {
@@ -110,6 +116,8 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     });
   }
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TitleCopyWith<$Res> get title {
@@ -118,6 +126,8 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     });
   }
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TextCopyWith<$Res> get text {
@@ -126,6 +136,8 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     });
   }
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DataCopyWith<$Res>? get data {
@@ -173,6 +185,8 @@ class __$$NotificationImplCopyWithImpl<$Res>
       _$NotificationImpl _value, $Res Function(_$NotificationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -265,7 +279,9 @@ class _$NotificationImpl implements _Notification {
   int get hashCode =>
       Object.hash(runtimeType, id, title, text, data, seen, creation);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationImplCopyWith<_$NotificationImpl> get copyWith =>
@@ -300,8 +316,11 @@ abstract class _Notification implements Notification {
   @override
   @DateTimeConverter()
   DateTime get creation;
+
+  /// Create a copy of Notification
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NotificationImplCopyWith<_$NotificationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -31,6 +31,7 @@ class ApiConstant {
   static const String products = '${_apiV1}products';
   static const String productTypes = '${_apiV1}product-types/(PRODUCT_TYPE)';
   static const String latestProducts = '${_apiV1}products/latest';
+  static const String offers = '${_apiV1}products/offers';
   static const String mostSeenProducts = '${_apiV1}products/most-seen';
   static const String productTypesProducts =
       '${_apiV1}product-types/(PRODUCT_TYPE)/products';

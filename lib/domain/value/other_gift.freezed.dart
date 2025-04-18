@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$OtherGift {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtherGift
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OtherGiftCopyWith<OtherGift> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,6 +43,8 @@ class _$OtherGiftCopyWithImpl<$Res, $Val extends OtherGift>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of OtherGift
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +78,8 @@ class __$$OtherGiftImplCopyWithImpl<$Res>
       _$OtherGiftImpl _value, $Res Function(_$OtherGiftImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OtherGift
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,7 +118,9 @@ class _$OtherGiftImpl implements _OtherGift {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OtherGift
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OtherGiftImplCopyWith<_$OtherGiftImpl> get copyWith =>
@@ -124,8 +132,11 @@ abstract class _OtherGift implements OtherGift {
 
   @override
   String? get value;
+
+  /// Create a copy of OtherGift
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OtherGiftImplCopyWith<_$OtherGiftImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

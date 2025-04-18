@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Description {
   String? get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DescriptionCopyWith<Description> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$DescriptionCopyWithImpl<$Res, $Val extends Description>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$DescriptionImplCopyWithImpl<$Res>
       _$DescriptionImpl _value, $Res Function(_$DescriptionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,7 +119,9 @@ class _$DescriptionImpl implements _Description {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DescriptionImplCopyWith<_$DescriptionImpl> get copyWith =>
@@ -125,8 +133,11 @@ abstract class _Description implements Description {
 
   @override
   String? get value;
+
+  /// Create a copy of Description
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DescriptionImplCopyWith<_$DescriptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

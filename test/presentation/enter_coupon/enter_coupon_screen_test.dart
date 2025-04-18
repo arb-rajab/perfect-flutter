@@ -42,54 +42,49 @@ Future<void> main() async {
     testWidgets('submit form is visible for small devices',
         (widgetTester) async {
       widgetTester.view.physicalSize = testSizes['small']!;
+      widgetTester.view.devicePixelRatio = 1;
+      addTearDown(widgetTester.view.resetPhysicalSize);
       await widgetTester.pumpWidget(const MyApp(
         defaultRoute: EnterCouponScreen.route,
       ));
       await widgetTester.pumpAndSettle();
       expect(find.byType(SubmitForm), findsOneWidget);
-      addTearDown(() {
-        widgetTester.view.resetPhysicalSize();
-      });
     });
 
     testWidgets('submit form is visible for desktop devices',
         (widgetTester) async {
       widgetTester.view.physicalSize = testSizes['desktop']!;
+      widgetTester.view.devicePixelRatio = 1;
+      addTearDown(widgetTester.view.resetPhysicalSize);
       await widgetTester.pumpWidget(const MyApp(
         defaultRoute: EnterCouponScreen.route,
       ));
       await widgetTester.pumpAndSettle();
       expect(find.byType(SubmitForm), findsOneWidget);
-      addTearDown(() {
-        widgetTester.view.resetPhysicalSize();
-      });
     });
   });
 
   group('logo tests', () {
     testWidgets('logo is visible for small devices', (widgetTester) async {
       widgetTester.view.physicalSize = testSizes['small']!;
+      widgetTester.view.devicePixelRatio = 1;
+      addTearDown(widgetTester.view.resetPhysicalSize);
       await widgetTester.pumpWidget(const MyApp(
         defaultRoute: EnterCouponScreen.route,
       ));
       await widgetTester.pumpAndSettle();
       expect(find.byType(NoBackgroundLogo), findsOneWidget);
-      addTearDown(() {
-        widgetTester.view.resetPhysicalSize();
-      });
     });
 
     testWidgets('logo is visible for desktop devices', (widgetTester) async {
       widgetTester.view.physicalSize = testSizes['desktop']!;
+      widgetTester.view.devicePixelRatio = 1;
+      addTearDown(widgetTester.view.resetPhysicalSize);
       await widgetTester.pumpWidget(const MyApp(
         defaultRoute: EnterCouponScreen.route,
       ));
       await widgetTester.pumpAndSettle();
       expect(find.byType(NoBackgroundLogo), findsOneWidget);
-      addTearDown(() {
-        widgetTester.view.resetPhysicalSize();
-      });
     });
   });
-  
 }

@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Type {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Type
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TypeCopyWith<Type> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$TypeCopyWithImpl<$Res, $Val extends Type>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Type
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -71,6 +75,8 @@ class __$$TypeImplCopyWithImpl<$Res>
   __$$TypeImplCopyWithImpl(_$TypeImpl _value, $Res Function(_$TypeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Type
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,7 +115,9 @@ class _$TypeImpl implements _Type {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Type
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TypeImplCopyWith<_$TypeImpl> get copyWith =>
@@ -121,8 +129,11 @@ abstract class _Type implements Type {
 
   @override
   int get value;
+
+  /// Create a copy of Type
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TypeImplCopyWith<_$TypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

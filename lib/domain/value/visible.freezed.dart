@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Visible {
   int get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Visible
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VisibleCopyWith<Visible> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -40,6 +42,8 @@ class _$VisibleCopyWithImpl<$Res, $Val extends Visible>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Visible
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,6 +76,8 @@ class __$$VisibleImplCopyWithImpl<$Res>
       _$VisibleImpl _value, $Res Function(_$VisibleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Visible
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -110,7 +116,9 @@ class _$VisibleImpl implements _Visible {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Visible
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VisibleImplCopyWith<_$VisibleImpl> get copyWith =>
@@ -122,8 +130,11 @@ abstract class _Visible implements Visible {
 
   @override
   int get value;
+
+  /// Create a copy of Visible
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VisibleImplCopyWith<_$VisibleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
