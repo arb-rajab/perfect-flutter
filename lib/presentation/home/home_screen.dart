@@ -24,7 +24,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:upgrader/upgrader.dart';
 
 class HomeScreen extends StatefulWidget {
-  static String route = '/home';
+  static const String route = '/home';
   const HomeScreen({super.key});
 
   @override

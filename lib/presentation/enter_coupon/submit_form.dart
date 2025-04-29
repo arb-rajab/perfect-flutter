@@ -9,6 +9,7 @@ import 'package:beta/presentation/widgets/input_widget.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +25,8 @@ class SubmitForm extends StatelessWidget {
           padding: const EdgeInsets.all(margin),
           child: Column(
             children: [
-              FormMessageWidget(
+              if (_controller.message.isNotEmpty)
+                FormMessageWidget(
                   message: _controller.message,
                   onDismiss: _controller.dismissMessage),
               EnterNameInput(),
@@ -68,10 +70,19 @@ class EnterCouponInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InputWidget(
-        label: StringConstant.coupon.tr(),
-        validator: (value) => Validator.multiValidators(
-            [Validator.empty, Validator.isMD5], value),
-        controller: controller.couponController);
+      label: StringConstant.coupon.tr(),
+      validator: (value) {
+        // Trim the value before validation
+        final trimmedValue = value?.trim();
+        return Validator.multiValidators(
+            [Validator.empty, Validator.isMD5], trimmedValue);
+      },
+      controller: controller.couponController,
+      // Optional: Add input formatter to prevent whitespace input
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(RegExp(r'^\s|\s$')),
+      ],
+    );
   }
 }
 

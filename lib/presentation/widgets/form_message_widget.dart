@@ -12,7 +12,6 @@ class FormMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (message.isNotEmpty) {
       return OpacityAnimation(
         child: SingleChildScrollView(
           child: MaterialBanner(
@@ -27,8 +26,6 @@ class FormMessageWidget extends StatelessWidget {
             ),
           ),
         ),
-      );
-    }
-    return const SizedBox();
+    );
   }
 }

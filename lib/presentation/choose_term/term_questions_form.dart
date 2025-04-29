@@ -52,6 +52,7 @@ class _TermQuestionsFormState extends State<TermQuestionsForm> {
           SingleChildScrollView(child: Column(children: termQuestionsWidgets)),
       actions: [
         TextButton(
+            key: const Key('ok'),
             onPressed: () => context.pop(termQuestions),
             child: Text(StringConstant.ok.tr()))
       ],

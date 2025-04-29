@@ -73,7 +73,7 @@ abstract class ListController<T> implements ListControllerBase {
   void postListFetching() {
     if (state.mounted) {
       state.setState(() {
-        if (items.isNotEmpty) message = '';
+        // if (items.isNotEmpty) message = '';
         loading = false;
       });
     }

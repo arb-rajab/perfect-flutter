@@ -30,7 +30,7 @@ import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
-import 'package:beta/helper/webview_mockup.dart';
+import 'package:beta/infrastructure/clipboard_repository.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
@@ -116,17 +116,19 @@ class MainController {
       Get.put<AudioHandler>(MockAudioHandler());
     } else {
       Get.put(await AudioService.init<AudioHandler>(
-      builder: () => AudioPlayerHandler(audioPlayer),
-      config: AudioServiceConfig(
-        androidNotificationChannelId:
-            '${packageRepository.getPackageName()}.channel.audio',
-        androidNotificationChannelName: packageRepository.getApplicationName(),
-        androidNotificationOngoing: true,
-      ),
-    ));
+        builder: () => AudioPlayerHandler(audioPlayer),
+        config: AudioServiceConfig(
+          androidNotificationChannelId:
+              '${packageRepository.getPackageName()}.channel.audio',
+          androidNotificationChannelName:
+              packageRepository.getApplicationName(),
+          androidNotificationOngoing: true,
+        ),
+      ));
     }
     Get.put(PathService());
     Get.put(NotificationRepository());
+    Get.put(ClipboardRepository());
   }
 }
 

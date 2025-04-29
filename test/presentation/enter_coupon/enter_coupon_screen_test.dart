@@ -1,5 +1,4 @@
 import 'package:beta/main.dart';
-import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/enter_coupon/submit_form.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
@@ -7,10 +6,10 @@ import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../common/tests.dart';
+
 Future<void> main() async {
-  MainController.testing = true;
-  TestWidgetsFlutterBinding.ensureInitialized();
-  await MainController.initServices();
+  await initTests();
   final testSizes = {
     'small': const Size(300, 600), // Small mobile
     'medium': const Size(600, 800), // Tablet portrait

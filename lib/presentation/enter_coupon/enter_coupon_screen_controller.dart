@@ -48,7 +48,7 @@ class EnterCouponScreenController {
                 activateFreeVersionClicked = false;
               }),
           onConnectionSucceed: (body) =>
-              _processResponse(free: false, body: body),
+              _processResponse(body: body),
           onConnectionFailed: () => state.setState(() {
                 message = StringConstant.noConnection.tr();
               }),
@@ -66,7 +66,7 @@ class EnterCouponScreenController {
       });
 
   Future<void> _processResponse(
-      {required bool free, required dynamic body}) async {
+      {required dynamic body}) async {
     UserService userService = Get.find();
     userService.setId(body['deviceId']);
     Coupon coupon = Coupon.fromJson(body['coupon']);
@@ -75,7 +75,7 @@ class EnterCouponScreenController {
         (body['terms'] as List).map((e) => TermData.fromJson(e)).toList();
     await Get.delete<ChooseTermScreenArgument>();
     Get.put(ChooseTermScreenArgument(
-        coupon: coupon, terms: terms, free: free, couponType: couponType));
+        coupon: coupon, terms: terms, couponType: couponType));
     if (state.mounted) state.context.push(ChooseTermScreen.route);
   }
 
@@ -98,7 +98,7 @@ class EnterCouponScreenController {
                 activateFreeVersionClicked = false;
               }),
           onConnectionSucceed: (body) =>
-              _processResponse(free: true, body: body),
+              _processResponse(body: body),
           onConnectionFailed: () => state.setState(() {
                 message = StringConstant.noConnection.tr();
               }),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/infrastructure/package_repository.dart';
+import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/open.dart';
 
 DatabaseService constructDb() {
+  if (MainController.testing) return DatabaseService(NativeDatabase.memory());
   var db = LazyDatabase(() async {
     DeviceRepositoryBase deviceRepository = Get.find();
     PackageRepository packageRepository = Get.find();

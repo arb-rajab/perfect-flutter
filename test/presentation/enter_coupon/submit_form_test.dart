@@ -1,8 +1,6 @@
-import 'package:beta/application/services/network_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main.dart';
-import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
 import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
@@ -10,14 +8,13 @@ import 'package:beta/presentation/enter_coupon/submit_form.dart';
 import 'package:beta/presentation/widgets/form_message_widget.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http_mock_adapter/http_mock_adapter.dart';
+
+import '../../common/tests.dart';
 
 Future<void> main() async {
-  MainController.testing = true;
-  TestWidgetsFlutterBinding.ensureInitialized();
-  await MainController.initServices();
-  final DioAdapter dioAdapter = DioAdapter(dio: NetworkService.dio);
+  await initTests();
 
   group('rendering tests', () {
     testWidgets('enter name text field is rendered', (widgetTester) async {
@@ -63,6 +60,8 @@ Future<void> main() async {
       await widgetTester
           .tap(find.widgetWithText(SubmitButton, StringConstant.ok));
       await widgetTester.pumpAndSettle();
+      expect(find.byType(FormMessageWidget), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.text(StringConstant.pleaseFillThisField), findsOneWidget);
     });
 
@@ -75,6 +74,8 @@ Future<void> main() async {
       await widgetTester
           .tap(find.widgetWithText(SubmitButton, StringConstant.ok));
       await widgetTester.pumpAndSettle();
+      expect(find.byType(FormMessageWidget), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.textContaining(StringConstant.pleaseFillThisField),
           findsOneWidget);
     });
@@ -90,8 +91,21 @@ Future<void> main() async {
       await widgetTester
           .tap(find.widgetWithText(SubmitButton, StringConstant.ok));
       await widgetTester.pumpAndSettle();
+      expect(find.byType(FormMessageWidget), findsNothing);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.textContaining(StringConstant.notValidMD5Format),
           findsOneWidget);
+    });
+
+    testWidgets('coupon input trims white spaces', (widgetTester) async {
+      String randomCoupon = ' Random coupon ';
+      await widgetTester.pumpWidget(const MyApp(
+        defaultRoute: EnterCouponScreen.route,
+      ));
+      await widgetTester.pumpAndSettle();
+      await widgetTester.enterText(find.byType(EnterCouponInput), randomCoupon);
+      expect(find.text(randomCoupon), findsNothing);
+      expect(find.text(randomCoupon.trim()), findsOneWidget);
     });
 
     testWidgets('message is shown when recieving message from server',
@@ -169,6 +183,34 @@ Future<void> main() async {
       expect(
           find.widgetWithText(FormMessageWidget, StringConstant.noConnection),
           findsOneWidget);
+    });
+
+    testWidgets('loading widget is displayed once loading',
+        (widgetTester) async {
+      String coupon = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      String randomName = 'Random name';
+      dioAdapter.onPost(
+          ApiConstant.checkCoupon.replaceAll(
+            '(SERIAL)',
+            coupon,
+          ), (server) {
+        server.throws(
+            200,
+            DioException.connectionError(
+                requestOptions: RequestOptions(), reason: 'no connection'),
+            delay: const Duration(seconds: 5));
+      }, data: FormData.fromMap({'name': randomName}));
+      await widgetTester.pumpWidget(const MyApp(
+        defaultRoute: EnterCouponScreen.route,
+      ));
+      await widgetTester.pumpAndSettle();
+      await widgetTester.enterText(find.byType(EnterNameInput), randomName);
+      await widgetTester.enterText(find.byType(EnterCouponInput), coupon);
+      await widgetTester
+          .tap(find.widgetWithText(SubmitButton, StringConstant.ok));
+      await widgetTester.pump();
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      await widgetTester.pumpAndSettle();
     });
   });
 
@@ -193,6 +235,8 @@ Future<void> main() async {
           SubmitButton, StringConstant.activateFreeVersion));
       await widgetTester.pumpAndSettle();
       expect(find.text(StringConstant.pleaseFillThisField), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.byType(FormMessageWidget), findsNothing);
     });
 
     testWidgets('message is shown when recieving message from server',
@@ -256,6 +300,30 @@ Future<void> main() async {
       expect(
           find.widgetWithText(FormMessageWidget, StringConstant.noConnection),
           findsOneWidget);
+    });
+
+    testWidgets('loading widget is visible while loading',
+        (widgetTester) async {
+      String coupon = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+      String randomName = 'Random name';
+      dioAdapter.onPost(ApiConstant.activateFreeVersion, (server) {
+        server.throws(
+            200,
+            DioException.connectionError(
+                requestOptions: RequestOptions(), reason: 'no connection'),
+            delay: const Duration(seconds: 1));
+      }, data: FormData.fromMap({'name': randomName}));
+      await widgetTester.pumpWidget(const MyApp(
+        defaultRoute: EnterCouponScreen.route,
+      ));
+      await widgetTester.pumpAndSettle();
+      await widgetTester.enterText(find.byType(EnterNameInput), randomName);
+      await widgetTester.enterText(find.byType(EnterCouponInput), coupon);
+      await widgetTester.tap(find.widgetWithText(
+          SubmitButton, StringConstant.activateFreeVersion));
+      await widgetTester.pump();
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      await widgetTester.pumpAndSettle();
     });
   });
 

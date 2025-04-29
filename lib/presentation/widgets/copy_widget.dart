@@ -1,6 +1,7 @@
+import 'package:beta/infrastructure/clipboard_repository.dart';
 import 'package:beta/presentation/dialogues/success_dialogue.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/instance_manager.dart';
 
 class CopyWidget extends StatelessWidget {
   final String content;
@@ -10,7 +11,8 @@ class CopyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        Clipboard.setData(ClipboardData(text: content));
+        ClipboardRepository clipboardRepository = Get.find();
+        clipboardRepository.setText(content);
         showSuccessDialogue(context);
       },
       icon: const Icon(

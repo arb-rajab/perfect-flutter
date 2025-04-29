@@ -33,7 +33,7 @@ class _ChooseTermScreenState extends State<ChooseTermScreen> {
     }
     return PopScope(
       canPop: _controller.canPop(),
-      onPopInvoked: _controller.onPopInvoked,
+      onPopInvokedWithResult: _controller.onPopInvoked,
       child: ScreenWrapper(
           child: Column(
         children: [

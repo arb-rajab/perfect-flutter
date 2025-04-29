@@ -1,3 +1,4 @@
+import 'package:beta/common/screen_layout.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/constants/tutorial_constant.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen_controller.dart';
@@ -37,7 +38,7 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLargeScreen = MediaQuery.of(context).size.width > 600;
+    final isLargeScreen = !ScreenLayout.isExtraSmall(context);
     return ScreenWrapper(
       targets: [
         CustomTargetFocus(
@@ -63,17 +64,11 @@ class _EnterCouponScreenState extends State<EnterCouponScreen> {
           icon: const Icon(ScanQrScreen.icon),
           label: Text(ScanQrScreen.title)),
       child: CustomListView(
-        children: [isLargeScreen ? _DesktopLayout() : _MobileLayout()],
+        children: [
+          isLargeScreen ? _DesktopLayout() : const NoBackgroundLogo(),
+          if (!isLargeScreen) SubmitForm()
+        ],
       ),
-    );
-  }
-}
-
-class _MobileLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [const NoBackgroundLogo(), SubmitForm()],
     );
   }
 }

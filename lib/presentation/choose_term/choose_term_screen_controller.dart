@@ -14,6 +14,7 @@ import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
+import 'package:beta/common/screen_layout.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
@@ -28,6 +29,7 @@ import 'package:beta/domain/term_tag_data.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dart';
 import 'package:beta/domain/value/layer.dart';
 import 'package:beta/helper/failure_response.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/choose_term/check_term_widget.dart';
 import 'package:beta/presentation/choose_term/choose_term_screen.dart';
 import 'package:beta/presentation/choose_term/term_questions_form.dart';
@@ -59,6 +61,16 @@ class ChooseTermScreenController extends ListController {
             fromJson: TermData.fromJson,
             showLoadMore: false);
 
+  @override
+  int get itemsPerRow => ScreenLayout.isExtraSmall(state.context)
+      ? 1
+      : ScreenLayout.isSmall(state.context)
+          ? 2
+          : ScreenLayout.isMedium(state.context)
+              ? 3
+              : 4;
+
+  bool finished = false;
   bool okButtonClicked = false;
   Layer layer = const Layer(0);
   List termsListing = [];
@@ -69,7 +81,7 @@ class ChooseTermScreenController extends ListController {
   List<TermQuestion> termQuestions = [];
 
   Future<void> onOkClicked() async {
-    if (!argument.free) {
+    if (argument.coupon.free == 0) {
       showConfirmationDialog(state.context, sendData,
           content: const ConfirmationDialogueWidget());
     } else {
@@ -77,7 +89,6 @@ class ChooseTermScreenController extends ListController {
     }
   }
 
-  //TODO add tests
   Future sendData() => NetworkService(state.context,
           onPreConnect: () => state.setState(() {
                 message = '';
@@ -94,6 +105,14 @@ class ChooseTermScreenController extends ListController {
               List<TermQuestion> termQuestions = (data['termQuestions'] as List)
                   .map((e) => TermQuestion.fromJson(e))
                   .toList();
+              termQuestions = termQuestions.map((termQuestion) {
+                if (termQuestion.type == TermQuestionType.multiSelection) {
+                  return termQuestion.copyWith(
+                      answer:
+                          termQuestion.multiSelections[0].id.value.toString());
+                }
+                return termQuestion;
+              }).toList();
               var result = await showDialog(
                   context: state.context,
                   builder: (c) => TermQuestionsForm(
@@ -183,7 +202,14 @@ class ChooseTermScreenController extends ListController {
                   CouponsLinkedToTerm(
                       couponId: argument.coupon.id, termId: term.term.id));
             }
-            if (state.mounted) {
+            state.setState(() {
+              message = '';
+              loading = false;
+              okButtonClicked = false;
+            });
+            if (MainController.testing) {
+              finished = true;
+            } else if (state.mounted) {
               GoRouter.of(state.context).popUntil(HomeScreen.route);
             }
           },
@@ -202,7 +228,6 @@ class ChooseTermScreenController extends ListController {
                 .toList())
           });
 
-  //TODO add test
   bool showCheckBoxes() =>
       argument.terms.isNotEmpty || layer == argument.couponType.layer;
 
@@ -218,7 +243,6 @@ class ChooseTermScreenController extends ListController {
     return url.replaceFirst('(TERM_ID)', termData!.term.id.toString());
   }
 
-  //TODO add test
   void checkTerm(TermData termData, bool? value) {
     if (argument.terms.isNotEmpty) return;
     state.setState(() {
@@ -231,7 +255,6 @@ class ChooseTermScreenController extends ListController {
     });
   }
 
-  //TODO add test
   Future onTermClick(int index) async {
     TermData termData = items[index];
     if (showCheckBoxes()) {
@@ -242,7 +265,7 @@ class ChooseTermScreenController extends ListController {
     indexUrl = _getUrl(termData: termData);
     preItemLoading(index);
     await init(refresh: true);
-    // postItemLoading(index);
+    postItemLoading(index);
   }
 
   void _setLayer(Layer layer) {
@@ -256,14 +279,11 @@ class ChooseTermScreenController extends ListController {
     termsListing.add([...items]);
   }
 
-  //TODO add test
   bool isTermChecked(TermData termData) => checkedTerms.contains(termData);
 
-  //TODO add test
   bool canPop() => layer.value < 2;
 
-  //TODO add test
-  void onPopInvoked(bool value) {
+  void onPopInvoked(bool value, dynamic result) {
     if (!value) {
       _setLayer(Layer(layer.value - 1));
       termsListing.removeLast();
@@ -274,7 +294,6 @@ class ChooseTermScreenController extends ListController {
     }
   }
 
-  //TODO add test
   bool okButtonVisible() =>
       checkedTerms.length == argument.couponType.numberOfObjects.value;
 
@@ -286,7 +305,6 @@ class ChooseTermScreenController extends ListController {
         if (argument.terms.isNotEmpty) checkedTerms = argument.terms;
       };
 
-  //TODO add test
   bool displayPath(index) {
     TermData currentTermData = items[index];
     if (currentTermData.path == null) return false;

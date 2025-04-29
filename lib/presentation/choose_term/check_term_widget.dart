@@ -8,12 +8,11 @@ import 'package:get/instance_manager.dart';
 
 class CheckTermWidget extends StatelessWidget {
   final int index;
-
-  const CheckTermWidget({super.key, required this.index});
+  final ChooseTermScreenController controller = Get.find();
+  CheckTermWidget({super.key, required this.index});
 
   @override
-  Widget build(BuildContext context) {
-    ChooseTermScreenController controller = Get.find();
+  Widget build(BuildContext context) {  
     TermData termData = controller.items[index];
     BorderSide borderSide = BorderSide(color: Theme.of(context).primaryColor);
     return WidgetWrapper(

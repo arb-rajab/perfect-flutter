@@ -11,13 +11,11 @@ import 'package:beta/presentation/questions/questions_screen.dart';
 class ChooseTermScreenArgument {
   final Coupon coupon;
   final List<TermData> terms;
-  final bool free;
   final CouponType couponType;
 
   ChooseTermScreenArgument(
       {required this.coupon,
       required this.terms,
-      required this.free,
       required this.couponType});
 }
 
