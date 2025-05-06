@@ -9,6 +9,7 @@ late DioAdapter dioAdapter;
 Future initTests() async {
   MainController.testing = true;
   TestWidgetsFlutterBinding.ensureInitialized();
+  WidgetController.hitTestWarningShouldBeFatal = true;
   await MainController.initServices();
   dioAdapter = DioAdapter(dio: NetworkService.dio);
   EasyLocalization.logger.enableLevels = [];

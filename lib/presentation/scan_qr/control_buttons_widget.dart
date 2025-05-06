@@ -9,7 +9,7 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RectangleWidgetWithOpacity(
+    return RectangleWidgetWithOpacity(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -21,17 +21,15 @@ class ControlButtons extends StatelessWidget {
 }
 
 class FlashIcon extends StatelessWidget {
-  const FlashIcon({super.key});
+  FlashIcon({super.key});
   static const IconData flashOff = Icons.flash_off;
   static const IconData flashOn = Icons.flash_on;
+  final ScanQrScreenController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    ScanQrScreenController controller = Get.find();
     return IconButton(
-        onPressed: () async {
-          await controller.mobileScannerController.toggleTorch();
-        },
+        onPressed: controller.toggleTorch,
         icon: ValueListenableBuilder(
             valueListenable: controller.mobileScannerController.torchState,
             builder: (context, state, child) {
@@ -48,15 +46,13 @@ class FlashIcon extends StatelessWidget {
 class CameraIcon extends StatelessWidget {
   static const cameraFrontIcon = Icons.camera_front;
   static const cameraRearIcon = Icons.camera_rear;
-  const CameraIcon({super.key});
+  CameraIcon({super.key});
+  final ScanQrScreenController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    ScanQrScreenController controller = Get.find();
     return IconButton(
-      onPressed: () async {
-        await controller.mobileScannerController.switchCamera();
-      },
+      onPressed: controller.switchCamera,
       icon: ValueListenableBuilder(
         valueListenable: controller.mobileScannerController.cameraFacingState,
         builder: (context, state, child) {

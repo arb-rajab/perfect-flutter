@@ -1,4 +1,5 @@
 import 'package:beta/configs/style.dart';
+import 'package:beta/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,14 +16,17 @@ class _OpacityAnimationState extends State<OpacityAnimation> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () {
-      if (mounted) setState(() => _opacity = 1);
-    });
+    if (!MainController.testing) {
+      Future.delayed(Duration.zero, () {
+        if (mounted) setState(() => _opacity = 1);
+      });
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (MainController.testing) return widget.child;
     return AnimatedOpacity(
         opacity: _opacity, duration: animationDuration, child: widget.child);
   }

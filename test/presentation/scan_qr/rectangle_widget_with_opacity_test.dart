@@ -1,4 +1,3 @@
-import 'package:beta/configs/style.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/scan_qr/rectangle_widget_with_opacity.dart';
 import 'package:beta/presentation/widgets/rectangle_widget.dart';
@@ -14,7 +13,6 @@ void main() async {
     String randomText = 'random text';
     await widgetTester.pumpWidget(
         MaterialApp(home: RectangleWidgetWithOpacity(child: Text(randomText))));
-    await widgetTester.pump(animationDuration);
     expect(find.text(randomText), findsOneWidget);
   });
 
@@ -23,7 +21,6 @@ void main() async {
     String randomText = 'random text';
     await widgetTester.pumpWidget(
         MaterialApp(home: RectangleWidgetWithOpacity(child: Text(randomText))));
-    await widgetTester.pump(animationDuration);
     expect(find.byType(RectangleWidget), findsOneWidget);
   });
 }

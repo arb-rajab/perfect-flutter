@@ -8,7 +8,6 @@ import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ScanQrScreen extends StatefulWidget {
   static const String route = '/scan-qr';
@@ -32,28 +31,51 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
-        child: Stack(
-      alignment: Alignment.center,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Background scanner (always visible)
+          QrScannerWidget(),
+
+          // Overlay content
+          if (_controller.started) _buildScannerOverlay(),
+          if (!_controller.started) _buildPermissionOverlay(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScannerOverlay() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        QrScannerWidget(),
-        if (_controller.started)
-          Positioned(
-              bottom: margin,
-              child: RectangleWidgetWithOpacity(
-                  child: Text(StringConstant.placeQrInRectangle.tr()))),
-        if (_controller.started)
-          const Positioned(top: margin, child: ControlButtons()),
-        if (!_controller.started)
-          const Center(
-            child: AllowCameraPermissionInAppSettings(),
-          )
+        // Top controls
+        const Padding(
+          padding: EdgeInsets.only(top: margin),
+          child: ControlButtons(),
+        ),
+
+        // Bottom text
+        Padding(
+          padding: const EdgeInsets.only(bottom: margin),
+          child: RectangleWidgetWithOpacity(
+            child: Text(StringConstant.placeQrInRectangle.tr()),
+          ),
+        ),
       ],
-    ));
+    );
+  }
+
+  Widget _buildPermissionOverlay() {
+    return Center(
+      child: AllowCameraPermissionInAppSettings(),
+    );
   }
 }
 
 class AllowCameraPermissionInAppSettings extends StatelessWidget {
-  const AllowCameraPermissionInAppSettings({super.key});
+  AllowCameraPermissionInAppSettings({super.key});
+  final ScanQrScreenController scanQrScreenController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +87,7 @@ class AllowCameraPermissionInAppSettings extends StatelessWidget {
           height: margin,
         ),
         GestureDetector(
-          onTap: openAppSettings,
+          onTap: scanQrScreenController.openSettings,
           child: Text(
             StringConstant.goToAppSettings.tr(),
             style: TextStyle(color: Theme.of(context).primaryColor),

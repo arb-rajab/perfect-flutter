@@ -1,3 +1,4 @@
+import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main_controller.dart';
@@ -110,43 +111,48 @@ class _ScreenWrapperState extends State<ScreenWrapper> {
     _controller = Get.isRegistered<ScreenWrapperController>(tag: tag)
         ? Get.find(tag: tag)
         : Get.put(ScreenWrapperController(this), tag: tag);
-    return SafeArea(
-        child: DefaultTabController(
-      length: widget.tabs.length,
-      child: Scaffold(
-          drawer: widget.drawer,
-          appBar: widget.titleText != null ||
-                  widget.title != null ||
-                  widget.drawer != null ||
-                  widget.actions != null
-              ? AppBar(
-                  actions: widget.actions,
-                  leading: widget.icon != null ? Icon(widget.icon) : null,
-                  title: widget.titleText != null
-                      ? Hero(
-                          tag: widget.titleText!,
-                          child: Text(widget.titleText!),
-                        )
-                      : widget.title,
-                  bottom: widget.tabs.isNotEmpty
-                      ? TabBar(
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.center,
-                          tabs: widget.tabs,
-                        )
-                      : null,
-                )
-              : null,
-          body: widget.child,
-          bottomNavigationBar: widget.bottomNavigationBar,
-          floatingActionButton:
-              _controller.isVisible ? widget.floatingActionButton : null,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat
-          //  widget.bottomNavigationBar != null
-          //     ? FloatingActionButtonLocation.miniCenterDocked
-          //     : FloatingActionButtonLocation.endFloat
-          ),
-    ));
+    ThemeService themeService = Get.find();
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+          textScaler: TextScaler.linear(themeService.getScaleFactor())),
+      child: SafeArea(
+          child: DefaultTabController(
+        length: widget.tabs.length,
+        child: Scaffold(
+            drawer: widget.drawer,
+            appBar: widget.titleText != null ||
+                    widget.title != null ||
+                    widget.drawer != null ||
+                    widget.actions != null
+                ? AppBar(
+                    actions: widget.actions,
+                    leading: widget.icon != null ? Icon(widget.icon) : null,
+                    title: widget.titleText != null
+                        ? Hero(
+                            tag: widget.titleText!,
+                            child: Text(widget.titleText!),
+                          )
+                        : widget.title,
+                    bottom: widget.tabs.isNotEmpty
+                        ? TabBar(
+                            isScrollable: true,
+                            tabAlignment: TabAlignment.center,
+                            tabs: widget.tabs,
+                          )
+                        : null,
+                  )
+                : null,
+            body: widget.child,
+            bottomNavigationBar: widget.bottomNavigationBar,
+            floatingActionButton:
+                _controller.isVisible ? widget.floatingActionButton : null,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat
+            //  widget.bottomNavigationBar != null
+            //     ? FloatingActionButtonLocation.miniCenterDocked
+            //     : FloatingActionButtonLocation.endFloat
+            ),
+      )),
+    );
   }
 }
 
