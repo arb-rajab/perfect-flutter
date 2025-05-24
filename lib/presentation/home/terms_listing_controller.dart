@@ -2,6 +2,7 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/term_label_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/common/screen_layout.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/home/term_widget.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
@@ -28,6 +29,15 @@ class TermsListingController extends ListController {
             showRefresh: false,
             fromJson: TermData.fromJson,
             showLoadMore: false);
+
+  @override
+  int get itemsPerRow => ScreenLayout.isExtraSmall(state.context)
+      ? 1
+      : ScreenLayout.isSmall(state.context)
+          ? 2
+          : ScreenLayout.isMedium(state.context)
+              ? 3
+              : 4;
 
   Future<void> refresh() async {
     reload = true;

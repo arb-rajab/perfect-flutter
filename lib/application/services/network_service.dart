@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/network/shared.dart';
 import 'package:beta/helper/failure_response.dart';
+import 'package:beta/main_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -269,7 +270,11 @@ class NetworkService {
       required String filePath,
       required Function(int recieved, int total) onRecieveProgress}) async {
     onPreConnect.call();
-    await dio.download(url, filePath, onReceiveProgress: onRecieveProgress);
+    if (MainController.testing) {
+      await dio.get(url);
+    } else {
+      await dio.download(url, filePath, onReceiveProgress: onRecieveProgress);
+    }
     onPostConnect.call();
     onConnectionSucceed.call(null);
   }

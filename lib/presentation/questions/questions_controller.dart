@@ -58,7 +58,7 @@ class QuestionsController {
   List<CustomQuestionTag> selectedTags = [];
   Term? term;
   bool questionsFilteringEnabled = false;
-  late Timer timer;
+  Timer? timer;
   Set<AnswerData> checkedAnswers = HashSet();
   late QuestionData firstVisibleQuestions;
   String? search;
@@ -344,7 +344,7 @@ class QuestionsController {
 
   void showTimer() {
     int totalTiming = questions.length * 60;
-    int remaining = totalTiming - timer.tick;
+    int remaining = totalTiming - timer!.tick;
     String remainingString = "${remaining ~/ 60}:${remaining % 60}";
     state.context.showInfoBar(
         content: Text(StringConstant.remainingTime
@@ -431,9 +431,9 @@ class QuestionsController {
   void moveToQuestionsReportScreen() {
     templateExited = true;
     correctQuestions();
-    timer.cancel();
+    timer?.cancel();
     Get.delete<QuestionsReportScreenArgument>();
-    Get.put(QuestionsReportScreenArgument(questions: questions, timer: timer));
+    Get.put(QuestionsReportScreenArgument(questions: questions, timer: timer!));
     state.context.push(QuestionsReportScreen.route);
   }
 
@@ -442,12 +442,12 @@ class QuestionsController {
         term!.type == TermType.template) {
       showOkDialogue(state.context, onConfirm: () {
         timer = Timer.periodic(const Duration(seconds: 1), (t) {
-          if (timer.tick >= questions.length * 60) {
+          if (timer!.tick >= questions.length * 60) {
             showOkDialogue(state.context,
                 onConfirm: moveToQuestionsReportScreen,
                 title: StringConstant.testFinished.tr(),
                 content: StringConstant.testFinishedExplanation.tr());
-            timer.cancel();
+            timer!.cancel();
           }
         });
       },
@@ -497,7 +497,7 @@ class QuestionsController {
     screenshotRepository.allowScreenshot();
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template) {
-      timer.cancel();
+      timer?.cancel();
     }
     _uploadCheckedAnswers();
   }
@@ -585,7 +585,7 @@ class QuestionsController {
 
   bool canPop() {
     if (questionUUID != null) return true;
-    if (questionsScreenArgument != null) {
+    if (questionsScreenArgument != null && term != null) {
 if (questionsScreenArgument!.source == QuestionScreenSource.term &&
           term!.type == TermType.template &&
           !templateExited) {

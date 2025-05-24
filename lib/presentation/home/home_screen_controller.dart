@@ -132,7 +132,9 @@ class HomeScreenController {
       state.setState(() {
         error = true;
       });
-      state.context.showToast(Text(StringConstant.noConnection.tr()));
+      if (state.mounted) {
+        state.context.showToast(Text(StringConstant.noConnection.tr()));
+      }
     }, onMessageReceived: (FailureResponse message) {
       state.setState(() {
         error = true;
@@ -147,7 +149,6 @@ class HomeScreenController {
         .listen((event) => userService.setTokenUploaded(false));
   }
 
-  //TODO apply test
   Future configureUserToken() async {
     String? id = userService.getId();
     String? token = await firebaseRepository.getToken();
@@ -163,7 +164,6 @@ class HomeScreenController {
     }
   }
 
-  //TODO add test
   Future<void> subscribeToTopics() async {
     FCMTopicService fcmTopicService = Get.find();
     FirebaseRepository firebaseRepository = Get.find();
@@ -178,7 +178,6 @@ class HomeScreenController {
     }
   }
 
-  //TODO add test
   void subscribeToAllNotifications() {
     FirebaseRepository firebaseRepository = Get.find();
     UserService userService = Get.find();

@@ -94,7 +94,7 @@ class DoYouNeedHelp extends StatelessWidget {
     return OpacityAnimation(
         child: Padding(
       padding: const EdgeInsets.all(margin),
-      child: GestureDetector(
+      child: InkWell(
         onTap: () => context.push(ContactUsScreen.route),
         child: Text(
           StringConstant.doYouNeedHelp.tr(),

@@ -26,7 +26,7 @@ class _RecentTermsTabState extends State<RecentTermsTab> {
   @override
   Widget build(BuildContext context) => PopScope(
       canPop: recentTermsTabController.canPop(),
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (value, result) {
         recentTermsTabController.onPopScoped();
         termsListingController.init();
       },

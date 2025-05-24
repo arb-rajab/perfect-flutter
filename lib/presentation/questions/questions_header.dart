@@ -21,12 +21,14 @@ class QuestionsHeader extends StatelessWidget {
       child: Column(
         children: [
           NumberOfQuestions(),
-          Row(
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
             children: [
               ShowFavoriteOnly(),
               ShowEditedOnly(),
             ],
-          ),
+              )),
           QuestionTagsChoice(),
           LevelGroup()
         ],

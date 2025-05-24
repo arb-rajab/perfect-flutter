@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
@@ -192,7 +195,7 @@ class TermService {
                 .customSelect(
                     "select count(*) as c from terms where id=${termData.term.id} and (id in "
                     "(select termId from termTrees where parentTermId in (select termId from couponsLinkedToTerms where couponId in "
-                    "(select id from coupons where activationDate='' or "
+                    "(select id from coupons where activationDate is null or "
                     "(activationDate!='' and CURRENT_TIMESTAMP<DATETIME(activationDate,'+'||expirationDays||' days'))))) or free=1)")
                 .watch()
                 .map((rows) => rows.map((row) => row.read<int>('c')).toList())

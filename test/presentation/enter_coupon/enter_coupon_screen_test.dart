@@ -3,19 +3,12 @@ import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/enter_coupon/submit_form.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../common/tests.dart';
 
 Future<void> main() async {
   await initTests();
-  final testSizes = {
-    'small': const Size(300, 600), // Small mobile
-    'medium': const Size(600, 800), // Tablet portrait
-    'large': const Size(800, 600), // Tablet landscape
-    'desktop': const Size(1200, 800), // Desktop
-  };
 
   group('scan qr fab tests', () {
     testWidgets('scan qr fab is rendered', (widgetTester) async {

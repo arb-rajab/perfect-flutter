@@ -24,4 +24,7 @@ class PathService implements PathBase {
     // TODO: implement getFileSupportPath
     throw UnimplementedError();
   }
+
+  @override
+  bool testFileInSupport = false;
 }

@@ -8,6 +8,7 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/web/web_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,8 @@ class QuestionTagService {
           uri: Uri.parse(ApiConstant.questionTagInformation
               .replaceFirst('(QUESTION_TAG_ID)', questionTag.id.toString())
               .replaceFirst('(IME1)', Get.find<DeviceRepositoryBase>().ime1)
-              .replaceFirst('(LANGUAGE)', context.locale.languageCode)),
+              .replaceFirst('(LANGUAGE)',
+                  MainController.testing ? 'en' : context.locale.languageCode)),
           title: t.Title(questionTag.name)));
       context.push(WebScreen.route);
     });

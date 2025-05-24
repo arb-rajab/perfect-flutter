@@ -7,6 +7,7 @@ import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
 
 // Register the RouteObserver as a navigation observer.
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatefulWidget {
   final String defaultRoute;
@@ -60,6 +62,7 @@ class _MyAppState extends State<MyApp> {
     if (widget.child != null) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         localizationsDelegates:
             MainController.testing ? null : context.localizationDelegates,
         supportedLocales: MainController.testing
@@ -71,6 +74,11 @@ class _MyAppState extends State<MyApp> {
         // same or higher package version, but still same major version. If you
         // use a lower package version, some properties may not be supported.
         // In that case remove them after copying this theme to your app.
+        builder: (context, child) {
+          // Wrap with toast.
+          child = Toast(navigatorKey: navigatorKey, child: child!);
+          return child;
+        },
         theme: FlexThemeData.light(
           primary: primaryColor,
           fontFamily: 'jf_flat',
@@ -127,6 +135,11 @@ class _MyAppState extends State<MyApp> {
       // same or higher package version, but still same major version. If you
       // use a lower package version, some properties may not be supported.
       // In that case remove them after copying this theme to your app.
+      builder: (context, child) {
+        // Wrap with toast.
+        child = Toast(navigatorKey: navigatorKey, child: child!);
+        return child;
+      },
       theme: FlexThemeData.light(
         primary: primaryColor,
         fontFamily: 'jf_flat',

@@ -43,7 +43,7 @@ class TermWidgetController {
   bool isStudied = false;
   State state;
   bool downloading = false;
-  double downloadProgress = 0;
+  double? downloadProgress;
   late TermsListingController termsListingController;
   TermService termService = Get.find();
   TermTagService termTagService = Get.find();
@@ -59,7 +59,6 @@ class TermWidgetController {
     configureIsStudied();
   }
 
-//TODO add tests
   Future configureNewBanner() {
     TermLastAccessService termLastAccessService = Get.find();
     return termLastAccessService.isTermAccessed(termData).then((value) {
@@ -71,7 +70,6 @@ class TermWidgetController {
     });
   }
 
-  //TODO add tests
   Future<void> configureIsDownloaded() async {
     if (TermType.hasFile(termData)) {
       isDownloaded = await pathService
@@ -94,7 +92,6 @@ class TermWidgetController {
     }
   }
 
-  //TODO add tests
   Future<void> updateStudied(bool value) async {
     if (value) {
       await termPropertyService.addTermToStudied(termData);
@@ -106,7 +103,6 @@ class TermWidgetController {
     });
   }
 
-  //TODO add tests
   Future configureIsStudied() =>
       termPropertyService.isTermStudied(termData).then((value) {
         if (state.mounted) {
@@ -140,7 +136,6 @@ class TermWidgetController {
     });
   }
 
-  //TODO add tests
   Future<void> downloadContent() {
     String url = _getDownloadApi();
 
@@ -164,21 +159,29 @@ class TermWidgetController {
           }
           String filePath = await pathService
               .getFileSupportPath(['term', termData.term.id.toString()]);
-          NetworkService(state.context,
-                  onPreConnect: _onPreConnect,
-                  onPostConnect: _onPostConnect,
-                  onConnectionSucceed: (_) => _setTermUpdated(),
-                  onConnectionFailed: _onConnectionFailed,
-                  onMessageReceived: _onMessageReceived)
-              .download(
-                  url: url,
-                  filePath: filePath,
-                  onRecieveProgress: (int progress, int total) =>
-                      state.setState(() => downloadProgress =
-                          progress.toDouble() / total.toDouble()));
+          if (state.mounted) {
+            NetworkService(state.context,
+                    onPreConnect: _onPreConnect,
+                    onPostConnect: _onPostConnect,
+                    onConnectionSucceed: (_) => _setTermUpdated(),
+                    onConnectionFailed: _onConnectionFailed,
+                    onMessageReceived: _onMessageReceived)
+                .download(
+                    url: url,
+                    filePath: filePath,
+                    onRecieveProgress: (int progress, int total) =>
+                        state.setState(() => downloadProgress =
+                            progress.toDouble() / total.toDouble()));
+          }
         },
-        onConnectionFailed: _onConnectionFailed,
-        onMessageReceived: _onMessageReceived,
+        onConnectionFailed: () {
+          // state.setState(() => downloading = false);
+          _onConnectionFailed();
+        },
+        onMessageReceived: (message) {
+          // state.setState(() => downloading = false);
+          _onMessageReceived(message);
+        },
       ).get(url: url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
     }
     if (TermType.hasContent(termData)) {
@@ -203,7 +206,6 @@ class TermWidgetController {
     throw UnsupportedValueException(termData.term.type.toString());
   }
 
-  //TODO add tests
   bool displayLabel() {
     if (termsListingController.termsLabels.isEmpty) return false;
     if (index == 0) return true;
@@ -212,7 +214,6 @@ class TermWidgetController {
     return termData.labelId != previousTermData.labelId;
   }
 
-//TODO add tests
   String getLabelText() {
     List<TermLabel> labelsWithId = termsListingController.termsLabels
         .where((element) => element.id == termData.labelId!.value)
@@ -221,7 +222,6 @@ class TermWidgetController {
     return StringConstant.others.tr();
   }
 
-  //TODO add tests
   Future<void> onTermClick() async {
     if (termData.term.enabled != 1) {
       showOkDialogue(state.context,
@@ -273,14 +273,18 @@ class TermWidgetController {
                     "q.parentTermId= '${termData.term.id}' ORDER BY q.id asc",
                 source: QuestionScreenSource.term,
                 sourceId: Id(termData.term.id),
-                resourceTermId: Id(Get.find<TermData>(tag: 'source').term.id),
+                resourceTermId: Id(Get.isRegistered<TermData>(tag: 'source')
+                    ? Get.find<TermData>(tag: 'source').term.id
+                    : termData.term.id),
                 title: t.Title(termData.term.name),
                 termData: termData));
-            state.context.push(QuestionsScreen.route);
+            if (state.mounted) state.context.push(QuestionsScreen.route);
           }
         } else {
-          showOkDialogue(state.context,
-              content: StringConstant.youHaveToDownloadFirst.tr());
+          if (state.mounted) {
+            showOkDialogue(state.context,
+                content: StringConstant.youHaveToDownloadFirst.tr());
+          }
         }
         break;
       case TermType.ebook:
@@ -289,18 +293,22 @@ class TermWidgetController {
             Ebook ebook = await ebookService.getEbook(termData);
             Get.delete<EbookScreenArgument>();
             Get.put(EbookScreenArgument(ebook: ebook, term: termData));
-            state.context.push(EbookScreen.route);
+            if (state.mounted) state.context.push(EbookScreen.route);
           } else {
-            showOkDialogue(state.context,
-                content: StringConstant.termIsExpired.tr());
+            if (state.mounted) {
+              showOkDialogue(state.context,
+                  content: StringConstant.termIsExpired.tr());
+            }
           }
         } else {
-          showOkDialogue(state.context,
-              content: StringConstant.youHaveToDownloadFirst.tr());
+          if (state.mounted) {
+            showOkDialogue(state.context,
+                content: StringConstant.youHaveToDownloadFirst.tr());
+          }
         }
         break;
       case TermType.youtubeVideos:
-        if (await termService.isUnExpired(termData)) {
+        if (await termService.isUnExpired(termData) && state.mounted) {
           NetworkService(
             state.context,
             onPreConnect: _onPreConnect,
@@ -317,23 +325,25 @@ class TermWidgetController {
           ).get(
               url: ApiConstant.getYoutubeVideo
                   .replaceFirst('(TERM_ID)', termData.term.id.toString()));
-        } else {
+        } else if (state.mounted) {
           showOkDialogue(state.context,
               content: StringConstant.termIsExpired.tr());
         }
         break;
       case TermType.flashcards:
-        if (isDownloaded) {
-          Get.delete<FlashcardsScreenArgument>();
-          Get.put(FlashcardsScreenArgument(
-              query:
-                  'select * from flashcards where parentTermId=${termData.term.id}',
-              title: termData.term.name,
-              term: termData));
-          state.context.push(FlashcardsScreen.route);
-        } else {
-          showOkDialogue(state.context,
-              content: StringConstant.youHaveToDownloadFirst.tr());
+        if (state.mounted) {
+          if (isDownloaded) {
+            Get.delete<FlashcardsScreenArgument>();
+            Get.put(FlashcardsScreenArgument(
+                query:
+                    'select * from flashcards where parentTermId=${termData.term.id}',
+                title: termData.term.name,
+                term: termData));
+            state.context.push(FlashcardsScreen.route);
+          } else {
+            showOkDialogue(state.context,
+                content: StringConstant.youHaveToDownloadFirst.tr());
+          }
         }
         break;
       case TermType.voiceNotes:
@@ -344,17 +354,21 @@ class TermWidgetController {
             Get.delete<VoiceNoteScreenArgument>();
             Get.put(
                 VoiceNoteScreenArgument(term: termData, voiceNote: voiceNote));
-            state.context.push(VoiceNoteScreen.route);
+            if (state.mounted) state.context.push(VoiceNoteScreen.route);
           } else {
-            showOkDialogue(state.context,
-                content: StringConstant.termIsExpired.tr());
+            if (state.mounted) {
+              showOkDialogue(state.context,
+                  content: StringConstant.termIsExpired.tr());
+            }
           }
         } else {
-          showOkDialogue(state.context,
-              content: StringConstant.youHaveToDownloadFirst.tr());
+          if (state.mounted) {
+            showOkDialogue(state.context,
+                content: StringConstant.youHaveToDownloadFirst.tr());
+          }
         }
         break;
-      default: //TODO implement other terms types
+      default:
         throw UnimplementedError();
     }
   }

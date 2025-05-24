@@ -116,6 +116,8 @@ class TermType {
   static const int youtubeVideos = 4;
   static const int flashcards = 5;
   static const int voiceNotes = 6;
+  
+  static const int maxTermType = 6;
 
   static bool downloadable(TermData termData) => [
         questions,

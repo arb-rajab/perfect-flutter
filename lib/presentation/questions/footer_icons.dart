@@ -9,11 +9,11 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/user_note_dialogue.dart';
 import 'package:beta/presentation/media_slider/media_slider_screen.dart';
+import 'package:beta/presentation/questions/math_widget.dart';
 import 'package:beta/presentation/questions/question_header.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 
@@ -82,12 +82,9 @@ class _FooterIconsState extends State<FooterIcons> {
                               style: const TextStyle(height: lineSpacing))
                           : questionData.question.specialCharacter ==
                                   SpecialCharacter.math
-                              ? TeXView(
-                                  child: TeXViewDocument(
-                                      questionData.getMultiOrientationString(
-                                          questionData.getTranslatableNote()),
-                                      style: const TeXViewStyle.fromCSS(
-                                          '"line-height":"$lineSpacing"')))
+                              ? MathWidget(
+                                  data: questionData.getMultiOrientationString(
+                                      questionData.getTranslatableNote())) 
                               : const SizedBox.shrink());
                 },
                 icon: const Icon(Icons.info))),

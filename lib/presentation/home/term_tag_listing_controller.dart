@@ -1,6 +1,7 @@
 import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
+import 'package:beta/common/screen_layout.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/presentation/home/term_tag_widget.dart';
@@ -19,11 +20,19 @@ class TermTagListingController extends ListController {
             plural: '',
             indexUrl: '',
             remote: false,
-            itemsPerRow: 2,
             fetch: () => Future(() => []),
             showLoadMore: false,
             showRefresh: false,
             fromJson: null);
+
+  @override
+  int get itemsPerRow => ScreenLayout.isExtraSmall(state.context)
+      ? 2
+      : ScreenLayout.isSmall(state.context)
+          ? 4
+          : ScreenLayout.isMedium(state.context)
+              ? 6
+              : 8;
 
   @override
   Future<List> Function()? get fetch => () async {

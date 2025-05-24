@@ -69,7 +69,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.delete<MediaSliderScreen>();
+                      Get.delete<MediaSliderScreenArgument>();
                       Get.put(MediaSliderScreenArgument(mediaUrls: imageUrls));
                       context.push(MediaSliderScreen.route);
                     },

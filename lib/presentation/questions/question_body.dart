@@ -1,11 +1,11 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/domain/answer_data.dart';
 import 'package:beta/domain/question_data.dart';
+import 'package:beta/presentation/questions/math_widget.dart';
 import 'package:beta/presentation/questions/question_header.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/widgets/custom_check_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:get/instance_manager.dart';
 
 class QuestionBody extends StatelessWidget {
@@ -43,16 +43,24 @@ class QuestionBody extends StatelessWidget {
                         height: lineSpacing, color: getColorAfterCorrection()),
                   )
                 : answerData.answer.specialCharacter == SpecialCharacter.math
-                    ? TeXView(
-                        loadingWidgetBuilder: (context) {
-                          return const CircularProgressIndicator();
-                        },
-                        child: TeXViewDocument(
-                            questionData.getMultiOrientationString(answerData
-                                .getTranslatableTitle(questionData.translated)),
-                            style: TeXViewStyle(
-                              contentColor: getColorAfterCorrection(),
-                            )))
+                    ? MathWidget(
+                        data: questionData.getMultiOrientationString(answerData
+                            .getTranslatableTitle(questionData.translated)),
+                      )
+                    // TeX2SVG(
+                    //     math: questionData.getMultiOrientationString(answerData
+                    //             .getTranslatableTitle(questionData.translated)),
+                    //   )
+                    // TeXView(
+                    //     loadingWidgetBuilder: (context) {
+                    //       return const CircularProgressIndicator();
+                    //     },
+                    //     child: TeXViewDocument(
+                    //         questionData.getMultiOrientationString(answerData
+                    //             .getTranslatableTitle(questionData.translated)),
+                    //         style: TeXViewStyle(
+                    //           contentColor: getColorAfterCorrection(),
+                    //         )))
                     : null,
             onChanged: (bool? value) async {
               for (AnswerData answerData in questionData.answers) {

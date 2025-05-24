@@ -9,8 +9,10 @@ import 'package:get/instance_manager.dart';
 import 'notification/shared.dart';
 
 class FirebaseRepository {
-  Future<String?> getToken() =>
-      FirebaseMessaging.instance.getToken(vapidKey: vapidKey);
+  Future<String?> getToken() {
+    if (MainController.testing) return Future.value('random token');
+    return FirebaseMessaging.instance.getToken(vapidKey: vapidKey);
+  }
 
   Future initialise() async {
     if (!MainController.testing) {

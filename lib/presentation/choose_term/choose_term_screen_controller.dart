@@ -134,7 +134,7 @@ class ChooseTermScreenController extends ListController {
             });
 
             CouponService couponService = Get.find();
-            await couponService.addCoupon(argument.coupon);
+            await couponService.addCoupon(Coupon.fromJson(data['coupon']));
 
             List<TermData> terms = (data['terms'] as List)
                 .map((e) => TermData.fromJson(e))

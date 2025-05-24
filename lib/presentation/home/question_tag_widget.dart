@@ -155,6 +155,8 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: halfMargin),
             child: Row(
+              key: Key(
+                  '${questionTagData!.questionTag.name} $numberOfChildTags-child'),
               children: [
                 const Icon(Icons.style_outlined),
                 const Text('x'),
@@ -166,6 +168,10 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: halfMargin),
             child: Row(
+              key: questionTagData != null
+                  ? Key(
+                      '${questionTagData!.questionTag.name} $numberOfQuestions-question')
+                  : null,
               children: [
                 const Icon(Icons.question_answer),
                 const Text('x'),
@@ -177,6 +183,7 @@ class _QuestionTagWidgetState extends State<QuestionTagWidget> {
       trailing: questionTagData != null &&
               questionTagData!.questionTag.hasInformation != 0
           ? IconButton(
+              key: const Key('information'),
               onPressed: () => questionTagService.openQuestionTagInformation(
                   questionTag: questionTagData!.questionTag, context: context),
               icon: const Icon(Icons.article))

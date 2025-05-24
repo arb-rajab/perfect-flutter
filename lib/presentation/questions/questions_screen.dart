@@ -1,5 +1,6 @@
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
@@ -76,7 +77,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
             : null,
         floatingActionButton: questionsController.speedDialVisible()
             ? SpeedDial(
-                switchLabelPosition: [
+                switchLabelPosition: MainController.testing
+                    ? false
+                    : [
                   'ar', // Arabic
                   'fa', // Farsi
                   'he', // Hebrew

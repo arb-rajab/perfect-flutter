@@ -49,6 +49,7 @@ class OKDialogue extends StatelessWidget {
           ])),
           actions: <Widget>[
             TextButton(
+                key: const Key('ok'),
                 child: Text(okText ?? StringConstant.ok.tr()),
                 onPressed: () {
                   context.pop();

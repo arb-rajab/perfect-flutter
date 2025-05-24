@@ -1,4 +1,3 @@
-
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/home/actions_widget.dart';
@@ -8,6 +7,7 @@ import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/widgets/number_of_children_widget.dart';
 import 'package:beta/presentation/widgets/widget_wrapper_with_border.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -35,6 +35,10 @@ class _TermWidgetState extends State<TermWidget> {
     termWidgetController.termData =
         termWidgetController.termsListingController.items[widget.index];
     TermData termData = termWidgetController.termData;
+    if (kIsWeb &&
+        ![TermType.term, TermType.flashcards].contains(termData.term.type)) {
+      return const UnsupportedContentWidget();
+    }
     if (![
       TermType.term,
       TermType.questions,
@@ -43,12 +47,11 @@ class _TermWidgetState extends State<TermWidget> {
       TermType.youtubeVideos,
       TermType.flashcards,
       TermType.voiceNotes
-    ]
-        .contains(termData.term.type)) {
+    ].contains(termData.term.type)) {
       return const UnsupportedContentWidget();
     }
-    var widgett = GestureDetector(
-      behavior: HitTestBehavior.opaque,
+    var widgett = InkWell(
+      // behavior: HitTestBehavior.opaque,
       onTap: termWidgetController.onTermClick,
       child: Column(
         children: [

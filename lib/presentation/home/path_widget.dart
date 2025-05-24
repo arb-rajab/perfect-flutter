@@ -4,7 +4,6 @@ import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-//TODO add test
 class PathWidget extends StatelessWidget {
   final List<TermData> termDatas;
   const PathWidget({super.key, required this.termDatas});
@@ -13,7 +12,7 @@ class PathWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: termDatas
-          .map((termData) => GestureDetector(
+          .map((termData) => InkWell(
                 onTap: () {
                   Get.delete<TermData>();
                   Get.put(termData);

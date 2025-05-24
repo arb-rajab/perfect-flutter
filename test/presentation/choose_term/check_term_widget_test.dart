@@ -25,7 +25,6 @@ Future main() async {
     Coupon coupon = Coupon.fromJson(data['coupon']);
     CouponType couponType = CouponType.fromJson(data['coupon']['coupon_type']);
     Get.delete<ChooseTermScreenArgument>();
-    Get.delete<ChooseTermScreenArgument>();
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: [], couponType: couponType));
     dioAdapter.onGet(
@@ -181,7 +180,6 @@ Future main() async {
     ''');
     Coupon coupon = Coupon.fromJson(data['coupon']);
     CouponType couponType = CouponType.fromJson(data['coupon']['coupon_type']);
-    Get.delete<ChooseTermScreenArgument>();
     Get.delete<ChooseTermScreenArgument>();
     Get.put(ChooseTermScreenArgument(
         coupon: coupon, terms: [], couponType: couponType));

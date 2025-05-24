@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/question_tag_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_property_service.dart';
+import 'package:beta/configs/app.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
@@ -25,6 +24,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -32,23 +32,25 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(children: [
-        const NoBackgroundLogo(),
-        _CouponsTile(),
-        _ImportBackupTile(),
-        _ExportBackupTile(),
-        _ScanPrintedQRTile(),
-        const Divider(),
-        const ContactUsTile(),
-        const FrequestQuestionsTile(),
-        const Divider(),
-        const WhatsNewTile()
+      child: ListView(children: const [
+        NoBackgroundLogo(),
+        CouponsTile(),
+        ImportBackupTile(),
+        ExportBackupTile(),
+        // _ScanPrintedQRTile(),
+        Divider(),
+        ContactUsTile(),
+        FrequestQuestionsTile(),
+        Divider(),
+        WhatsNewTile()
       ]),
     );
   }
 }
 
-class _CouponsTile extends StatelessWidget {
+class CouponsTile extends StatelessWidget {
+  const CouponsTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -61,17 +63,19 @@ class _CouponsTile extends StatelessWidget {
   }
 }
 
-class _ImportBackupTile extends StatelessWidget {
+class ImportBackupTile extends StatelessWidget {
+  const ImportBackupTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
         leading: const Icon(
-          Icons.settings_backup_restore, /*color: primaryColorDark*/
+          Icons.settings_backup_restore,
         ),
         title: Text(StringConstant.importBackup.tr()),
         onTap: () async {
-          final result = await FilePicker.platform
+          FilePickerResult? result = await FilePicker.platform
               .pickFiles(allowMultiple: false, withData: true);
           // if no file is picked
           if (result == null) return;
@@ -85,76 +89,57 @@ class _ImportBackupTile extends StatelessWidget {
           TermPropertyService termPropertyService = Get.find();
 
           dynamic data = jsonDecode(content);
-          int totalLength = 0;
           int finished = 0;
-          if (data['answerProperties'] != null) {
-            totalLength += (data['answerProperties'] as List).length;
-          }
-          if (data['questionProperties'] != null) {
-            totalLength += (data['questionProperties'] as List).length;
-          }
-          if (data['questionTagProperties'] != null) {
-            totalLength += (data['questionTagProperties'] as List).length;
-          }
-          if (data['termsLastAccess'] != null) {
-            totalLength += (data['termsLastAccess'] as List).length;
-          }
-          if (data['termProperties'] != null) {
-            totalLength += (data['termProperties'] as List).length;
-          }
+          final propertyKeys = [
+            'answerProperties',
+            'questionProperties',
+            'questionTagProperties',
+            'termsLastAccess',
+            'termProperties'
+          ];
+          int totalLength = propertyKeys.fold(
+              0, (sum, key) => sum + ((data[key] as List?)?.length ?? 0));
 
-          if (data['answerProperties'] != null) {
-            await answerPropertyService
-                .addAnswerPropertiesFromJson(data['answerProperties']);
-            finished += (data['answerProperties'] as List).length;
-          }
+          final importSteps = [
+            {
+              'key': 'answerProperties',
+              'method': answerPropertyService.addAnswerPropertiesFromJson,
+            },
+            {
+              'key': 'questionProperties',
+              'method': questionPropertyService.addQuestionPropertiesFromJson,
+            },
+            {
+              'key': 'questionTagProperties',
+              'method':
+                  questionTagPropertyService.addQuestionTagPropertiesFromJson,
+            },
+            {
+              'key': 'termsLastAccess',
+              'method': termLastAccessService.addTermLastAccessFromJson,
+            },
+            {
+              'key': 'termProperties',
+              'method': termPropertyService.addTermPropertiesFromJson,
+            },
+          ];
 
-          if (context.mounted) {
-            context.showInfoBar(
-                content: Text(StringConstant.restored.tr().replaceFirst(
-                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
-          }
+          for (final step in importSteps) {
+            final key = step['key'] as String;
+            final method = step['method'] as Future Function(dynamic data);
 
-          if (data['questionProperties'] != null) {
-            await questionPropertyService
-                .addQuestionPropertiesFromJson(data['questionProperties']);
-            finished += (data['questionProperties'] as List).length;
-          }
+            if (data[key] != null) {
+              await method(data[key]);
+              finished += (data[key] as List).length;
 
-          if (context.mounted) {
-            context.showInfoBar(
-                content: Text(StringConstant.restored.tr().replaceFirst(
-                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
-          }
-
-          if (data['questionTagProperties'] != null) {
-            await questionTagPropertyService.addQuestionTagPropertiesFromJson(
-                data['questionTagProperties']);
-            finished += (data['questionTagProperties'] as List).length;
-          }
-
-          if (context.mounted) {
-            context.showInfoBar(
-                content: Text(StringConstant.restored.tr().replaceFirst(
-                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
-          }
-
-          if (data['termsLastAccess'] != null) {
-            await termLastAccessService
-                .addTermLastAccessFromJson(data['termsLastAccess']);
-            finished += (data['termsLastAccess'] as List).length;
-          }
-
-          if (context.mounted) {
-            context.showInfoBar(
-                content: Text(StringConstant.restored.tr().replaceFirst(
-                    '(PERCENT)', ((finished * 100) / totalLength).toString())));
-          }
-
-          if (data['termProperties'] != null) {
-            await termPropertyService
-                .addTermPropertiesFromJson(data['termProperties']);
-            finished += (data['termProperties'] as List).length;
+              if (context.mounted) {
+                final percent = (finished * 100 / totalLength).toString();
+                context.showInfoBar(
+                    content: Text(StringConstant.restored
+                        .tr()
+                        .replaceFirst('(PERCENT)', percent)));
+              }
+            }
           }
           if (context.mounted) showSuccessDialogue(context);
         },
@@ -163,26 +148,9 @@ class _ImportBackupTile extends StatelessWidget {
   }
 }
 
-// Future<String?> getDownloadPath() async {
-//   Directory? directory;
-//   try {
-//     if (Platform.isIOS) {
-//       directory = await getApplicationDocumentsDirectory();
-//     } else {
-//       // On Android, use the global download folder
-//       directory = Directory('/storage/emulated/0/Download');
-//       // If it doesn't exist, fallback to external storage directory
-//       if (!await directory.exists()) {
-//         directory = await getExternalStorageDirectory();
-//       }
-//     }
-//   } catch (err, stack) {
-//     print("Cannot get download folder path");
-//   }
-//   return directory?.path;
-// }
+class ExportBackupTile extends StatelessWidget {
+  const ExportBackupTile({super.key});
 
-class _ExportBackupTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -244,6 +212,7 @@ class _ExportBackupTile extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _ScanPrintedQRTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -315,14 +284,7 @@ class WhatsNewDialogue extends StatelessWidget {
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('* ${StringConstant.addContactUsScreen.tr()}'),
-            Text('* ${StringConstant.addFrequentQuestionsScreen.tr()}'),
-            Text('* ${StringConstant.supportNightMode.tr()}'),
-            Text('* ${StringConstant.supportCustomTextSize.tr()}'),
-            Text('* ${StringConstant.supportUserDataDeletion.tr()}'),
-            Text('* ${StringConstant.addStudiedTermsFeature.tr()}')
-          ],
+            children: [...newFeatures.map((feature) => Text('* $feature'))]
         ),
       ),
       actions: [
@@ -331,3 +293,5 @@ class WhatsNewDialogue extends StatelessWidget {
     );
   }
 }
+
+class FileSaverMock extends Mock implements FileSaver {}

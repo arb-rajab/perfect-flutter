@@ -1,3 +1,12 @@
+import 'package:beta/application/services/coupon_linked_to_term_service.dart';
+import 'package:beta/application/services/coupon_service.dart';
+import 'package:beta/application/services/question_linked_to_tag_service.dart';
+import 'package:beta/application/services/question_service.dart';
+import 'package:beta/application/services/question_tag_service.dart';
+import 'package:beta/application/services/term_linked_to_tag_service.dart';
+import 'package:beta/application/services/term_service.dart';
+import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/domain/answer.dart';
 import 'package:beta/domain/answer_property.dart';
 import 'package:beta/domain/coupon.dart';
@@ -14,17 +23,24 @@ import 'package:beta/domain/question_tag.dart';
 import 'package:beta/domain/question_tag_property.dart';
 import 'package:beta/domain/related_term.dart';
 import 'package:beta/domain/term.dart';
+import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/term_label.dart';
 import 'package:beta/domain/term_last_access.dart';
 import 'package:beta/domain/term_linked_to_label.dart';
 import 'package:beta/domain/term_linked_to_tag.dart';
+import 'package:beta/domain/term_linked_to_tag_data.dart';
 import 'package:beta/domain/term_parent.dart';
+import 'package:beta/domain/term_parent_data.dart';
 import 'package:beta/domain/term_property.dart';
 import 'package:beta/domain/term_tag.dart';
+import 'package:beta/domain/term_tag_data.dart';
 import 'package:beta/domain/term_tree.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled.dart';
+import 'package:beta/domain/value/deleted_at.dart';
+import 'package:beta/domain/value/visible.dart';
 import 'package:beta/domain/voice_note.dart';
 import 'package:drift/drift.dart';
+import 'package:get/instance_manager.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
@@ -347,5 +363,174 @@ class DatabaseService extends _$DatabaseService {
         }
       },
     );
+  }
+
+  //TODO implement tests
+  Future deleteAllTables() async {
+    for (var table in allTables) {
+      await table.deleteAll();
+    }
+  }
+
+  Future seedTermsData() async {
+    TermService termService = Get.find();
+    TermsParentService termsParentService = Get.find();
+    CouponService couponService = Get.find();
+    CouponLinkedToTermService couponLinkedToTermService = Get.find();
+    await termService.addTerms([
+      TermData(
+          const Term(
+              name: 'parent',
+              enabled: 1,
+              id: 1,
+              uuid: 'a',
+              type: 0,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: 'outer note'),
+          deletedAt: const DeletedAt(null),
+          visible: const Visible(1)),
+      TermData(
+          const Term(
+              name: 'child',
+              enabled: 1,
+              id: 2,
+              uuid: 'a',
+              type: 0,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: ''),
+          deletedAt: const DeletedAt(null),
+          visible: const Visible(1)),
+      TermData(
+          const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: 0,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: ''),
+          deletedAt: const DeletedAt(null),
+          visible: const Visible(1))
+    ]);
+    await termsParentService.addTermsParents([
+      TermsParentData(
+          const TermsParent(
+              termId: 1,
+              parentTermId: -1,
+              rootTermId: -1,
+              creation: '2024-01-01 13:13:13'),
+          deletedAt: const DeletedAt(null)),
+      TermsParentData(
+          const TermsParent(
+              termId: 2,
+              parentTermId: 1,
+              rootTermId: -1,
+              creation: '2024-01-01 13:13:13'),
+          deletedAt: const DeletedAt(null)),
+      TermsParentData(
+          const TermsParent(
+              termId: 3,
+              parentTermId: 2,
+              rootTermId: -1,
+              creation: '2024-01-01 13:13:13'),
+          deletedAt: const DeletedAt(null))
+    ]);
+    await couponService.addCoupon(const Coupon(
+        id: 1,
+        serial: 'serial',
+        type: 1,
+        free: 0,
+        creation: '2023-01-01 11:12:13',
+        activationDate: '2024-01-01 11:12:13',
+        expirationDays: 100));
+    await couponLinkedToTermService.addCouponLinkedToTerm(
+        const CouponsLinkedToTerm(couponId: 1, termId: 1));
+  }
+
+  Future seedQuestionsTagsData() async {
+    TermTagService tagService = Get.find();
+    TermLinkedToTagService termLinkedToTagService = Get.find();
+    QuestionTagService questionTagService = Get.find();
+    QuestionService questionService = Get.find();
+    QuestionLinkedToTagService questionLinkedToTagService = Get.find();
+    await tagService.addTermTags([
+      TermTagData(const TermTag(id: 1, name: 'tag name', ordering: 1),
+          deletedAt: const DeletedAt(null))
+    ]);
+    await termLinkedToTagService.addTermsLinkedToTags([
+      TermLinkedToTagData(const TermsLinkedToTag(tagId: 1, termId: 2),
+          deletedAt: const DeletedAt(null))
+    ]);
+    await questionTagService.addQuestionTags([
+      const QuestionTag(
+          id: 1,
+          name: 'parent tag',
+          parentTagId: 0,
+          hasInformation: 0,
+          creation: '2022-01-01 11:11:11'),
+      const QuestionTag(
+          id: 2,
+          name: 'child tag',
+          parentTagId: 1,
+          hasInformation: 0,
+          creation: '2022-01-01 11:11:11'),
+      const QuestionTag(
+          id: 3,
+          name: 'grand child tag',
+          parentTagId: 2,
+          hasInformation: 0,
+          creation: '2022-01-01 11:11:11'),
+      const QuestionTag(
+          id: 4,
+          name: 'parent tag 2',
+          parentTagId: 0,
+          hasInformation: 1,
+          creation: '2022-01-01 11:11:11'),
+      const QuestionTag(
+          id: 5,
+          name: 'child tag 2',
+          parentTagId: 1,
+          hasInformation: 1,
+          creation: '2022-01-01 11:11:11'),
+    ]);
+    await questionService.addQuestions([
+      const Question(
+          id: 1,
+          uuid: 'random uuid',
+          title: 'question title',
+          titleTranslation: 'question title translation',
+          labelId: 1,
+          note: '',
+          noteTranslation: '',
+          parentTermId: 2,
+          specialCharacter: 1,
+          type: 1,
+          edited: 0,
+          imageUrl: '',
+          creation: '2022-01-01 10:10:10',
+          editionDate: '')
+    ]);
+    await questionLinkedToTagService.addQuestionsLinkdeToTags([
+      const QuestionsLinkedToTag(questionId: 1, tagId: 1),
+      const QuestionsLinkedToTag(questionId: 1, tagId: 2),
+      const QuestionsLinkedToTag(questionId: 1, tagId: 3),
+      const QuestionsLinkedToTag(questionId: 1, tagId: 4),
+      const QuestionsLinkedToTag(questionId: 1, tagId: 5)
+    ]);
   }
 }

@@ -48,7 +48,9 @@ class TermsController {
     if (termsListingController.termsListing.isNotEmpty &&
         Get.isRegistered<TermData>(tag: 'source')) {
       if (termsListingController.termsListing.last ==
-          Get.find<TermData>(tag: 'source')) return false;
+          Get.find<TermData>(tag: 'source')) {
+        return false;
+      }
     }
     return true;
   }

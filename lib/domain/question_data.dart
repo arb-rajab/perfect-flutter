@@ -134,6 +134,9 @@ class QuestionData {
   }
 
   String getMultiOrientationString(String source) {
+    source = source.replaceAll('\$\$', '\n\$\$\n');
+    source = source.replaceAll('%%%%', '\n\n');
+    return source;
     String ltr = '<div style="direction:ltr;display:inline-block">';
     source = source.replaceAll('\$\$', '$ltr\$\$');
     int startingIndex = 0;
@@ -197,7 +200,7 @@ class QuestionData {
         } else {
           wrongAnswers++;
         }
-      } 
+      }
     }
     return QuestionStatistic(
         correct: correctAnswers,

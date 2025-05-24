@@ -1,4 +1,5 @@
 import 'package:beta/constants/arguments.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:beta/presentation/widgets/web_widget.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ class _WebScreenState extends State<WebScreen> {
   Widget build(BuildContext context) {
     return ScreenWrapper(
       titleText: webScreenArgument.title.value,
-        child: WebWidget(
+        child: MainController.testing
+            ? const Text('mock web')
+            : WebWidget(
           uri: webScreenArgument.uri,
           connected: webScreenArgument.connected,
         ));

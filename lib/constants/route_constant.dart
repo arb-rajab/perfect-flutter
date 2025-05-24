@@ -26,7 +26,9 @@ import 'package:go_router/go_router.dart';
 GoRouter router(defaultRoute) =>
     GoRouter(initialLocation: defaultRoute, observers: [
   routeObserver
-], routes: [
+],
+    navigatorKey: navigatorKey,
+    routes: [
   GoRoute(
       path: SplashScreen.route,
       builder: (context, state) => const SplashScreen()),

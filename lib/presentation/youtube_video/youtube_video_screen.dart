@@ -1,6 +1,7 @@
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:beta/presentation/widgets/web_widget.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen_controller.dart';
@@ -36,11 +37,14 @@ class _YoutubeVideoScreenState extends State<YoutubeVideoScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
+        titleText: controller.argument.termData.term.name,
         child: Column(
       children: [
         SizedBox(
           height: 400,
-          child: InAppWebView(
+              child: MainController.testing
+                  ? const Text('web view')
+                  : InAppWebView(
             initialSettings: InAppWebViewSettings(
                 javaScriptEnabled: true, domStorageEnabled: true),
             onConsoleMessage: controller.onConsoleMessage,

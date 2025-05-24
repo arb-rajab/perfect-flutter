@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:path/path.dart';
 
-//TODO add test
 class ActionsWidget extends StatefulWidget {
   final bool downloaded;
   final bool studied;
@@ -69,12 +68,13 @@ class _ActionsWidgetState extends State<ActionsWidget> {
         else if (widget.downloading)
           CircularProgressIndicator(
               value:
-                  TermType.hasFile(termData) ? widget.downloadProgress : null),
+                  widget.downloadProgress),
         if (TermType.downloadable(termData) &&
             termData.term.needsUpdate == 1 &&
             widget.downloaded)
           if (!widget.downloading)
             IconButton(
+                key: const Key('refresh'),
                 onPressed: widget.termWidgetController.downloadContent,
                 icon: const Icon(Icons.refresh))
           else
@@ -85,10 +85,12 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                 widget.termWidgetController.updateStudied(!widget.studied),
             icon: widget.studied
                 ? Icon(
+                    key: const Key('studied'),
                     Icons.fact_check,
                     color: Theme.of(context).primaryColor,
                   )
                 : Icon(
+                    key: const Key('unstudied'),
                     Icons.fact_check_outlined,
                     color: Theme.of(context).disabledColor,
                   ),

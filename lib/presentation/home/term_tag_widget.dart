@@ -21,15 +21,16 @@ import 'package:go_router/go_router.dart';
 
 class TermTagWidget extends StatelessWidget {
   final int index;
+  final TermsListingController controller = Get.find();
+  final TermsController termsController = Get.find();
+  final TermService termService = Get.find();
 
-  const TermTagWidget({super.key, required this.index});
+  TermTagWidget({super.key, required this.index});
   @override
   Widget build(BuildContext context) {
     IconData iconData = Icons.import_contacts;
     String text = '';
-    TermsListingController controller = Get.find();
-    TermsController termsController = Get.find();
-    TermService termService = Get.find();
+    
     if (index < termsController.termsTags.length) {
       TermTag termTag = termsController.termsTags[index];
       text = termTag.name;
@@ -78,7 +79,7 @@ class TermTagWidget extends StatelessWidget {
         }
       }
     }
-    return GestureDetector(
+    return InkWell(
       onTap: () async {
         if (index < termsController.termsTags.length) {
           TermTag termTag = termsController.termsTags[index];
