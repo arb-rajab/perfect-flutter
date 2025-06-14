@@ -5,11 +5,10 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 class LevelGroup extends StatelessWidget {
-  LevelGroup({super.key});
-  final QuestionsController questionsController = Get.find();
+  const LevelGroup({super.key, required this.questionsController});
+  final QuestionsController questionsController;
 
   void clearLevelFilters() {
     questionsController.questionFilters
@@ -22,52 +21,49 @@ class LevelGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (questionsController.questionsFilteringEnabled) {
-      return Wrap(
-        spacing: margin,
-        children: [
-          FilterChip(
-            label: Text(StringConstant.easyQuestions.tr()),
-            selected: questionsController.questionFilters
-                .contains(questionsController.easyQuestionsFilter),
-            onSelected: (bool value) {
-              clearLevelFilters();
-              if (value) {
-                questionsController.questionFilters
-                    .add(questionsController.easyQuestionsFilter);
-              }
-              questionsController.state.setState(() {});
-            },
-          ),
-          FilterChip(
-            label: Text(StringConstant.mediumQuestions.tr()),
-            selected: questionsController.questionFilters
-                .contains(questionsController.mediumQuestionsFilter),
-            onSelected: (bool value) {
-              clearLevelFilters();
-              if (value) {
-                questionsController.questionFilters
-                    .add(questionsController.mediumQuestionsFilter);
-              }
-              questionsController.state.setState(() {});
-            },
-          ),
-          FilterChip(
-            label: Text(StringConstant.difficultQuestions.tr()),
-            selected: questionsController.questionFilters
-                .contains(questionsController.difficultQuestionsFilter),
-            onSelected: (bool value) {
-              clearLevelFilters();
-              if (value) {
-                questionsController.questionFilters
-                    .add(questionsController.difficultQuestionsFilter);
-              }
-              questionsController.state.setState(() {});
-            },
-          ),
-        ],
-      );
-    }
-    return const SizedBox();
+    return Wrap(
+      spacing: margin,
+      children: [
+        FilterChip(
+          label: Text(StringConstant.easyQuestions.tr()),
+          selected: questionsController.questionFilters
+              .contains(questionsController.easyQuestionsFilter),
+          onSelected: (bool value) {
+            clearLevelFilters();
+            if (value) {
+              questionsController.questionFilters
+                  .add(questionsController.easyQuestionsFilter);
+            }
+            questionsController.state.setState(() {});
+          },
+        ),
+        FilterChip(
+          label: Text(StringConstant.mediumQuestions.tr()),
+          selected: questionsController.questionFilters
+              .contains(questionsController.mediumQuestionsFilter),
+          onSelected: (bool value) {
+            clearLevelFilters();
+            if (value) {
+              questionsController.questionFilters
+                  .add(questionsController.mediumQuestionsFilter);
+            }
+            questionsController.state.setState(() {});
+          },
+        ),
+        FilterChip(
+          label: Text(StringConstant.difficultQuestions.tr()),
+          selected: questionsController.questionFilters
+              .contains(questionsController.difficultQuestionsFilter),
+          onSelected: (bool value) {
+            clearLevelFilters();
+            if (value) {
+              questionsController.questionFilters
+                  .add(questionsController.difficultQuestionsFilter);
+            }
+            questionsController.state.setState(() {});
+          },
+        ),
+      ],
+    );
   }
 }

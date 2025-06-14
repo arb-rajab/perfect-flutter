@@ -1,3 +1,4 @@
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main.dart';
 import 'package:beta/main_controller.dart';
@@ -18,16 +19,19 @@ class QuestionsScreen extends StatefulWidget {
 
   const QuestionsScreen({super.key, this.uuid});
   @override
-  State<StatefulWidget> createState() => _QuestionsScreenState();
+  State<StatefulWidget> createState() => QuestionsScreenState();
 }
 
-class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
+class QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
   late QuestionsController questionsController;
   @override
   void initState() {
-    Get.delete<QuestionsController>();
+    QuestionsScreenArgument questionsScreenArgument = Get.find();
+    Get.delete<QuestionsController>(tag: questionsScreenArgument.query);
     questionsController =
-        Get.put(QuestionsController(this)..questionUUID = widget.uuid);
+        Get.put(
+        QuestionsController(this)..questionUUID = widget.uuid,
+        tag: questionsScreenArgument.query);
     questionsController.init();
     super.initState();
   }
@@ -80,12 +84,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
                 switchLabelPosition: MainController.testing
                     ? false
                     : [
-                  'ar', // Arabic
-                  'fa', // Farsi
-                  'he', // Hebrew
-                  'ps', // Pashto
-                  'ur', // Urdu
-                ].contains(context.locale.languageCode),
+                        'ar', // Arabic
+                        'fa', // Farsi
+                        'he', // Hebrew
+                        'ps', // Pashto
+                        'ur', // Urdu
+                      ].contains(context.locale.languageCode),
                 icon: Icons.sort,
                 children: [
                   SpeedDialChild(
@@ -112,7 +116,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
             : null,
         child: questionsController.loading
             ? const LoadingWidget()
-            : QuestionsList(),
+            : QuestionsList(
+                questionsController: questionsController,
+              ),
       ),
     );
   }

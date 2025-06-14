@@ -17,8 +17,11 @@ import 'package:go_router/go_router.dart';
 
 class QuestionHeader extends StatelessWidget {
   final QuestionData questionData;
-  QuestionHeader({super.key, required this.questionData});
-  final QuestionsController questionsController = Get.find();
+  const QuestionHeader(
+      {super.key,
+      required this.questionData,
+      required this.questionsController});
+  final QuestionsController questionsController;
 
   String getLabelText() {
     switch (questionData.question.labelId) {
@@ -64,7 +67,7 @@ class QuestionHeader extends StatelessWidget {
                     resourceTermId: questionsController
                         .questionsScreenArgument!.resourceTermId,
                     title: t.Title(questionData.parentTermName)));
-                context.pushReplacement(QuestionsScreen.route);
+                context.push(QuestionsScreen.route);
               }, content: Text(StringConstant.aboutToMoveToTerm.tr()));
             },
             child: WidgetWrapperWithBorder(
@@ -109,7 +112,10 @@ class QuestionHeader extends StatelessWidget {
               )
             ],
           )),
-        QuestionTitleListTile(questionData: questionData),
+        QuestionTitleListTile(
+          questionData: questionData,
+          questionsController: questionsController,
+        ),
         if (questionData.imageVisible)
           CachedNetworkImage(
             imageUrl: questionData.question.imageUrl,

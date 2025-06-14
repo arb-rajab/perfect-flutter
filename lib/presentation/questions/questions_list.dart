@@ -7,7 +7,6 @@ import 'package:beta/presentation/questions/questions_header.dart';
 import 'package:beta/presentation/widgets/submit_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'question_body.dart';
@@ -15,8 +14,8 @@ import 'question_footer.dart';
 import 'question_header.dart';
 
 class QuestionsList extends StatelessWidget {
-  QuestionsList({super.key});
-  final QuestionsController questionsController = Get.find();
+  const QuestionsList({super.key, required this.questionsController});
+  final QuestionsController questionsController;
   @override
   Widget build(BuildContext context) {
     List objects = questionsController.getAllObjects();
@@ -31,7 +30,11 @@ class QuestionsList extends StatelessWidget {
         itemPositionsListener: questionsController.itemPositionsListener,
         itemCount: itemCount,
         itemBuilder: (context, index) {
-          if (index == 0) return QuestionsHeader();
+          if (index == 0) {
+            return QuestionsHeader(
+              questionsController: questionsController,
+            );
+          }
           if (questionsController.term != null &&
               questionsController.term!.type == TermType.template &&
               index == itemCount - 1) {
@@ -43,15 +46,22 @@ class QuestionsList extends StatelessWidget {
           switch (questionsController.getQuestionFragment(index)) {
             case QuestionFragment.header:
               QuestionData questionData = objects[index];
-              return QuestionHeader(questionData: questionData);
+              return QuestionHeader(
+                questionData: questionData,
+                questionsController: questionsController,
+              );
             case QuestionFragment.body:
               AnswerData answerData = objects[index];
               return QuestionBody(
                 answerData: answerData,
+                questionsController: questionsController,
               );
             case QuestionFragment.footer:
               QuestionData questionData = objects[index];
-              return QuestionFooter(questionData: questionData);
+              return QuestionFooter(
+                questionData: questionData,
+                questionsController: questionsController,
+              );
           }
         });
   }

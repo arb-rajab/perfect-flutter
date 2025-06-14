@@ -36,7 +36,7 @@ class _TermWidgetState extends State<TermWidget> {
         termWidgetController.termsListingController.items[widget.index];
     TermData termData = termWidgetController.termData;
     if (kIsWeb &&
-        ![TermType.term, TermType.flashcards].contains(termData.term.type)) {
+        ![TermType.term, TermType.questions].contains(termData.term.type)) {
       return const UnsupportedContentWidget();
     }
     if (![

@@ -25,7 +25,8 @@ Future initTests() async {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 }
 
-void mockNoConnection({required String route, String method = 'get'}) {
+void mockNoConnection(
+    {required String route, String method = 'get', dynamic data}) {
   if (method == 'get') {
     dioAdapter.onGet(
         route,
@@ -35,12 +36,30 @@ void mockNoConnection({required String route, String method = 'get'}) {
                 requestOptions: RequestOptions(), reason: 'no connection'),
             delay: const Duration(seconds: 1)));
   }
+  if (method == 'post') {
+    dioAdapter.onPost(
+        route,
+        data: data,
+        (server) => server.throws(
+            200,
+            DioException.connectionError(
+                requestOptions: RequestOptions(), reason: 'no connection'),
+            delay: const Duration(seconds: 1)));
+  }
 }
 
-void mockMessageRecieved({required String route, String method = 'get'}) {
+void mockMessageRecieved(
+    {required String route, String method = 'get', dynamic data}) {
   if (method == 'get') {
     dioAdapter.onGet(
         route,
+        (server) => server.reply(
+            200, r'''{"result":"failed","message":"a message recieved"}'''));
+  }
+  if (method == 'post') {
+    dioAdapter.onPost(
+        route,
+        data: data,
         (server) => server.reply(
             200, r'''{"result":"failed","message":"a message recieved"}'''));
   }
@@ -123,4 +142,10 @@ Finder widgetWithTextAndWidget(
         subWidgetInWidget &&
         widget.runtimeType == widgetType;
   });
+}
+
+void setDesktopDevice(WidgetTester widgetTester) {
+  widgetTester.view.physicalSize = testSizes['desktop']!;
+  widgetTester.view.devicePixelRatio = 1;
+  addTearDown(widgetTester.view.resetPhysicalSize);
 }

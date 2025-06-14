@@ -19,8 +19,12 @@ import 'package:go_router/go_router.dart';
 
 class FooterIcons extends StatefulWidget {
   final QuestionData questionData;
+  final QuestionsController questionsController;
 
-  const FooterIcons({super.key, required this.questionData});
+  const FooterIcons(
+      {super.key,
+      required this.questionData,
+      required this.questionsController});
   @override
   State<StatefulWidget> createState() => _FooterIconsState();
 }
@@ -29,7 +33,7 @@ class _FooterIconsState extends State<FooterIcons> {
   @override
   Widget build(BuildContext context) {
     QuestionData questionData = widget.questionData;
-    QuestionsController questionsController = Get.find();
+    QuestionsController questionsController = widget.questionsController;
     bool isTemplate = questionsController.term != null &&
         questionsController.term!.type == TermType.template;
     return Row(
@@ -75,7 +79,7 @@ class _FooterIconsState extends State<FooterIcons> {
                 questionData.hasNote && (!isTemplate || questionData.corrected),
             child: IconButton.outlined(
                 onPressed: () {
-                  showOkDialogue(context, 
+                  showOkDialogue(context,
                       contentWidget: questionData.question.specialCharacter ==
                               SpecialCharacter.none
                           ? Text(questionData.getTranslatableNote(),
@@ -84,14 +88,14 @@ class _FooterIconsState extends State<FooterIcons> {
                                   SpecialCharacter.math
                               ? MathWidget(
                                   data: questionData.getMultiOrientationString(
-                                      questionData.getTranslatableNote())) 
+                                      questionData.getTranslatableNote()))
                               : const SizedBox.shrink());
                 },
                 icon: const Icon(Icons.info))),
         Visibility(
             visible: questionData.question.edited == 1,
             child: IconButton.outlined(
-              onPressed: () => showOkDialogue(context, 
+              onPressed: () => showOkDialogue(context,
                   content: StringConstant.edittedOn.tr().replaceFirst(
                       '(DATE)',
                       questionData.question.editionDate

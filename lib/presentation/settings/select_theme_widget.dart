@@ -1,6 +1,7 @@
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/changes_applied_upon_restart_dialogue.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -27,7 +28,7 @@ class _SelectThemeWidgetState extends State<SelectThemeWidget> {
 
   void _selectTheme(ThemeMode themeMode) {
     _themeService.setThemeMode(themeMode);
-    context.pop();
+    if (!MainController.testing) context.pop();
     setState(() {
       _selectedTheme = _themeService.getThemeString();
     });

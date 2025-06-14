@@ -25,6 +25,7 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/screenshot/shared.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/questions/questions_list.dart';
@@ -42,12 +43,12 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class QuestionsController {
   State state;
   final String preQuery =
-      'select q.*,t.name as parentTermName,(select count(*) from questions where id <q.id and parentTermId=q.parentTermId) as indexInTerm,(select count(*) from questionMedias where parentQuestionId =q.id) as numberOfMedias,case when q.note != ""'
+      'select q.*,t.name as parentTermName,(select count(*) from questions where id <q.id and parentTermId=q.parentTermId) as indexInTerm,(select count(*) from questionMedias where parentQuestionId =q.id) as numberOfMedias,case when q.note != \'\''
       ' then 1 else 0 end as hasNote from questions q join terms t on t.id = q.parentTermId and t.enabled=1 where ';
   late String query;
 
   bool deepLinked = false;
-  bool loading = false;
+  bool loading = true;
   String? questionUUID;
   List<QuestionData> questions = [];
   bool templateExited = false;
@@ -155,7 +156,9 @@ class QuestionsController {
     }
     await _configureQuestions();
     _configureDeeplinkAndLastAccess();
-    state.setState(() {});
+    state.setState(() {
+      loading = false;
+    });
   }
 
   bool favoriteFilter(QuestionData questionData) {
@@ -295,7 +298,6 @@ class QuestionsController {
     });
   }
 
-  //TODO add test
   bool correctable() => !(term != null && term!.type == TermType.template);
 
   bool hasTemplate() => term != null && term!.type == TermType.template;
@@ -311,7 +313,6 @@ class QuestionsController {
     state.setState(() {});
   }
 
-  //TODO implement
   void correctQuestions({showStatistics = false}) {
     for (QuestionData questionData in questions) {
       questionData.corrected = true;
@@ -499,7 +500,7 @@ class QuestionsController {
         term!.type == TermType.template) {
       timer?.cancel();
     }
-    _uploadCheckedAnswers();
+    if (!MainController.testing) _uploadCheckedAnswers();
   }
 
   void _uploadCheckedAnswers() {
@@ -586,12 +587,12 @@ class QuestionsController {
   bool canPop() {
     if (questionUUID != null) return true;
     if (questionsScreenArgument != null && term != null) {
-if (questionsScreenArgument!.source == QuestionScreenSource.term &&
+      if (questionsScreenArgument!.source == QuestionScreenSource.term &&
           term!.type == TermType.template &&
           !templateExited) {
         return false;
       }
-    } 
+    }
     return true;
   }
 

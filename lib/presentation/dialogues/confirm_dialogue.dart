@@ -39,13 +39,13 @@ class ConfirmDialogue extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: context.pop,
+            onPressed: Navigator.of(context).pop,
             child: Text(StringConstant.cancel.tr()),
           ),
           TextButton(
             key: const Key('ok'),
             onPressed: () {
-              context.pop();
+              Navigator.of(context).pop();
               onConfirm.call();
             },
             child: Text(StringConstant.ok.tr()),

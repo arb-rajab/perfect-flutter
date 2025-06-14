@@ -53,8 +53,8 @@ class QuestionsReportScreen extends StatelessWidget {
                         questionStatistic.total - questionStatistic.answered);
               }
               if (index == 1) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return Wrap(
+                  runAlignment: WrapAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [

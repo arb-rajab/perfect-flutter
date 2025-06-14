@@ -23,7 +23,6 @@ Future<void> showOkDialogue(BuildContext context,
   );
 }
 
-//TODO add test
 class OKDialogue extends StatelessWidget {
   final Function? onConfirm;
   final String? content;
@@ -34,7 +33,7 @@ class OKDialogue extends StatelessWidget {
       {super.key,
       this.onConfirm,
       this.content,
-      required this.okText,
+      this.okText,
       this.title,
       this.contentWidget});
 

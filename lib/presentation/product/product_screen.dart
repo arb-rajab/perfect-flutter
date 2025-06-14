@@ -169,24 +169,24 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                       const SizedBox(height: 10.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            StringConstant.createdOn.tr(),
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '${product.createdAt!.year}-${product.createdAt!.month}-${product.createdAt!.day}',
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: <Widget>[
+                      //     Text(
+                      //       StringConstant.createdOn.tr(),
+                      //       style: const TextStyle(
+                      //         fontSize: 18.0,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //     Text(
+                      //       '${product.createdAt!.year}-${product.createdAt!.month}-${product.createdAt!.day}',
+                      //       style: const TextStyle(
+                      //         fontSize: 16.0,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

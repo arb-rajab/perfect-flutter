@@ -94,9 +94,9 @@ class TermWidgetController {
 
   Future<void> updateStudied(bool value) async {
     if (value) {
-      await termPropertyService.addTermToStudied(termData);
+      await termPropertyService.addTermToStudied(Id(termData.term.id));
     } else {
-      await termPropertyService.removeTermFromStudied(termData);
+      await termPropertyService.removeTermFromStudied(Id(termData.term.id));
     }
     state.setState(() {
       isStudied = value;
@@ -104,7 +104,7 @@ class TermWidgetController {
   }
 
   Future configureIsStudied() =>
-      termPropertyService.isTermStudied(termData).then((value) {
+      termPropertyService.isTermStudied(Id(termData.term.id)).then((value) {
         if (state.mounted) {
           state.setState(() {
             isStudied = value;

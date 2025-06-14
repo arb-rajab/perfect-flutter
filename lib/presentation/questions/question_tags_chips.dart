@@ -15,11 +15,14 @@ import 'package:go_router/go_router.dart';
 
 class QuestionTagsChips extends StatelessWidget {
   final QuestionData questionData;
-  const QuestionTagsChips({super.key, required this.questionData});
+  final QuestionsController questionsController;
+  const QuestionTagsChips(
+      {super.key,
+      required this.questionData,
+      required this.questionsController});
 
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
     return Wrap(
       spacing: margin,
       children: questionData.questionTags
@@ -41,15 +44,15 @@ class QuestionTagsChips extends StatelessWidget {
                       sourceId: Id(questionTag.id),
                       resourceTermId: questionsScreenArgument.resourceTermId,
                       title: t.Title(questionTag.name)));
-                  context.pushReplacement(QuestionsScreen.route);
+                  context.push(QuestionsScreen.route);
                 }, content: Text(StringConstant.aboutToMoveToQuestionTag.tr()));
               },
               child: Chip(
                 label: Text(questionTag.name),
                 deleteIcon: const Icon(Icons.article),
-                onDeleted: () {
+                onDeleted: () async {
                   QuestionTagService questionTagService = Get.find();
-                  questionTagService.openQuestionTagInformation(
+                  await questionTagService.openQuestionTagInformation(
                       questionTag: questionTag, context: context);
                 },
               )))

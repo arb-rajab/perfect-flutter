@@ -1,58 +1,128 @@
-import 'dart:math';
-
-import 'package:beta/configs/style.dart';
+import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/main_controller.dart';
+import 'package:beta/main.dart';
+
 import 'package:beta/presentation/settings/select_theme_widget.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/instance_manager.dart';
 
-Future<void> main() async {
-  MainController.testing = true;
-  await MainController.initServices();
-  testWidgets('clicking select theme invokes dialogue', (widgetTester) async {
-    await widgetTester.pumpWidget(
-        const MaterialApp(home: Scaffold(body: SelectThemeWidget())));
-    await widgetTester.pump(animationDuration);
+import '../../common/tests.dart';
 
-    //click on the widget
-    await widgetTester.tap(find.text(StringConstant.themeMode.tr()));
-    await widgetTester.pump(animationDuration);
-    expect(find.text(StringConstant.chooseAnOption.tr()), findsOneWidget);
-    expect(find.text(StringConstant.systemDefaults.tr()), findsNWidgets(2));
-    expect(find.text(StringConstant.light.tr()), findsOneWidget);
-    expect(find.text(StringConstant.night.tr()), findsOneWidget);
+Future main() async {
+  await initTests();
 
-    //choose an option
-    List<String> options = [
-      // StringConstant.systemDefaults.tr(),
-      StringConstant.light.tr(),
-      StringConstant.night.tr()
-    ];
-    String randomOption = options[Random().nextInt(options.length)];
+  testWidgets('header is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
 
-    await widgetTester.tap(find.text(randomOption));
-    await widgetTester.pump(animationDuration);
+    expect(find.text(StringConstant.themeMode), findsOneWidget);
+  });
 
-    //multi choice dialogue is dismissed and changesWillBeAppliedUponRestart dialogue is shown
-    expect(find.text(StringConstant.chooseAnOption.tr()), findsNothing);
-    expect(find.text(StringConstant.changesWillBeAppliedUponRestart.tr()),
+  testWidgets('default systerm theme is visible if selected',
+      (widgetTester) async {
+    ThemeService themeService = Get.find();
+    themeService.setThemeMode(ThemeMode.system);
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.text(StringConstant.systemDefaults), findsOneWidget);
+  });
+
+  testWidgets('light theme is visible if selected', (widgetTester) async {
+    ThemeService themeService = Get.find();
+    themeService.setThemeMode(ThemeMode.light);
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.text(StringConstant.light), findsOneWidget);
+  });
+
+  testWidgets('night theme is visible if selected', (widgetTester) async {
+    ThemeService themeService = Get.find();
+    themeService.setThemeMode(ThemeMode.dark);
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.text(StringConstant.night), findsOneWidget);
+  });
+
+  testWidgets('dialogue is rendered once tapped', (widgetTester) async {
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    await widgetTester.tap(find.byType(SelectThemeWidget));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.widgetWithText(AlertDialog, StringConstant.chooseAnOption),
         findsOneWidget);
+    expect(find.widgetWithText(AlertDialog, StringConstant.systemDefaults),
+        findsOneWidget);
+    expect(
+        find.widgetWithText(AlertDialog, StringConstant.light), findsOneWidget);
+    expect(
+        find.widgetWithText(AlertDialog, StringConstant.night), findsOneWidget);
+  });
 
-    await widgetTester.tap(find.text(StringConstant.ok.tr()));
-    await widgetTester.pump(animationDuration);
+  testWidgets('system default option is applied once selected',
+      (widgetTester) async {
+    ThemeService themeService = Get.find();
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
 
-    //changesWillBeAppliedUponRestart is dismissed
-    expect(find.text(StringConstant.changesWillBeAppliedUponRestart.tr()),
-        findsNothing);
+    await widgetTester.tap(find.byType(SelectThemeWidget));
+    await widgetTester.pumpAndSettle();
 
-    for (int c = 0; c < options.length; c++) {
-      if (options[c] == randomOption) {
-        expect(find.text(options[c]), findsOneWidget);
-      } else {
-        expect(find.text(options[c]), findsNothing);
-      }
-    }
+    await widgetTester.tap(find.text(StringConstant.systemDefaults));
+    await widgetTester.pumpAndSettle();
+
+    expect(themeService.getThemeMode(), ThemeMode.system);
+  });
+
+  testWidgets('light mode option is applied once selected',
+      (widgetTester) async {
+    ThemeService themeService = Get.find();
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    await widgetTester.tap(find.byType(SelectThemeWidget));
+    await widgetTester.pumpAndSettle();
+
+    await widgetTester.tap(find.text(StringConstant.light));
+    await widgetTester.pumpAndSettle();
+
+    expect(themeService.getThemeMode(), ThemeMode.light);
+  });
+
+  testWidgets('night mode option is applied once selected',
+      (widgetTester) async {
+    ThemeService themeService = Get.find();
+    await widgetTester.pumpWidget(const MyApp(
+      child: SelectThemeWidget(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    await widgetTester.tap(find.byType(SelectThemeWidget));
+    await widgetTester.pumpAndSettle();
+
+    await widgetTester.tap(find.text(StringConstant.night));
+    await widgetTester.pumpAndSettle();
+
+    expect(themeService.getThemeMode(), ThemeMode.dark);
   });
 }

@@ -14,6 +14,7 @@ import 'package:beta/domain/related_term_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/term_parent_data.dart';
 import 'package:beta/domain/value/deleted_at.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/visible.dart';
 import 'package:beta/main.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
@@ -3616,23 +3617,7 @@ void main() {
           (widgetTester) async {
         await createTermData(type: c);
         TermPropertyService termPropertyService = Get.find();
-        termPropertyService.addTermToStudied(TermData(
-            Term(
-              captureable: 1,
-              id: 3,
-              uuid: 'uuid',
-              name: 'name',
-              type: c,
-              creation: '2022-01-01 11:13:15',
-              enabled: 1,
-              free: 1,
-              ordering: 1,
-              needsUpdate: 0,
-              textCulumn: '',
-              outerNote: '',
-            ),
-            deletedAt: const DeletedAt(null),
-            visible: const Visible(1)));
+        termPropertyService.addTermToStudied(const Id(3));
 
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -3701,23 +3686,7 @@ void main() {
           (widgetTester) async {
         await createTermData(type: c);
         TermPropertyService termPropertyService = Get.find();
-        termPropertyService.addTermToStudied(TermData(
-            Term(
-              captureable: 1,
-              id: 3,
-              uuid: 'uuid',
-              name: 'name',
-              type: c,
-              creation: '2022-01-01 11:13:15',
-              enabled: 1,
-              free: 1,
-              ordering: 1,
-              needsUpdate: 0,
-              textCulumn: '',
-              outerNote: '',
-            ),
-            deletedAt: const DeletedAt(null),
-            visible: const Visible(1)));
+        termPropertyService.addTermToStudied(const Id(3));
 
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));

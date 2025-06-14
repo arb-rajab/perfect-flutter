@@ -19,9 +19,7 @@ class QuestionData {
   late List<QuestionProperty> questionProperties;
   late List<QuestionTag> questionTags;
 
-  final AnswerService _answerService = Get.find();
   final QuestionPropertyService _questionPropertyService = Get.find();
-  final QuestionTagService _questionTagService = Get.find();
 
   bool corrected = false;
   bool translated = false;
@@ -44,14 +42,17 @@ class QuestionData {
     _configureInitiallyChecked();
   }
 
-  _configureQuestionTags() async =>
-      questionTags = await _questionTagService.getQuestionTags(Id(question.id));
+  _configureQuestionTags() async {
+    final QuestionTagService questionTagService = Get.find();
+    questionTags = await questionTagService.getQuestionTags(Id(question.id));
+  }
 
   _configureQuestionProperty() async => questionProperties =
       await _questionPropertyService.getQuestionProperties(Id(question.id));
 
   _configureAnswers() async {
-    answers = (await _answerService.getQuestionAnswers(Id(question.id)))
+    final AnswerService answerService = Get.find();
+    answers = (await answerService.getQuestionAnswers(Id(question.id)))
         .map((element) => AnswerData(element))
         .toList();
     for (AnswerData answerData in answers) {
@@ -116,8 +117,13 @@ class QuestionData {
         .then((value) => questionProperties = value);
   }
 
-  Future deleteUserNote() =>
-      _questionPropertyService.deleteUserNote(question.id);
+  Future deleteUserNote() async {
+    await _questionPropertyService.deleteUserNote(question.id);
+    return _questionPropertyService
+        .getQuestionProperties(Id(question.id))
+        .then((value) => questionProperties = value);
+  }
+      
 
   String getTranslatableTitle() {
     if (translated && question.titleTranslation.isNotEmpty) {
@@ -137,32 +143,32 @@ class QuestionData {
     source = source.replaceAll('\$\$', '\n\$\$\n');
     source = source.replaceAll('%%%%', '\n\n');
     return source;
-    String ltr = '<div style="direction:ltr;display:inline-block">';
-    source = source.replaceAll('\$\$', '$ltr\$\$');
-    int startingIndex = 0;
-    while (source.indexOf('$ltr\$\$', startingIndex) != -1) {
-      int index = source.indexOf('$ltr\$\$', startingIndex);
-      int trailingIndex = source.indexOf('$ltr\$\$', index + 1);
-      if (trailingIndex == -1) break;
-      source =
-          '${source.substring(0, trailingIndex)}\$\$${source.substring(trailingIndex)}';
-      source = source.replaceAll('\$\$$ltr\$\$', '\$\$</div>');
-      startingIndex = trailingIndex;
-    }
+    // String ltr = '<div style="direction:ltr;display:inline-block">';
+    // source = source.replaceAll('\$\$', '$ltr\$\$');
+    // int startingIndex = 0;
+    // while (source.indexOf('$ltr\$\$', startingIndex) != -1) {
+    //   int index = source.indexOf('$ltr\$\$', startingIndex);
+    //   int trailingIndex = source.indexOf('$ltr\$\$', index + 1);
+    //   if (trailingIndex == -1) break;
+    //   source =
+    //       '${source.substring(0, trailingIndex)}\$\$${source.substring(trailingIndex)}';
+    //   source = source.replaceAll('\$\$$ltr\$\$', '\$\$</div>');
+    //   startingIndex = trailingIndex;
+    // }
 
-    source = source.replaceAll('%%%%', '$ltr%%%%');
-    startingIndex = 0;
-    while (source.indexOf('$ltr%%%%', startingIndex) != -1) {
-      int index = source.indexOf('$ltr%%%%', startingIndex);
-      int trailingIndex = source.indexOf('$ltr%%%%', index + 1);
-      if (trailingIndex == -1) break;
-      source =
-          '${source.substring(0, trailingIndex)}%%%%${source.substring(trailingIndex)}';
-      source = source.replaceAll('%%%%$ltr%%%%', '</div>');
-      startingIndex = trailingIndex;
-    }
-    source = source.replaceAll('%%%%', '');
-    return source;
+    // source = source.replaceAll('%%%%', '$ltr%%%%');
+    // startingIndex = 0;
+    // while (source.indexOf('$ltr%%%%', startingIndex) != -1) {
+    //   int index = source.indexOf('$ltr%%%%', startingIndex);
+    //   int trailingIndex = source.indexOf('$ltr%%%%', index + 1);
+    //   if (trailingIndex == -1) break;
+    //   source =
+    //       '${source.substring(0, trailingIndex)}%%%%${source.substring(trailingIndex)}';
+    //   source = source.replaceAll('%%%%$ltr%%%%', '</div>');
+    //   startingIndex = trailingIndex;
+    // }
+    // source = source.replaceAll('%%%%', '');
+    // return source;
   }
 
   bool get isInitiallyChecked => _isInitiallyChecked;

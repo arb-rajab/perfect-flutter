@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final String? label;
@@ -28,10 +27,6 @@ class CustomCheckbox extends StatelessWidget {
           onTap: () => onChanged(!checked),
           child: label != null ? Text(label!) : labelWidget!,
         ))
-        // GestureDetector(
-        //   onTap: () => onChanged(!checked),
-        //   child: label != null ? Text(label!) : Flexible(child: labelWidget!),
-        // ),
       ],
     );
   }

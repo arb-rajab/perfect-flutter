@@ -10,10 +10,10 @@ class WebWidget extends StatefulWidget {
   const WebWidget({super.key, required this.uri, required this.connected});
 
   @override
-  State<WebWidget> createState() => _WebWidgetState();
+  State<WebWidget> createState() => WebWidgetState();
 }
 
-class _WebWidgetState extends State<WebWidget> {
+class WebWidgetState extends State<WebWidget> {
   final GlobalKey webViewKey = GlobalKey();
 
   double progress = 0;

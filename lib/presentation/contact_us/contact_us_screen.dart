@@ -22,9 +22,9 @@ class ContactUsScreen extends StatelessWidget {
         icon: icon,
         child: ListView(children: [
           const FrequesntQuestionsTile(),
-          if (telegramChannelLink.isNotEmpty) _TelegramChannelTile(),
-          if (telegramChatLink.isNotEmpty) _TelegramChatTile(),
-          if (facebookPageLink.isNotEmpty) _FacebookPageTile()
+          if (telegramChannelLink.isNotEmpty) const TelegramChannelTile(),
+          if (telegramChatLink.isNotEmpty) const TelegramChatTile(),
+          if (facebookPageLink.isNotEmpty) const FacebookPageTile()
         ]));
   }
 }
@@ -47,7 +47,9 @@ class FrequesntQuestionsTile extends StatelessWidget {
   }
 }
 
-class _TelegramChannelTile extends StatelessWidget {
+class TelegramChannelTile extends StatelessWidget {
+  const TelegramChannelTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -61,7 +63,9 @@ class _TelegramChannelTile extends StatelessWidget {
   }
 }
 
-class _TelegramChatTile extends StatelessWidget {
+class TelegramChatTile extends StatelessWidget {
+  const TelegramChatTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(
@@ -74,7 +78,9 @@ class _TelegramChatTile extends StatelessWidget {
   }
 }
 
-class _FacebookPageTile extends StatelessWidget {
+class FacebookPageTile extends StatelessWidget {
+  const FacebookPageTile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return OpacityAnimation(

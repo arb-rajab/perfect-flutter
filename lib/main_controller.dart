@@ -17,6 +17,7 @@ import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/question_tag_property_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/related_term_service.dart';
+import 'package:beta/application/services/share_service.dart';
 import 'package:beta/application/services/term_label_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_linked_to_label_service.dart';
@@ -124,6 +125,7 @@ class MainController {
     Get.put(PathService());
     Get.put(NotificationRepository());
     Get.put(ClipboardRepository());
+    Get.put(ShareService());
   }
 }
 

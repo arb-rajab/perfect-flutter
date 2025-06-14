@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
             DeleteUserFavoriteQuestionsWidget(),
             DeleteUserAnswersWidget(),
             DeleteTermLastAccessWidget(),
-          DeleleStudiedTermsWidget(),
+          DeleteStudiedTermsWidget(),
             Divider(),
         ]));
   }
@@ -116,8 +116,8 @@ class DeleteTermLastAccessWidget extends StatelessWidget {
   }
 }
 
-class DeleleStudiedTermsWidget extends StatelessWidget {
-  const DeleleStudiedTermsWidget({super.key});
+class DeleteStudiedTermsWidget extends StatelessWidget {
+  const DeleteStudiedTermsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

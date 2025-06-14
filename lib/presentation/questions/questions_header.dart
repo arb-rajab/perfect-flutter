@@ -2,17 +2,19 @@
 
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/questions/question_tags_choice.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
+import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/widgets/custom_check_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 import 'level_group.dart';
 
 class QuestionsHeader extends StatelessWidget {
-  QuestionsHeader({super.key});
+  final QuestionsController questionsController;
+  const QuestionsHeader({super.key, required this.questionsController});
 
   @override
   Widget build(BuildContext context) {
@@ -20,27 +22,43 @@ class QuestionsHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: halfMargin),
       child: Column(
         children: [
-          NumberOfQuestions(),
+          NumberOfQuestions(
+            questionsController: questionsController,
+          ),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-            children: [
-              ShowFavoriteOnly(),
-              ShowEditedOnly(),
-            ],
+                children: [
+                  ShowFavoriteOnly(
+                    questionsController: questionsController,
+                  ),
+                  ShowEditedOnly(
+                    questionsController: questionsController,
+                  ),
+                ],
               )),
-          QuestionTagsChoice(),
-          LevelGroup()
+          if (questionsController.deepLinked ||
+              !(questionsController.questionsScreenArgument?.source ==
+                      QuestionScreenSource.term &&
+                  questionsController.term != null &&
+                  questionsController.term!.type == TermType.template))
+            QuestionTagsChoice(
+              questionsController: questionsController,
+            ),
+          if (questionsController.questionsFilteringEnabled)
+            LevelGroup(
+              questionsController: questionsController,
+            )
         ],
       ),
     );
   }
 }
 
-//TODO add test
 class NumberOfQuestions extends StatelessWidget {
-  NumberOfQuestions({super.key});
-  final QuestionsController questionsController = Get.find();
+  final QuestionsController questionsController;
+  const NumberOfQuestions({super.key, required this.questionsController});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,10 +72,10 @@ class NumberOfQuestions extends StatelessWidget {
   }
 }
 
-//TODO add test
 class ShowFavoriteOnly extends StatelessWidget {
-  ShowFavoriteOnly({super.key});
-  final QuestionsController questionsController = Get.find();
+  final QuestionsController questionsController;
+  const ShowFavoriteOnly({super.key, required this.questionsController});
+
   @override
   Widget build(BuildContext context) {
     return CustomCheckbox(
@@ -76,10 +94,10 @@ class ShowFavoriteOnly extends StatelessWidget {
   }
 }
 
-//TODO add test
 class ShowEditedOnly extends StatelessWidget {
-  ShowEditedOnly({super.key});
-  final QuestionsController questionsController = Get.find();
+  final QuestionsController questionsController;
+  const ShowEditedOnly({super.key, required this.questionsController});
+
   @override
   Widget build(BuildContext context) {
     return CustomCheckbox(

@@ -1,5 +1,5 @@
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/domain/term_data.dart';
+import 'package:beta/domain/value/id.dart';
 
 class TermPropertyService {
   DatabaseService databaseService;
@@ -12,20 +12,20 @@ class TermPropertyService {
             ..where((tbl) => tbl.name.equals(studied)))
           .go();
 
-  Future addTermToStudied(TermData termData) =>
+  Future addTermToStudied(Id termId) =>
       databaseService.into(databaseService.termProperties).insert(
-          TermProperty(termId: termData.term.id, name: studied, value: 'true'));
+          TermProperty(termId: termId.value!, name: studied, value: 'true'));
 
-  Future removeTermFromStudied(TermData termData) =>
+  Future removeTermFromStudied(Id termId) =>
       (databaseService.delete(databaseService.termProperties)
-            ..where((tbl) => tbl.termId.equals(termData.term.id))
+            ..where((tbl) => tbl.termId.equals(termId.value!))
             ..where((tbl) => tbl.name.equals(studied)))
           .go();
 
-  Future<bool> isTermStudied(TermData termData) async {
+  Future<bool> isTermStudied(Id termId) async {
     List properties =
         await (databaseService.select(databaseService.termProperties)
-              ..where((tbl) => tbl.termId.equals(termData.term.id))
+              ..where((tbl) => tbl.termId.equals(termId.value!))
               ..where((tbl) => tbl.name.equals(studied))
               ..where((tbl) => tbl.value.equals('true')))
             .get();

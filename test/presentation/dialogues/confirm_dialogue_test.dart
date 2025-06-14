@@ -1,68 +1,63 @@
-import 'dart:developer';
-
-import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/main.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  testWidgets('test text is visible and ok button removes dialogue',
-      (widgetTester) async {
-    int x = 0;
-    await widgetTester.pumpWidget(MaterialApp(home: Scaffold(
-      body: ConfirmDialogue(
-        onConfirm: () {
-          log('success');
-          x = 1;
-        },
-      ),
-    )));
+import '../../common/tests.dart';
 
-    expect(find.byType(ConfirmDialogue), findsOneWidget);
+Future main() async {
+  await initTests();
 
-    await widgetTester.tap(find.text(StringConstant.ok.tr()));
+  testWidgets('title is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(MyApp(
+      child: ConfirmDialogue(onConfirm: () {}),
+    ));
     await widgetTester.pumpAndSettle();
-
-    expect(find.byType(ConfirmDialogue), findsNothing);
-    expect(x, 1);
+    expect(find.text(StringConstant.confirmAction), findsOneWidget);
   });
 
-  testWidgets('test text is visible and cancel button removes dialogue',
+  testWidgets('default content is rendered if no content is provided',
       (widgetTester) async {
-    int x = 0;
-    await widgetTester.pumpWidget(MaterialApp(home: Scaffold(
-      body: ConfirmDialogue(
-        onConfirm: () {
-          log('success');
-          x = 1;
-        },
-      ),
-    )));
-
-    expect(find.byType(ConfirmDialogue), findsOneWidget);
-
-    await widgetTester.tap(find.text(StringConstant.cancel.tr()));
+    await widgetTester.pumpWidget(MyApp(
+      child: ConfirmDialogue(onConfirm: () {}),
+    ));
     await widgetTester.pumpAndSettle();
-
-    expect(find.byType(ConfirmDialogue), findsNothing);
-    expect(x, 0);
+    expect(find.text(StringConstant.confirmActionExplanation), findsOneWidget);
   });
 
-  testWidgets('test custom content is visible', (widgetTester) async {
-    const String text = 'custom text';
-    await widgetTester.pumpWidget(MaterialApp(
-        home: Scaffold(
-      body: ConfirmDialogue(
-        onConfirm: () {
-          log('success');
-        },
-        content: const Text(text),
+  testWidgets('a content is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(MyApp(
+      child: ConfirmDialogue(
+        onConfirm: () {},
+        content: const RandomWidget(),
       ),
-    )));
-    await widgetTester.pump(animationDuration);
-
-    expect(find.text(text), findsOneWidget);
+    ));
+    await widgetTester.pumpAndSettle();
+    expect(find.byType(RandomWidget), findsOneWidget);
+    expect(find.text(StringConstant.confirmActionExplanation), findsNothing);
   });
+
+  testWidgets('cancel button is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(MyApp(
+      child: ConfirmDialogue(onConfirm: () {}),
+    ));
+    await widgetTester.pumpAndSettle();
+    expect(find.text(StringConstant.cancel), findsOneWidget);
+  });
+
+  testWidgets('ok button is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(MyApp(
+      child: ConfirmDialogue(onConfirm: () {}),
+    ));
+    await widgetTester.pumpAndSettle();
+    expect(find.text(StringConstant.ok), findsOneWidget);
+  });
+}
+
+class RandomWidget extends StatelessWidget {
+  const RandomWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Center();
 }

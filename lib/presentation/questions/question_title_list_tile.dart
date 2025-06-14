@@ -1,3 +1,4 @@
+import 'package:beta/application/services/share_service.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/configs/style.dart';
 import 'package:beta/constants/string_constant.dart';
@@ -9,15 +10,17 @@ import 'package:beta/presentation/widgets/widget_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:share_plus/share_plus.dart';
 
 class QuestionTitleListTile extends StatelessWidget {
   final QuestionData questionData;
-  const QuestionTitleListTile({super.key, required this.questionData});
+  final QuestionsController questionsController;
+  const QuestionTitleListTile(
+      {super.key,
+      required this.questionData,
+      required this.questionsController});
 
   @override
   Widget build(BuildContext context) {
-    QuestionsController questionsController = Get.find();
     return WidgetWrapper(
         child: ListTile(
       leading: CircleAvatar(
@@ -57,7 +60,8 @@ class QuestionTitleListTile extends StatelessWidget {
                 ),
               ),
               PopupMenuItem(
-                onTap: () => Share.share(StringConstant.shareQuestionBody
+                onTap: () => Get.find<ShareService>().share(
+                    StringConstant.shareQuestionBody
                     .tr()
                     .replaceAll('(LINK)',
                         '$scheme://$host/q/${questionData.question.uuid}')),

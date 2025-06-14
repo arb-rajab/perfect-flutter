@@ -10,6 +10,7 @@ import 'package:beta/presentation/questions/question_title.dart';
 import 'package:beta/presentation/widgets/input_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> showReportQuestionDialogue(
     BuildContext context, QuestionData questionData) async {
@@ -20,7 +21,6 @@ Future<void> showReportQuestionDialogue(
   );
 }
 
-//TODO add test
 class ReportQuestionDialogue extends StatefulWidget {
   final QuestionData questionData;
   const ReportQuestionDialogue(this.questionData, {super.key});
@@ -33,10 +33,10 @@ class _ReportQuestionDialogueState extends State<ReportQuestionDialogue> {
   bool loading = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String message = '';
+  TextEditingController textEditingController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController textEditingController =
-        TextEditingController(text: '');
     return OpacityAnimation(
         child: AlertDialog(
             title: ListTile(
@@ -65,7 +65,7 @@ class _ReportQuestionDialogueState extends State<ReportQuestionDialogue> {
                                 message = '';
                               }),
                           onConnectionSucceed: (dynamic data) {
-                            Navigator.pop(context);
+                            context.pop();
                             showSuccessDialogue(context);
                           },
                           onConnectionFailed: () => setState(() {

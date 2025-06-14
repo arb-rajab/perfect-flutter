@@ -6,12 +6,12 @@ import 'package:beta/presentation/questions/question_header.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/widgets/custom_check_box.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 class QuestionBody extends StatelessWidget {
   final AnswerData answerData;
-  final QuestionsController questionsController = Get.find();
-  QuestionBody({super.key, required this.answerData});
+  final QuestionsController questionsController;
+  const QuestionBody(
+      {super.key, required this.answerData, required this.questionsController});
 
   @override
   Widget build(BuildContext context) {

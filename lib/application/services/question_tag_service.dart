@@ -94,10 +94,10 @@ class QuestionTagService {
                   .equals(questionId.value!)))))
           .get();
 
-  void openQuestionTagInformation(
+  Future openQuestionTagInformation(
       {required QuestionTag questionTag, required BuildContext context}) {
     ConnectionRepository connectionRepository = Get.find();
-    connectionRepository.isConnected().then((value) {
+    return connectionRepository.isConnected().then((value) {
       if (!context.mounted) return;
       Get.delete<WebScreenArgument>();
       Get.put(WebScreenArgument(

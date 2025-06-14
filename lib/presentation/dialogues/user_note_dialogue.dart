@@ -16,7 +16,6 @@ Future<void> showUserNoteDialogue(
   );
 }
 
-//TODO add test
 class UserNoteDialogue extends StatelessWidget {
   final QuestionData questionData;
   const UserNoteDialogue(

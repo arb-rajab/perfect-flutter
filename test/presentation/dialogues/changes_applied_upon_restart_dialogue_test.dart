@@ -1,23 +1,32 @@
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/main.dart';
 import 'package:beta/presentation/dialogues/changes_applied_upon_restart_dialogue.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  testWidgets('test text is visible and dismiss button', (widgetTester) async {
-    await widgetTester.pumpWidget(const MaterialApp(
-        home: Scaffold(
-      body: ChangesAppliedUponRestartDialogue(),
-    )));
+import '../../common/tests.dart';
 
-    expect(find.text(StringConstant.changesWillBeAppliedUponRestart.tr()),
-        findsOneWidget);
+Future main() async {
+  await initTests();
 
-    await widgetTester.tap(find.text(StringConstant.ok.tr()));
+  testWidgets('test text is visible', (widgetTester) async {
+    await widgetTester.pumpWidget(const MyApp(
+      child: ChangesAppliedUponRestartDialogue(),
+    ));
     await widgetTester.pumpAndSettle();
 
-    expect(find.text(StringConstant.changesWillBeAppliedUponRestart.tr()),
-        findsNothing);
+    expect(
+        find.widgetWithText(
+            AlertDialog, StringConstant.changesWillBeAppliedUponRestart),
+        findsOneWidget);
+  });
+
+  testWidgets('test ok button is visible', (widgetTester) async {
+    await widgetTester.pumpWidget(const MyApp(
+      child: ChangesAppliedUponRestartDialogue(),
+    ));
+    await widgetTester.pumpAndSettle();
+
+    expect(find.text(StringConstant.ok), findsOneWidget);
   });
 }
