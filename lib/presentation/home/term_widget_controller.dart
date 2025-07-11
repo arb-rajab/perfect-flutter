@@ -174,14 +174,8 @@ class TermWidgetController {
                             progress.toDouble() / total.toDouble()));
           }
         },
-        onConnectionFailed: () {
-          // state.setState(() => downloading = false);
-          _onConnectionFailed();
-        },
-        onMessageReceived: (message) {
-          // state.setState(() => downloading = false);
-          _onMessageReceived(message);
-        },
+        onConnectionFailed: _onConnectionFailed,
+        onMessageReceived: _onMessageReceived,
       ).get(url: url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
     }
     if (TermType.hasContent(termData)) {
@@ -290,9 +284,8 @@ class TermWidgetController {
       case TermType.ebook:
         if (isDownloaded) {
           if (await termService.isUnExpired(termData)) {
-            Ebook ebook = await ebookService.getEbook(termData);
             Get.delete<EbookScreenArgument>();
-            Get.put(EbookScreenArgument(ebook: ebook, term: termData));
+            Get.put(EbookScreenArgument(term: termData));
             if (state.mounted) state.context.push(EbookScreen.route);
           } else {
             if (state.mounted) {

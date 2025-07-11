@@ -1,99 +1,158 @@
 import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/main_controller.dart';
-import 'package:drift/drift.dart';
-import 'package:get/instance_manager.dart';
 import 'package:test/test.dart';
 
-Future<void> main() async {
-  MainController.testing = true;
-  await MainController.initServices();
-  DatabaseService databaseService = Get.find();
-  CouponService couponService = Get.find();
-  tearDown(() async {
-    await databaseService.coupons.deleteAll();
+import '../../common/tests.dart';
+
+void main() {
+  setUp(() async {
+    await initTests();
   });
 
-  group('get paid coupons', () {
-    test('getPaidCoupons only do not return free coupons', () async {
-      databaseService.into(databaseService.coupons).insert(CouponsCompanion(
-            free: const Value(1),
-            id: const Value(1),
-            type: const Value(1),
-            serial: const Value('serial'),
-            creation: Value(DateTime.now()),
-          ));
-      var allItems = await databaseService.coupons.all().get();
-      expect(allItems.length, 1);
+  // Helper function to create test coupons
+  Coupon createTestCoupon({
+    int id = 1,
+    String serial = 'TEST123',
+    int type = 1,
+    int free = 0,
+    String creation = '2023-01-01',
+    String? activationDate,
+    int expirationDays = 30,
+  }) {
+    return Coupon(
+      id: id,
+      serial: serial,
+      type: type,
+      free: free,
+      creation: creation,
+      activationDate: activationDate,
+      expirationDays: expirationDays,
+    );
+  }
 
-      CouponService couponService =
-          CouponService(databaseService: databaseService);
-      List coupons = await couponService.getPaidCoupons();
-      expect(coupons.length, 0);
+  group('getPaidCoupons', () {
+    test('returns only non-free coupons ordered by creation date descending',
+        () async {
+      final service = CouponService(databaseService: databaseService);
+
+      // Insert test data using batch
+      await databaseService.batch((batch) {
+        batch.insertAllOnConflictUpdate(databaseService.coupons, [
+          createTestCoupon(id: 1, free: 0, creation: '2023-01-01'), // Paid
+          createTestCoupon(id: 2, free: 1, creation: '2023-01-02'), // Free
+          createTestCoupon(id: 3, free: 0, creation: '2023-01-03'), // Paid
+          createTestCoupon(id: 4, free: 1, creation: '2023-01-04'), // Free
+          createTestCoupon(id: 5, free: 0, creation: '2023-01-05'), // Paid
+        ]);
+      });
+
+      final paidCoupons = await service.getPaidCoupons();
+
+      expect(paidCoupons.length, 3);
+      expect(paidCoupons.map((c) => c.id),
+          [5, 3, 1]); // Should be in descending order
+      expect(paidCoupons.every((c) => c.free == 0), isTrue);
     });
 
-    test('getPaidCoupons only do returns paid coupons', () async {
-      databaseService.into(databaseService.coupons).insert(CouponsCompanion(
-            free: const Value(0),
-            id: const Value(1),
-            type: const Value(1),
-            serial: const Value('serial'),
-            creation: Value(DateTime.now()),
-          ));
-      var allItems = await databaseService.coupons.all().get();
-      expect(allItems.length, 1);
+    test('returns empty list when no paid coupons exist', () async {
+      final service = CouponService(databaseService: databaseService);
 
-      CouponService couponService =
-          CouponService(databaseService: databaseService);
-      List coupons = await couponService.getPaidCoupons();
-      expect(coupons.length, 1);
+      // Insert only free coupons using batch
+      await databaseService.batch((batch) {
+        batch.insertAllOnConflictUpdate(databaseService.coupons, [
+          createTestCoupon(id: 1, free: 1),
+          createTestCoupon(id: 2, free: 1),
+        ]);
+      });
+
+      final paidCoupons = await service.getPaidCoupons();
+      expect(paidCoupons, isEmpty);
     });
   });
 
-  group('add coupon', () {
-    test('add coupon adds a coupon', () async {
-      Coupon coupon = Coupon(
-          id: 1,
-          serial: 'aaa',
-          type: 1,
-          free: 0,
-          creation: DateTime.now(),
-          expirationDays: 12);
-      List<Coupon> coupons =
-          await (databaseService.select(databaseService.coupons)
-                ..where((tbl) => tbl.id.equals(coupon.id)))
-              .get();
-      expect(coupons.length, 0);
+  group('addCoupon', () {
+    test('inserts new coupon with all fields', () async {
+      final service = CouponService(databaseService: databaseService);
+      final coupon = createTestCoupon(
+        id: 1,
+        serial: 'UNIQUE123',
+        type: 2,
+        free: 0,
+        creation: '2023-06-01',
+        activationDate: '2023-06-02',
+        expirationDays: 60,
+      );
 
-      await couponService.addCoupon(coupon);
+      await service.addCoupon(coupon);
 
-      coupons = await (databaseService.select(databaseService.coupons)
-            ..where((tbl) => tbl.id.equals(coupon.id)))
-          .get();
-      expect(coupons.length, 1);
+      final storedCoupons =
+          await databaseService.select(databaseService.coupons).get();
+      expect(storedCoupons.length, 1);
+      expect(storedCoupons.first, coupon);
     });
 
-    test('add coupon replace duplicate coupon', () async {
-      Coupon coupon = Coupon(
-          id: 1,
-          serial: 'aaa',
-          type: 1,
-          free: 0,
-          creation: DateTime.now(),
-          expirationDays: 12);
+    test('updates existing coupon on conflict', () async {
+      final service = CouponService(databaseService: databaseService);
 
-      await couponService.addCoupon(coupon);
+      // Insert initial coupon using batch
+      await databaseService.batch((batch) {
+        batch.insertAllOnConflictUpdate(databaseService.coupons, [
+          createTestCoupon(
+            id: 1,
+            serial: 'OLD123',
+            type: 1,
+            free: 1,
+            expirationDays: 30,
+          ),
+        ]);
+      });
 
-      coupon = coupon.copyWith(free: 1);
+      // Update the coupon
+      final updatedCoupon = createTestCoupon(
+        id: 1,
+        serial: 'NEW123',
+        type: 2,
+        free: 0,
+        expirationDays: 60,
+      );
+      await service.addCoupon(updatedCoupon);
 
-      await couponService.addCoupon(coupon);
+      final storedCoupons =
+          await databaseService.select(databaseService.coupons).get();
+      expect(storedCoupons.length, 1);
+      expect(storedCoupons.first.serial, 'NEW123');
+      expect(storedCoupons.first.type, 2);
+      expect(storedCoupons.first.free, 0);
+      expect(storedCoupons.first.expirationDays, 60);
+    });
 
-      List<Coupon> coupons =
-          await (databaseService.select(databaseService.coupons)
-                ..where((tbl) => tbl.id.equals(coupon.id)))
-              .get();
-      expect(coupons.length, 1);
-      expect(coupons[0].free, 1);
+    test('handles null activationDate correctly', () async {
+      final service = CouponService(databaseService: databaseService);
+      final coupon = createTestCoupon(
+        id: 1,
+        activationDate: null,
+      );
+
+      await service.addCoupon(coupon);
+
+      final storedCoupons =
+          await databaseService.select(databaseService.coupons).get();
+      expect(storedCoupons.length, 1);
+      expect(storedCoupons.first.activationDate, null);
+    });
+
+    test('can insert multiple coupons', () async {
+      final service = CouponService(databaseService: databaseService);
+      final coupon1 = createTestCoupon(id: 1);
+      final coupon2 = createTestCoupon(id: 2);
+
+      await service.addCoupon(coupon1);
+      await service.addCoupon(coupon2);
+
+      final storedCoupons =
+          await databaseService.select(databaseService.coupons).get();
+      expect(storedCoupons.length, 2);
+      expect(storedCoupons.map((c) => c.id), containsAll([1, 2]));
     });
   });
 }

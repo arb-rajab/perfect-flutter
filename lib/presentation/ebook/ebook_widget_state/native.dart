@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/ebook_service.dart';
+import 'package:beta/helper/encryption.dart';
 import 'package:beta/presentation/ebook/ebook_screen_controller.dart';
 import 'package:beta/presentation/ebook/ebook_widget.dart';
 import 'package:flutter/widgets.dart';
@@ -17,14 +20,15 @@ class EbookWidgetState extends State<EbookWidget> {
 
   Future _configureFile() async {
     file = File(join((await getApplicationSupportDirectory()).path,
-        'term$separator${ebookScreenController.ebookScreenArgument.ebook.parentTermId}'));
+        'term$separator${ebookScreenController.ebookScreenArgument.term.term.id}'));
     setState(() => fileLoaded = true);
   }
 
   Future<void> onCreated(DocumentViewController controller) async {
+    Ebook ebook = await Get.find<EbookService>()
+        .getEbook(ebookScreenController.ebookScreenArgument.term);
     controller.openDocument(file.path,
-        password: ebookScreenController.decryptEncryptionKey(
-            ebookScreenController.ebookScreenArgument.ebook.encryptionKey),
+        password: Encryption.decryptEncryptionKey(ebook.encryptionKey),
         config: Config()
           ..disabledElements = [
             Buttons.shareButton,

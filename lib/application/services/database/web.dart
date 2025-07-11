@@ -3,6 +3,7 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/instance_manager.dart';
 
 DatabaseService constructDb() {
@@ -47,8 +48,10 @@ DatabaseConnection connectOnWeb() {
       // Depending how central local persistence is to your app, you may want
       // to show a warning to the user if only unrealiable implemetentations
       // are available.
-      print('Using ${result.chosenImplementation} due to missing browser '
+      if (kDebugMode) {
+        print('Using ${result.chosenImplementation} due to missing browser '
           'features: ${result.missingFeatures}');
+      }
     }
 
     return result.resolvedExecutor;

@@ -17,14 +17,6 @@ class PathService implements PathBase {
   }
 
   @override
-  Future<bool> isFileInSupport(String path) async {
-    if (MainController.testing) return Future.value(testFileInSupport);
-    Directory supportDirectory = await getApplicationSupportDirectory();
-    File file = File(join(supportDirectory.path, path));
-    return file.exists();
-  }
-
-  @override
   Future<bool> isFilePartsInSupport(List<String> parts) async {
     if (MainController.testing) return Future.value(testFileInSupport);
     if (parts.isEmpty) return Future.value(true);

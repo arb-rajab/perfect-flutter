@@ -5,6 +5,7 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/domain/value/visible.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/instance_manager.dart';
 
 import 'value/path.dart';
@@ -121,11 +122,9 @@ class TermType {
 
   static bool downloadable(TermData termData) => [
         questions,
-        ebook,
         template,
-        flashcards,
-        voiceNotes
-      ].contains(termData.term.type);
+        flashcards].contains(termData.term.type) ||
+      ([ebook, voiceNotes].contains(termData.term.type) && !kIsWeb);
 
   static bool hasFile(TermData termData) =>
       [ebook, voiceNotes].contains(termData.term.type);

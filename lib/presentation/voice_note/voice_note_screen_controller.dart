@@ -1,10 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:beta/helper/encryption.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/voice_note/platforms/shared.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class VoiceNoteScreenController {
   Future<void> _initAudioService() async {
     VoiceNoteService voiceNoteService = Get.find();
     VoiceNote voiceNote = await voiceNoteService.getVoiceNote(argument.term);
-    String password = _decryptEncryptionKey(voiceNote.encryptionKey);
+    String password = Encryption.decryptEncryptionKey(voiceNote.encryptionKey);
 
     if (state.mounted) {
       await configurePlayer(
@@ -63,6 +63,7 @@ class VoiceNoteScreenController {
   }
 
   void changeSpeed(double speed) {
+    // ignore: invalid_use_of_protected_member
     state.setState(() {
       playbackSpeed = speed;
       audioPlayer.setSpeed(playbackSpeed);
@@ -82,22 +83,6 @@ class VoiceNoteScreenController {
 
   void pause() => audioHandler.pause();
 
-  String _decryptEncryptionKey(String encryptionKey) {
-    List<int> fibonacci = [];
-    fibonacci.add(1);
-    fibonacci.add(2);
-    String password = "";
-    if (encryptionKey.isNotEmpty) {
-      while (fibonacci[fibonacci.length - 1] < encryptionKey.length - 1) {
-        fibonacci.add(
-            fibonacci[fibonacci.length - 1] + fibonacci[fibonacci.length - 2]);
-      }
-      for (int c = 0; c < fibonacci.length; c++) {
-        password = "$password${encryptionKey[fibonacci[c]]}";
-      }
-    }
-    return password;
-  }
 }
 
 class AudioPlayerHandler extends BaseAudioHandler {

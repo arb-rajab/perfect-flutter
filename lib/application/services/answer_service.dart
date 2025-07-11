@@ -6,11 +6,9 @@ class AnswerService {
 
   AnswerService({required this.databaseService});
 
-  //TODO add test
   Future addAnswers(List<Answer> answers) => databaseService.batch((batch) =>
       batch.insertAllOnConflictUpdate(databaseService.answers, answers));
 
-  //TODO add test
   Future<List<Answer>> getQuestionAnswers(Id questionId) =>
       (databaseService.select(databaseService.answers)
             ..where((tbl) => tbl.parentQuestionId.equals(questionId.value!)))

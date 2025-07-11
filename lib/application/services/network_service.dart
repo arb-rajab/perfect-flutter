@@ -270,6 +270,9 @@ class NetworkService {
       required String filePath,
       required Function(int recieved, int total) onRecieveProgress}) async {
     onPreConnect.call();
+    if (kIsWeb) {
+      return dio.get(url);
+    }
     if (MainController.testing) {
       await dio.get(url);
     } else {
@@ -278,4 +281,5 @@ class NetworkService {
     onPostConnect.call();
     onConnectionSucceed.call(null);
   }
+
 }

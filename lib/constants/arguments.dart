@@ -59,10 +59,9 @@ class WebScreenArgument {
 }
 
 class EbookScreenArgument {
-  final Ebook ebook;
   final TermData term;
 
-  EbookScreenArgument({required this.ebook, required this.term});
+  EbookScreenArgument({required this.term});
 }
 
 class YoutubeVideoScreenArgument {
