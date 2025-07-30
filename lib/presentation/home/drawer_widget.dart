@@ -17,8 +17,9 @@ import 'package:beta/presentation/frequent_questions/frequent_questions_screen.d
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,12 +76,18 @@ class ImportBackupTile extends StatelessWidget {
         ),
         title: Text(StringConstant.importBackup.tr()),
         onTap: () async {
-          FilePickerResult? result = await FilePicker.platform
-              .pickFiles(allowMultiple: false, withData: true);
+          // FilePickerResult? result = await FilePicker.platform
+          //     .pickFiles(allowMultiple: false, withData: true);
+//               const XTypeGroup typeGroup = XTypeGroup(
+//   label: 'images',
+//   extensions: <String>['jpg', 'png'],
+// );
+          final XFile? result =
+              await openFile(/*acceptedTypeGroups: <XTypeGroup>[typeGroup]*/);
           // if no file is picked
           if (result == null) return;
-          Uint8List? fileBytes = result.files.first.bytes;
-          if (fileBytes == null) return;
+          Uint8List? fileBytes = await result.readAsBytes();
+          // if (fileBytes == null) return;
           String content = String.fromCharCodes(fileBytes);
           AnswerPropertyService answerPropertyService = Get.find();
           QuestionPropertyService questionPropertyService = Get.find();
@@ -283,9 +290,8 @@ class WhatsNewDialogue extends StatelessWidget {
           '(VERSION)', Get.find<PackageRepository>().getVersionName())),
       content: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-            children: [...newFeatures.map((feature) => Text('* $feature'))]
-        ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [...newFeatures.map((feature) => Text('* $feature'))]),
       ),
       actions: [
         TextButton(onPressed: context.pop, child: Text(StringConstant.ok.tr()))

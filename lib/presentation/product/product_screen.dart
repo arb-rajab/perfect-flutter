@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ProductScreen extends StatefulWidget {
   static const String route = '/products/:productId';
@@ -148,9 +149,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      Text(
-                        product.description!.value!,
-                        style: const TextStyle(fontSize: 16.0),
+                      Html(
+                        data: product.description!.value!,
                       ),
                       const SizedBox(height: 10.0),
                       Row(
