@@ -64,13 +64,13 @@ class MainController {
       }
     }
     KeyValue keyValue = await KeyValue().initialise();
+    Get.put(keyValue);
     if (testing == false) await EasyLocalization.ensureInitialized();
     Get.put(await DeviceRepository().initialise());
     PackageRepository packageRepository =
         Get.put(await PackageRepository().initialise());
     FirebaseRepository firebaseRepository =
         Get.put(await FirebaseRepository().initialise());
-    Get.put(keyValue);
     Get.put(UrlLauncherRepository());
     Get.put(ScreenshotRepository());
     Get.put(ConnectionRepository());

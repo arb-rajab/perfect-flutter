@@ -95,7 +95,6 @@ class FlashcardsScreenArgument {
 
 class VoiceNoteScreenArgument {
   final TermData term;
-  final VoiceNote voiceNote;
 
-  VoiceNoteScreenArgument({required this.voiceNote, required this.term});
+  VoiceNoteScreenArgument({required this.term});
 }

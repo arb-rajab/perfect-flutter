@@ -1,10 +1,8 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
-import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/value/id.dart';
-import 'package:beta/helper/encryption.dart';
 import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/voice_note/platforms/shared.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +15,7 @@ class VoiceNoteScreenController {
   AudioHandler audioHandler = Get.find();
   AudioPlayer audioPlayer = Get.find();
   double playbackSpeed = 1.0;
+  bool loading = false;
   final List<double> playbackSpeeds = [
     0.25,
     0.5,
@@ -32,18 +31,13 @@ class VoiceNoteScreenController {
   TermLastAccessService termLastAccessService = Get.find();
 
   VoiceNoteScreenController(this.state) {
-    _initAudioService();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initAudioService();
+    });
   }
 
   Future<void> _initAudioService() async {
-    VoiceNoteService voiceNoteService = Get.find();
-    VoiceNote voiceNote = await voiceNoteService.getVoiceNote(argument.term);
-    String password = Encryption.decryptEncryptionKey(voiceNote.encryptionKey);
-
-    if (state.mounted) {
-      await configurePlayer(
-          context: state.context, password: password, audioPlayer: audioPlayer);
-    }
+    await configurePlayer();
     int second = await getLastSecond() ?? 0;
     audioHandler.play();
     audioHandler.seek(Duration(seconds: second));
@@ -82,7 +76,6 @@ class VoiceNoteScreenController {
   void play() => audioHandler.play();
 
   void pause() => audioHandler.pause();
-
 }
 
 class AudioPlayerHandler extends BaseAudioHandler {

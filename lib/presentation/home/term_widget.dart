@@ -36,8 +36,9 @@ class _TermWidgetState extends State<TermWidget> {
         termWidgetController.termsListingController.items[widget.index];
     TermData termData = termWidgetController.termData;
     if (kIsWeb &&
-        ![TermType.term, TermType.questions].contains(termData.term.type)) {
-      return const UnsupportedContentWidget();
+        [TermType.ebook, TermType.youtubeVideos, TermType.voiceNotes]
+            .contains(termData.term.type)) {
+      return const UnsupportedContentWebWidget();
     }
     if (![
       TermType.term,
@@ -120,6 +121,19 @@ class UnsupportedContentWidget extends StatelessWidget {
         child: ListTile(
       title: Text(StringConstant.unsupportedContent.tr()),
       subtitle: Text(StringConstant.unsupportedContentExplanation.tr()),
+    ));
+  }
+}
+
+class UnsupportedContentWebWidget extends StatelessWidget {
+  const UnsupportedContentWebWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return WidgetWrapperWithBorder(
+        child: ListTile(
+      title: Text(StringConstant.unsupportedContent.tr()),
+      subtitle: Text(StringConstant.unsupportedContentWebExplanation.tr()),
     ));
   }
 }

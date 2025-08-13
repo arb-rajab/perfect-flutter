@@ -1,5 +1,6 @@
 import 'package:beta/presentation/voice_note/player_buttons.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen_controller.dart';
+import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/no_background_logo.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,9 @@ class _VoiceNoteScreenState extends State<VoiceNoteScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Expanded(child: NoBackgroundLogo()),
+            controller.loading
+                ? const LoadingWidget()
+                :
             StreamBuilder<Duration>(
               stream: controller.audioPlayer.positionStream,
               builder: (context, snapshot) {

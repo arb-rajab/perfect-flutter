@@ -1963,5 +1963,14 @@ Future main() async {
       expect(find.text(StringConstant.unsupportedContentExplanation),
           findsOneWidget);
     });
+
+    testWidgets('unsupported content web widget', (widgetTester) async {
+      await widgetTester
+          .pumpWidget(const MyApp(child: UnsupportedContentWebWidget()));
+      await widgetTester.pumpAndSettle();
+      expect(find.text(StringConstant.unsupportedContent), findsOneWidget);
+      expect(find.text(StringConstant.unsupportedContentWebExplanation),
+          findsOneWidget);
+    });
   });
 }

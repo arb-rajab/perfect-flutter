@@ -153,6 +153,8 @@ class StringConstant {
   static const unsupportedContent = '$_terms.unsupported-content';
   static const unsupportedContentExplanation =
       '$_terms.unsupported-content-explanation';
+  static const unsupportedContentWebExplanation =
+      '$_terms.unsupported-content-web-explanation';
   static const contentLocked = '$_terms.content-locked';
   static const questionTags = '$_terms.question-tags';
   static const edited = '$_terms.edited';

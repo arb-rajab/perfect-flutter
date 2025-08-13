@@ -79,14 +79,16 @@ class QuestionsReportScreen extends StatelessWidget {
               }
 
               index = index - 2;
-              QuestionTag currentQuestionTag =
-                  questionsReportController.allQuestionTags[index];
               String? title;
               String? parentTitle;
+              bool otherQuestionTag = false;
               if (isQuestionWithNoQuestionTag(index)) {
                 parentTitle = StringConstant.noTagsQuestions.tr();
                 title = null;
+                otherQuestionTag = true;
               } else {
+                QuestionTag currentQuestionTag =
+                    questionsReportController.allQuestionTags[index];
                 if (index == 0) {
                   if (currentQuestionTag.parentTagId != 0) {
                     QuestionTag? parentTag = questionsReportController
@@ -130,16 +132,15 @@ class QuestionsReportScreen extends StatelessWidget {
 
               int correctAnswers = 0, wrongAnswers = 0, answeredQuestions = 0;
               int questionsWithQuestionTag = 0;
-              bool otherQuestionTag = false;
 
-              if (index > 0 && isQuestionWithNoQuestionTag(index)) {
-                QuestionTag previousQuestionTag =
-                    questionsReportController.allQuestionTags[index - 1];
-                if (currentQuestionTag.parentTagId == 0 &&
-                    previousQuestionTag.parentTagId == currentQuestionTag.id) {
-                  otherQuestionTag = true;
-                }
-              }
+              // if (index > 0 && isQuestionWithNoQuestionTag(index)) {
+              //   QuestionTag previousQuestionTag =
+              //       questionsReportController.allQuestionTags[index - 1];
+              //   if (currentQuestionTag.parentTagId == 0 &&
+              //       previousQuestionTag.parentTagId == currentQuestionTag.id) {
+              //     otherQuestionTag = true;
+              //   }
+              // }
               for (QuestionData questionData in questionsReportController
                   .questionsReportScreenArgument.questions) {
                 bool correct = true,
@@ -147,6 +148,8 @@ class QuestionsReportScreen extends StatelessWidget {
                     tagFound = false,
                     subtagFound = false;
                 if (!isQuestionWithNoQuestionTag(index)) {
+                  QuestionTag currentQuestionTag =
+                      questionsReportController.allQuestionTags[index];
                   for (QuestionTag questionTag in questionData.questionTags) {
                     if (questionTag.id == currentQuestionTag.id) {
                       tagFound = true;
@@ -168,9 +171,13 @@ class QuestionsReportScreen extends StatelessWidget {
                 for (AnswerData answerData in questionData.answers) {
                   if (answerData.isChecked()) answered = true;
                   if (answerData.isChecked() &&
-                      answerData.answer.isCorrect == 0) correct = false;
+                      answerData.answer.isCorrect == 0) {
+                    correct = false;
+                  }
                   if (answerData.answer.isCorrect == 1 &&
-                      !answerData.isChecked()) correct = false;
+                      !answerData.isChecked()) {
+                    correct = false;
+                  }
                 }
                 if (answered) {
                   answeredQuestions++;

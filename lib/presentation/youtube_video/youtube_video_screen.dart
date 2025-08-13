@@ -1,9 +1,7 @@
 import 'package:beta/configs/style.dart';
-import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
-import 'package:beta/presentation/widgets/web_widget.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

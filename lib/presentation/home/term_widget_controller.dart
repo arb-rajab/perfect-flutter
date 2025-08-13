@@ -49,6 +49,7 @@ class TermWidgetController {
   TermTagService termTagService = Get.find();
   TermPropertyService termPropertyService = Get.find();
   EbookService ebookService = Get.find();
+  VoiceNoteService voiceNoteService = Get.find();
   PathService pathService = Get.find();
 
   TermWidgetController(this.state, {required this.index}) {
@@ -152,7 +153,6 @@ class TermWidgetController {
             url = ebookData.url!.toString();
           }
           if (termData.term.type == TermType.voiceNotes) {
-            VoiceNoteService voiceNoteService = Get.find();
             VoiceNoteData voiceNoteData = VoiceNoteData.fromJson(body['voice']);
             voiceNoteService.addVoiceNote(voiceNoteData);
             url = voiceNoteData.url!.toString();
@@ -342,11 +342,9 @@ class TermWidgetController {
       case TermType.voiceNotes:
         if (isDownloaded) {
           if (await termService.isUnExpired(termData)) {
-            VoiceNoteService voiceNoteService = Get.find();
-            VoiceNote voiceNote = await voiceNoteService.getVoiceNote(termData);
             Get.delete<VoiceNoteScreenArgument>();
             Get.put(
-                VoiceNoteScreenArgument(term: termData, voiceNote: voiceNote));
+                VoiceNoteScreenArgument(term: termData));
             if (state.mounted) state.context.push(VoiceNoteScreen.route);
           } else {
             if (state.mounted) {

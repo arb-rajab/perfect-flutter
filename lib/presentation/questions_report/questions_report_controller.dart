@@ -22,7 +22,7 @@ class QuestionsReportController {
     for (QuestionData questionData in questionsReportScreenArgument.questions) {
       for (QuestionTag questionTag in questionData.questionTags) {
         bool alreadyAdded = false;
-        if (questionTag.parentTagId == 0) {
+        if (questionTag.parentTagId != 0) {
           for (QuestionTag childTag in childQuestionTags) {
             if (childTag.id == questionTag.id) {
               alreadyAdded = true;
@@ -55,7 +55,7 @@ class QuestionsReportController {
       }
       if (!alreadyAdded) childQuestionTags.add(parentTag);
     }
-    allQuestionTags = childQuestionTags;
+    allQuestionTags = [...childQuestionTags];
 
     for (int c = 1; c < allQuestionTags.length; c++) {
       QuestionTag questionTag = allQuestionTags[c];
@@ -67,6 +67,12 @@ class QuestionsReportController {
         allQuestionTags.insert(
             c, getParentTag(previousQuestionTag.parentTagId)!);
       }
+    }
+    // append last question tag parent
+    QuestionTag questionTag = allQuestionTags[allQuestionTags.length - 1];
+    if (questionTag.parentTagId != 0 &&
+        getParentTag(questionTag.parentTagId) != null) {
+      allQuestionTags.add(getParentTag(questionTag.parentTagId)!);
     }
   }
 
