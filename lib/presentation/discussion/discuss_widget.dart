@@ -4,6 +4,7 @@ import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/comment.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/discussion/discussion_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -65,12 +66,12 @@ class DiscussWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Get.delete<DiscussionScreenArgument>();
-              Get.put(
-                  DiscussionScreenArgument(
-                      itemId: comment.id.value!,
-                      itemType: "comment",
-                      itemName: comment.content.value!,
-                      commentEnabled: false));
+              Get.put(DiscussionScreenArgument(
+                  itemId: comment.id.value!,
+                  itemType: "comment",
+                  itemName: comment.content.value!,
+                  commentEnabled: false));
+              if (MainController.testing) return;
               context.push(DiscussionScreen.route
                   .replaceFirst(':itemType', 'comment')
                   .replaceFirst(':itemId', comment.id.value!.toString()));

@@ -1,9 +1,12 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/comment.dart';
 import 'package:beta/helper/failure_response.dart';
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/discussion/discuss_widget.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,9 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
 class DiscussionScreenController extends ListController {
-  DiscussionScreenArgument argument=Get.find();
+  DiscussionScreenArgument argument = Get.find();
   TextEditingController submitController = TextEditingController();
   bool submitting = false;
+  String messageTest = '';
 
   DiscussionScreenController(State state, String type, String id)
       : super(
@@ -24,7 +28,7 @@ class DiscussionScreenController extends ListController {
           indexUrl: '',
           fetch: null,
           fromJson: Comment.fromJson,
-        ) ;
+        );
 
   @override
   Widget Function(BuildContext p1, int p2) get itemBuilder => (context, index) {
@@ -43,10 +47,21 @@ class DiscussionScreenController extends ListController {
       state.context,
       onPreConnect: () => state.setState(() => submitting = true),
       onPostConnect: () => state.setState(() => submitting = false),
-      onMessageReceived: (FailureResponse message) =>
-          state.context.showErrorBar(content: Text(message.content)),
-      onConnectionFailed: () => state.context
-          .showErrorBar(content: Text(StringConstant.noConnection.tr())),
+      onMessageReceived: (FailureResponse message) {
+        if (MainController.testing) {
+          messageTest = message.content;
+        } else {
+          state.context.showErrorBar(content: Text(message.content));
+        }
+      },
+      onConnectionFailed: () {
+        if (MainController.testing) {
+          messageTest = StringConstant.noConnection;
+        } else {
+          state.context
+              .showErrorBar(content: Text(StringConstant.noConnection.tr()));
+        }
+      },
       onConnectionSucceed: (body) {
         Comment comment = Comment.fromJson(body['comment']);
         state.setState(() {
