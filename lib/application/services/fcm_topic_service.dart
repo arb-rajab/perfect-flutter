@@ -9,7 +9,6 @@ class FCMTopicService {
       .into(databaseService.fcmTopics)
       .insertOnConflictUpdate(fcmTopic);
 
-  //TODO add test
   Future<List<FcmTopic>> getFailedTopics() =>
       (databaseService.select(databaseService.fcmTopics)
             ..where((tbl) => tbl.subscriptionSucceed.equals(false)))

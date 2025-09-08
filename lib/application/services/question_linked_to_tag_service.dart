@@ -5,7 +5,6 @@ class QuestionLinkedToTagService {
 
   QuestionLinkedToTagService({required this.databaseService});
 
-  //TODO add test
   Future addQuestionsLinkdeToTags(
           List<QuestionsLinkedToTag> questionsLinkedToTags) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(

@@ -20,12 +20,10 @@ class QuestionTagService {
 
   QuestionTagService({required this.databaseService});
 
-  //TODO add test
   Future addQuestionTags(List<QuestionTag> questionTags) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.questionTags, questionTags));
 
-  //TODO add test
   Future<List<QuestionTagData>> getTermQuestionsTags(TermData termData) =>
       databaseService
           .customSelect(
@@ -41,7 +39,6 @@ class QuestionTagService {
               .toList())
           .first;
 
-  //TODO add test
   Future<int> getNumberOfAllQuestionsQuestionTag(
           QuestionTagData questionTagData, TermData termData) async =>
       (await databaseService
@@ -55,7 +52,6 @@ class QuestionTagService {
               .first)
           .first;
 
-  //TODO add test
   Future<List<QuestionTagData>> getAllQuestionsTagChild(
           QuestionTagData questionTagData) =>
       databaseService
@@ -84,7 +80,6 @@ class QuestionTagService {
               .first)
           .first;
 
-  //TODO add test
   Future<List<QuestionTag>> getQuestionTags(Id questionId) =>
       (databaseService.select(databaseService.questionTags)
             ..where((tbl) => tbl.id.isInQuery(databaseService

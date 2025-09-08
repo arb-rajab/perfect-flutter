@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
@@ -26,7 +23,6 @@ class TermService {
   TermService(
       {required this.databaseService, required this.firebaseRepository});
 
-  //TODO add tests
   Future addTerms(List<TermData> terms) => databaseService.batch((batch) {
         List<Term> updatedTerms = terms
             .where((element) => !element.isDeleted() && element.isVisible())
@@ -54,7 +50,6 @@ class TermService {
         }
       });
 
-  //TODO add test
   Future subscribeToTermsUpdates(List<TermData> terms) {
     for (TermData term in terms) {
       String topic = "termId.${term.term.id}";
@@ -73,7 +68,6 @@ class TermService {
     return Future.value();
   }
 
-  //TODO add test
   Future setTermsNeedUpdate(List<Id> termsIds) =>
       (databaseService.update(databaseService.terms)
             ..where((tbl) => tbl.id.isIn(termsIds.map((e) => e.value!))))
@@ -92,21 +86,17 @@ class TermService {
               .toList())
           .first;
 
-  //TODO add test
   Future<List<TermData>> getFirstLayerTerms() => _queryTerms(
       "t.id in (select termId from termsParents where parentTermId=rootTermId) and (((numberOfQuestions>0 or numberOfSubTerms>0 or numberOfFlashcards>0)and enabled=1) or enabled=0 )");
 
-  //TODO add test
   Future<List<TermData>> getSubTerms(int termId) => _queryTerms(
       "t.id in (select termId from termsParents where parentTermId=$termId)");
 
-  //TODO add test
   Future setTermUpdated(TermData termData) =>
       (databaseService.update(databaseService.terms)
             ..whereSamePrimaryKey(termData.term))
           .write(const TermsCompanion(needsUpdate: Value(0)));
 
-  //TODO add test
   Future<bool> termHasTemplate(TermData termData) async =>
       (await databaseService
               .customSelect(
@@ -120,7 +110,6 @@ class TermService {
           .first >
       0;
 
-  //TODO add test
   Future<List<TermData>> getTermRelatedTerms(TermData termData) => _queryTerms(
       "t.id in (select termId from relatedTerms where anotherTermId=${termData.term.id}) or t.id in (select anotherTermId from relatedTerms where termId=${termData.term.id})");
 
@@ -204,7 +193,6 @@ class TermService {
         0;
   }
 
-  //TODO add test
   Future<int> getTermUndownloadedTermsWithQuestionsCount(
       TermData termData) async {
     return (await databaseService

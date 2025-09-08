@@ -6,7 +6,6 @@ class QuestionTagPropertyService {
   DatabaseService databaseService;
   QuestionTagPropertyService({required this.databaseService});
 
-  //TODO add test
   Future addQuestionTagPropertiesFromJson(dynamic data) =>
       databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(
@@ -16,7 +15,6 @@ class QuestionTagPropertyService {
                 .toList());
       });
 
-  //TODO add test
   Future<List<QuestionTagProperty>> getAllQuestionTagProperties() =>
       databaseService.select(databaseService.questionTagProperties).get();
 

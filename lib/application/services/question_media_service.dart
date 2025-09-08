@@ -6,12 +6,10 @@ class QuestionMediaService {
 
   QuestionMediaService({required this.databaseService});
 
-  //TODO add test
   Future addQuestionMedias(List<QuestionMedia> questionMedias) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.questionMedias, questionMedias));
 
-  //TODO add test
   Future<List<QuestionMedia>> getAllQuestionMedias(QuestionData questionData) =>
       (databaseService.select(databaseService.questionMedias)
             ..where(

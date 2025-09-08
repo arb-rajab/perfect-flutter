@@ -1,20 +1,16 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
-import 'package:beta/domain/value/id.dart';
-import 'package:drift/drift.dart';
 
 class QuestionService {
   final DatabaseService databaseService;
 
   QuestionService({required this.databaseService});
 
-  //TODO add test
   Future addQuestions(List<Question> questions) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.questions, questions));
 
-  //TODO add test
   Future<int> getNumberOfEasyQuestions(TermData termData) async =>
       (await databaseService
               .customSelect(
@@ -26,7 +22,6 @@ class QuestionService {
               .first)
           .first;
 
-  //TODO add test
   Future<int> getNumberOfMediumQuestions(TermData termData) async =>
       (await databaseService
               .customSelect(
@@ -38,7 +33,6 @@ class QuestionService {
               .first)
           .first;
 
-  //TODO add test
   Future<int> getNumberOfDifficultQuestions(TermData termData) async =>
       (await databaseService
               .customSelect(
@@ -50,7 +44,6 @@ class QuestionService {
               .first)
           .first;
 
-  //TODO add test
   Future<int> getNumberOfWrongQuestions(TermData termData) async =>
       (await databaseService
               .customSelect(

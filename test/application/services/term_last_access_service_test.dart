@@ -4,20 +4,19 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/visible.dart';
-import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:test/test.dart';
 import 'package:get/instance_manager.dart';
 
+import '../../common/tests.dart';
+
 void main() {
-  late DatabaseService databaseService;
-  MainController.testing = true;
+  late TermLastAccessService termLastAccessService;
 
   setUp(() async {
-    await MainController.initServices();
-    databaseService = Get.find();
+    await initTests();
+    termLastAccessService = Get.find();
   });
-  tearDown(() => databaseService.close());
 
   group('deleteAllTermLastAccess related tests', () {
     test('deleteAllTermLastAccess deletes all items', () async {
@@ -30,8 +29,6 @@ void main() {
       var allItems = await databaseService.termsLastAccesses.all().get();
       expect(allItems.length, 1);
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
       await termLastAccessService.deleteAllTermLastAccess();
       allItems = await databaseService.termsLastAccesses.all().get();
       expect(allItems.length, 0);
@@ -48,8 +45,6 @@ void main() {
       var allItems = await databaseService.questionTagProperties.all().get();
       expect(allItems.length, 1);
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
       await termLastAccessService.deleteAllTermLastAccess();
       allItems = await databaseService.questionTagProperties.all().get();
       expect(allItems.length, 0);
@@ -66,8 +61,6 @@ void main() {
       var allItems = await databaseService.questionTagProperties.all().get();
       expect(allItems.length, 1);
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
       await termLastAccessService.deleteAllTermLastAccess();
       allItems = await databaseService.questionTagProperties.all().get();
       expect(allItems.length, 1);
@@ -84,9 +77,6 @@ void main() {
             parentTermId: Value(1),
             childId: Value(2),
           ));
-
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
 
       // Create a TermData with the same parent term ID
       final termData = TermData(
@@ -114,9 +104,6 @@ void main() {
 
     test('isTermAccessed returns false when term has no accessed children',
         () async {
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       // Create a TermData with a term ID that doesn't have any accessed children
       final termData = TermData(
         const Term(
@@ -144,9 +131,6 @@ void main() {
 
   group('addTermLastAccessed tests', () {
     test('addTermLastAccessed inserts a new record', () async {
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       const parentId = Id(1);
       const childId = Id(2);
 
@@ -169,9 +153,6 @@ void main() {
             lastAccess: Value(1000),
           ));
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       const parentId = Id(1);
       const childId = Id(2);
 
@@ -189,9 +170,6 @@ void main() {
 
   group('addTermLastAccessFromJson tests', () {
     test('addTermLastAccessFromJson inserts records from JSON data', () async {
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final jsonData = [
         {
           'parentTermId': 1,
@@ -231,9 +209,6 @@ void main() {
             lastAccess: Value(1000),
           ));
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final jsonData = [
         {
           'parentTermId': 1,
@@ -271,9 +246,6 @@ void main() {
             lastAccess: Value(2000),
           ));
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final result = await termLastAccessService.getAllTermLastAccesses();
       expect(result.length, 2);
 
@@ -290,9 +262,6 @@ void main() {
 
     test('getAllTermLastAccesses returns empty list when no records exist',
         () async {
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final result = await termLastAccessService.getAllTermLastAccesses();
       expect(result, isEmpty);
     });
@@ -325,9 +294,6 @@ void main() {
             lastAccess: Value(2000),
           ));
 
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final result = await termLastAccessService.getTermLastAccess(1);
       expect(result, isNotNull);
       expect(result!.parentTermId, 1);
@@ -337,9 +303,6 @@ void main() {
 
     test('getTermLastAccess returns null when no records exist for term',
         () async {
-      TermLastAccessService termLastAccessService =
-          TermLastAccessService(databaseService: databaseService);
-
       final result = await termLastAccessService.getTermLastAccess(999);
       expect(result, isNull);
     });

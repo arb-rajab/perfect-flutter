@@ -6,11 +6,9 @@ class HttpRequestService {
 
   HttpRequestService({required this.databaseService});
 
-  //TODO add test
   Future<List<HttpRequest>> getPendingRequests() =>
       databaseService.select(databaseService.httpRequests).get();
 
-  //TODO add test
   Future deletePendingRequest(HttpRequest httpRequest) =>
       databaseService.httpRequests.deleteOne(httpRequest);
 }

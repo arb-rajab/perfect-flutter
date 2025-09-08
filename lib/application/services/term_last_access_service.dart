@@ -15,7 +15,6 @@ class TermLastAccessService {
                 ..where((tbl) => tbl.name.equals('lastAccess')))
               .go());
 
-  //TODO add test
   Future<bool> isTermAccessed(TermData termData) async {
     int childrenCount = await databaseService.termsLastAccesses
         .count(where: (row) => row.parentTermId.equals(termData.term.id))
@@ -23,21 +22,18 @@ class TermLastAccessService {
     return childrenCount > 0;
   }
 
-  //TODO add test
   Future addTermLastAccessed(Id parentId, Id childId) =>
       databaseService.termsLastAccesses.insertOnConflictUpdate(TermsLastAccess(
           parentTermId: parentId.value!,
           childId: childId.value!,
           lastAccess: DateTime.now().millisecondsSinceEpoch));
 
-  //TODO add test
   Future addTermLastAccessFromJson(dynamic data) =>
       databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.termsLastAccesses,
             (data as List).map((e) => TermsLastAccess.fromJson(e)).toList());
       });
 
-  //TODO add test
   Future<List<TermsLastAccess>> getAllTermLastAccesses() =>
       databaseService.select(databaseService.termsLastAccesses).get();
 

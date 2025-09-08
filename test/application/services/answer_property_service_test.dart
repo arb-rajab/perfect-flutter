@@ -7,8 +7,10 @@ import 'package:test/test.dart';
 import '../../common/tests.dart';
 
 void main() {
+  late AnswerPropertyService answerPropertyService;
   setUp(() async {
     await initTests();
+    answerPropertyService = Get.find();
   });
 
   test('deleteAllUserCheckedAnswers deletes checked answer properties',
@@ -19,8 +21,6 @@ void main() {
     var allItems = await databaseService.answerProperties.all().get();
     expect(allItems.length, 1);
 
-    AnswerPropertyService answerPropertyService =
-        AnswerPropertyService(databaseService: databaseService);
     await answerPropertyService.deleteAllUserCheckedAnswers();
     allItems = await databaseService.answerProperties.all().get();
     expect(allItems.length, 0);
@@ -36,9 +36,7 @@ void main() {
             value: Value('random value')));
     var allItems = await databaseService.answerProperties.all().get();
     expect(allItems.length, 1);
-
-    AnswerPropertyService answerPropertyService =
-        AnswerPropertyService(databaseService: databaseService);
+    
     await answerPropertyService.deleteAllUserCheckedAnswers();
     allItems = await databaseService.answerProperties.all().get();
     expect(allItems.length, 1);

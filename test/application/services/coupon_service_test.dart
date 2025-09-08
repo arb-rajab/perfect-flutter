@@ -1,12 +1,15 @@
 import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:get/instance_manager.dart';
 import 'package:test/test.dart';
 
 import '../../common/tests.dart';
 
 void main() {
+  late CouponService service;
   setUp(() async {
     await initTests();
+    service = Get.find();
   });
 
   // Helper function to create test coupons
@@ -33,8 +36,6 @@ void main() {
   group('getPaidCoupons', () {
     test('returns only non-free coupons ordered by creation date descending',
         () async {
-      final service = CouponService(databaseService: databaseService);
-
       // Insert test data using batch
       await databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.coupons, [
@@ -55,8 +56,6 @@ void main() {
     });
 
     test('returns empty list when no paid coupons exist', () async {
-      final service = CouponService(databaseService: databaseService);
-
       // Insert only free coupons using batch
       await databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.coupons, [
@@ -72,7 +71,6 @@ void main() {
 
   group('addCoupon', () {
     test('inserts new coupon with all fields', () async {
-      final service = CouponService(databaseService: databaseService);
       final coupon = createTestCoupon(
         id: 1,
         serial: 'UNIQUE123',
@@ -92,8 +90,6 @@ void main() {
     });
 
     test('updates existing coupon on conflict', () async {
-      final service = CouponService(databaseService: databaseService);
-
       // Insert initial coupon using batch
       await databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.coupons, [
@@ -127,7 +123,6 @@ void main() {
     });
 
     test('handles null activationDate correctly', () async {
-      final service = CouponService(databaseService: databaseService);
       final coupon = createTestCoupon(
         id: 1,
         activationDate: null,
@@ -142,7 +137,6 @@ void main() {
     });
 
     test('can insert multiple coupons', () async {
-      final service = CouponService(databaseService: databaseService);
       final coupon1 = createTestCoupon(id: 1);
       final coupon2 = createTestCoupon(id: 2);
 

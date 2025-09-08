@@ -1,55 +1,46 @@
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/application/services/related_term_service.dart';
-import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/instance_manager.dart';
+import 'package:beta/application/services/related_term_service.dart';
+import 'package:beta/domain/related_term_data.dart';
+import 'package:beta/domain/value/deleted_at.dart';
 
-Future<void> main() async {
-  MainController.testing = true;
-  await MainController.initServices();
-  DatabaseService databaseService = Get.find();
-  RelatedTermService relatedTermService = Get.find();
-  tearDown(() async => await databaseService.relatedTerms.deleteAll());
+import '../../common/tests.dart';
 
-  group('add relatedTerm', () {
-    test('add relatedTerm adds a relatedTerm', () async {
-      RelatedTerm relatedTerm = const RelatedTerm(anotherTermId: 1, termId: 3);
-      List<RelatedTerm> relatedTerms = await (databaseService
-              .select(databaseService.relatedTerms)
-            ..where((tbl) => tbl.termId.equals(relatedTerm.termId))
-            ..where(
-                (tbl) => tbl.anotherTermId.equals(relatedTerm.anotherTermId)))
-          .get();
-      expect(relatedTerms.length, 0);
+void main() {
+  group('RelatedTermService', () {
+    late RelatedTermService service;
 
-      await relatedTermService.addRelatedTerms([relatedTerm]);
-
-      relatedTerms = await (databaseService.select(databaseService.relatedTerms)
-            ..where((tbl) => tbl.termId.equals(relatedTerm.termId))
-            ..where(
-                (tbl) => tbl.anotherTermId.equals(relatedTerm.anotherTermId)))
-          .get();
-      expect(relatedTerms.length, 1);
+    setUp(() async {
+      await initTests();
+      service = RelatedTermService(databaseService: databaseService);
     });
 
-    test('add relatedTerm replace duplicate relatedTerm', () async {
-      RelatedTerm relatedTerm = const RelatedTerm(anotherTermId: 1, termId: 3);
+    test('addRelatedTerms inserts and deletes as expected', () async {
+      final updatedTerm = RelatedTermData(
+        const RelatedTerm(anotherTermId: 1, termId: 2),
+        deletedAt: const DeletedAt(null),
+      );
+      final deletedTerm = RelatedTermData(
+        const RelatedTerm(anotherTermId: 3, termId: 4),
+        deletedAt: const DeletedAt('2025-04-09 13:16:19'),
+      );
 
-      await relatedTermService.addRelatedTerms([relatedTerm]);
+      await service.addRelatedTerms([updatedTerm, deletedTerm]);
 
-      relatedTerm = relatedTerm.copyWith(termId: 3);
-
-      await relatedTermService.addRelatedTerms([relatedTerm]);
-
-      List<RelatedTerm> relatedTerms = await (databaseService
-              .select(databaseService.relatedTerms)
-            ..where((tbl) => tbl.termId.equals(relatedTerm.termId))
-            ..where(
-                (tbl) => tbl.anotherTermId.equals(relatedTerm.anotherTermId)))
+      // Should insert only the updated term
+      var data = await (databaseService.select(databaseService.relatedTerms)
+            ..where((tbl) => Expression.and(
+                [tbl.anotherTermId.equals(1), tbl.termId.equals(2)])))
           .get();
-      expect(relatedTerms.length, 1);
-      expect(relatedTerms[0].termId, 3);
+      expect(data.length, equals(1));
+
+      // Should delete only the deleted term
+      data = await (databaseService.select(databaseService.relatedTerms)
+            ..where((tbl) => Expression.and(
+                [tbl.anotherTermId.equals(3), tbl.termId.equals(4)])))
+          .get();
+      expect(data.length, equals(0));
     });
   });
 }

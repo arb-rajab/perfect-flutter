@@ -1,13 +1,16 @@
 import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/value/id.dart';
+import 'package:get/instance_manager.dart';
 import 'package:test/test.dart';
 
 import '../../common/tests.dart';
 
 void main() {
+  late AnswerService answerService;
   setUp(() async {
     await initTests();
+    answerService = Get.find();
   });
 
   // Helper function to create a complete Answer instance
@@ -36,7 +39,6 @@ void main() {
   }
 
   test('addAnswers inserts all answers with conflict resolution', () async {
-    final answerService = AnswerService(databaseService: databaseService);
     final answers = [
       createTestAnswer(id: 1, parentQuestionId: 1),
       createTestAnswer(id: 2, parentQuestionId: 1),
@@ -51,7 +53,6 @@ void main() {
   });
 
   test('addAnswers updates existing answers on conflict', () async {
-    final answerService = AnswerService(databaseService: databaseService);
     final initialAnswer = createTestAnswer(
       id: 1,
       title: 'Initial Title',
@@ -79,7 +80,6 @@ void main() {
 
   test('getQuestionAnswers returns only answers for specified question',
       () async {
-    final answerService = AnswerService(databaseService: databaseService);
     const question1Id = Id(1);
     const question2Id = Id(2);
 
@@ -108,7 +108,6 @@ void main() {
   });
 
   test('getQuestionAnswers returns empty list when no answers exist', () async {
-    final answerService = AnswerService(databaseService: databaseService);
     const questionId = Id(999); // Non-existent question ID
 
     final answers = await answerService.getQuestionAnswers(questionId);
@@ -116,7 +115,6 @@ void main() {
   });
 
   test('addAnswers preserves all answer fields', () async {
-    final answerService = AnswerService(databaseService: databaseService);
     final answer = createTestAnswer(
       id: 1,
       uuid: 'unique-uuid',

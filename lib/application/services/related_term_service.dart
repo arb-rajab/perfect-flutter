@@ -6,7 +6,6 @@ class RelatedTermService {
 
   RelatedTermService({required this.databaseService});
 
-  //TODO add test
   Future addRelatedTerms(List<RelatedTermData> relatedTerms) {
     List<RelatedTerm> updatedRelatedTerms = relatedTerms
         .where((element) => !element.isDeleted())

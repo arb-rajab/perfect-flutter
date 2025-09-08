@@ -5,7 +5,6 @@ class FlashcardService {
 
   FlashcardService({required this.databaseService});
 
-  //TODO add test
   Future addFlashcards(List<Flashcard> flashcards) =>
       databaseService.batch((batch) => batch.insertAllOnConflictUpdate(
           databaseService.flashcards, flashcards));

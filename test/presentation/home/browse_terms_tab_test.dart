@@ -16,7 +16,6 @@ import 'package:get/instance_manager.dart';
 import '../../common/tests.dart';
 
 void main() async {
-  late DatabaseService databaseService;
 
   setUp(() async {
     await initTests();

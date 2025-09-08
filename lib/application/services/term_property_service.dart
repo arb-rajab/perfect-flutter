@@ -6,7 +6,6 @@ class TermPropertyService {
   TermPropertyService({required this.databaseService});
   String studied = 'studied';
 
-  //TODO add test
   Future deleteAllUserStudiedTerms() =>
       (databaseService.delete(databaseService.termProperties)
             ..where((tbl) => tbl.name.equals(studied)))
@@ -32,14 +31,12 @@ class TermPropertyService {
     return properties.isNotEmpty;
   }
 
-  //TODO add test
   Future addTermPropertiesFromJson(dynamic data) =>
       databaseService.batch((batch) {
         batch.insertAllOnConflictUpdate(databaseService.termProperties,
             (data as List).map((e) => TermProperty.fromJson(e)).toList());
       });
 
-  //TODO add test
   Future<List<TermProperty>> getAllTermProperties() =>
       databaseService.select(databaseService.termProperties).get();
 }

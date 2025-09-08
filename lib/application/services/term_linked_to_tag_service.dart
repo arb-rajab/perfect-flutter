@@ -6,7 +6,6 @@ class TermLinkedToTagService {
 
   TermLinkedToTagService({required this.databaseService});
 
-  //TODO add test
   Future addTermsLinkedToTags(List<TermLinkedToTagData> termsLinkedToTags) =>
       databaseService.batch((batch) {
         List<TermsLinkedToTag> updatedItems = termsLinkedToTags

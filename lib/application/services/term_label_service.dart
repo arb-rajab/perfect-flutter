@@ -7,7 +7,6 @@ class TermLabelService {
 
   TermLabelService({required this.databaseService});
 
-  //TODO add test
   Future addTermLabels(List<TermLabelData> termLabels) =>
       databaseService.batch((batch) {
         List<TermLabel> updatedItems = termLabels
@@ -25,7 +24,6 @@ class TermLabelService {
         }
       });
 
-  //TODO add test
   Future<List<TermLabel>> getTermsLabels(List<TermData> terms) =>
       (databaseService.select(databaseService.termLabels)
             ..where((tbl) => tbl.id.isIn(terms

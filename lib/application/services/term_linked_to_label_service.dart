@@ -6,7 +6,6 @@ class TermLinkedToLabelService {
 
   TermLinkedToLabelService({required this.databaseService});
 
-  //TODO add test
   Future addTermsLinkedToLabels(
           List<TermLinkedToLabelData> termsLinkedToLabels) =>
       databaseService.batch((batch) {

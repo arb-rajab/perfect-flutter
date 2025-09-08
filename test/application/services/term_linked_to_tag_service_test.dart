@@ -1,55 +1,51 @@
 import 'package:beta/application/services/database_service.dart';
-import 'package:beta/application/services/term_linked_to_tag_service.dart';
-import 'package:beta/main_controller.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/instance_manager.dart';
+import 'package:beta/application/services/term_linked_to_tag_service.dart';
+import 'package:beta/domain/term_linked_to_tag_data.dart';
+import 'package:beta/domain/value/deleted_at.dart';
 
-Future<void> main() async {
-  MainController.testing = true;
-  await MainController.initServices();
-  DatabaseService databaseService = Get.find();
-  TermLinkedToTagService termLinkedToTagService = Get.find();
-  tearDown(() async => await databaseService.termsLinkedToTags.deleteAll());
+import '../../common/tests.dart';
 
-  group('add termLinkedToTag', () {
-    test('add termLinkedToTag adds a termLinkedToTag', () async {
-      TermsLinkedToTag termLinkedToTag =
-          const TermsLinkedToTag(termId: 1, tagId: 1);
-      List<TermsLinkedToTag> termLinkedToTags =
-          await (databaseService.select(databaseService.termsLinkedToTags)
-                ..where((tbl) => tbl.termId.equals(termLinkedToTag.termId))
-                ..where((tbl) => tbl.tagId.equals(termLinkedToTag.tagId)))
-              .get();
-      expect(termLinkedToTags.length, 0);
+void main() {
+  group('TermLinkedToTagService', () {
+    late TermLinkedToTagService service;
 
-      await termLinkedToTagService.addTermsLinkedToTags([termLinkedToTag]);
-
-      termLinkedToTags =
-          await (databaseService.select(databaseService.termsLinkedToTags)
-                ..where((tbl) => tbl.termId.equals(termLinkedToTag.termId))
-                ..where((tbl) => tbl.tagId.equals(termLinkedToTag.tagId)))
-              .get();
-      expect(termLinkedToTags.length, 1);
+    setUp(() async {
+      await initTests();
+      service = TermLinkedToTagService(databaseService: databaseService);
     });
 
-    test('add termLinkedToTag replace duplicate termLinkedToTag', () async {
-      TermsLinkedToTag termLinkedToTag =
-          const TermsLinkedToTag(tagId: 1, termId: 3);
+    test('addTermsLinkedToTags inserts and deletes as expected', () async {
+      final updatedItem = TermLinkedToTagData(
+        const TermsLinkedToTag(termId: 1, tagId: 2),
+        deletedAt: const DeletedAt(null),
+      );
+      final deletedItem = TermLinkedToTagData(
+        const TermsLinkedToTag(termId: 3, tagId: 4),
+        deletedAt: const DeletedAt('2025-04-09 13:16:19'),
+      );
 
-      await termLinkedToTagService.addTermsLinkedToTags([termLinkedToTag]);
+      await service.addTermsLinkedToTags([updatedItem, deletedItem]);
 
-      termLinkedToTag = termLinkedToTag.copyWith(termId: 3);
-
-      await termLinkedToTagService.addTermsLinkedToTags([termLinkedToTag]);
-
-      List<TermsLinkedToTag> termLinkedToTags =
+      // Should insert only the updated item
+      var data =
           await (databaseService.select(databaseService.termsLinkedToTags)
-                ..where((tbl) => tbl.termId.equals(termLinkedToTag.termId))
-                ..where((tbl) => tbl.tagId.equals(termLinkedToTag.tagId)))
+                ..where((tbl) => Expression.and([
+                      tbl.termId.equals(1),
+                      tbl.tagId.equals(2),
+                    ])))
               .get();
-      expect(termLinkedToTags.length, 1);
-      expect(termLinkedToTags[0].termId, 3);
+      expect(data.length, equals(1));
+
+      // Should delete only the deleted item
+      data = await (databaseService.select(databaseService.termsLinkedToTags)
+            ..where((tbl) => Expression.and([
+                  tbl.termId.equals(3),
+                  tbl.tagId.equals(4),
+                ])))
+          .get();
+      expect(data.length, equals(0));
     });
   });
 }
