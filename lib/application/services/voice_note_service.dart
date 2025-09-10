@@ -9,7 +9,7 @@ class VoiceNoteService {
 
   Future addVoiceNote(VoiceNoteData voiceNoteData) => databaseService
       .into(databaseService.voiceNotes)
-      .insert(voiceNoteData.voiceNote);
+      .insertOnConflictUpdate(voiceNoteData.voiceNote);
 
   Future<VoiceNote> getVoiceNote(TermData termData) => (databaseService
           .select(databaseService.voiceNotes)

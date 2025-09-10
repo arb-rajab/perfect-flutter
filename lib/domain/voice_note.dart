@@ -7,8 +7,7 @@ class VoiceNotes extends Table {
   TextColumn get lastUpdated => text().named('lastUpdated')();
 
   @override
-  Set<Column<Object>>? get primaryKey =>
-      {parentTermId}; //TODO set primary key in migration
+  Set<Column<Object>>? get primaryKey => {parentTermId};
 
   @override
   String? get tableName => 'voiceNotes';

@@ -7,7 +7,6 @@ class TermsParentService {
 
   TermsParentService({required this.databaseService});
 
-  //TODO add test
   Future addTermsParents(List<TermsParentData> termsParents) async {
     List<TermsParent> addedItems = termsParents
         .where((element) => !element.isDeleted())
@@ -37,16 +36,28 @@ class TermsParentService {
     }
     for (int c = 0; c < deletedItems.length; c++) {
       TermsParent termsParent = deletedItems[c];
-      databaseService.delete(databaseService.termTrees)
-        ..where((tbl) => tbl.termId.equals(termsParent.termId))
-        ..where((tbl) => tbl.parentTermId.isInQuery(
-            databaseService.select(databaseService.termTrees)
-              ..where((tbl) => tbl.termId.equals(termsParent.parentTermId))));
-      databaseService.delete(databaseService.termTrees)
-        ..where((tbl) => tbl.parentTermId.equals(termsParent.parentTermId))
-        ..where((tbl) => tbl.termId.isInQuery(
-            databaseService.select(databaseService.termTrees)
-              ..where((tbl) => tbl.parentTermId.equals(termsParent.termId))));
+      await (databaseService.delete(databaseService.termTrees)
+            ..where((tbl) => tbl.termId.equals(termsParent.termId))
+            ..where((tbl) => tbl.parentTermId.isInQuery(
+                databaseService.selectOnly(databaseService.termTrees)
+                  ..addColumns([databaseService.termTrees.parentTermId])
+                  ..where(databaseService.termTrees.termId
+                      .equals(termsParent.parentTermId)))))
+          .go();
+      await (databaseService.delete(databaseService.termTrees)
+            ..where((tbl) => Expression.and([
+                  tbl.termId.equals(termsParent.termId),
+                  tbl.parentTermId.equals(termsParent.parentTermId)
+                ])))
+          .go();
+      await (databaseService.delete(databaseService.termTrees)
+            ..where((tbl) => tbl.parentTermId.equals(termsParent.parentTermId))
+            ..where((tbl) => tbl.termId.isInQuery(
+                databaseService.selectOnly(databaseService.termTrees)
+                  ..addColumns([databaseService.termTrees.termId])
+                  ..where(databaseService.termTrees.parentTermId
+                      .equals(termsParent.termId)))))
+          .go();
     }
     return Future.value();
   }

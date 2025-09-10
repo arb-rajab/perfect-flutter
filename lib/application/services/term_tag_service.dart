@@ -7,7 +7,6 @@ class TermTagService {
 
   TermTagService({required this.databaseService});
 
-  //TODO add test
   Future addTermTags(List<TermTagData> termTags) =>
       databaseService.batch((batch) {
         List<TermTag> updatedItems = termTags
@@ -24,7 +23,6 @@ class TermTagService {
         }
       });
 
-  //TODO add test
   Future<List<TermTag>> getTermsTags(List<TermData> terms) =>
       (databaseService.select(databaseService.termTags)
             ..where((tbl) => tbl.id.isIn(terms
