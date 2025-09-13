@@ -8,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-//TODO test if gift text is visible and back press shows dialogue
 class OtherGiftWidget extends StatelessWidget {
   final String gift;
 
@@ -17,8 +16,8 @@ class OtherGiftWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
+      onPopInvokedWithResult: (value, result) {
+        if (!value) {
           showYesNoDialogueDialog(context,
               onYesClicked: context.pop,
               onNoClicked: () {},

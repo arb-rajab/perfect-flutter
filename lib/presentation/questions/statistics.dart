@@ -4,9 +4,7 @@ import 'package:beta/domain/question_statistic.dart';
 import 'package:beta/presentation/questions/indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Statistics extends StatefulWidget {
   final QuestionStatistic questionStatistic;

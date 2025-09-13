@@ -365,7 +365,6 @@ class DatabaseService extends _$DatabaseService {
     );
   }
 
-  //TODO implement tests
   Future deleteAllTables() async {
     for (var table in allTables) {
       await table.deleteAll();

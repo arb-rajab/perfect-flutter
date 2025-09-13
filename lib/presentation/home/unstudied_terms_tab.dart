@@ -26,7 +26,7 @@ class _UnstudiedTermsTabState extends State<UnstudiedTermsTab> {
   @override
   Widget build(BuildContext context) => PopScope(
       canPop: unstudiedTermsTabController.canPop(),
-      onPopInvoked: (value) {
+      onPopInvokedWithResult: (value, result) {
         unstudiedTermsTabController.onPopScoped();
         termsListingController.init();
       },

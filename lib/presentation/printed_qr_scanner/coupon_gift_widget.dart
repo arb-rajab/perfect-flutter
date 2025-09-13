@@ -9,7 +9,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-//TODO Apply test to check copying works and back press shows dialogue
 class CouponGiftWidget extends StatelessWidget {
   final String coupon;
   const CouponGiftWidget({super.key, required this.coupon});
@@ -18,8 +17,8 @@ class CouponGiftWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
+      onPopInvokedWithResult: (value, result) {
+        if (!value) {
           showYesNoDialogueDialog(context,
               onYesClicked: context.pop,
               onNoClicked: () {},

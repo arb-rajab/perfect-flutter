@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class QuestionTagsChoice extends StatelessWidget {
-  QuestionTagsChoice({super.key, required this.questionsController});
+  const QuestionTagsChoice({super.key, required this.questionsController});
   final QuestionsController questionsController;
 
   @override

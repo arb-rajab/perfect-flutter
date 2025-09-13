@@ -10,7 +10,6 @@ import 'package:beta/presentation/widgets/message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-//TODO apply test
 class GiftWidget extends StatefulWidget {
   final String code;
   const GiftWidget({super.key, required this.code});

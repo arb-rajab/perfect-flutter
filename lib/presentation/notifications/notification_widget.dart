@@ -20,8 +20,7 @@ class NotificationWidget extends StatelessWidget {
     return Container(
       color: notification.seen == true
           ? Theme.of(context).primaryColor
-          : Theme.of(context) //TODO check color
-              .scaffoldBackgroundColor, //backgroundColorLight : primaryColorLight,
+          : Theme.of(context).scaffoldBackgroundColor, 
       margin: const EdgeInsets.all(halfMargin),
       child: Column(
         children: [

@@ -8,11 +8,6 @@ import 'package:patrol/patrol.dart';
 import 'package:patrol/src/native/contracts/contracts.dart';
 import 'package:test_api/src/backend/invoker.dart';
 
-// START: GENERATED TEST IMPORTS
-import 'presentation/printed_qr_scanner/coupon_gift_widget_test.dart' as presentation__printed_qr_scanner__coupon_gift_widget_test;
-import 'presentation/printed_qr_scanner/coupon_with_copy_widget_test.dart'
-    as presentation__printed_qr_scanner__coupon_with_copy_widget_test;
-// END: GENERATED TEST IMPORTS
 
 Future<void> main() async {
   // This is the entrypoint of the bundled Dart test.
@@ -64,14 +59,9 @@ Future<void> main() async {
     final dartTestGroup = createDartTestGroup(topLevelGroup);
     testExplorationCompleter.complete(dartTestGroup);
     print('patrol_test_explorer: obtained Dart-side test hierarchy:');
-    printGroupStructure(dartTestGroup);
+    // printGroupStructure(dartTestGroup);
   });
 
-  // START: GENERATED TEST GROUPS
-  group('presentation.printed_qr_scanner.coupon_gift_widget_test', presentation__printed_qr_scanner__coupon_gift_widget_test.main);
-  group('presentation.printed_qr_scanner.coupon_with_copy_widget_test',
-      presentation__printed_qr_scanner__coupon_with_copy_widget_test.main);
-  // END: GENERATED TEST GROUPS
 
   final dartTestGroup = await testExplorationCompleter.future;
   final appService = PatrolAppService(topLevelDartTestGroup: dartTestGroup);

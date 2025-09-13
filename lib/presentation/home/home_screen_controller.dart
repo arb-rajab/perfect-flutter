@@ -154,13 +154,15 @@ class HomeScreenController {
     String? token = await firebaseRepository.getToken();
     if (id == null || token == null) return;
     if (userService.tokenUploaded() == false) {
-      NetworkService(state.context,
+      if (state.mounted) {
+        NetworkService(state.context,
               onPreConnect: () {},
               onPostConnect: () {},
               onConnectionSucceed: (body) => userService.setTokenUploaded(true),
               onConnectionFailed: () {},
               onMessageReceived: (FailureResponse message) {})
           .patch(url: ApiConstant.updateToken, body: {'token': token});
+      }
     }
   }
 

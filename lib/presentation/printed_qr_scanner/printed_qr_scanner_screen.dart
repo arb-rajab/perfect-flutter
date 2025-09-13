@@ -26,6 +26,7 @@ class _PrintedQrScannerScreen extends State<PrintedQrScannerScreen> {
     Get.delete<PrintedQrScannerController>();
     _controller = Get.put(PrintedQrScannerController(this));
     Future.delayed(Duration.zero, () async {
+      // ignore: use_build_context_synchronously
       var result = await context.push(ScanQrScreen.route);
       if (result is String) {
         setState(() {

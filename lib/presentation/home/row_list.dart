@@ -76,6 +76,7 @@ class RowList extends StatelessWidget {
                   ),
                 );
               }
+              return const SizedBox();
             },
           ),
         ),
