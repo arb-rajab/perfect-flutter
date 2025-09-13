@@ -73,8 +73,9 @@ Future<void> main() async {
 
   testWidgets('unexpired coupons show expiration days', (widgetTester) async {
     CouponService couponService = Get.find();
+    //activation date needs to be modified periodicaly as the coupon becoms expired with time
     Coupon coupon = Coupon.fromJson(jsonDecode(r'''
-{"id":10121738,"serial":"abdb8c99-73c0-5e47-6825-edfa24e871c3","ordering":1000,"type":10000033,"deviceId":10027871,"used":1,"prePaid":0,"free":0,"price":0,"logId":0,"note":null,"expirationDays":500,"activationDate":"2024-04-16 03:51:30","termPrintId":0,"creation":"2025-04-16 03:51:30","onUpdate":null}'''));
+{"id":10121738,"serial":"abdb8c99-73c0-5e47-6825-edfa24e871c3","ordering":1000,"type":10000033,"deviceId":10027871,"used":1,"prePaid":0,"free":0,"price":0,"logId":0,"note":null,"expirationDays":500,"activationDate":"2026-04-16 03:51:30","termPrintId":0,"creation":"2025-04-16 03:51:30","onUpdate":null}'''));
     await couponService.addCoupon(coupon);
     await widgetTester.pumpWidget(const MyApp(
       defaultRoute: CouponsScreen.route,
