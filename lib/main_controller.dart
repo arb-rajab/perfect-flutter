@@ -56,7 +56,6 @@ class MainController {
   static bool testing = false;
 
   static Future initServices() async {
-    // if (testing) InAppWebViewPlatform.instance = MockWebViewPlatform();
     if (testing == false) {
       WidgetsFlutterBinding.ensureInitialized();
       if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
