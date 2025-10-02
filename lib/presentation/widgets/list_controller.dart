@@ -120,7 +120,7 @@ abstract class ListController<T> implements ListControllerBase {
   }
 
   Future? _getRemoteData({required int offset, required bool refresh}) {
-    return NetworkService(this.state.context,
+    return NetworkService(state.context,
             onConnectionSucceed: (body) {
               if (state.mounted) {
                 state.setState(() {
