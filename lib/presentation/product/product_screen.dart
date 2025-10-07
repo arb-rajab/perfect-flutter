@@ -9,6 +9,7 @@ import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:get/instance_manager.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
@@ -139,18 +140,25 @@ class _ProductScreenState extends State<ProductScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         product.name.value.toString(),
+                        textAlign: TextAlign.start,
                         style: const TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      Html(
-                        data: product.description!.value!,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Html(
+                          data: product.description!.value!,
+                          extensions: const [
+                            // for supporting tables
+                            TableHtmlExtension(),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 10.0),
                       Row(

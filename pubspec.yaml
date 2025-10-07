@@ -82,6 +82,7 @@ dependencies:
   screen_protector: ^1.4.2+1
   pdftron_flutter: ^1.0.1-41
   flutter_html: ^3.0.0-beta.2
+  flutter_html_table: ^3.0.0
   just_audio: ^0.9.41
   audio_service: ^0.18.15
   archive: ^3.6.1
