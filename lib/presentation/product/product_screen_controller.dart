@@ -40,7 +40,7 @@ class ProductScreenController {
 
   void dispose() => scrollController.dispose();
 
-  Future getData() => NetworkService(state.context, onPreConnect: () {
+  Future getData() => NetworkService(onPreConnect: () {
         if (state.mounted) {
           state.setState(() {
             loading = true;
@@ -58,6 +58,7 @@ class ProductScreenController {
         if (state.mounted) {
           state.setState(() => product = Product.fromJson(data['product']));
         }
+        return Future.value();
       }, onConnectionFailed: () {
         if (state.mounted) {
           state.setState(() => message = StringConstant.noConnection.tr());

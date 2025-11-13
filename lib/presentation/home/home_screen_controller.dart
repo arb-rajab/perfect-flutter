@@ -13,7 +13,9 @@ import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
 import 'package:beta/application/services/user_service.dart';
+import 'package:beta/configs/app.dart';
 import 'package:beta/constants/api_constant.dart';
+import 'package:beta/constants/key_value_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/related_term_data.dart';
 import 'package:beta/domain/term_data.dart';
@@ -26,6 +28,7 @@ import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dar
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
+import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/presentation/home/review/shared.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
@@ -36,9 +39,11 @@ import 'package:get/instance_manager.dart';
 class HomeScreenController {
   final State state;
   UserService userService = Get.find();
-  static const int educationalContentBottomNavigationIndex = 0;
-  static const int storeBottomNavigationIndex = 1;
+  // static const int educationalContentBottomNavigationIndex = 0;
+  // static const int storeBottomNavigationIndex = 1;
+  // static const int newsBottomNavigationIndex = 2;
   int selectedBottomNavigationIndex = 0;
+  bool newNews = false;
   FirebaseRepository firebaseRepository = Get.find();
   bool loading = false;
   bool error = false;
@@ -46,14 +51,18 @@ class HomeScreenController {
     configureUserToken();
     subscribeToTopics();
     subscribeToAllNotifications();
+    subscribeToNewsNotifications();
     executePendingRequests();
     recieveNewToken();
     showRequestReview();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getTermsUpdates());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getTermsUpdates();
+      showNewNewsBadge();
+    });
   }
 
   void getTermsUpdates() {
-    NetworkService(state.context, onPreConnect: () {
+    NetworkService(onPreConnect: () {
       state.setState(() {
         loading = true;
         error = false;
@@ -155,13 +164,14 @@ class HomeScreenController {
     if (id == null || token == null) return;
     if (userService.tokenUploaded() == false) {
       if (state.mounted) {
-        NetworkService(state.context,
-              onPreConnect: () {},
-              onPostConnect: () {},
-              onConnectionSucceed: (body) => userService.setTokenUploaded(true),
-              onConnectionFailed: () {},
-              onMessageReceived: (FailureResponse message) {})
-          .patch(url: ApiConstant.updateToken, body: {'token': token});
+        NetworkService(
+                onPreConnect: () {},
+                onPostConnect: () {},
+                onConnectionSucceed: (body) =>
+                    userService.setTokenUploaded(true),
+                onConnectionFailed: () {},
+                onMessageReceived: (FailureResponse message) {})
+            .patch(url: ApiConstant.updateToken, body: {'token': token});
       }
     }
   }
@@ -190,14 +200,22 @@ class HomeScreenController {
     }
   }
 
+  void subscribeToNewsNotifications() {
+    FirebaseRepository firebaseRepository = Get.find();
+    UserService userService = Get.find();
+    if (!userService.allNewsSubscribed() && hasNews) {
+      firebaseRepository
+          .subscribeToTopic("news")
+          .then((value) => userService.setAllNewsSubscribed(true));
+    }
+  }
+
   Future<void> executePendingRequests() async {
     HttpRequestService httpRequestService = Get.find();
     List<HttpRequest> httpRequests =
         await httpRequestService.getPendingRequests();
     for (HttpRequest httpRequest in httpRequests) {
       NetworkService(
-        // ignore: use_build_context_synchronously
-        state.context,
         onPreConnect: () {},
         onPostConnect: () {},
         onConnectionSucceed: (body) =>
@@ -205,6 +223,20 @@ class HomeScreenController {
         onConnectionFailed: () {},
         onMessageReceived: (FailureResponse message) {},
       ).post(url: httpRequest.url, body: httpRequest.mapp);
+    }
+  }
+
+  void moveToNewsPage() {
+    if (state.mounted) {
+      state.setState(() => selectedBottomNavigationIndex = hasStore ? 2 : 1);
+    }
+  }
+
+  Future showNewNewsBadge() async {
+    if (state.mounted) {
+      KeyValue keyValue = Get.find();
+      state.setState(() =>
+          newNews = keyValue.getBool(KeyValueConstant.newsRecieved, false)!);
     }
   }
 }

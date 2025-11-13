@@ -4,6 +4,7 @@ import 'package:beta/domain/product.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/presentation/media_slider/media_slider_screen.dart';
 import 'package:beta/presentation/product/product_screen_controller.dart';
+import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/product_price.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -81,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         return CachedNetworkImage(
                           imageUrl: url,
                           placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
+                              const LoadingWidget(),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           fit: BoxFit.cover,
@@ -150,15 +151,17 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Html(
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child:
+                      Html(
                           data: product.description!.value!,
+                        shrinkWrap: true,
                           extensions: const [
                             // for supporting tables
                             TableHtmlExtension(),
                           ],
-                        ),
+                        // ),
                       ),
                       const SizedBox(height: 10.0),
                       Row(

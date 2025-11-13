@@ -20,7 +20,7 @@ Future configurePlayer() async {
   VoiceNoteScreenController voiceNoteScreenController = Get.find();
   State state = voiceNoteScreenController.state;
   AudioPlayer audioPlayer = voiceNoteScreenController.audioPlayer;
-  return NetworkService(state.context,
+  return NetworkService(
       onPreConnect: () =>
           state.setState(() => voiceNoteScreenController.loading = true),
       onPostConnect: () =>
@@ -30,7 +30,7 @@ Future configurePlayer() async {
         String password = Encryption.decryptEncryptionKey(
             voiceNoteData.voiceNote.encryptionKey);
         String url = voiceNoteData.url!.toString();
-        NetworkService(state.context,
+        return NetworkService(
             onPreConnect: () =>
                 state.setState(() => voiceNoteScreenController.loading = true),
             onPostConnect: () =>

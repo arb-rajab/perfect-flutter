@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     ThemeService themeService = Get.find();
+    Get.put(context.locale.languageCode, tag: 'language code');
     if (widget.child != null) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -6,5 +6,5 @@ class NotificationRepository implements NotificationRepositoryBase {
   void initialise() => throw UnimplementedError();
 
   @override
-  Future showNotification(RemoteMessage message) => throw UnimplementedError();
+  Future showNotification(RemoteMessage message, {bool background = false}) => throw UnimplementedError();
 }

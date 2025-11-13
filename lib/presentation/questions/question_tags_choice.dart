@@ -44,7 +44,8 @@ class QuestionTagsChoice extends StatelessWidget {
               Text(questionsController.getQuestionTags()[i].questionTag.name),
         );
       },
-      listBuilder: ChoiceList.createWrapped(
+      listBuilder: ChoiceList.createScrollable(
+        direction: Axis.vertical,
         spacing: margin,
         runSpacing: margin,
         padding: const EdgeInsets.symmetric(

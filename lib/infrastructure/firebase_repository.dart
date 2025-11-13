@@ -19,7 +19,8 @@ class FirebaseRepository {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingHandler);
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
       FirebaseMessaging.onMessage.listen(_firebaseMessagingHandler);
       // initialiseLocalNotificationsPlugin();
     }
@@ -45,16 +46,22 @@ class FirebaseRepository {
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     return firebaseMessaging.unsubscribeFromTopic(topic);
   }
+}
 
-  @pragma('vm:entry-point')
-  static Future<void> _firebaseMessagingHandler(RemoteMessage message) async {
-    // Initialize Firebase app
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    NotificationRepository notificationRepository =
-        Get.put(NotificationRepository());
-    notificationRepository.initialise();
-    notificationRepository.showNotification(message);
-  }
+@pragma('vm:entry-point')
+Future _firebaseMessagingBackgroundHandler(
+  RemoteMessage message,
+) =>
+    _firebaseMessagingHandler(message, background: true);
+
+Future _firebaseMessagingHandler(RemoteMessage message,
+    {bool background = false}) async {
+  // Initialize Firebase app
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  NotificationRepository notificationRepository =
+      Get.put(NotificationRepository());
+  notificationRepository.initialise();
+  notificationRepository.showNotification(message);
 }

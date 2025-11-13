@@ -3,11 +3,13 @@ import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/constants/api_constant.dart';
+import 'package:beta/constants/key_value_constant.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/term_parent_data.dart';
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/visible.dart';
+import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen_controller.dart';
@@ -15,12 +17,14 @@ import 'package:beta/presentation/home/browse_terms_tab.dart';
 import 'package:beta/presentation/home/drawer_widget.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/new_terms_tab.dart';
+import 'package:beta/presentation/home/news_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/store_tab.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
 import 'package:beta/presentation/home/updateable_terms_tab.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
@@ -130,6 +134,18 @@ void main() async {
         expect(find.byIcon(Icons.refresh), findsNothing);
       });
 
+      testWidgets('refresh icon is not visible when navigated to news tab',
+          (widgetTester) async {
+        mockRefreshSucceed();
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.byIcon(Icons.refresh), findsNothing);
+      });
+
       testWidgets(
           'refresh icon is  visible when turn back to educational tab after switching to store tab',
           (widgetTester) async {
@@ -139,6 +155,21 @@ void main() async {
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
         await widgetTester.pumpAndSettle();
         await widgetTester.tap(find.text(StringConstant.store));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.byIcon(Icons.refresh), findsOneWidget);
+      });
+
+      testWidgets(
+          'refresh icon is  visible when turn back to educational tab after switching to news tab',
+          (widgetTester) async {
+        mockRefreshSucceed();
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
         await widgetTester.pumpAndSettle();
         await widgetTester.tap(find.text(StringConstant.educationalContent));
         await widgetTester.pumpAndSettle();
@@ -374,7 +405,9 @@ void main() async {
     group(
         'educational content tabs are not visible when switching to the another page',
         () {
-      testWidgets('browse terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'browse terms tab is not rendered when navigating to stores tab',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -384,7 +417,21 @@ void main() async {
         expect(find.text(StringConstant.browseTerms), findsNothing);
       });
 
-      testWidgets('rececnt terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'browse terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.browseTerms), findsNothing);
+      });
+
+      testWidgets(
+          'rececnt terms tab is not rendered when navigating to stores tab',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -394,7 +441,20 @@ void main() async {
         expect(find.text(StringConstant.recentTerms), findsNothing);
       });
 
-      testWidgets('new terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'rececnt terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.recentTerms), findsNothing);
+      });
+
+      testWidgets('new terms tab is not rendered when navigating to store tab',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -404,7 +464,20 @@ void main() async {
         expect(find.text(StringConstant.newTerms), findsNothing);
       });
 
-      testWidgets('unstudied terms tab is not rendered', (widgetTester) async {
+      testWidgets('new terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.newTerms), findsNothing);
+      });
+
+      testWidgets(
+          'unstudied terms tab is not rendered when navigating to store tab',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -414,7 +487,21 @@ void main() async {
         expect(find.text(StringConstant.unstudied), findsNothing);
       });
 
-      testWidgets('updateable terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'unstudied terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.unstudied), findsNothing);
+      });
+
+      testWidgets(
+          'updateable terms tab is not rendered when navigating to store tab',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -423,12 +510,26 @@ void main() async {
         await widgetTester.pumpAndSettle();
         expect(find.text(StringConstant.updateable), findsNothing);
       });
+
+      testWidgets(
+          'updateable terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.updateable), findsNothing);
+      });
     });
 
     group(
         'educational content tabs are visible when switching to the educational content after switching to another page',
         () {
-      testWidgets('browse terms tab is rendered', (widgetTester) async {
+      testWidgets(
+          'browse terms tab is rendered after switching from store page',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -440,7 +541,22 @@ void main() async {
         expect(find.text(StringConstant.browseTerms), findsOneWidget);
       });
 
-      testWidgets('rececnt terms tab is rendered', (widgetTester) async {
+      testWidgets('browse terms tab is rendered after switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.browseTerms), findsOneWidget);
+      });
+
+      testWidgets(
+          'rececnt terms tab is rendered after switching from store page',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -452,7 +568,23 @@ void main() async {
         expect(find.text(StringConstant.recentTerms), findsOneWidget);
       });
 
-      testWidgets('new terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'rececnt terms tab is rendered after switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.recentTerms), findsOneWidget);
+      });
+
+      testWidgets(
+          'new terms tab is not rendered when switching from store page',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -464,7 +596,22 @@ void main() async {
         expect(find.text(StringConstant.newTerms), findsOneWidget);
       });
 
-      testWidgets('unstudied terms tab is not rendered', (widgetTester) async {
+      testWidgets('new terms tab is not rendered when switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.newTerms), findsOneWidget);
+      });
+
+      testWidgets(
+          'unstudied terms tab is not rendered after switching from store page',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -476,12 +623,42 @@ void main() async {
         expect(find.text(StringConstant.unstudied), findsOneWidget);
       });
 
-      testWidgets('updateable terms tab is not rendered', (widgetTester) async {
+      testWidgets(
+          'unstudied terms tab is not rendered after switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.unstudied), findsOneWidget);
+      });
+
+      testWidgets(
+          'updateable terms tab is not rendered after switching from store page',
+          (widgetTester) async {
         hasStore = true;
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
         await widgetTester.pumpAndSettle();
         await widgetTester.tap(find.text(StringConstant.store));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.updateable), findsOneWidget);
+      });
+
+      testWidgets(
+          'updateable terms tab is not rendered after switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
         await widgetTester.pumpAndSettle();
         await widgetTester.tap(find.text(StringConstant.educationalContent));
         await widgetTester.pumpAndSettle();
@@ -501,6 +678,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets('recent terms tab page is rendered once tab is clicked',
@@ -516,6 +694,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets('new terms tab page is rendered once tab is clicked',
@@ -534,6 +713,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets('unstudied terms tab page is rendered once tab is clicked',
@@ -549,6 +729,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsOneWidget);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets('updateable terms tab page is rendered once tab is clicked',
@@ -564,6 +745,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsOneWidget);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets('store page is rendered once bottom navigation is clicked',
@@ -580,10 +762,28 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsOneWidget);
+        expect(find.byType(NewsTab), findsNothing);
+      });
+
+      testWidgets('news page is rendered once bottom navigation is clicked',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.byType(BrowseTermsTab), findsNothing);
+        expect(find.byType(RecentTermsTab), findsNothing);
+        expect(find.byType(NewTermsTab), findsNothing);
+        expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(UpdateableTermsTab), findsNothing);
+        expect(find.byType(NewsTab), findsOneWidget);
+        expect(find.byType(StoreTab), findsNothing);
       });
 
       testWidgets(
-          'browse terms tab page is rendered once changed back to educational content tab',
+          'browse terms tab page is rendered once changed back to educational content tab from store page',
           (widgetTester) async {
         hasStore = true;
         await widgetTester
@@ -599,6 +799,26 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
+      });
+
+      testWidgets(
+          'browse terms tab page is rendered once changed back to educational content tab from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.byType(BrowseTermsTab), findsOneWidget);
+        expect(find.byType(RecentTermsTab), findsNothing);
+        expect(find.byType(NewTermsTab), findsNothing);
+        expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(UpdateableTermsTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
 
       testWidgets(
@@ -617,6 +837,7 @@ void main() async {
         expect(find.byType(UnstudiedTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
       });
     });
   });
@@ -626,6 +847,17 @@ void main() async {
         'if application has a store, the educational bottom navigation item is rendered',
         (widgetTester) async {
       hasStore = true;
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(find.text(StringConstant.educationalContent), findsOneWidget);
+    });
+
+    testWidgets(
+        'if application has a news, the educational bottom navigation item is rendered',
+        (widgetTester) async {
+      hasNews = true;
       await widgetTester
           .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
       await widgetTester.pumpAndSettle();
@@ -645,9 +877,47 @@ void main() async {
     });
 
     testWidgets(
-        'if application does not have a store, the educational bottom navigation item is not rendered',
+        'if application has a news, the news bottom navigation item is rendered',
+        (widgetTester) async {
+      hasNews = true;
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(find.text(StringConstant.news), findsOneWidget);
+    });
+
+    testWidgets(
+        'if application has a news, and there are new news, the new badge is rendered',
+        (widgetTester) async {
+      KeyValue keyValue = Get.find();
+      await keyValue.setBool(KeyValueConstant.newsRecieved, true);
+      hasNews = true;
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(find.widgetWithIcon(Badge, CupertinoIcons.news), findsOneWidget);
+    });
+
+    testWidgets(
+        'if application has a news, and there are no new news, the new badge is not rendered',
+        (widgetTester) async {
+      KeyValue keyValue = Get.find();
+      await keyValue.setBool(KeyValueConstant.newsRecieved, false);
+      hasNews = true;
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(find.widgetWithIcon(Badge, CupertinoIcons.news), findsNothing);
+    });
+
+    testWidgets(
+        'if application does not have a store nur news, the educational bottom navigation item is not rendered',
         (widgetTester) async {
       hasStore = false;
+      hasNews = false;
       await widgetTester
           .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
       await widgetTester.pumpAndSettle();
@@ -664,6 +934,17 @@ void main() async {
       await widgetTester.pumpAndSettle();
       expect(find.byType(BottomNavigationBar), findsNothing);
       expect(find.text(StringConstant.store), findsNothing);
+    });
+
+    testWidgets(
+        'if application does not have a news, the news bottom navigation item is not rendered',
+        (widgetTester) async {
+      hasNews = false;
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(find.text(StringConstant.news), findsNothing);
     });
   });
 }

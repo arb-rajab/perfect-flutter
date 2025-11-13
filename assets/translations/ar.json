@@ -154,7 +154,11 @@
         "wrong-questions": "الأسئلة الخاطئة",
         "you-have-to-download-first": "يجب أن تقوم بتنزيل هذا المحتوى أولاً",
         "term-is-expired": "هذا المحتوى العلمي ليس متاحاً بعد الآن، يرجى تفعيل رمز شراء جديد",
-        "please-download-all-terms-within": "يرجى تنزيل أو تحديث كل المحتوى العلمي المتاح المدرج ضمن ((TERM_TAGS))"
+        "please-download-all-terms-within": "يرجى تنزيل أو تحديث كل المحتوى العلمي المتاح المدرج ضمن ((TERM_TAGS))",
+        "downloads":"التنزيلات",
+        "shows-terms-download-progress":"عرض التنزيلات الخاصة بالأقسام الدراسية",
+        "downloading-terms":"يتم تنزيل الأقسام الدراسية",
+        "download-complete":"انتهى تحميل الأقسام الدراسية"
     },
     "questions": {
         "show-favorite-only": "المفضلة فقط",
@@ -202,5 +206,8 @@
         "number-of-subcomments": "عدد الردود (SUBCOMMENTS)",
         "add-comment": "إضافة تعليق",
         "comments-related-to": "التعليقات المتعلقة ب (TITLE)"
+    },
+    "news": {
+        "news": "الأخبار"
     }
 }

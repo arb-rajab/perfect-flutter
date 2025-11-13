@@ -34,7 +34,7 @@ class EnterCouponScreenController {
 
   void onOkclick() {
     if (formKey.currentState!.validate()) {
-      NetworkService(state.context,
+      NetworkService(
           onPreConnect: () => state.setState(() {
                 loading = true;
                 okClicked = true;
@@ -84,7 +84,7 @@ class EnterCouponScreenController {
       state.setState(() {
         nameError = null;
       });
-      NetworkService(state.context,
+      NetworkService(
           onPreConnect: () => state.setState(() {
                 loading = true;
                 message = '';

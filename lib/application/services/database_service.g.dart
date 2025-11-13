@@ -7064,6 +7064,195 @@ class TermPropertiesCompanion extends UpdateCompanion<TermProperty> {
   }
 }
 
+class $ConfigsTable extends Configs with TableInfo<$ConfigsTable, Config> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ConfigsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
+  @override
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+      'value', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [title, value];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'configs';
+  @override
+  VerificationContext validateIntegrity(Insertable<Config> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+    } else if (isInserting) {
+      context.missing(_valueMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {title};
+  @override
+  Config map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Config(
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      value: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+    );
+  }
+
+  @override
+  $ConfigsTable createAlias(String alias) {
+    return $ConfigsTable(attachedDatabase, alias);
+  }
+}
+
+class Config extends DataClass implements Insertable<Config> {
+  final String title;
+  final String value;
+  const Config({required this.title, required this.value});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['title'] = Variable<String>(title);
+    map['value'] = Variable<String>(value);
+    return map;
+  }
+
+  ConfigsCompanion toCompanion(bool nullToAbsent) {
+    return ConfigsCompanion(
+      title: Value(title),
+      value: Value(value),
+    );
+  }
+
+  factory Config.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Config(
+      title: serializer.fromJson<String>(json['title']),
+      value: serializer.fromJson<String>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'title': serializer.toJson<String>(title),
+      'value': serializer.toJson<String>(value),
+    };
+  }
+
+  Config copyWith({String? title, String? value}) => Config(
+        title: title ?? this.title,
+        value: value ?? this.value,
+      );
+  Config copyWithCompanion(ConfigsCompanion data) {
+    return Config(
+      title: data.title.present ? data.title.value : this.title,
+      value: data.value.present ? data.value.value : this.value,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Config(')
+          ..write('title: $title, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(title, value);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Config &&
+          other.title == this.title &&
+          other.value == this.value);
+}
+
+class ConfigsCompanion extends UpdateCompanion<Config> {
+  final Value<String> title;
+  final Value<String> value;
+  final Value<int> rowid;
+  const ConfigsCompanion({
+    this.title = const Value.absent(),
+    this.value = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ConfigsCompanion.insert({
+    required String title,
+    required String value,
+    this.rowid = const Value.absent(),
+  })  : title = Value(title),
+        value = Value(value);
+  static Insertable<Config> custom({
+    Expression<String>? title,
+    Expression<String>? value,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (title != null) 'title': title,
+      if (value != null) 'value': value,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ConfigsCompanion copyWith(
+      {Value<String>? title, Value<String>? value, Value<int>? rowid}) {
+    return ConfigsCompanion(
+      title: title ?? this.title,
+      value: value ?? this.value,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConfigsCompanion(')
+          ..write('title: $title, ')
+          ..write('value: $value, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
   $DatabaseServiceManager get managers => $DatabaseServiceManager(this);
@@ -7103,6 +7292,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
   late final $TermsLinkedToLabelsTable termsLinkedToLabels =
       $TermsLinkedToLabelsTable(this);
   late final $TermPropertiesTable termProperties = $TermPropertiesTable(this);
+  late final $ConfigsTable configs = $ConfigsTable(this);
   late final Index parentQuestionIdIndex = Index('parentQuestionIdIndex',
       'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)');
   late final Index qIndex1 =
@@ -7162,6 +7352,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         termLabels,
         termsLinkedToLabels,
         termProperties,
+        configs,
         parentQuestionIdIndex,
         qIndex1,
         questionTagsIndex1,
@@ -11249,6 +11440,126 @@ typedef $$TermPropertiesTableProcessedTableManager = ProcessedTableManager<
     ),
     TermProperty,
     PrefetchHooks Function()>;
+typedef $$ConfigsTableCreateCompanionBuilder = ConfigsCompanion Function({
+  required String title,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$ConfigsTableUpdateCompanionBuilder = ConfigsCompanion Function({
+  Value<String> title,
+  Value<String> value,
+  Value<int> rowid,
+});
+
+class $$ConfigsTableFilterComposer
+    extends Composer<_$DatabaseService, $ConfigsTable> {
+  $$ConfigsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get value => $composableBuilder(
+      column: $table.value, builder: (column) => ColumnFilters(column));
+}
+
+class $$ConfigsTableOrderingComposer
+    extends Composer<_$DatabaseService, $ConfigsTable> {
+  $$ConfigsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get value => $composableBuilder(
+      column: $table.value, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ConfigsTableAnnotationComposer
+    extends Composer<_$DatabaseService, $ConfigsTable> {
+  $$ConfigsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
+}
+
+class $$ConfigsTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $ConfigsTable,
+    Config,
+    $$ConfigsTableFilterComposer,
+    $$ConfigsTableOrderingComposer,
+    $$ConfigsTableAnnotationComposer,
+    $$ConfigsTableCreateCompanionBuilder,
+    $$ConfigsTableUpdateCompanionBuilder,
+    (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
+    Config,
+    PrefetchHooks Function()> {
+  $$ConfigsTableTableManager(_$DatabaseService db, $ConfigsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ConfigsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ConfigsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ConfigsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> title = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ConfigsCompanion(
+            title: title,
+            value: value,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String title,
+            required String value,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ConfigsCompanion.insert(
+            title: title,
+            value: value,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$ConfigsTableProcessedTableManager = ProcessedTableManager<
+    _$DatabaseService,
+    $ConfigsTable,
+    Config,
+    $$ConfigsTableFilterComposer,
+    $$ConfigsTableOrderingComposer,
+    $$ConfigsTableAnnotationComposer,
+    $$ConfigsTableCreateCompanionBuilder,
+    $$ConfigsTableUpdateCompanionBuilder,
+    (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
+    Config,
+    PrefetchHooks Function()>;
 
 class $DatabaseServiceManager {
   final _$DatabaseService _db;
@@ -11307,4 +11618,6 @@ class $DatabaseServiceManager {
       $$TermsLinkedToLabelsTableTableManager(_db, _db.termsLinkedToLabels);
   $$TermPropertiesTableTableManager get termProperties =>
       $$TermPropertiesTableTableManager(_db, _db.termProperties);
+  $$ConfigsTableTableManager get configs =>
+      $$ConfigsTableTableManager(_db, _db.configs);
 }

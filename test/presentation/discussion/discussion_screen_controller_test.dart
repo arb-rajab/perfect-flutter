@@ -20,7 +20,7 @@ class MockBuildContext extends Mock implements BuildContext {}
 
 class MockDeviceRepository extends Mock implements DeviceRepositoryBase {
   @override
-  String getFullInfo(BuildContext context) {
+  String getFullInfo() {
     return '{"ime1":"test-ime1","ime2":"","buildModel":"test-model","androidAPI":"25","iosVersion":"0","rooted":0,"isEmulator":0,"appId":"test.app.id","appLanguage":"en","appVersionCode":1,"appVersionName":"1.0.0"}';
   }
 }

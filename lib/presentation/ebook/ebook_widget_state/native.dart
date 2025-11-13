@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/database_service.dart' hide Config;
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/helper/encryption.dart';
 import 'package:beta/presentation/ebook/ebook_screen_controller.dart';

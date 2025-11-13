@@ -44,7 +44,6 @@ class DiscussionScreenController extends ListController {
     if (submitController.text.isEmpty) return;
     if (submitting) return;
     NetworkService(
-      state.context,
       onPreConnect: () => state.setState(() => submitting = true),
       onPostConnect: () => state.setState(() => submitting = false),
       onMessageReceived: (FailureResponse message) {
@@ -68,6 +67,7 @@ class DiscussionScreenController extends ListController {
           items.add(comment);
           submitController.clear();
         });
+        return Future.value();
       },
     ).post(url: ApiConstant.submitComment, body: {
       'content': submitController.text,

@@ -6,5 +6,6 @@ class NotificationRepository implements NotificationRepositoryBase {
   void initialise() {}
 
   @override
-  Future showNotification(RemoteMessage message) => Future.value();
+  Future showNotification(RemoteMessage message, {bool background = false}) =>
+      Future.value();
 }

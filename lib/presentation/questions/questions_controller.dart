@@ -101,7 +101,6 @@ class QuestionsController {
     }).onError((a, b) async {
       if (state.mounted) {
         await NetworkService(
-          state.context,
           onPreConnect: () => state.setState(() => loading = true),
           onPostConnect: () => state.setState(() => loading = false),
           onConnectionFailed: () => state.context
@@ -175,6 +174,9 @@ class QuestionsController {
     if (questionData.question.title.contains(search!)) return true;
     for (AnswerData answerData in questionData.answers) {
       if (answerData.answer.title.contains(search!)) return true;
+    }
+    for (QuestionTag questionTag in questionData.questionTags) {
+      if (questionTag.name.contains(search!)) return true;
     }
     return false;
   }
@@ -505,10 +507,10 @@ class QuestionsController {
 
   void _uploadCheckedAnswers() {
     if (checkedAnswers.isNotEmpty) {
-      (NetworkService(state.context,
+      (NetworkService(
               onPreConnect: () {},
               onPostConnect: () {},
-              onConnectionSucceed: (data) {},
+              onConnectionSucceed: (data) => Future.value(),
               onConnectionFailed: () {},
               onMessageReceived: (message) {})
             ..retryOnStartup = true)

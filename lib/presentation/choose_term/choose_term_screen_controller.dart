@@ -89,7 +89,7 @@ class ChooseTermScreenController extends ListController {
     }
   }
 
-  Future sendData() => NetworkService(state.context,
+  Future sendData() => NetworkService(
           onPreConnect: () => state.setState(() {
                 message = '';
                 loading = true;

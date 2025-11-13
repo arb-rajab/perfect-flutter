@@ -34,7 +34,7 @@ class EbookWidgetState extends State<EbookWidget> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      NetworkService(context, onPreConnect: () {
+      NetworkService( onPreConnect: () {
         setState(() {
           loading = true;
         });

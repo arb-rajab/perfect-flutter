@@ -166,6 +166,11 @@ class StringConstant {
   static const termIsExpired = '$_terms.term-is-expired';
   static const pleaseDownloadAllTermsWithin =
       '$_terms.please-download-all-terms-within';
+  static const downloads = '$_terms.downloads';
+  static const showsTermsDownloadProgress =
+      '$_terms.shows-terms-download-progress';
+  static const downloadingTerms = '$_terms.downloading-terms';
+  static const downloadComplete = '$_terms.download-complete';
 
   static const _questions = 'questions';
   static const showFavoriteOnly = '$_questions.show-favorite-only';
@@ -231,4 +236,7 @@ class StringConstant {
   static const String price = '$_store.price';
   static const String syp = '$_store.syp';
   static const String usd = '$_store.usd';
+
+  static const String _news = 'news';
+  static const String news = '$_news.news';
 }

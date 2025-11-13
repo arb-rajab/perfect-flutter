@@ -19,7 +19,7 @@ class EbookWidgetState extends State<EbookWidget> {
   void initState() {
     EbookScreenController ebookScreenController = Get.find();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      NetworkService(context, onPreConnect: () {
+      NetworkService(onPreConnect: () {
         setState(() => loading = true);
       }, onPostConnect: () {
         setState(() => loading = false);
@@ -30,6 +30,7 @@ class EbookWidgetState extends State<EbookWidget> {
           password =
               Encryption.decryptEncryptionKey(ebookData.ebook.encryptionKey);
         });
+        return Future.value();
       }, onConnectionFailed: () {
         showOkDialogue(context, content: StringConstant.noConnection.tr());
       }, onMessageReceived: (failureResponse) {

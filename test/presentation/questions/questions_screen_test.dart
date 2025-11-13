@@ -443,7 +443,7 @@ Future main() async {
         (widgetTester) async {
       await seedQuestionsData();
       QuestionService questionService = Get.find();
-      questionService.addQuestions([
+      await questionService.addQuestions([
         const Question(
             id: 2,
             uuid: 'uuid',
@@ -482,7 +482,7 @@ Future main() async {
             labelId: 1,
             note: 'note',
             noteTranslation: 'noteTranslation',
-            parentTermId: 4,
+            parentTermId: 1,
             specialCharacter: 1,
             type: 1,
             edited: 0,
@@ -518,6 +518,19 @@ Future main() async {
             creation: '2024-01-01 11:12:13',
             checkedCount: 0)
       ]);
+
+      QuestionTagService questionTagService = Get.find();
+      await questionTagService.addQuestionTags([
+        const QuestionTag(
+            id: 1,
+            name: 'query',
+            creation: '2024-01-01 11:12:13',
+            parentTagId: 0,
+            hasInformation: 0)
+      ]);
+      QuestionLinkedToTagService questionLinkedToTagService = Get.find();
+      await questionLinkedToTagService.addQuestionsLinkdeToTags(
+          [const QuestionsLinkedToTag(questionId: 4, tagId: 1)]);
       await widgetTester
           .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
       await widgetTester.pumpAndSettle();
@@ -535,7 +548,7 @@ Future main() async {
       expect(find.widgetWithText(QuestionTitle, 'name'), findsNothing);
       expect(find.widgetWithText(QuestionTitle, 'query'), findsOneWidget);
       expect(find.widgetWithText(QuestionTitle, 'duery'), findsNothing);
-      expect(find.widgetWithText(QuestionTitle, 'euery'), findsNothing);
+      expect(find.widgetWithText(QuestionTitle, 'euery'), findsOneWidget);
       expect(find.widgetWithText(QuestionTitle, 'fuery'), findsOneWidget);
     });
 

@@ -55,7 +55,7 @@ class StoreTabController {
   }
 
   Future getData({String api = ApiConstant.products}) =>
-      NetworkService(state.context,
+      NetworkService(
               onPreConnect: onPreConnect,
               onPostConnect: onPostConnect, onConnectionSucceed: (data) {
         state.setState(() {
@@ -95,6 +95,7 @@ class StoreTabController {
             }
           }
         });
+            return Future.value();
       },
               onConnectionFailed: onConnectionFailed,
               onMessageReceived: onMessageRecieved)

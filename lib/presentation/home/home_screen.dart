@@ -6,6 +6,7 @@ import 'package:beta/presentation/home/browse_terms_tab.dart';
 import 'package:beta/presentation/home/drawer_widget.dart';
 import 'package:beta/presentation/home/home_screen_controller.dart';
 import 'package:beta/presentation/home/new_terms_tab.dart';
+import 'package:beta/presentation/home/news_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/store_tab.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
@@ -37,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    super.initState();
     Get.delete<HomeScreenController>();
     homeScreenController = Get.put(HomeScreenController(this));
-    super.initState();
   }
 
   @override
@@ -80,53 +81,65 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton:
           homeScreenController.selectedBottomNavigationIndex == 0
               ? FloatingActionButton.extended(
-          key: addCouponKey,
-          tooltip: EnterCouponScreen.title,
-          heroTag: EnterCouponScreen.title,
-          onPressed: () async {
-            await context.push(EnterCouponScreen.route);
-            // Get.find<TermsListingController>().fetch!();
-            TermsListingController browseTermsTabController = Get.find();
-            browseTermsTabController.init();
-          },
-          icon: const Icon(EnterCouponScreen.icon),
+                  key: addCouponKey,
+                  tooltip: EnterCouponScreen.title,
+                  heroTag: EnterCouponScreen.title,
+                  onPressed: () async {
+                    await context.push(EnterCouponScreen.route);
+                    // Get.find<TermsListingController>().fetch!();
+                    TermsListingController browseTermsTabController =
+                        Get.find();
+                    browseTermsTabController.init();
+                  },
+                  icon: const Icon(EnterCouponScreen.icon),
                   label: Text(EnterCouponScreen.title))
               : null,
       tabs: homeScreenController.selectedBottomNavigationIndex == 0
           ? [
-        Tab(
-          icon: const Icon(Icons.article),
-          text: StringConstant.browseTerms.tr(),
-        ),
-        Tab(
-          icon: const Icon(Icons.history),
-          text: StringConstant.recentTerms.tr(),
-        ),
-        Tab(
-          icon: const Icon(Icons.fiber_new),
-          text: StringConstant.newTerms.tr(),
-        ),
-        Tab(
-          icon: const Icon(Icons.fact_check_outlined),
-          text: StringConstant.unstudied.tr(),
-        ),
-        Tab(
-          icon: const Icon(Icons.update),
-          text: StringConstant.updateable.tr(),
-        ),
+              Tab(
+                icon: const Icon(Icons.article),
+                text: StringConstant.browseTerms.tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.history),
+                text: StringConstant.recentTerms.tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.fiber_new),
+                text: StringConstant.newTerms.tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.fact_check_outlined),
+                text: StringConstant.unstudied.tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.update),
+                text: StringConstant.updateable.tr(),
+              ),
             ]
           : [],
-      bottomNavigationBar: hasStore
+      bottomNavigationBar: hasStore || hasNews
           ? BottomNavigationBar(
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: const Icon(CupertinoIcons.book_solid),
                   label: StringConstant.educationalContent.tr(),
                 ),
-                BottomNavigationBarItem(
-                  icon: const Icon(CupertinoIcons.bag_fill),
-                  label: StringConstant.store.tr(),
-                ),
+                if (hasStore)
+                  BottomNavigationBarItem(
+                    icon: const Icon(CupertinoIcons.bag_fill),
+                    label: StringConstant.store.tr(),
+                  ),
+                if (hasNews)
+                  BottomNavigationBarItem(
+                    icon: homeScreenController.newNews
+                        ? Badge(
+                            label: Text(StringConstant.neww.tr()),
+                            child: const Icon(CupertinoIcons.news),
+                          )
+                        : const Icon(CupertinoIcons.news),
+                    label: StringConstant.news.tr(),
+                  ),
               ],
               currentIndex: homeScreenController.selectedBottomNavigationIndex,
               onTap: (index) {
@@ -146,7 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 UpdateableTermsTab()
               ]),
             )
-          : const StoreTab(),
+          : homeScreenController.selectedBottomNavigationIndex == 1 && hasStore
+              ? const StoreTab()
+              : const NewsTab(),
     );
   }
 }

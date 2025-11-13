@@ -55,7 +55,7 @@ class _ReportQuestionDialogueState extends State<ReportQuestionDialogue> {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      NetworkService(context,
+                      NetworkService(
                           onPreConnect: () => setState(() {
                                 loading = true;
                                 message = '';
@@ -67,6 +67,7 @@ class _ReportQuestionDialogueState extends State<ReportQuestionDialogue> {
                           onConnectionSucceed: (dynamic data) {
                             context.pop();
                             showSuccessDialogue(context);
+                            return Future.value();
                           },
                           onConnectionFailed: () => setState(() {
                                 message = StringConstant.noConnection.tr();

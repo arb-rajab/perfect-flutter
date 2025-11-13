@@ -4,7 +4,10 @@ import 'dart:math';
 import 'package:beta/abstract/notification_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/configs/app.dart';
+import 'package:beta/constants/key_value_constant.dart';
+import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
+import 'package:beta/presentation/home/home_screen_controller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/instance_manager.dart';
@@ -14,12 +17,13 @@ class NotificationRepository implements NotificationRepositoryBase {
   @override
   void initialise() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    // Request permissions (existing)
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()!
         .requestNotificationsPermission();
 
-    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     const DarwinInitializationSettings initializationSettingsDarwin =
@@ -31,37 +35,50 @@ class NotificationRepository implements NotificationRepositoryBase {
             android: initializationSettingsAndroid,
             iOS: initializationSettingsDarwin,
             linux: initializationSettingsLinux);
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
     );
   }
 
   @override
-  Future showNotification(RemoteMessage message) async {
+  Future<void> showNotification(RemoteMessage message,
+      {bool background = false}) async {
+    await MainController.initServices();
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(name, name,
+        AndroidNotificationDetails('name', 'name',
             channelDescription: '',
             importance: Importance.max,
             priority: Priority.high,
-            icon: '@mipmap/ic_launcher'
-            // ticker: 'ticker'
-            );
+            icon: '@mipmap/ic_launcher');
+
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
+    DatabaseService databaseService = Get.find();
     if (message.data.containsKey('sql')) {
       var sqlQuery = jsonDecode(message.data['sql']);
-      if (Get.isRegistered<DatabaseService>()) {
-        await MainController.initServices();
-      }
-      DatabaseService databaseService = Get.find();
       databaseService.customWriteReturning(sqlQuery);
     }
     if (message.notification != null) {
       RemoteNotification notification = message.notification!;
-      flutterLocalNotificationsPlugin.show(Random().nextInt(1 << 32),
+
+      // Pass topic info in payload for tap handling
+      if (message.from == '/topics/news' && hasNews) {
+        KeyValue keyValue = Get.find();
+        await keyValue.setBool(KeyValueConstant.newsRecieved, true);
+
+        if (Get.isRegistered<HomeScreenController>()) {
+          Get.find<HomeScreenController>().showNewNewsBadge();
+        }
+      }
+
+      if (!background) {
+        flutterLocalNotificationsPlugin.show(
+          Random().nextInt(1 << 16),
           notification.title, notification.body, notificationDetails,
-          payload: '');
+          // payload: payload
+        );
+      }
     }
   }
 }

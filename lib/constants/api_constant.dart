@@ -36,4 +36,7 @@ class ApiConstant {
   static const String productTypesProducts =
       '${_apiV1}product-types/(PRODUCT_TYPE)/products';
   static const String product = '$products/(PRODUCT_ID)';
+
+  static const String news = '${_apiV1}news';
+  static const String newss = '$news/(NEWS_ID)';
 }

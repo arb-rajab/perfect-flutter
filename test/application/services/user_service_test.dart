@@ -69,6 +69,18 @@ void main() {
       expect(userService.allTopicSubscribed(), false);
     });
 
+    test('allNewsSubscribed returns stored bool or false if null', () {
+      when(() =>
+              mockKeyValue.getBool(KeyValueConstant.isAllNewsSubscribed, false))
+          .thenReturn(true);
+      expect(userService.allNewsSubscribed(), true);
+
+      when(() =>
+              mockKeyValue.getBool(KeyValueConstant.isAllNewsSubscribed, false))
+          .thenReturn(false);
+      expect(userService.allNewsSubscribed(), false);
+    });
+
     test('setAllTopicSubscribed stores bool in KeyValue', () async {
       when(() => mockKeyValue.setBool(any(), any()))
           .thenAnswer((_) async => Future.value());
@@ -81,6 +93,21 @@ void main() {
       await userService.setAllTopicSubscribed(false);
       verify(() => mockKeyValue.setBool(
           KeyValueConstant.isAllTokenSubscribed, false)).called(1);
+    });
+
+    test('setAllNewsSubscribed stores bool in KeyValue', () async {
+      when(() => mockKeyValue.setBool(any(), any()))
+          .thenAnswer((_) async => Future.value());
+
+      await userService.setAllNewsSubscribed(true);
+      verify(() =>
+              mockKeyValue.setBool(KeyValueConstant.isAllNewsSubscribed, true))
+          .called(1);
+
+      await userService.setAllNewsSubscribed(false);
+      verify(() =>
+              mockKeyValue.setBool(KeyValueConstant.isAllNewsSubscribed, false))
+          .called(1);
     });
   });
 }

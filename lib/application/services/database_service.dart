@@ -9,6 +9,7 @@ import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/domain/answer.dart';
 import 'package:beta/domain/answer_property.dart';
+import 'package:beta/domain/config.dart';
 import 'package:beta/domain/coupon.dart';
 import 'package:beta/domain/coupon_linked_to_term.dart';
 import 'package:beta/domain/ebook.dart';
@@ -70,13 +71,14 @@ part 'database_service.g.dart'; // the generated code will be there
   TermsLinkedToTags,
   TermLabels,
   TermsLinkedToLabels,
-  TermProperties
+  TermProperties,
+  Configs
 ])
 class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
   @override
-  int get schemaVersion => 39;
+  int get schemaVersion => 40;
 
   @override
   MigrationStrategy get migration {
@@ -358,8 +360,11 @@ class DatabaseService extends _$DatabaseService {
               "insert into voiceNotes (encryptionKey,parentTermId,creation,lastUpdated) select CAST(encryptionKey as TEXT),parentTermId,creation,lastUpdated from temp_table");
           await m.database.executor.runCustom("DROP TABLE temp_table");
         }
-        if (from == 38) {
+        if (from < 39) {
           await m.addColumn(terms, terms.outerNote);
+        }
+        if (from < 40) {
+          await m.createTable(configs);
         }
       },
     );

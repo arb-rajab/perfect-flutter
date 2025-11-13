@@ -61,7 +61,7 @@ void main() async {
     when(() => mockDeviceRepository.getIosVersion()).thenReturn('15.0');
     when(() => mockDeviceRepository.isRooted()).thenReturn(0);
     when(() => mockDeviceRepository.isEmulator()).thenReturn(0);
-    when(() => mockDeviceRepository.getFullInfo(any()))
+    when(() => mockDeviceRepository.getFullInfo())
         .thenReturn('{"test": "data"}');
 
     // Mock PackageRepository methods

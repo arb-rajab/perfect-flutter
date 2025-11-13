@@ -31,10 +31,15 @@ class _ActionsWidgetState extends State<ActionsWidget> {
   @override
   Widget build(BuildContext context) {
     TermData termData = widget.termWidgetController.termData;
+    Get.delete<State<ActionsWidget>>(tag: termData.term.id.toString());
+    Get.put<State<ActionsWidget>>(this, tag: termData.term.id.toString());
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (TermType.downloadable(termData) && widget.downloaded)
+        if (TermType.downloadable(termData) &&
+            widget.downloaded &&
+            !widget.downloading &&
+            !widget.termWidgetController.isDownloadingInBackground(termData))
           IconButton(
               onPressed: () {
                 showConfirmationDialog(context, () async {
@@ -61,14 +66,14 @@ class _ActionsWidgetState extends State<ActionsWidget> {
               )),
         if (TermType.downloadable(termData) &&
             !widget.downloaded &&
-            !widget.downloading)
+            !widget.downloading &&
+            !widget.termWidgetController.isDownloadingInBackground(termData))
           IconButton(
               onPressed: widget.termWidgetController.downloadContent,
               icon: const Icon(Icons.cloud_download))
-        else if (widget.downloading)
-          CircularProgressIndicator(
-              value:
-                  widget.downloadProgress),
+        else if (widget.downloading ||
+            widget.termWidgetController.isDownloadingInBackground(termData))
+          CircularProgressIndicator(value: widget.downloadProgress),
         if (TermType.downloadable(termData) &&
             termData.term.needsUpdate == 1 &&
             widget.downloaded)

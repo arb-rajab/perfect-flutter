@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "edu.perfect"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion "26.1.10909125"
+    ndkVersion "29.0.14206865"
 
     compileOptions {
     // Flag to enable support for the new language APIs

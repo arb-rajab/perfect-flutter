@@ -18,9 +18,10 @@ class GiftWidgetController {
 
   GiftWidgetController({required this.state, required this.code});
   Future init() {
-    return NetworkService(state.context, onConnectionSucceed: (data) {
+    return NetworkService( onConnectionSucceed: (data) {
       termPrint = TermPrint.fromJson(data['term-print']);
       if (data['coupon'] != null) coupon = data['coupon']['serial'];
+      return Future.value();
     }, onPreConnect: () {
       state.setState(() {
         message = '';

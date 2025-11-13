@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/download_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/application/services/path/shared.dart';
@@ -14,6 +15,7 @@ import 'package:beta/configs/links.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
+import 'package:beta/domain/downlaod_item.dart';
 import 'package:beta/domain/ebook_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
@@ -25,6 +27,7 @@ import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/flashcards/flashcards_screen.dart';
+import 'package:beta/presentation/home/actions_widget.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
@@ -51,6 +54,7 @@ class TermWidgetController {
   EbookService ebookService = Get.find();
   VoiceNoteService voiceNoteService = Get.find();
   PathService pathService = Get.find();
+  DownloadService downloadService = Get.find();
 
   TermWidgetController(this.state, {required this.index}) {
     termsListingController = Get.find<TermsListingController>();
@@ -122,82 +126,165 @@ class TermWidgetController {
     return ApiConstant.getTermContent;
   }
 
-  void _onPreConnect() => state.setState(() => downloading = true);
-  void _onPostConnect() => state.setState(() => downloading = false);
-  void _onConnectionFailed() =>
-      showOkDialogue(state.context, content: StringConstant.noConnection.tr());
-  void _onMessageReceived(FailureResponse message) =>
-      showOkDialogue(state.context, content: message.content);
+  void _onPreConnect() {
+    State<ActionsWidget> state =
+        Get.find<State<ActionsWidget>>(tag: termData.term.id.toString());
+    if (state.mounted) {
+      state.widget.termWidgetController.state
+          .setState(() => state.widget.termWidgetController.downloading = true);
+    }
+  }
+
+  void _onPostConnect() {
+    State<ActionsWidget> state =
+        Get.find<State<ActionsWidget>>(tag: termData.term.id.toString());
+    if (state.mounted) {
+      state.widget.termWidgetController.state.setState(
+          () => state.widget.termWidgetController.downloading = false);
+    }
+  }
+
+  void _onConnectionFailed() {
+    State<ActionsWidget> state =
+        Get.find<State<ActionsWidget>>(tag: termData.term.id.toString());
+    if (state.mounted) {
+      showOkDialogue(state.widget.termWidgetController.state.context,
+          content: StringConstant.noConnection.tr());
+    }
+  }
+
+  void _onMessageReceived(FailureResponse message) {
+    State<ActionsWidget> state =
+        Get.find<State<ActionsWidget>>(tag: termData.term.id.toString());
+    if (state.mounted) {
+      showOkDialogue(state.widget.termWidgetController.state.context,
+          content: message.content);
+    }
+  }
 
   Future _setTermUpdated() async {
     await termService.setTermUpdated(termData);
-    state.setState(() {
-      termData.term = termData.term.copyWith(needsUpdate: 0);
-      isDownloaded = true;
-    });
+    State<ActionsWidget> actionsWidgetState =
+        Get.find<State<ActionsWidget>>(tag: termData.term.id.toString());
+    if (actionsWidgetState.mounted) {
+      State state = actionsWidgetState.widget.termWidgetController.state;
+      if (state.mounted) {
+        state.setState(() {
+          actionsWidgetState.widget.termWidgetController.termData.term =
+              termData.term.copyWith(needsUpdate: 0);
+          actionsWidgetState.widget.termWidgetController.isDownloaded = true;
+        });
+      }
+    }
   }
 
-  Future<void> downloadContent() {
+  Future downloadContent() {
     String url = _getDownloadApi();
-
-    if (TermType.hasFile(termData)) {
-      return NetworkService(
-        state.context,
-        onPreConnect: () => _onPreConnect(),
-        onPostConnect: () => _onPostConnect(),
-        onConnectionSucceed: (body) async {
-          String url = '';
-          if (termData.term.type == TermType.ebook) {
-            EbookData ebookData = EbookData.fromJson(body['ebook']);
-            ebookService.addEbook(ebookData);
-            url = ebookData.url!.toString();
+    return downloadService.startDownloads(DownloadItem(
+        id: Id(termData.term.id),
+        type: Types.term,
+        url: url,
+        fileName: termData.term.name,
+        onDownload: () {
+          if (TermType.hasFile(termData)) {
+            return NetworkService(
+              onPreConnect: () => _onPreConnect(),
+              onPostConnect: () => _onPostConnect(),
+              onConnectionSucceed: (body) async {
+                String url = '';
+                if (termData.term.type == TermType.ebook) {
+                  EbookData ebookData = EbookData.fromJson(body['ebook']);
+                  ebookService.addEbook(ebookData);
+                  url = ebookData.url!.toString();
+                }
+                if (termData.term.type == TermType.voiceNotes) {
+                  VoiceNoteData voiceNoteData =
+                      VoiceNoteData.fromJson(body['voice']);
+                  voiceNoteService.addVoiceNote(voiceNoteData);
+                  url = voiceNoteData.url!.toString();
+                }
+                String filePath = await pathService
+                    .getFileSupportPath(['term', termData.term.id.toString()]);
+                await NetworkService(
+                        onPreConnect: _onPreConnect,
+                        onPostConnect: _onPostConnect,
+                        onConnectionSucceed: (_) => _setTermUpdated(),
+                        onConnectionFailed: _onConnectionFailed,
+                        onMessageReceived: _onMessageReceived)
+                    .download(
+                        url: url,
+                        filePath: filePath,
+                        onRecieveProgress: (int progress, int total) {
+                          State<ActionsWidget> actionsWidgetState =
+                              Get.find<State<ActionsWidget>>(
+                                  tag: termData.term.id.toString());
+                          if (actionsWidgetState.mounted) {
+                            State state = actionsWidgetState
+                                .widget.termWidgetController.state;
+                            if (state.mounted) {
+                              state.setState(() {
+                                if (progress == total) {
+                                  actionsWidgetState.widget.termWidgetController
+                                      .downloadProgress = null;
+                                  return;
+                                }
+                                actionsWidgetState.widget.termWidgetController
+                                        .downloadProgress =
+                                    progress.toDouble() / total.toDouble();
+                              });
+                            }
+                          }
+                        });
+              },
+              onConnectionFailed: _onConnectionFailed,
+              onMessageReceived: _onMessageReceived,
+            ).get(
+                url:
+                    url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
           }
-          if (termData.term.type == TermType.voiceNotes) {
-            VoiceNoteData voiceNoteData = VoiceNoteData.fromJson(body['voice']);
-            voiceNoteService.addVoiceNote(voiceNoteData);
-            url = voiceNoteData.url!.toString();
-          }
-          String filePath = await pathService
-              .getFileSupportPath(['term', termData.term.id.toString()]);
-          if (state.mounted) {
-            NetworkService(state.context,
+          if (TermType.hasContent(termData)) {
+            return NetworkService(
                     onPreConnect: _onPreConnect,
                     onPostConnect: _onPostConnect,
-                    onConnectionSucceed: (_) => _setTermUpdated(),
+                    onConnectionSucceed: (body) async {
+                      await termService.storeTermContent(body).then((_) {
+                        State<ActionsWidget> actionsWidgetState =
+                            Get.find<State<ActionsWidget>>(
+                                tag: termData.term.id.toString());
+                        if (actionsWidgetState.mounted) {
+                          State state = actionsWidgetState
+                              .widget.termWidgetController.state;
+                          if (termData.term.type == TermType.flashcards) {
+                            if (state.mounted) {
+                              state.setState(() => actionsWidgetState
+                                      .widget
+                                      .termWidgetController
+                                      .termData
+                                      .numberOfFlashcards =
+                                  NumberOfSubTerms(body['flashcards'].length));
+                            }
+                          } else {
+                            if (state.mounted) {
+                              state.setState(() => actionsWidgetState
+                                      .widget
+                                      .termWidgetController
+                                      .termData
+                                      .numberOfQuestions =
+                                  NumberOfSubTerms(body['questions'].length));
+                            }
+                          }
+                          _setTermUpdated();
+                        }
+                      });
+                    },
                     onConnectionFailed: _onConnectionFailed,
                     onMessageReceived: _onMessageReceived)
-                .download(
-                    url: url,
-                    filePath: filePath,
-                    onRecieveProgress: (int progress, int total) =>
-                        state.setState(() => downloadProgress =
-                            progress.toDouble() / total.toDouble()));
+                .get(
+                    url: url.replaceFirst(
+                        '(TERM_ID)', termData.term.id.toString()));
           }
-        },
-        onConnectionFailed: _onConnectionFailed,
-        onMessageReceived: _onMessageReceived,
-      ).get(url: url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
-    }
-    if (TermType.hasContent(termData)) {
-      return NetworkService(state.context,
-              onPreConnect: _onPreConnect,
-              onPostConnect: _onPostConnect, onConnectionSucceed: (body) async {
-        termService.storeTermContent(body).then((_) {
-          if (termData.term.type == TermType.flashcards) {
-            state.setState(() => termData.numberOfFlashcards =
-                NumberOfSubTerms(body['flashcards'].length));
-          } else {
-            state.setState(() => termData.numberOfQuestions =
-                NumberOfSubTerms(body['questions'].length));
-          }
-          _setTermUpdated();
-        });
-      },
-              onConnectionFailed: _onConnectionFailed,
-              onMessageReceived: _onMessageReceived)
-          .get(url: url.replaceFirst('(TERM_ID)', termData.term.id.toString()));
-    }
-    throw UnsupportedValueException(termData.term.type.toString());
+          throw UnsupportedValueException(termData.term.type.toString());
+        }));
   }
 
   bool displayLabel() {
@@ -207,6 +294,11 @@ class TermWidgetController {
     TermData previousTermData = termsListingController.items[index - 1];
     return termData.labelId != previousTermData.labelId;
   }
+
+  bool isDownloadingInBackground(TermData termData) => downloadService.downloads
+      .where((download) =>
+          download.id.value == termData.term.id && !download.completed)
+      .isNotEmpty;
 
   String getLabelText() {
     List<TermLabel> labelsWithId = termsListingController.termsLabels
@@ -303,7 +395,6 @@ class TermWidgetController {
       case TermType.youtubeVideos:
         if (await termService.isUnExpired(termData) && state.mounted) {
           NetworkService(
-            state.context,
             onPreConnect: _onPreConnect,
             onConnectionFailed: _onConnectionFailed,
             onMessageReceived: _onMessageReceived,
@@ -314,6 +405,7 @@ class TermWidgetController {
                   termData: termData,
                   videoId: body['youtubeVideo']['videoId']));
               state.context.push(YoutubeVideoScreen.route);
+              return Future.value();
             },
           ).get(
               url: ApiConstant.getYoutubeVideo
@@ -343,8 +435,7 @@ class TermWidgetController {
         if (isDownloaded) {
           if (await termService.isUnExpired(termData)) {
             Get.delete<VoiceNoteScreenArgument>();
-            Get.put(
-                VoiceNoteScreenArgument(term: termData));
+            Get.put(VoiceNoteScreenArgument(term: termData));
             if (state.mounted) state.context.push(VoiceNoteScreen.route);
           } else {
             if (state.mounted) {

@@ -6,7 +6,6 @@ import 'package:beta/helper/failure_response.dart';
 import 'package:beta/main_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
 class NetworkService {
@@ -17,7 +16,7 @@ class NetworkService {
   Function() onPostConnect;
 
   /// Show results, show no results
-  Function(dynamic body) onConnectionSucceed;
+  Future<void> Function(dynamic body) onConnectionSucceed;
 
   /// Show no network connection
   Function() onConnectionFailed;
@@ -25,14 +24,11 @@ class NetworkService {
   /// Show the [message]
   Function(FailureResponse message) onMessageReceived;
 
-  BuildContext context;
-
   static Dio dio = Dio(BaseOptions(connectTimeout: const Duration(minutes: 1)));
 
   bool retryOnStartup = false;
 
-  NetworkService(
-    this.context, {
+  NetworkService({
     required this.onPreConnect,
     required this.onPostConnect,
     required this.onConnectionSucceed,
@@ -48,7 +44,7 @@ class NetworkService {
     // if (keyValue.getString('deviceInfo') != null) {
     //   info = keyValue.getString('deviceInfo')!;
     // } else {
-    info = deviceRepository.getFullInfo(context);
+    info = deviceRepository.getFullInfo();
     //   keyValue.setString('deviceInfo', info);
     // }
     return {'deviceInfo': info};
@@ -72,7 +68,7 @@ class NetworkService {
     }
     switch (body['result']) {
       case "success":
-        onConnectionSucceed(body);
+        await onConnectionSucceed(body);
         break;
       case "failed":
         try {
@@ -85,7 +81,7 @@ class NetworkService {
         } catch (e) {}
         break;
       case 2:
-        onConnectionSucceed(body).call();
+        await onConnectionSucceed(body);
         onMessageReceived(FailureResponse(
                 type: MessageType.warning,
                 content: body['message'],
@@ -117,7 +113,7 @@ class NetworkService {
       response = await dio.post(url, data: body);
       onPostConnect.call();
       if (response.statusCode == 200) {
-        _handleResponse(response);
+        await _handleResponse(response);
         return;
       }
     } on DioException catch (e) {
@@ -151,7 +147,7 @@ class NetworkService {
       response = await dio.get(url, queryParameters: query);
       onPostConnect.call();
       if (response.statusCode == 200) {
-        _handleResponse(response);
+        await _handleResponse(response);
         return;
       }
     } on DioException catch (e) {
@@ -190,7 +186,7 @@ class NetworkService {
       response = await dio.put(url, data: body);
       onPostConnect.call();
       if (response.statusCode == 200) {
-        _handleResponse(response);
+        await _handleResponse(response);
         return;
       }
     } on DioException catch (e) {
@@ -219,7 +215,7 @@ class NetworkService {
       response = await dio.patch(url, data: body);
       onPostConnect.call();
       if (response.statusCode == 200) {
-        _handleResponse(response);
+        await _handleResponse(response);
         return;
       }
     } on DioException catch (e) {
@@ -251,7 +247,7 @@ class NetworkService {
       response = await dio.delete(url, queryParameters: query);
       onPostConnect.call();
       if (response.statusCode == 200) {
-        _handleResponse(response);
+        await _handleResponse(response);
         return;
       }
     } on DioException catch (e) {
@@ -279,7 +275,6 @@ class NetworkService {
       await dio.download(url, filePath, onReceiveProgress: onRecieveProgress);
     }
     onPostConnect.call();
-    onConnectionSucceed.call(null);
+    await onConnectionSucceed.call(null);
   }
-
 }

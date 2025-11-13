@@ -21,4 +21,10 @@ class UserService {
 
   Future setAllTopicSubscribed(bool value) =>
       keyValue.setBool(KeyValueConstant.isAllTokenSubscribed, value);
+
+  bool allNewsSubscribed() =>
+      keyValue.getBool(KeyValueConstant.isAllNewsSubscribed, false)!;
+
+  Future setAllNewsSubscribed(bool value) =>
+      keyValue.setBool(KeyValueConstant.isAllNewsSubscribed, value);
 }
