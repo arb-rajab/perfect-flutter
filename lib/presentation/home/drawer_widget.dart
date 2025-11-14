@@ -88,7 +88,7 @@ class ImportBackupTile extends StatelessWidget {
           if (result == null) return;
           Uint8List? fileBytes = await result.readAsBytes();
           // if (fileBytes == null) return;
-          String content = String.fromCharCodes(fileBytes);
+          String content = utf8.decode(fileBytes);
           AnswerPropertyService answerPropertyService = Get.find();
           QuestionPropertyService questionPropertyService = Get.find();
           QuestionTagPropertyService questionTagPropertyService = Get.find();
@@ -193,7 +193,7 @@ class ExportBackupTile extends StatelessWidget {
           data['termProperties'] = termProperties;
 
           Uint8List contentBytes =
-              Uint8List.fromList(jsonEncode(data).codeUnits);
+              Uint8List.fromList(utf8.encode(jsonEncode(data)));
           String fileName = 'database backup';
           Future saver;
           if (kIsWeb) {
