@@ -1313,10 +1313,10 @@ packages:
     dependency: "direct main"
     description:
       name: pdftron_flutter
-      sha256: b36138e848573fd144952f49a6576c77e8eae014c1620796710cfef360df55d8
+      sha256: f2d7c67e2f7b2d3d177ca474a0fcd960ec3fbfe9c46ee35078f1a92688e96e41
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1-41"
+    version: "1.0.1-50"
   permission_handler:
     dependency: "direct main"
     description:

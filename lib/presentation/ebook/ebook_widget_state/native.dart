@@ -5,6 +5,7 @@ import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/helper/encryption.dart';
 import 'package:beta/presentation/ebook/ebook_screen_controller.dart';
 import 'package:beta/presentation/ebook/ebook_widget.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:get/instance_manager.dart';
@@ -52,6 +53,8 @@ class EbookWidgetState extends State<EbookWidget> {
   @override
   Widget build(BuildContext context) {
     if (!fileLoaded) return const Center();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     return DocumentView(onCreated: onCreated);
   }
 }
