@@ -27,11 +27,16 @@ Future main() async {
 {"news":[{"id":1,"title":"title","content":"<p>content</p>","appId":1,"created_at":"2023-05-04 20:40:08"}],"result":"success","message":""}
 ''');
     });
+    hasNews = true;
     await tester.pumpWidget(
       const MyApp(
-        child: NewsTab(),
+        defaultRoute: HomeScreen.route,
       ),
     );
+    await tester.pumpAndSettle();
+
+    //navigate to the news page
+    await tester.tap(find.text(StringConstant.news));
     await tester.pumpAndSettle();
 
     expect(find.byType(NewsWidget), findsAny);

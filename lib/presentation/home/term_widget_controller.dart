@@ -44,6 +44,7 @@ class TermWidgetController {
   bool isDownloaded = true;
   bool isNew = false;
   bool isStudied = false;
+  bool isFavorite = false;
   State state;
   bool downloading = false;
   double? downloadProgress;
@@ -62,6 +63,7 @@ class TermWidgetController {
     configureNewBanner();
     configureIsDownloaded();
     configureIsStudied();
+    configureIsFavorite();
   }
 
   Future configureNewBanner() {
@@ -108,11 +110,31 @@ class TermWidgetController {
     });
   }
 
+  Future<void> updateFavorite(bool value) async {
+    if (value) {
+      await termPropertyService.addTermToFavorite(Id(termData.term.id));
+    } else {
+      await termPropertyService.removeTermFromFavorite(Id(termData.term.id));
+    }
+    state.setState(() {
+      isFavorite = value;
+    });
+  }
+
   Future configureIsStudied() =>
       termPropertyService.isTermStudied(Id(termData.term.id)).then((value) {
         if (state.mounted) {
           state.setState(() {
             isStudied = value;
+          });
+        }
+      });
+
+  Future configureIsFavorite() =>
+      termPropertyService.isTermFavorite(Id(termData.term.id)).then((value) {
+        if (state.mounted) {
+          state.setState(() {
+            isFavorite = value;
           });
         }
       });

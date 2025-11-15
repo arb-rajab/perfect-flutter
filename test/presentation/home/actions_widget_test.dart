@@ -3730,6 +3730,156 @@ void main() {
     }
   });
 
+  group('favorite icon tests', () {
+    testWidgets('icon is not rendered for term type', (widgetTester) async {
+      await createTermData(type: TermType.term);
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+
+      // tap the parent term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+      await widgetTester.pumpAndSettle();
+
+      // tap the child term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+      await widgetTester.pumpAndSettle();
+
+      expect(
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.star), findsNothing);
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+          findsNothing);
+    });
+
+    for (int c = 1; c <= 6; c++) {
+      testWidgets('icon is not rendered for term type $c that is not favorite',
+          (widgetTester) async {
+        await createTermData(type: c);
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsOneWidget);
+      });
+
+      testWidgets('icon is rendered for term type $c that is favorite',
+          (widgetTester) async {
+        await createTermData(type: c);
+        TermPropertyService termPropertyService = Get.find();
+        termPropertyService.addTermToFavorite(const Id(3));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsNothing);
+      });
+
+      testWidgets('tapping favorite icon, make the term favorite',
+          (widgetTester) async {
+        await createTermData(type: c);
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        await widgetTester.tap(find.byKey(const Key('unfavorite')));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsNothing);
+
+        // go back
+        BrowseTermsTabController browseTermsTabController = Get.find();
+        browseTermsTabController.onTabPopInvoked(false, null);
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // recheck
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsNothing);
+      });
+
+      testWidgets('tapping un favorite icon, make the term unfavorite',
+          (widgetTester) async {
+        await createTermData(type: c);
+        TermPropertyService termPropertyService = Get.find();
+        termPropertyService.addTermToFavorite(const Id(3));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        await widgetTester.tap(find.byKey(const Key('favorite')));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsOneWidget);
+
+        // go back
+        BrowseTermsTabController browseTermsTabController = Get.find();
+        browseTermsTabController.onTabPopInvoked(false, null);
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // recheck
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star),
+            findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.star_border),
+            findsOneWidget);
+      });
+    }
+  });
+
   group('related terms icon tests', () {
     testWidgets('icon is not rendered if there are no related terms',
         (widgetTester) async {

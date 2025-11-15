@@ -134,6 +134,13 @@ class TermService {
       limit: limit,
       offset: offset);
 
+  Future<
+      List<
+          TermData>> getFavoriteTerms({int? limit, int? offset}) => _queryTerms(
+      "t.id in (select termId from termProperties where name='favorite') and type!=0",
+      limit: limit,
+      offset: offset);
+
   Future<List<TermData>> getUpdateableTerms({int? limit, int? offset}) =>
       _queryTerms("t.enabled=1 and t.needsUpdate=1 and t.type!=0",
           limit: limit, offset: offset);

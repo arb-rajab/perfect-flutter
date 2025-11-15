@@ -1,5 +1,6 @@
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/downlaod_item.dart';
+import 'package:beta/main_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -24,9 +25,11 @@ class DownloadService {
             iOS: initializationSettingsDarwin,
             linux: initializationSettingsLinux);
 
-    flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
+      );
+    }
   }
 
   Future<void> startDownloads(DownloadItem downloadItem) async {
@@ -61,12 +64,14 @@ class DownloadService {
   void _showNotification() {
     final notificationDetails = NotificationDetails(android: _androidDetails());
 
-    flutterLocalNotificationsPlugin.show(
-      _notificationId,
-      StringConstant.downloadingTerms.tr(),
-      null,
-      notificationDetails,
-    );
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.show(
+        _notificationId,
+        StringConstant.downloadingTerms.tr(),
+        null,
+        notificationDetails,
+      );
+    }
   }
 
   AndroidNotificationDetails _androidDetails() => AndroidNotificationDetails(
@@ -91,12 +96,14 @@ class DownloadService {
     }
 
     final notificationDetails = NotificationDetails(android: _androidDetails());
-    flutterLocalNotificationsPlugin.show(
-      _notificationId,
-      StringConstant.downloadingTerms.tr(),
-      '',
-      notificationDetails,
-    );
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.show(
+        _notificationId,
+        StringConstant.downloadingTerms.tr(),
+        '',
+        notificationDetails,
+      );
+    }
   }
 
   int _calculateTotalProgress() {
@@ -116,11 +123,13 @@ class DownloadService {
 
     final notificationDetails = NotificationDetails(android: androidDetails);
 
-    flutterLocalNotificationsPlugin.show(
-      _notificationId,
-      StringConstant.downloadComplete.tr(),
-      null,
-      notificationDetails,
-    );
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.show(
+        _notificationId,
+        StringConstant.downloadComplete.tr(),
+        null,
+        notificationDetails,
+      );
+    }
   }
 }

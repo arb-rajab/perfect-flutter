@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 class ActionsWidget extends StatefulWidget {
   final bool downloaded;
   final bool studied;
+  final bool favorite;
   final bool downloading;
   final double? downloadProgress;
   final TermWidgetController termWidgetController;
@@ -19,6 +20,7 @@ class ActionsWidget extends StatefulWidget {
       {super.key,
       required this.downloaded,
       required this.studied,
+      required this.favorite,
       required this.downloading,
       required this.downloadProgress});
 
@@ -97,6 +99,22 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                 : Icon(
                     key: const Key('unstudied'),
                     Icons.fact_check_outlined,
+                    color: Theme.of(context).disabledColor,
+                  ),
+          ),
+        if (termData.term.type != TermType.term)
+          IconButton(
+            onPressed: () =>
+                widget.termWidgetController.updateFavorite(!widget.favorite),
+            icon: widget.favorite
+                ? Icon(
+                    key: const Key('favorite'),
+                    Icons.star,
+                    color: Theme.of(context).primaryColor,
+                  )
+                : Icon(
+                    key: const Key('unfavorite'),
+                    Icons.star_border,
                     color: Theme.of(context).disabledColor,
                   ),
           ),

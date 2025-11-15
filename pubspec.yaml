@@ -146,6 +146,7 @@ flutter:
   assets:
     - assets/images/
     - assets/translations/
+    - shorebird.yaml
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

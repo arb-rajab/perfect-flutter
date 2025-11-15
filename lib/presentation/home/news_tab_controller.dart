@@ -28,9 +28,11 @@ class NewsTabController extends ListController<News> {
     KeyValue keyValue = Get.find();
     keyValue.setBool(KeyValueConstant.newsRecieved, false);
     HomeScreenController homeScreenController = Get.find();
-    homeScreenController.state
+    if (homeScreenController.state.mounted) {
+      homeScreenController.state
         // ignore: invalid_use_of_protected_member
         .setState(() => homeScreenController.newNews = false);
+    }
   }
 
   void moveToNewsScreen(News news) => state.context.push(

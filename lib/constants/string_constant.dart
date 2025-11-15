@@ -28,7 +28,6 @@ class StringConstant {
   static const others = 'others';
   static const showAll = 'show-all';
   static const search = 'search';
-  static const favorite = 'favorite';
   static const send = 'send';
   static const save = 'save';
   static const delete = 'delete';
@@ -69,6 +68,9 @@ class StringConstant {
   static const deleteStudiedTerms = '$_settings.delete-studied-terms';
   static const deleteStudiedTermsExplanation =
       '$_settings.delete-studied-terms-explanation';
+  static const deleteFavoriteTerms = '$_settings.delete-favorite-terms';
+  static const deleteFavoriteTermsExplanation =
+      '$_settings.delete-favorite-terms-explanation';
 
   static const _coupons = 'coupons';
   static const coupons = '$_coupons.coupons';
@@ -133,21 +135,32 @@ class StringConstant {
   static const supportUserDataDeletion =
       '$_whatsNew.support-user-data-deletion';
   static const addStudiedTermsFeature = '$_whatsNew.add-studied-terms-feature';
+  static const addFavoriteTermsFeature =
+      '$_whatsNew.add-favorite-terms-feature';
 
   static const _browseTerms = 'browse-terms';
   static const browseTerms = '$_browseTerms.browse-terms';
+  static const browseTermsExplanation = '$_browseTerms.explanation';
 
   static const _recentTerms = 'recent-terms';
   static const recentTerms = '$_recentTerms.recent-terms';
+  static const recentTermsExplanation = '$_recentTerms.explanation';
 
   static const _newTerms = 'new-terms';
   static const newTerms = '$_newTerms.new-terms';
+  static const newTermsExplanation = '$_newTerms.explanation';
 
   static const _unstudied = 'unstudied';
   static const unstudied = '$_unstudied.unstudied';
+  static const unstudiedTermsExplanation = '$_unstudied.explanation';
+
+  static const _favorite = 'favorite';
+  static const favorite = '$_favorite.favorite';
+  static const favoriteTermsExplanation = '$_favorite.explanation';
 
   static const _updateable = 'updateable';
   static const updateable = '$_updateable.updateable';
+  static const updateableTermsExplanation = '$_updateable.explanation';
 
   static const _terms = 'terms';
   static const unsupportedContent = '$_terms.unsupported-content';

@@ -21,6 +21,7 @@ void main() {
   });
 
   testWidgets('SettingsScreen displays correctly', (WidgetTester tester) async {
+    setDesktopDevice(tester);
     await tester.pumpWidget(
       const MyApp(
         child: SettingsScreen(),
@@ -35,6 +36,7 @@ void main() {
     expect(find.byType(DeleteUserAnswersWidget), findsOneWidget);
     expect(find.byType(DeleteTermLastAccessWidget), findsOneWidget);
     expect(find.byType(DeleteStudiedTermsWidget), findsOneWidget);
+    expect(find.byType(DeleteFavoriteTermsWidget), findsOneWidget);
   });
 
   group('DeleteUserNotesWidget', () {
@@ -419,6 +421,77 @@ void main() {
 
       expect(find.byType(ConfirmDialogue), findsNothing);
       expect((await termPropertyService.isTermStudied(const Id(1))), false);
+    });
+  });
+
+  group('DeleteFavoriteTermsWidget', () {
+    testWidgets('displays correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          child: DeleteFavoriteTermsWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.star), findsOneWidget);
+    });
+
+    testWidgets('shows dialogue when tapped', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          child: DeleteFavoriteTermsWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DeleteFavoriteTermsWidget));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ConfirmDialogue), findsOneWidget);
+    });
+
+    testWidgets('favorite terms are reserved when cancel tapped',
+        (WidgetTester tester) async {
+      TermPropertyService termPropertyService = Get.find();
+      await termPropertyService.addTermToFavorite(const Id(1));
+      await tester.pumpWidget(
+        const MyApp(
+          child: DeleteFavoriteTermsWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DeleteFavoriteTermsWidget));
+      await tester.pumpAndSettle();
+
+      // tap cancel
+      await tester.tap(find.text(StringConstant.cancel));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ConfirmDialogue), findsNothing);
+      expect((await termPropertyService.isTermFavorite(const Id(1))), true);
+    });
+
+    testWidgets('favorite terms are deleted when ok tapped',
+        (WidgetTester tester) async {
+      TermPropertyService termPropertyService = Get.find();
+      await termPropertyService.addTermToFavorite(const Id(1));
+      await tester.pumpWidget(
+        const MyApp(
+          child: DeleteFavoriteTermsWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DeleteFavoriteTermsWidget));
+      await tester.pumpAndSettle();
+
+      // tap ok
+      await tester.tap(find.text(StringConstant.ok));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ConfirmDialogue), findsNothing);
+      expect((await termPropertyService.isTermFavorite(const Id(1))), false);
     });
   });
 }

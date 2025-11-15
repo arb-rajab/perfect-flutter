@@ -5,15 +5,25 @@ class TermPropertyService {
   DatabaseService databaseService;
   TermPropertyService({required this.databaseService});
   String studied = 'studied';
+  String favorite = 'favorite';
 
   Future deleteAllUserStudiedTerms() =>
       (databaseService.delete(databaseService.termProperties)
             ..where((tbl) => tbl.name.equals(studied)))
           .go();
 
+  Future deleteAllUserFavoriteTerms() =>
+      (databaseService.delete(databaseService.termProperties)
+            ..where((tbl) => tbl.name.equals(favorite)))
+          .go();
+
   Future addTermToStudied(Id termId) =>
       databaseService.into(databaseService.termProperties).insert(
           TermProperty(termId: termId.value!, name: studied, value: 'true'));
+
+  Future addTermToFavorite(Id termId) =>
+      databaseService.into(databaseService.termProperties).insert(
+          TermProperty(termId: termId.value!, name: favorite, value: 'true'));
 
   Future removeTermFromStudied(Id termId) =>
       (databaseService.delete(databaseService.termProperties)
@@ -21,11 +31,27 @@ class TermPropertyService {
             ..where((tbl) => tbl.name.equals(studied)))
           .go();
 
+  Future removeTermFromFavorite(Id termId) =>
+      (databaseService.delete(databaseService.termProperties)
+            ..where((tbl) => tbl.termId.equals(termId.value!))
+            ..where((tbl) => tbl.name.equals(favorite)))
+          .go();
+
   Future<bool> isTermStudied(Id termId) async {
     List properties =
         await (databaseService.select(databaseService.termProperties)
               ..where((tbl) => tbl.termId.equals(termId.value!))
               ..where((tbl) => tbl.name.equals(studied))
+              ..where((tbl) => tbl.value.equals('true')))
+            .get();
+    return properties.isNotEmpty;
+  }
+
+  Future<bool> isTermFavorite(Id termId) async {
+    List properties =
+        await (databaseService.select(databaseService.termProperties)
+              ..where((tbl) => tbl.termId.equals(termId.value!))
+              ..where((tbl) => tbl.name.equals(favorite))
               ..where((tbl) => tbl.value.equals('true')))
             .get();
     return properties.isNotEmpty;

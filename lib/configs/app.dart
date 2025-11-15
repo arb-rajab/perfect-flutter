@@ -18,5 +18,6 @@ List newFeatures = [
   StringConstant.supportNightMode.tr(),
   StringConstant.supportCustomTextSize.tr(),
   StringConstant.supportUserDataDeletion.tr(),
-  StringConstant.addStudiedTermsFeature.tr()
+  StringConstant.addStudiedTermsFeature.tr(),
+  StringConstant.addFavoriteTermsFeature.tr(),
 ];

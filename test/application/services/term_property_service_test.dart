@@ -58,6 +58,49 @@ Future<void> main() async {
     });
   });
 
+  group('deleteAllUserFavoriteTerms', () {
+    test('should delete all user favorite terms', () async {
+      // Insert a dummy term property
+      await databaseService.into(databaseService.termProperties).insert(
+            TermProperty(
+                termId: 1, name: termPropertyService.favorite, value: 'true'),
+          );
+
+      // Ensure the term property exists
+      final before =
+          await databaseService.select(databaseService.termProperties).get();
+      expect(before.length, 1);
+
+      // Call the method under test
+      await termPropertyService.deleteAllUserFavoriteTerms();
+
+      // Ensure all term properties are deleted
+      final after =
+          await databaseService.select(databaseService.termProperties).get();
+      expect(after.length, 0);
+    });
+
+    test('does not delete other term properties', () async {
+      // Insert a dummy term property
+      await databaseService.into(databaseService.termProperties).insert(
+            const TermProperty(termId: 1, name: 'property', value: 'true'),
+          );
+
+      // Ensure the term property exists
+      final before =
+          await databaseService.select(databaseService.termProperties).get();
+      expect(before.length, 1);
+
+      // Call the method under test
+      await termPropertyService.deleteAllUserFavoriteTerms();
+
+      // Ensure all term properties are deleted
+      final after =
+          await databaseService.select(databaseService.termProperties).get();
+      expect(after.length, 1);
+    });
+  });
+
   group('addTermToStudied & removeTermFromStudied', () {
     test('addTermToStudied adds a studied property for the term', () async {
       const termId = 42;
@@ -105,6 +148,56 @@ Future<void> main() async {
       expect(result.first.name, isNot(termPropertyService.studied));
     });
   });
+
+  group('addTermToFavorite & removeTermFromFavorite', () {
+    test('addTermToFavorite adds a favorite property for the term', () async {
+      const termId = 42;
+
+      // Ensure no favorite property exists
+      var before = databaseService.select(databaseService.termProperties)
+        ..where((tbl) => tbl.termId.equals(termId));
+      expect(await before.get(), isEmpty);
+
+      // Add favorite property
+      await termPropertyService.addTermToFavorite(const Id(termId));
+
+      // Check that the favorite property exists
+      final after = databaseService.select(databaseService.termProperties)
+        ..where((tbl) => tbl.termId.equals(termId));
+      final result = await after.get();
+      expect(result.length, 1);
+      expect(result.first.name, termPropertyService.favorite);
+      expect(result.first.value, 'true');
+    });
+
+    test(
+        'removeTermFromFavorite removes only the favorite property for the term',
+        () async {
+      const termId = 99;
+
+      // Insert a favorite property and another property
+      await databaseService.into(databaseService.termProperties).insert(
+            TermProperty(
+                termId: termId,
+                name: termPropertyService.favorite,
+                value: 'true'),
+          );
+      await databaseService.into(databaseService.termProperties).insert(
+            const TermProperty(termId: termId, name: 'other', value: 'foo'),
+          );
+
+      // Remove favorite property
+      await termPropertyService.removeTermFromFavorite(const Id(termId));
+
+      // Only the other property should remain
+      final remaining = databaseService.select(databaseService.termProperties)
+        ..where((tbl) => tbl.termId.equals(termId));
+      final result = await remaining.get();
+      expect(result.length, 1);
+      expect(result.first.name, isNot(termPropertyService.favorite));
+    });
+  });
+
   group('isTermStudied', () {
     test('returns true if the term is studied', () async {
       const termId = 123;
@@ -130,6 +223,35 @@ Future<void> main() async {
           );
       // Should return false
       final result = await termPropertyService.isTermStudied(const Id(termId));
+      expect(result, isFalse);
+    });
+  });
+
+  group('isTermFavorite', () {
+    test('returns true if the term is favorite', () async {
+      const termId = 123;
+      // Add favorite property
+      await termPropertyService.addTermToFavorite(const Id(termId));
+      // Should return true
+      final result = await termPropertyService.isTermFavorite(const Id(termId));
+      expect(result, isTrue);
+    });
+
+    test('returns false if the term is not favorite', () async {
+      const termId = 456;
+      // Ensure no favorite property exists
+      final result = await termPropertyService.isTermFavorite(const Id(termId));
+      expect(result, isFalse);
+    });
+
+    test('returns false if the term has a property but not favorite', () async {
+      const termId = 789;
+      // Add a property with a different name
+      await databaseService.into(databaseService.termProperties).insert(
+            const TermProperty(termId: termId, name: 'other', value: 'true'),
+          );
+      // Should return false
+      final result = await termPropertyService.isTermFavorite(const Id(termId));
       expect(result, isFalse);
     });
   });

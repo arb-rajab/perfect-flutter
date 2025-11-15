@@ -27,7 +27,6 @@
     "others": "أخرى",
     "show-all": "عرض الكل",
     "search": "البحث",
-    "favorite": "المفضلة",
     "send": "إرسال",
     "save": "حفظ",
     "delete": "حذف",
@@ -58,7 +57,9 @@
         "delete-term-last-access": "حذف الوصول ضمن الأقسام الدراسية",
         "delete-term-last-access-explanation": "سيتم مسح البيانات المتعلقة بآخر سؤال تم الوصول إليه ضمن الأسئلة المؤتمتة، آخر فلاش كارد تم التصفح ضمن مجموعة الفلاش كارد، آخر ثانية تم الوصول إليها ضمن الفيديو",
         "delete-studied-terms": "حذف علامة (مدروس) من الأقسام الدراسية",
-        "delete-studied-terms-explanation": "حذف علامة (مدروس) من الأقسام الدراسية، جميع الأقسام الدراسية هي غير مدروسة الآن"
+        "delete-studied-terms-explanation": "حذف علامة (مدروس) من الأقسام الدراسية، جميع الأقسام الدراسية هي غير مدروسة الآن",
+        "delete-favorite-terms": "حذف علامة (المفضلة) من الأقسام الدراسية",
+        "delete-favorite-terms-explanation": "حذف علامة (المفضلة) من الأقسام الدراسية، جميع الأقسام الدراسية هي غير مفضلة الآن"
     },
     "coupons": {
         "coupons": "الكروت",
@@ -111,22 +112,34 @@
         "support-night-mode": "دعم الوضع الليلي",
         "support-custom-text-size": "السماح بتغيير حجم النص",
         "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق",
-        "add-studied-terms-feature": "إضافة ميزة الأقسام الدراسية المدروسة"
+        "add-studied-terms-feature": "إضافة ميزة الأقسام الدراسية المدروسة",
+        "add-favorite-terms-feature": "إضافة ميزة الأقسام الدراسية المفضلة"
     },
     "browse-terms": {
-        "browse-terms": "تصفح"
+        "browse-terms": "تصفح",
+        "explanation":"تصفح الأقسام الدراسية بشكل هرمي"
     },
     "recent-terms": {
-        "recent-terms": "الأخيرة"
+        "recent-terms": "الأخيرة",
+        "explanation":"تصفح آخر الأقسام الدراسية التي تم فتحها من قبلك"
     },
     "new-terms": {
-        "new-terms": "الجديدة"
+        "new-terms": "الجديدة",
+        "explanation":"الأقسام الدراسية الجديدة"
     },
     "unstudied": {
-        "unstudied": "الغير مدروسة"
+        "unstudied": "الغير مدروسة",
+        "explanation":"الأقسام الدراسية الغير مدروسة بعد من قبلك"
     },
+
+    "favorite": {
+        "favorite": "المفضلة",
+        "explanation":"الأقسام الدراسية التي تم تعيينها كمفضلة من قبلك"
+    },
+
     "updateable": {
-        "updateable": "تحديث متاح"
+        "updateable": "تحديث متاح",
+        "explanation":"الأقسام الدراسية التي تحوي على تحديثات"
     },
     "educational-content": {
         "educational-content": "المحتوى التعليمي"

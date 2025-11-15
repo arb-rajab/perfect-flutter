@@ -21,6 +21,7 @@ import 'package:beta/presentation/home/news_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/store_tab.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
+import 'package:beta/presentation/home/favorite_terms_tab.dart';
 import 'package:beta/presentation/home/updateable_terms_tab.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
@@ -394,6 +395,13 @@ void main() async {
         expect(find.text(StringConstant.unstudied), findsOneWidget);
       });
 
+      testWidgets('favorite terms tab is rendered', (widgetTester) async {
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.favorite), findsOneWidget);
+      });
+
       testWidgets('updateable terms tab is rendered', (widgetTester) async {
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
@@ -488,6 +496,18 @@ void main() async {
       });
 
       testWidgets(
+          'favorite terms tab is not rendered when navigating to store tab',
+          (widgetTester) async {
+        hasStore = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.store));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.favorite), findsNothing);
+      });
+
+      testWidgets(
           'unstudied terms tab is not rendered when navigating to news tab',
           (widgetTester) async {
         hasNews = true;
@@ -497,6 +517,18 @@ void main() async {
         await widgetTester.tap(find.text(StringConstant.news));
         await widgetTester.pumpAndSettle();
         expect(find.text(StringConstant.unstudied), findsNothing);
+      });
+
+      testWidgets(
+          'favorite terms tab is not rendered when navigating to news tab',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.favorite), findsNothing);
       });
 
       testWidgets(
@@ -624,6 +656,20 @@ void main() async {
       });
 
       testWidgets(
+          'favorite terms tab is not rendered after switching from store page',
+          (widgetTester) async {
+        hasStore = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.store));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.favorite), findsOneWidget);
+      });
+
+      testWidgets(
           'unstudied terms tab is not rendered after switching from news page',
           (widgetTester) async {
         hasNews = true;
@@ -635,6 +681,20 @@ void main() async {
         await widgetTester.tap(find.text(StringConstant.educationalContent));
         await widgetTester.pumpAndSettle();
         expect(find.text(StringConstant.unstudied), findsOneWidget);
+      });
+
+      testWidgets(
+          'favorite terms tab is not rendered after switching from news page',
+          (widgetTester) async {
+        hasNews = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.news));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.educationalContent));
+        await widgetTester.pumpAndSettle();
+        expect(find.text(StringConstant.favorite), findsOneWidget);
       });
 
       testWidgets(
@@ -676,6 +736,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -692,6 +753,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsOneWidget);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -711,6 +773,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsOneWidget);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -727,6 +790,24 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsOneWidget);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
+        expect(find.byType(UpdateableTermsTab), findsNothing);
+        expect(find.byType(StoreTab), findsNothing);
+        expect(find.byType(NewsTab), findsNothing);
+      });
+
+      testWidgets('favorite terms tab page is rendered once tab is clicked',
+          (widgetTester) async {
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.text(StringConstant.favorite));
+        await widgetTester.pumpAndSettle();
+        expect(find.byType(BrowseTermsTab), findsNothing);
+        expect(find.byType(RecentTermsTab), findsNothing);
+        expect(find.byType(NewTermsTab), findsNothing);
+        expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsOneWidget);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -743,6 +824,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsOneWidget);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -760,6 +842,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsOneWidget);
         expect(find.byType(NewsTab), findsNothing);
@@ -777,6 +860,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(NewsTab), findsOneWidget);
         expect(find.byType(StoreTab), findsNothing);
@@ -797,6 +881,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
@@ -817,6 +902,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);
       });
@@ -835,6 +921,7 @@ void main() async {
         expect(find.byType(RecentTermsTab), findsNothing);
         expect(find.byType(NewTermsTab), findsNothing);
         expect(find.byType(UnstudiedTermsTab), findsNothing);
+        expect(find.byType(FavoriteTermsTab), findsNothing);
         expect(find.byType(UpdateableTermsTab), findsNothing);
         expect(find.byType(StoreTab), findsNothing);
         expect(find.byType(NewsTab), findsNothing);

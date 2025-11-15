@@ -11,6 +11,7 @@ import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/store_tab.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
+import 'package:beta/presentation/home/favorite_terms_tab.dart';
 import 'package:beta/presentation/home/updateable_terms_tab.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
@@ -34,6 +35,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey addCouponKey = GlobalKey();
+  final GlobalKey browseTermsKey = GlobalKey();
+  final GlobalKey recentTermsKey = GlobalKey();
+  final GlobalKey newTermsKey = GlobalKey();
+  final GlobalKey unstudiedTermsKey = GlobalKey();
+  final GlobalKey favoriteTermsKey = GlobalKey();
+  final GlobalKey updateableTermsKey = GlobalKey();
+
   late HomeScreenController homeScreenController;
 
   @override
@@ -57,6 +65,77 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(StringConstant.addCouponDescription.tr()));
                   },
                   align: ContentAlign.top)
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.browseTerms,
+            keyTarget: browseTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child:
+                            Text(StringConstant.browseTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom)
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.recentTerms,
+            keyTarget: recentTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child:
+                            Text(StringConstant.recentTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom)
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.newTerms,
+            keyTarget: newTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child: Text(StringConstant.newTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom)
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.unstudiedTerms,
+            keyTarget: unstudiedTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child: Text(
+                            StringConstant.unstudiedTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom)
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.favoriteTerms,
+            keyTarget: favoriteTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child:
+                            Text(StringConstant.favoriteTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom),
+            ]),
+        CustomTargetFocus(
+            identify: TutorialConstant.updateableTerms,
+            keyTarget: updateableTermsKey,
+            contents: [
+              TargetContent(
+                  builder: (context, controller) {
+                    return RectangleWidget(
+                        child: Text(
+                            StringConstant.updateableTermsExplanation.tr()));
+                  },
+                  align: ContentAlign.bottom)
             ])
       ],
       actions: [
@@ -97,22 +176,32 @@ class _HomeScreenState extends State<HomeScreen> {
       tabs: homeScreenController.selectedBottomNavigationIndex == 0
           ? [
               Tab(
+                key: browseTermsKey,
                 icon: const Icon(Icons.article),
                 text: StringConstant.browseTerms.tr(),
               ),
               Tab(
+                key: recentTermsKey,
                 icon: const Icon(Icons.history),
                 text: StringConstant.recentTerms.tr(),
               ),
               Tab(
+                key: newTermsKey,
                 icon: const Icon(Icons.fiber_new),
                 text: StringConstant.newTerms.tr(),
               ),
               Tab(
+                key: unstudiedTermsKey,
                 icon: const Icon(Icons.fact_check_outlined),
                 text: StringConstant.unstudied.tr(),
               ),
               Tab(
+                key: favoriteTermsKey,
+                icon: const Icon(Icons.star),
+                text: StringConstant.favorite.tr(),
+              ),
+              Tab(
+                key: updateableTermsKey,
                 icon: const Icon(Icons.update),
                 text: StringConstant.updateable.tr(),
               ),
@@ -156,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 RecentTermsTab(),
                 NewTermsTab(),
                 UnstudiedTermsTab(),
+                FavoriteTermsTab(),
                 UpdateableTermsTab()
               ]),
             )

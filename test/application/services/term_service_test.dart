@@ -3259,7 +3259,8 @@ Future<void> main() async {
           .called(1);
     });
   });
-  group('getRecentTerms, getNewTerms, getUnstudiedTerms, getUpdateableTerms',
+  group(
+      'getRecentTerms, getNewTerms, getUnstudiedTerms,getFavoriteTerms, getUpdateableTerms',
       () {
     test(
         'should return appropriate term lists based on criteria and exclude non-matching terms',
@@ -3385,6 +3386,36 @@ Future<void> main() async {
         outerNote: '',
       );
 
+      const favoriteTerm = Term(
+        id: 708,
+        name: 'Favorite Term',
+        type: 1,
+        enabled: 1,
+        needsUpdate: 0,
+        creation: '2025-01-01 10:00:00',
+        ordering: 0,
+        free: 1,
+        uuid: '',
+        captureable: 0,
+        textCulumn: '',
+        outerNote: '',
+      );
+
+      const unfavoriteTerm = Term(
+        id: 709,
+        name: 'unFavorite Term',
+        type: 1,
+        enabled: 1,
+        needsUpdate: 0,
+        creation: '2025-01-01 10:00:00',
+        ordering: 0,
+        free: 1,
+        uuid: '',
+        captureable: 0,
+        textCulumn: '',
+        outerNote: '',
+      );
+
       // Insert all terms
       await databaseService.into(databaseService.terms).insert(recentTerm);
       await databaseService.into(databaseService.terms).insert(newTerm);
@@ -3396,6 +3427,8 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(disabledTerm);
       await databaseService.into(databaseService.terms).insert(studiedTerm);
       await databaseService.into(databaseService.terms).insert(upToDateTerm);
+      await databaseService.into(databaseService.terms).insert(favoriteTerm);
+      await databaseService.into(databaseService.terms).insert(unfavoriteTerm);
 
       // Add to termTrees and termsParents for all terms
       for (final term in [
@@ -3406,7 +3439,9 @@ Future<void> main() async {
         oldTermWithAccess,
         disabledTerm,
         studiedTerm,
-        upToDateTerm
+        upToDateTerm,
+        favoriteTerm,
+        unfavoriteTerm
       ]) {
         await databaseService.into(databaseService.termTrees).insert(
               TermTreesCompanion(
@@ -3454,6 +3489,15 @@ Future<void> main() async {
             ),
           );
 
+      // Mark favoriteTerm as favorite
+      await databaseService.into(databaseService.termProperties).insert(
+            TermProperty(
+              termId: favoriteTerm.id,
+              name: 'favorite',
+              value: 'true',
+            ),
+          );
+
       // Test getRecentTerms - should only return terms with recent access
       final recentTerms = await termService.getRecentTerms();
       expect(recentTerms.any((t) => t.term.id == recentTerm.id),
@@ -3481,6 +3525,13 @@ Future<void> main() async {
       expect(unstudiedTerms.any((t) => t.term.id == recentTerm.id),
           true); // Should appear (not studied)
 
+      // Test favoriteTerms - should only return terms that are favorite
+      final favoriteTerms = await termService.getFavoriteTerms();
+      expect(favoriteTerms.any((t) => t.term.id == favoriteTerm.id),
+          true); // Should appear (not favorite)
+      expect(favoriteTerms.any((t) => t.term.id == unfavoriteTerm.id),
+          false); // Should NOT appear (favorite)
+
       // Test getUpdateableTerms - should only return enabled terms with needsUpdate=1
       final updateableTerms = await termService.getUpdateableTerms();
       expect(updateableTerms.any((t) => t.term.id == updateableTerm.id),
@@ -3500,6 +3551,7 @@ Future<void> main() async {
               6)); // All terms except recentTerm and oldTermWithAccess
       expect(unstudiedTerms.length,
           greaterThanOrEqualTo(7)); // All terms except studiedTerm
+      expect(favoriteTerms.length, 1); // only favorite
       expect(updateableTerms.length, 1); // Only updateableTerm
 
       // Test getRecentTerms with limit and offset together
@@ -3536,6 +3588,17 @@ Future<void> main() async {
       expect(unstudiedTermsAll.length, greaterThanOrEqualTo(7));
       expect(unstudiedTermsPage1.length, 3); // First page: items 0-2
       expect(unstudiedTermsPage2.length, 3); // Second page: items 3-5
+
+      // Test getFavoriteTerms with limit and offset together
+      final favoriteTermsAll = await termService.getFavoriteTerms();
+      final favoriteTermsPage1 =
+          await termService.getFavoriteTerms(limit: 3, offset: 0);
+      final favoriteTermsPage2 =
+          await termService.getFavoriteTerms(limit: 3, offset: 3);
+
+      expect(favoriteTermsAll.length, 1);
+      expect(favoriteTermsPage1.length, 1); // First page
+      expect(favoriteTermsPage2.length, 0); // Second page
 
       // Test getUpdateableTerms with limit and offset together
       final updateableTermsAll = await termService.getUpdateableTerms();
@@ -3660,6 +3723,8 @@ Future<void> main() async {
           await termService.getNewTerms(limit: pageSize, offset: offset);
       final unstudiedTermsPage =
           await termService.getUnstudiedTerms(limit: pageSize, offset: offset);
+      final favoriteTermsPage =
+          await termService.getFavoriteTerms(limit: pageSize, offset: offset);
       final updateableTermsPage =
           await termService.getUpdateableTerms(limit: pageSize, offset: offset);
 
@@ -3667,6 +3732,7 @@ Future<void> main() async {
       expect(recentTermsPage.length, lessThanOrEqualTo(pageSize));
       expect(newTermsPage.length, lessThanOrEqualTo(pageSize));
       expect(unstudiedTermsPage.length, lessThanOrEqualTo(pageSize));
+      expect(favoriteTermsPage.length, lessThanOrEqualTo(pageSize));
       expect(updateableTermsPage.length, lessThanOrEqualTo(pageSize));
 
       // Verify pagination works by comparing different pages

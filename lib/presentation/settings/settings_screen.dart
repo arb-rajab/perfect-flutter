@@ -34,6 +34,7 @@ class SettingsScreen extends StatelessWidget {
             DeleteUserAnswersWidget(),
             DeleteTermLastAccessWidget(),
           DeleteStudiedTermsWidget(),
+          DeleteFavoriteTermsWidget(),
             Divider(),
         ]));
   }
@@ -129,6 +130,25 @@ class DeleteStudiedTermsWidget extends StatelessWidget {
           onTap: () => showConfirmationDialog(context, () async {
                 TermPropertyService termPropertyService = Get.find();
                 await termPropertyService.deleteAllUserStudiedTerms();
+                if (context.mounted) showSuccessDialogue(context);
+              })),
+    );
+  }
+}
+
+class DeleteFavoriteTermsWidget extends StatelessWidget {
+  const DeleteFavoriteTermsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: ListTile(
+          leading: const Icon(Icons.star),
+          title: Text(StringConstant.deleteFavoriteTerms.tr()),
+          subtitle: Text(StringConstant.deleteFavoriteTermsExplanation.tr()),
+          onTap: () => showConfirmationDialog(context, () async {
+                TermPropertyService termPropertyService = Get.find();
+                await termPropertyService.deleteAllUserFavoriteTerms();
                 if (context.mounted) showSuccessDialogue(context);
               })),
     );
