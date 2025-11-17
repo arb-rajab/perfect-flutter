@@ -73,7 +73,7 @@ void main() {
             id: 2,
             name: 'tag 2',
             parentTagId: 0,
-            hasInformation: 0,
+            hasInformation: 1,
             creation: '2024-01-01 11:13:15')
       ];
 
@@ -228,16 +228,31 @@ void main() {
         findsOneWidget);
   });
 
-  testWidgets('shows web screen when delete icon is tapped', (tester) async {
-    createTestData();
-    await createWidgetUnderTest(tester);
-    Get.delete<QuestionTagService>();
-    Get.put(QuestionTagService(databaseService: databaseService));
+  group('delete icon tests', () {
+    testWidgets(
+        'article icon is rendered if questionTag has information and not rendered otherwise',
+        (tester) async {
+      createTestData();
+      await createWidgetUnderTest(tester);
+      Get.delete<QuestionTagService>();
+      Get.put(QuestionTagService(databaseService: databaseService));
 
-    // Find the first delete icon and tap it
-    await tester.tap(find.byIcon(Icons.article).first);
-    await tester.pumpAndSettle();
+      expect(widgetWithTextAndIcon(Chip, 'tag 1', Icons.article), findsNothing);
+      expect(
+          widgetWithTextAndIcon(Chip, 'tag 2', Icons.article), findsOneWidget);
+    });
 
-    expect(find.byType(WebScreen), findsOneWidget);
+    testWidgets('shows web screen when delete icon is tapped', (tester) async {
+      createTestData();
+      await createWidgetUnderTest(tester);
+      Get.delete<QuestionTagService>();
+      Get.put(QuestionTagService(databaseService: databaseService));
+
+      // Find the first delete icon and tap it
+      await tester.tap(find.byIcon(Icons.article).first);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(WebScreen), findsOneWidget);
+    });
   });
 }

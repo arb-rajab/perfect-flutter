@@ -49,8 +49,12 @@ class QuestionTagsChips extends StatelessWidget {
               },
               child: Chip(
                 label: Text(questionTag.name),
-                deleteIcon: const Icon(Icons.article),
-                onDeleted: () async {
+                deleteIcon: questionTag.hasInformation == 1
+                    ? const Icon(Icons.article)
+                    : null,
+                onDeleted: questionTag.hasInformation == 0
+                    ? null
+                    : () async {
                   QuestionTagService questionTagService = Get.find();
                   await questionTagService.openQuestionTagInformation(
                       questionTag: questionTag, context: context);
