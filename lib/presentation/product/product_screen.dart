@@ -8,7 +8,7 @@ import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/product_price.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:get/instance_manager.dart';
@@ -154,16 +154,44 @@ class _ProductScreenState extends State<ProductScreen> {
                       // SingleChildScrollView(
                       //   scrollDirection: Axis.horizontal,
                       //   child:
-                      Html(
-                          data: product.description!.value!,
-                        shrinkWrap: true,
-                          extensions: const [
-                            // for supporting tables
-                            TableHtmlExtension(),
+                      if (product.descriptionRtl != null &&
+                          product.descriptionRtl!.value != null)
+                        Column(
+                          children: [
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Html(
+                                data: product.descriptionRtl!.value!,
+                                shrinkWrap: true,
+                                extensions: const [
+                                  // for supporting tables
+                                  TableHtmlExtension(),
+                                ],
+                                // ),
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
                           ],
-                        // ),
-                      ),
-                      const SizedBox(height: 10.0),
+                        ),
+                      if (product.descriptionLtr != null &&
+                          product.descriptionLtr!.value != null)
+                        Column(
+                          children: [
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Html(
+                                data: product.descriptionLtr!.value!,
+                                shrinkWrap: true,
+                                extensions: const [
+                                  // for supporting tables
+                                  TableHtmlExtension(),
+                                ],
+                                // ),
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                          ],
+                        ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

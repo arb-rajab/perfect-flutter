@@ -22,7 +22,12 @@ class Product with _$Product {
       @PriceJsonConverter()
       required Price offerPrice,
       @UnitJsonConverter() required Unit unit,
-      @DescriptionJsonConverter() Description? description,
+      @JsonKey(name: 'description_rtl')
+      @DescriptionJsonConverter()
+      Description? descriptionRtl,
+      @JsonKey(name: 'description_ltr')
+      @DescriptionJsonConverter()
+      Description? descriptionLtr,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
       DateTime? createdAt,
@@ -33,6 +38,5 @@ class Product with _$Product {
       images: (json['images'] as List?)
           ?.map((image) => image['image_url'] as String)
           .toList());
-
 
 }

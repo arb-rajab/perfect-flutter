@@ -16,8 +16,10 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       offerPrice: const PriceJsonConverter()
           .fromJson((json['offer_price'] as num?)?.toInt()),
       unit: const UnitJsonConverter().fromJson((json['unit'] as num).toInt()),
-      description: _$JsonConverterFromJson<String, Description>(
-          json['description'], const DescriptionJsonConverter().fromJson),
+      descriptionRtl: _$JsonConverterFromJson<String, Description>(
+          json['description_rtl'], const DescriptionJsonConverter().fromJson),
+      descriptionLtr: _$JsonConverterFromJson<String, Description>(
+          json['description_ltr'], const DescriptionJsonConverter().fromJson),
       createdAt: _$JsonConverterFromJson<String, DateTime>(
           json['created_at'], const DateTimeConverter().fromJson),
     );
@@ -30,8 +32,10 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'price': const PriceJsonConverter().toJson(instance.price),
       'offer_price': const PriceJsonConverter().toJson(instance.offerPrice),
       'unit': const UnitJsonConverter().toJson(instance.unit),
-      'description': _$JsonConverterToJson<String, Description>(
-          instance.description, const DescriptionJsonConverter().toJson),
+      'description_rtl': _$JsonConverterToJson<String, Description>(
+          instance.descriptionRtl, const DescriptionJsonConverter().toJson),
+      'description_ltr': _$JsonConverterToJson<String, Description>(
+          instance.descriptionLtr, const DescriptionJsonConverter().toJson),
       'created_at': _$JsonConverterToJson<String, DateTime>(
           instance.createdAt, const DateTimeConverter().toJson),
     };

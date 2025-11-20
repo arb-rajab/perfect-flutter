@@ -33,8 +33,12 @@ mixin _$Product {
   Price get offerPrice => throw _privateConstructorUsedError;
   @UnitJsonConverter()
   Unit get unit => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description_rtl')
   @DescriptionJsonConverter()
-  Description? get description => throw _privateConstructorUsedError;
+  Description? get descriptionRtl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description_ltr')
+  @DescriptionJsonConverter()
+  Description? get descriptionLtr => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -62,7 +66,12 @@ abstract class $ProductCopyWith<$Res> {
       @PriceJsonConverter() Price price,
       @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
       @UnitJsonConverter() Unit unit,
-      @DescriptionJsonConverter() Description? description,
+      @JsonKey(name: 'description_rtl')
+      @DescriptionJsonConverter()
+      Description? descriptionRtl,
+      @JsonKey(name: 'description_ltr')
+      @DescriptionJsonConverter()
+      Description? descriptionLtr,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
       List<String>? images});
@@ -72,7 +81,8 @@ abstract class $ProductCopyWith<$Res> {
   $PriceCopyWith<$Res> get price;
   $PriceCopyWith<$Res> get offerPrice;
   $UnitCopyWith<$Res> get unit;
-  $DescriptionCopyWith<$Res>? get description;
+  $DescriptionCopyWith<$Res>? get descriptionRtl;
+  $DescriptionCopyWith<$Res>? get descriptionLtr;
 }
 
 /// @nodoc
@@ -96,7 +106,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? price = null,
     Object? offerPrice = null,
     Object? unit = null,
-    Object? description = freezed,
+    Object? descriptionRtl = freezed,
+    Object? descriptionLtr = freezed,
     Object? createdAt = freezed,
     Object? images = freezed,
   }) {
@@ -125,9 +136,13 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as Unit,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
+      descriptionRtl: freezed == descriptionRtl
+          ? _value.descriptionRtl
+          : descriptionRtl // ignore: cast_nullable_to_non_nullable
+              as Description?,
+      descriptionLtr: freezed == descriptionLtr
+          ? _value.descriptionLtr
+          : descriptionLtr // ignore: cast_nullable_to_non_nullable
               as Description?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -194,13 +209,27 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $DescriptionCopyWith<$Res>? get description {
-    if (_value.description == null) {
+  $DescriptionCopyWith<$Res>? get descriptionRtl {
+    if (_value.descriptionRtl == null) {
       return null;
     }
 
-    return $DescriptionCopyWith<$Res>(_value.description!, (value) {
-      return _then(_value.copyWith(description: value) as $Val);
+    return $DescriptionCopyWith<$Res>(_value.descriptionRtl!, (value) {
+      return _then(_value.copyWith(descriptionRtl: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $DescriptionCopyWith<$Res>? get descriptionLtr {
+    if (_value.descriptionLtr == null) {
+      return null;
+    }
+
+    return $DescriptionCopyWith<$Res>(_value.descriptionLtr!, (value) {
+      return _then(_value.copyWith(descriptionLtr: value) as $Val);
     });
   }
 }
@@ -219,7 +248,12 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       @PriceJsonConverter() Price price,
       @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
       @UnitJsonConverter() Unit unit,
-      @DescriptionJsonConverter() Description? description,
+      @JsonKey(name: 'description_rtl')
+      @DescriptionJsonConverter()
+      Description? descriptionRtl,
+      @JsonKey(name: 'description_ltr')
+      @DescriptionJsonConverter()
+      Description? descriptionLtr,
       @JsonKey(name: 'created_at') @DateTimeConverter() DateTime? createdAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
       List<String>? images});
@@ -235,7 +269,9 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   $UnitCopyWith<$Res> get unit;
   @override
-  $DescriptionCopyWith<$Res>? get description;
+  $DescriptionCopyWith<$Res>? get descriptionRtl;
+  @override
+  $DescriptionCopyWith<$Res>? get descriptionLtr;
 }
 
 /// @nodoc
@@ -257,7 +293,8 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? price = null,
     Object? offerPrice = null,
     Object? unit = null,
-    Object? description = freezed,
+    Object? descriptionRtl = freezed,
+    Object? descriptionLtr = freezed,
     Object? createdAt = freezed,
     Object? images = freezed,
   }) {
@@ -286,9 +323,13 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as Unit,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
+      descriptionRtl: freezed == descriptionRtl
+          ? _value.descriptionRtl
+          : descriptionRtl // ignore: cast_nullable_to_non_nullable
+              as Description?,
+      descriptionLtr: freezed == descriptionLtr
+          ? _value.descriptionLtr
+          : descriptionLtr // ignore: cast_nullable_to_non_nullable
               as Description?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -314,7 +355,12 @@ class _$ProductImpl implements _Product {
       @PriceJsonConverter()
       required this.offerPrice,
       @UnitJsonConverter() required this.unit,
-      @DescriptionJsonConverter() this.description,
+      @JsonKey(name: 'description_rtl')
+      @DescriptionJsonConverter()
+      this.descriptionRtl,
+      @JsonKey(name: 'description_ltr')
+      @DescriptionJsonConverter()
+      this.descriptionLtr,
       @JsonKey(name: 'created_at') @DateTimeConverter() this.createdAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final List<String>? images})
@@ -343,8 +389,13 @@ class _$ProductImpl implements _Product {
   @UnitJsonConverter()
   final Unit unit;
   @override
+  @JsonKey(name: 'description_rtl')
   @DescriptionJsonConverter()
-  final Description? description;
+  final Description? descriptionRtl;
+  @override
+  @JsonKey(name: 'description_ltr')
+  @DescriptionJsonConverter()
+  final Description? descriptionLtr;
   @override
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
@@ -362,7 +413,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, offerPrice: $offerPrice, unit: $unit, description: $description, createdAt: $createdAt, images: $images)';
+    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, offerPrice: $offerPrice, unit: $unit, descriptionRtl: $descriptionRtl, descriptionLtr: $descriptionLtr, createdAt: $createdAt, images: $images)';
   }
 
   @override
@@ -378,8 +429,10 @@ class _$ProductImpl implements _Product {
             (identical(other.offerPrice, offerPrice) ||
                 other.offerPrice == offerPrice) &&
             (identical(other.unit, unit) || other.unit == unit) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            (identical(other.descriptionRtl, descriptionRtl) ||
+                other.descriptionRtl == descriptionRtl) &&
+            (identical(other.descriptionLtr, descriptionLtr) ||
+                other.descriptionLtr == descriptionLtr) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._images, _images));
@@ -395,7 +448,8 @@ class _$ProductImpl implements _Product {
       price,
       offerPrice,
       unit,
-      description,
+      descriptionRtl,
+      descriptionLtr,
       createdAt,
       const DeepCollectionEquality().hash(_images));
 
@@ -425,7 +479,12 @@ abstract class _Product implements Product {
       @PriceJsonConverter()
       required final Price offerPrice,
       @UnitJsonConverter() required final Unit unit,
-      @DescriptionJsonConverter() final Description? description,
+      @JsonKey(name: 'description_rtl')
+      @DescriptionJsonConverter()
+      final Description? descriptionRtl,
+      @JsonKey(name: 'description_ltr')
+      @DescriptionJsonConverter()
+      final Description? descriptionLtr,
       @JsonKey(name: 'created_at')
       @DateTimeConverter()
       final DateTime? createdAt,
@@ -454,8 +513,13 @@ abstract class _Product implements Product {
   @UnitJsonConverter()
   Unit get unit;
   @override
+  @JsonKey(name: 'description_rtl')
   @DescriptionJsonConverter()
-  Description? get description;
+  Description? get descriptionRtl;
+  @override
+  @JsonKey(name: 'description_ltr')
+  @DescriptionJsonConverter()
+  Description? get descriptionLtr;
   @override
   @JsonKey(name: 'created_at')
   @DateTimeConverter()
