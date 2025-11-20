@@ -1,11 +1,13 @@
 import 'package:app_links/app_links.dart';
 import 'package:beta/application/services/theme_service.dart';
+import 'package:beta/configs/app.dart';
 import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
+import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -15,11 +17,17 @@ import 'package:get/instance_manager.dart';
 
 Future<void> main() async {
   await MainController.initServices();
-  runApp(EasyLocalization(
-      supportedLocales: supportedLocals,
-      path: 'assets/translations',
-      fallbackLocale: supportedLocals[0],
-      child: const MyApp()));
+  final config = ClarityConfig(
+      projectId: clarityProjectId,
+      logLevel: kReleaseMode ? LogLevel.None : LogLevel.Verbose);
+  runApp(ClarityWidget(
+    clarityConfig: config,
+    app: EasyLocalization(
+        supportedLocales: supportedLocals,
+        path: 'assets/translations',
+        fallbackLocale: supportedLocals[0],
+        child: const MyApp()),
+  ));
 }
 
 // Register the RouteObserver as a navigation observer.

@@ -11,6 +11,7 @@ bool hasStore = true;
 bool hasNews = true;
 const String vapidKey =
     'BEizcvbT_JtBGR7ygkRxv_eE1GviYIvaHvYj3dB_AUr6oMnJLnJDNRIWX5ZyB5031d1QDigdggDIMKDmBzQYDYM';
+const String clarityProjectId = 'u90l12dvnj';
 
 List newFeatures = [
   StringConstant.addContactUsScreen.tr(),
