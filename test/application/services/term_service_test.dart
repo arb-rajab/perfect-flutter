@@ -2584,8 +2584,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 2); // Both subterms should be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length, 2); // Both subterms should be counted
     });
 
     test('should exclude terms that are not subterms of the parent', () async {
@@ -2635,8 +2635,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 0); // Unrelated term should not be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length, 0); // Unrelated term should not be counted
     });
 
     test('should exclude disabled terms', () async {
@@ -2692,8 +2692,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 0); // Disabled term should not be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length, 0); // Disabled term should not be counted
     });
 
     test('should exclude terms with type not in (1,3)', () async {
@@ -2751,8 +2751,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 0); // Wrong type term should not be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length, 0); // Wrong type term should not be counted
     });
 
     test('should exclude terms that are up-to-date and have questions',
@@ -2829,8 +2829,9 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 0); // Up-to-date term with questions should not be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length,
+          0); // Up-to-date term with questions should not be counted
     });
 
     test('should include terms that need update even if they have questions',
@@ -2909,8 +2910,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result,
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length,
           1); // Term that needs update should be counted even with questions
     });
 
@@ -3042,8 +3043,8 @@ Future<void> main() async {
       );
 
       final result = await termService
-          .getTermUndownloadedTermsWithQuestionsCount(parentTermData);
-      expect(result, 2); // Only subterm1 and subterm2 should be counted
+          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      expect(result.length, 2); // Only subterm1 and subterm2 should be counted
     });
   });
 

@@ -3,6 +3,8 @@ class StringConstant {
   static const listEmpty = 'list-empty';
   static const ok = 'ok';
   static const loadMore = 'load-more';
+  static const loading = 'loading';
+  static const hide = 'hide';
   static const chooseAnOption = 'choose-an-option';
   static const changesWillBeAppliedUponRestart =
       'changes-will-be-applied-upon-restart';

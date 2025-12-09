@@ -13,7 +13,7 @@ import 'package:beta/domain/term_with_questions_filtering_enabled_properties.dar
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/visible.dart';
 import 'package:beta/main.dart';
-import 'package:beta/presentation/dialogues/ok_dialogue.dart';
+import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/question_tag_widget.dart';
 import 'package:beta/presentation/home/term_tag_widget.dart';
@@ -443,7 +443,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsOneWidget);
       expect(find.byType(QuestionTagWidget), findsNothing);
     });
@@ -498,7 +498,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsOneWidget);
       expect(find.byType(QuestionTagWidget), findsNothing);
     });
@@ -553,7 +553,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsNothing);
       expect(find.byType(QuestionTagWidget), findsAtLeast(1));
     });
@@ -579,7 +579,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsNothing);
       expect(find.byType(QuestionTagWidget), findsAtLeast(1));
     });
@@ -756,7 +756,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsOneWidget);
       expect(find.byType(QuestionsScreen), findsNothing);
     });
@@ -811,7 +811,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsOneWidget);
       expect(find.byType(QuestionsScreen), findsNothing);
     });
@@ -866,7 +866,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsNothing);
       expect(find.byType(QuestionsScreen), findsOneWidget);
     });
@@ -892,7 +892,7 @@ Future main() async {
 
       expect(
           find.widgetWithText(
-              OKDialogue, StringConstant.pleaseDownloadAllTermsWithin),
+              YesNoDialogue, StringConstant.pleaseDownloadAllTermsWithin),
           findsNothing);
       expect(find.byType(QuestionsScreen), findsOneWidget);
     });

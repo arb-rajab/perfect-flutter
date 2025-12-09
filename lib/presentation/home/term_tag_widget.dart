@@ -8,7 +8,6 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
-import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/home/term_tag_listing_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
@@ -30,7 +29,7 @@ class TermTagWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IconData iconData = Icons.import_contacts;
     String text = '';
-    
+
     if (index < termsController.termsTags.length) {
       TermTag termTag = termsController.termsTags[index];
       text = termTag.name;
@@ -110,32 +109,14 @@ class TermTagWidget extends StatelessWidget {
             });
             return;
           case TermTagButton.questionTags:
-            QuestionTagService questionTagService = Get.find();
-            int numberOfChildTermsWithNoQuestions = await termService
-                .getTermUndownloadedTermsWithQuestionsCount(termData);
-            if (numberOfChildTermsWithNoQuestions == 0) {
+            termsController.showYouNeedToDownloadTermsDialogue(() {
+              QuestionTagService questionTagService = Get.find();
               questionTagService.getTermQuestionsTags(termData).then((value) {
                 termsController.state.setState(() {
                   termsController.questionTagDatas = value;
                 });
               });
-            } else if (context.mounted) {
-              List termsTags = termsController.termsTags
-                  .map((termTag) => termTag.name)
-                  .toList();
-              if (termsController.termTagButtons
-                  .contains(TermTagButton.others)) {
-                termsTags.add(StringConstant.others.tr());
-              }
-              showOkDialogue(context,
-                  contentWidget: Column(
-                    children: [
-                      Text(StringConstant.pleaseDownloadAllTermsWithin
-                          .tr()
-                          .replaceFirst('(TERM_TAGS)', termsTags.join(', ')))
-                    ],
-                  ));
-            }
+            });
             return;
           case TermTagButton.search:
             Get.put(QuestionsScreenArgument(
@@ -157,9 +138,7 @@ class TermTagWidget extends StatelessWidget {
             context.push(QuestionsScreen.route);
             return;
           case TermTagButton.edited:
-            int numberOfChildTermsWithNoQuestions = await termService
-                .getTermUndownloadedTermsWithQuestionsCount(termData);
-            if (numberOfChildTermsWithNoQuestions == 0) {
+            termsController.showYouNeedToDownloadTermsDialogue(() {
               Get.put(QuestionsScreenArgument(
                   query:
                       "q.edited =1 and q.parentTermId in (select termId from termTrees where parentTermId =${termData.term.id} and depth>0) order by q.id asc",
@@ -168,23 +147,7 @@ class TermTagWidget extends StatelessWidget {
                   resourceTermId: Id(termData.term.id),
                   title: t.Title(StringConstant.edited.tr())));
               if (context.mounted) context.push(QuestionsScreen.route);
-            } else if (context.mounted) {
-              List termsTags = termsController.termsTags
-                  .map((termTag) => termTag.name)
-                  .toList();
-              if (termsController.termTagButtons
-                  .contains(TermTagButton.others)) {
-                termsTags.add(StringConstant.others.tr());
-              }
-              showOkDialogue(context,
-                  contentWidget: Column(
-                    children: [
-                      Text(StringConstant.pleaseDownloadAllTermsWithin
-                          .tr()
-                          .replaceFirst('(TERM_TAGS)', termsTags.join(', ')))
-                    ],
-                  ));
-            }
+            });
             return;
           case TermTagButton.easy:
             Get.put(QuestionsScreenArgument(

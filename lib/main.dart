@@ -18,8 +18,7 @@ import 'package:get/instance_manager.dart';
 Future<void> main() async {
   await MainController.initServices();
   final config = ClarityConfig(
-      projectId: clarityProjectId,
-      logLevel: kReleaseMode ? LogLevel.None : LogLevel.Verbose);
+      projectId: clarityProjectId);
   runApp(ClarityWidget(
     clarityConfig: config,
     app: EasyLocalization(

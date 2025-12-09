@@ -44,16 +44,11 @@ class DownloadService {
     downloads.add(downloadItem);
 
     _showNotification();
-
-    for (var download in downloads) {
-      if (!download.started && !download.completed) {
-        _downloadFile(download);
-      }
-    }
-    _updateNotification();
+    await _downloadFile(downloadItem);
   }
 
   Future _downloadFile(DownloadItem item) async {
+    _updateNotification();
     item.started = true;
     await item.onDownload.call();
     item.completed = true;
