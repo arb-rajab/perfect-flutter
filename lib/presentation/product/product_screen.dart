@@ -208,6 +208,39 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                       const SizedBox(height: 10.0),
+                      if (product.singlePrice.value != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              StringConstant.singlePrice.tr(),
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${product.singlePrice.value}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' ${product.unit.name}',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       //   children: <Widget>[

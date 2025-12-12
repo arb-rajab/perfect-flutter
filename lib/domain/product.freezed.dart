@@ -31,6 +31,9 @@ mixin _$Product {
   @JsonKey(name: 'offer_price')
   @PriceJsonConverter()
   Price get offerPrice => throw _privateConstructorUsedError;
+  @JsonKey(name: 'single_price')
+  @PriceJsonConverter()
+  Price get singlePrice => throw _privateConstructorUsedError;
   @UnitJsonConverter()
   Unit get unit => throw _privateConstructorUsedError;
   @JsonKey(name: 'description_rtl')
@@ -65,6 +68,7 @@ abstract class $ProductCopyWith<$Res> {
       @JsonKey(name: 'image_url') String imageUrl,
       @PriceJsonConverter() Price price,
       @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
+      @JsonKey(name: 'single_price') @PriceJsonConverter() Price singlePrice,
       @UnitJsonConverter() Unit unit,
       @JsonKey(name: 'description_rtl')
       @DescriptionJsonConverter()
@@ -80,6 +84,7 @@ abstract class $ProductCopyWith<$Res> {
   $TitleCopyWith<$Res> get name;
   $PriceCopyWith<$Res> get price;
   $PriceCopyWith<$Res> get offerPrice;
+  $PriceCopyWith<$Res> get singlePrice;
   $UnitCopyWith<$Res> get unit;
   $DescriptionCopyWith<$Res>? get descriptionRtl;
   $DescriptionCopyWith<$Res>? get descriptionLtr;
@@ -105,6 +110,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? imageUrl = null,
     Object? price = null,
     Object? offerPrice = null,
+    Object? singlePrice = null,
     Object? unit = null,
     Object? descriptionRtl = freezed,
     Object? descriptionLtr = freezed,
@@ -131,6 +137,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       offerPrice: null == offerPrice
           ? _value.offerPrice
           : offerPrice // ignore: cast_nullable_to_non_nullable
+              as Price,
+      singlePrice: null == singlePrice
+          ? _value.singlePrice
+          : singlePrice // ignore: cast_nullable_to_non_nullable
               as Price,
       unit: null == unit
           ? _value.unit
@@ -199,6 +209,16 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $PriceCopyWith<$Res> get singlePrice {
+    return $PriceCopyWith<$Res>(_value.singlePrice, (value) {
+      return _then(_value.copyWith(singlePrice: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $UnitCopyWith<$Res> get unit {
     return $UnitCopyWith<$Res>(_value.unit, (value) {
       return _then(_value.copyWith(unit: value) as $Val);
@@ -247,6 +267,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       @JsonKey(name: 'image_url') String imageUrl,
       @PriceJsonConverter() Price price,
       @JsonKey(name: 'offer_price') @PriceJsonConverter() Price offerPrice,
+      @JsonKey(name: 'single_price') @PriceJsonConverter() Price singlePrice,
       @UnitJsonConverter() Unit unit,
       @JsonKey(name: 'description_rtl')
       @DescriptionJsonConverter()
@@ -266,6 +287,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   $PriceCopyWith<$Res> get price;
   @override
   $PriceCopyWith<$Res> get offerPrice;
+  @override
+  $PriceCopyWith<$Res> get singlePrice;
   @override
   $UnitCopyWith<$Res> get unit;
   @override
@@ -292,6 +315,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? price = null,
     Object? offerPrice = null,
+    Object? singlePrice = null,
     Object? unit = null,
     Object? descriptionRtl = freezed,
     Object? descriptionLtr = freezed,
@@ -318,6 +342,10 @@ class __$$ProductImplCopyWithImpl<$Res>
       offerPrice: null == offerPrice
           ? _value.offerPrice
           : offerPrice // ignore: cast_nullable_to_non_nullable
+              as Price,
+      singlePrice: null == singlePrice
+          ? _value.singlePrice
+          : singlePrice // ignore: cast_nullable_to_non_nullable
               as Price,
       unit: null == unit
           ? _value.unit
@@ -354,6 +382,9 @@ class _$ProductImpl implements _Product {
       @JsonKey(name: 'offer_price')
       @PriceJsonConverter()
       required this.offerPrice,
+      @JsonKey(name: 'single_price')
+      @PriceJsonConverter()
+      required this.singlePrice,
       @UnitJsonConverter() required this.unit,
       @JsonKey(name: 'description_rtl')
       @DescriptionJsonConverter()
@@ -386,6 +417,10 @@ class _$ProductImpl implements _Product {
   @PriceJsonConverter()
   final Price offerPrice;
   @override
+  @JsonKey(name: 'single_price')
+  @PriceJsonConverter()
+  final Price singlePrice;
+  @override
   @UnitJsonConverter()
   final Unit unit;
   @override
@@ -413,7 +448,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, offerPrice: $offerPrice, unit: $unit, descriptionRtl: $descriptionRtl, descriptionLtr: $descriptionLtr, createdAt: $createdAt, images: $images)';
+    return 'Product(id: $id, name: $name, imageUrl: $imageUrl, price: $price, offerPrice: $offerPrice, singlePrice: $singlePrice, unit: $unit, descriptionRtl: $descriptionRtl, descriptionLtr: $descriptionLtr, createdAt: $createdAt, images: $images)';
   }
 
   @override
@@ -428,6 +463,8 @@ class _$ProductImpl implements _Product {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.offerPrice, offerPrice) ||
                 other.offerPrice == offerPrice) &&
+            (identical(other.singlePrice, singlePrice) ||
+                other.singlePrice == singlePrice) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.descriptionRtl, descriptionRtl) ||
                 other.descriptionRtl == descriptionRtl) &&
@@ -447,6 +484,7 @@ class _$ProductImpl implements _Product {
       imageUrl,
       price,
       offerPrice,
+      singlePrice,
       unit,
       descriptionRtl,
       descriptionLtr,
@@ -478,6 +516,9 @@ abstract class _Product implements Product {
       @JsonKey(name: 'offer_price')
       @PriceJsonConverter()
       required final Price offerPrice,
+      @JsonKey(name: 'single_price')
+      @PriceJsonConverter()
+      required final Price singlePrice,
       @UnitJsonConverter() required final Unit unit,
       @JsonKey(name: 'description_rtl')
       @DescriptionJsonConverter()
@@ -509,6 +550,10 @@ abstract class _Product implements Product {
   @JsonKey(name: 'offer_price')
   @PriceJsonConverter()
   Price get offerPrice;
+  @override
+  @JsonKey(name: 'single_price')
+  @PriceJsonConverter()
+  Price get singlePrice;
   @override
   @UnitJsonConverter()
   Unit get unit;

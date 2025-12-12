@@ -249,6 +249,7 @@ class StringConstant {
   static const String mostSeenProducts = '$_store.most-seen-products';
   static const String createdOn = '$_store.created_on';
   static const String price = '$_store.price';
+  static const String singlePrice = '$_store.single-price';
   static const String syp = '$_store.syp';
   static const String usd = '$_store.usd';
 

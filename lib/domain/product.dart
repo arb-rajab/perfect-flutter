@@ -21,6 +21,9 @@ class Product with _$Product {
       @JsonKey(name: 'offer_price')
       @PriceJsonConverter()
       required Price offerPrice,
+      @JsonKey(name: 'single_price')
+      @PriceJsonConverter()
+      required Price singlePrice,
       @UnitJsonConverter() required Unit unit,
       @JsonKey(name: 'description_rtl')
       @DescriptionJsonConverter()

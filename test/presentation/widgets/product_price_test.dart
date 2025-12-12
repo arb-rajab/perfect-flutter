@@ -17,6 +17,7 @@ Future main() async {
     const mockUnit = Unit(2); // 2 represents SYP
     const mockPrice = Price(10000);
     const mockOfferPrice = Price(8000);
+    const mockSinglePrice = Price(1000);
     const mockId = Id(1);
     const mockTitle = t.Title('Test Product');
     const mockImageUrl = 'https://example.com/image.jpg';
@@ -33,6 +34,7 @@ Future main() async {
         price: price ?? mockPrice,
         offerPrice: offerPrice ?? const Price(null),
         unit: unit ?? mockUnit,
+          singlePrice: mockSinglePrice
       );
     }
 
