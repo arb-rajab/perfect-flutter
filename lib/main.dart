@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_links/app_links.dart';
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/app.dart';
@@ -11,14 +13,13 @@ import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
   await MainController.initServices();
-  final config = ClarityConfig(
-      projectId: clarityProjectId);
+  final config = ClarityConfig(projectId: clarityProjectId);
   runApp(ClarityWidget(
     clarityConfig: config,
     app: EasyLocalization(
@@ -43,23 +44,44 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  void _handleIncomingLinks() {
-    AppLinks().uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        router(widget.defaultRoute)
-            .go(uri.path); // Navigate to the corresponding route
-      }
-    }, onError: (Object err) {
-      if (kDebugMode) {
-        print('Failed to get initial link: $err');
-      }
-    });
+  late final AppLinks appLinks;
+  StreamSubscription<Uri>? _sub;
+  late GoRouter routerConfig;
+
+  Future<void> _initDeepLink() async {
+    // 1) Initial link (cold start)
+    final initialUri = await appLinks.getInitialLink();
+    if (initialUri != null) {
+      _handleUri(initialUri);
+    }
+  }
+
+  void _handleUri(Uri initialUri) {
+    final nav = navigatorKey.currentState;
+    debugPrint('NAV READY: ${nav != null}');
+    routerConfig.go(initialUri.path);
   }
 
   @override
   void initState() {
     super.initState();
-    _handleIncomingLinks();
+    routerConfig = router(widget.defaultRoute);
+    // 1. Handle cold start
+    appLinks = AppLinks();
+    _initDeepLink();
+
+    // 2. Handle links while app is running / in background
+    _sub = appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        _handleUri(uri); // navigate to your screen
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel(); // clean up
+    super.dispose();
   }
 
   // This widget is the root of your application.
@@ -133,7 +155,7 @@ class _MyAppState extends State<MyApp> {
     }
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routerConfig: router(widget.defaultRoute),
+      routerConfig: routerConfig,
       localizationsDelegates:
           MainController.testing ? null : context.localizationDelegates,
       supportedLocales: MainController.testing

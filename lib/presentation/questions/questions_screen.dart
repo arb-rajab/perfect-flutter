@@ -26,12 +26,17 @@ class QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
   late QuestionsController questionsController;
   @override
   void initState() {
-    QuestionsScreenArgument questionsScreenArgument = Get.find();
-    Get.delete<QuestionsController>(tag: questionsScreenArgument.query);
-    questionsController =
-        Get.put(
-        QuestionsController(this)..questionUUID = widget.uuid,
-        tag: questionsScreenArgument.query);
+    if (Get.isRegistered<QuestionsReportScreenArgument>()) {
+QuestionsScreenArgument questionsScreenArgument = Get.find();
+      Get.delete<QuestionsController>(tag: questionsScreenArgument.query);
+      questionsController = Get.put(
+          QuestionsController(this)..questionUUID = widget.uuid,
+          tag: questionsScreenArgument.query);
+    } else {
+      questionsController =
+          Get.put(QuestionsController(this)..questionUUID = widget.uuid);
+    }
+    
     questionsController.init();
     super.initState();
   }

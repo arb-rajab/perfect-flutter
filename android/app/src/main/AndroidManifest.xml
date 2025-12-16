@@ -33,14 +33,38 @@ xmlns:tools="http://schemas.android.com/tools">
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
+
+            <!-- App Links: https://perfect-app.com/q... -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="perfect-app.com" android:pathPrefix="/q"/>
-                <data android:scheme="https" android:host="perfect-app.scienceontheweb.net"/>
+                <data android:scheme="https" />
+                <data android:host="perfect-app.com" />
+                <data android:pathPrefix="/q" />
             </intent-filter>
+
+            <!-- App Links: https://perfect-app.scienceontheweb.net/... -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="perfect-app.scienceontheweb.net" />
+                <!-- optional pathPrefix here if you want -->
+            </intent-filter>
+
+            <!-- Custom scheme: prfct://perfect-app.scienceontheweb.net/... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="prfct" android:host="perfect-app.scienceontheweb.net" />
+            </intent-filter>
+
 
         </activity>
         <!-- ADD THIS "SERVICE" element -->
