@@ -71,15 +71,12 @@ class _NewsScreenState extends State<NewsScreen> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Html(
+                      Html(
                           data: news.content.value!,
                           extensions: const [
                             // for supporting tables
                             TableHtmlExtension(),
                           ],
-                        ),
                       ),
                       const SizedBox(height: 10.0),
                     ],
