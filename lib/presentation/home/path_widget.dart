@@ -1,3 +1,8 @@
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/term_service.dart';
+import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
@@ -13,15 +18,50 @@ class PathWidget extends StatelessWidget {
     return Wrap(
       children: termDatas
           .map((termData) => InkWell(
-                onTap: () {
+                onTap: () async {
                   Get.delete<TermData>();
                   Get.put(termData);
-                  TermsListingController termsListingController = Get.find();
+                  TermService termService = Get.find();
+                  TermTagService termTagService = Get.find();
                   TermsController termsController = Get.find();
-                  termsController.termsTags.clear();
-                  termDatas.removeRange(
-                      termDatas.indexOf(termData) + 1, termDatas.length);
-                  termsListingController.init();
+                  TermsListingController termsListingController = Get.find();
+                  List<TermData> subTerms =
+                      await termService.getSubTerms(termData.term.id);
+                  List<TermTag> termsTags =
+                      await termTagService.getTermsTags(subTerms);
+                  if (termsTags.isNotEmpty) {
+                    await Get.delete<TermData>(tag: 'source');
+                    Get.put(termData, tag: 'source');
+                    termsController.state.setState(() {
+                      termsController.termsTags = termsTags;
+                      termsController.termsDatas = subTerms;
+                      termsListingController.termsListing.removeRange(
+                          termsListingController.termsListing
+                                  .indexOf(termData) +
+                              1,
+                          termsListingController.termsListing.length);
+                      // tagListingController.items = termsTags;
+                    });
+                    return;
+                  }
+                  if (subTerms.isNotEmpty) {
+                    termsController.state.setState(() {
+                      termsController.termsDatas = subTerms;
+                      termsListingController.items = subTerms;
+                      termsListingController.termsListing.removeRange(
+                          termsListingController.termsListing
+                                  .indexOf(termData) +
+                              1,
+                          termsListingController.termsListing.length);
+                    });
+                    return;
+                  }
+                  // TermsListingController termsListingController = Get.find();
+                  // TermsController termsController = Get.find();
+                  // termsController.termsTags.clear();
+                  // termDatas.removeRange(
+                  //     termDatas.indexOf(termData) + 1, termDatas.length);
+                  // termsListingController.init();
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
