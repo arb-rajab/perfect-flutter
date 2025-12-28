@@ -15,7 +15,6 @@ import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/term_widget.dart';
 import 'package:beta/presentation/questions/question_title.dart';
-import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/questions/questions_list.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/questions_report/questions_report_screen.dart';
@@ -686,8 +685,8 @@ Future main() async {
         await widgetTester.tap(find.text(StringConstant.solveQuestions));
         await widgetTester.pumpAndSettle();
 
-        QuestionsController controller =
-            Get.find(tag: "q.parentTermId= '1' ORDER BY q.id asc");
+        // QuestionsController controller =
+        //     Get.find(tag: Get.find<QuestionsScreenArgument>().query);
 
         expect(
             find.byWidgetPredicate((widget) =>
@@ -695,7 +694,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'correct answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -708,7 +707,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -740,16 +739,13 @@ Future main() async {
         await widgetTester.tap(find.text(StringConstant.solveQuestions));
         await widgetTester.pumpAndSettle();
 
-        QuestionsController controller =
-            Get.find(tag: "q.parentTermId= '1' ORDER BY q.id asc");
-
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is CustomCheckbox &&
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'correct answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -762,7 +758,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -794,16 +790,13 @@ Future main() async {
         await widgetTester.tap(find.text(StringConstant.solveQuestions));
         await widgetTester.pumpAndSettle();
 
-        QuestionsController controller =
-            Get.find(tag: "q.parentTermId= '1' ORDER BY q.id asc");
-
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is CustomCheckbox &&
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'correct answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -816,7 +809,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -887,16 +880,14 @@ Future main() async {
         await widgetTester.tap(find.text(StringConstant.correctQuestions));
         await widgetTester.pumpAndSettle();
 
-        QuestionsController controller =
-            Get.find(tag: "q.parentTermId= '1' ORDER BY q.id asc");
-
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is CustomCheckbox &&
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'correct answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context).primaryColor),
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
+                        .primaryColor),
             findsOneWidget);
 
         expect(
@@ -905,7 +896,9 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context).colorScheme.error &&
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
+                        .colorScheme
+                        .error &&
                 widget.checked == true),
             findsOneWidget);
 
@@ -915,7 +908,8 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer 2' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context).disabledColor &&
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
+                        .disabledColor &&
                 widget.checked == false),
             findsOneWidget);
       });
@@ -963,16 +957,13 @@ Future main() async {
         await widgetTester.tap(find.text(StringConstant.resetQuestions));
         await widgetTester.pumpAndSettle();
 
-        QuestionsController controller =
-            Get.find(tag: "q.parentTermId= '1' ORDER BY q.id asc");
-
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is CustomCheckbox &&
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'correct answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -985,7 +976,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
@@ -998,7 +989,7 @@ Future main() async {
                 widget.labelWidget is Text &&
                 (widget.labelWidget! as Text).data == 'wrong answer 2' &&
                 (widget.labelWidget! as Text).style!.color ==
-                    Theme.of(controller.state.context)
+                    Theme.of(widgetTester.element(find.byType(QuestionsScreen)))
                         .textTheme
                         .bodyMedium!
                         .color &&
