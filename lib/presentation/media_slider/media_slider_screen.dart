@@ -26,15 +26,39 @@ class _MediaSliderScreenState extends State<MediaSliderScreen> {
     return ScreenWrapper(
         titleText:
             "${mediaSliderController.page + 1}/${mediaSliderController.mediaSlidersScreenArgument.mediaUrls.length}",
-        child: PageView.builder(
-          itemCount:
-              mediaSliderController.mediaSlidersScreenArgument.mediaUrls.length,
-          itemBuilder: (context, index) {
-            return MediaWidget(
-                url: mediaSliderController
-                    .mediaSlidersScreenArgument.mediaUrls[index]);
-          },
-          onPageChanged: mediaSliderController.onPageChanged,
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                controller: mediaSliderController.pageController,
+                itemCount: mediaSliderController
+                    .mediaSlidersScreenArgument.mediaUrls.length,
+                itemBuilder: (context, index) {
+                  return MediaWidget(
+                      url: mediaSliderController
+                          .mediaSlidersScreenArgument.mediaUrls[index]);
+                },
+                onPageChanged: mediaSliderController.onPageChanged,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    key: const Key('prev_button'),
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: mediaSliderController.previousButtonEnabled()
+                        ? mediaSliderController.goToPreviousPage
+                        : null),
+                IconButton(
+                    key: const Key('next_button'),
+                    icon: const Icon(Icons.arrow_forward),
+                    onPressed: mediaSliderController.nextButtonEnabled()
+                        ? mediaSliderController.goToNextPage
+                        : null),
+              ],
+            ),
+          ],
         ));
   }
 }
