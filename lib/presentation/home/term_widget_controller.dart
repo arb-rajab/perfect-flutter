@@ -9,6 +9,7 @@ import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/common/exceptions.dart';
 import 'package:beta/configs/links.dart';
@@ -21,6 +22,7 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/domain/value/title.dart' as t;
+import 'package:beta/domain/video_file_data.dart';
 import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
@@ -31,6 +33,7 @@ import 'package:beta/presentation/home/actions_widget.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
+import 'package:beta/presentation/video_file/video_file_screen.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -54,6 +57,7 @@ class TermWidgetController {
   TermPropertyService termPropertyService = Get.find();
   EbookService ebookService = Get.find();
   VoiceNoteService voiceNoteService = Get.find();
+  VideoFileService videoFileService = Get.find();
   PathService pathService = Get.find();
   DownloadService downloadService = Get.find();
 
@@ -144,6 +148,8 @@ class TermWidgetController {
       return ApiConstant.getEbook;
     } else if (termData.term.type == TermType.voiceNotes) {
       return ApiConstant.getVoice;
+    } else if (termData.term.type == TermType.videoFile) {
+      return ApiConstant.getVideoFile;
     }
     return ApiConstant.getTermContent;
   }
@@ -224,6 +230,12 @@ class TermWidgetController {
                       VoiceNoteData.fromJson(body['voice']);
                   voiceNoteService.addVoiceNote(voiceNoteData);
                   url = voiceNoteData.url!.toString();
+                }
+                if (termData.term.type == TermType.videoFile) {
+                  VideoFileData videoFileData =
+                      VideoFileData.fromJson(body['videoFile']);
+                  videoFileService.addVideoFile(videoFileData);
+                  url = videoFileData.url!.toString();
                 }
                 String filePath = await pathService
                     .getFileSupportPath(['term', termData.term.id.toString()]);
@@ -343,7 +355,7 @@ class TermWidgetController {
       await Get.delete<TermData>();
       Get.put(termData);
       await termLastAccessService.addTermLastAccessed(
-          Id(termData.term.id), Id(termData.term.id));
+          Id(termData.term.id), termData.term.id);
     }
     List<TermData> subTerms = await termService.getSubTerms(termData.term.id);
     List<TermTag> termsTags = await termTagService.getTermsTags(subTerms);
@@ -459,6 +471,25 @@ class TermWidgetController {
             Get.delete<VoiceNoteScreenArgument>();
             Get.put(VoiceNoteScreenArgument(term: termData));
             if (state.mounted) state.context.push(VoiceNoteScreen.route);
+          } else {
+            if (state.mounted) {
+              showOkDialogue(state.context,
+                  content: StringConstant.termIsExpired.tr());
+            }
+          }
+        } else {
+          if (state.mounted) {
+            showOkDialogue(state.context,
+                content: StringConstant.youHaveToDownloadFirst.tr());
+          }
+        }
+        break;
+      case TermType.videoFile:
+        if (isDownloaded) {
+          if (await termService.isUnExpired(termData)) {
+            Get.delete<VideoFileScreenArgument>();
+            Get.put(VideoFileScreenArgument(term: termData));
+            if (state.mounted) state.context.push(VideoFileScreen.route);
           } else {
             if (state.mounted) {
               showOkDialogue(state.context,

@@ -31,6 +31,7 @@ import 'package:beta/application/services/terms_with_questions_filtering_enabled
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
+import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/infrastructure/clipboard_repository.dart';
 import 'package:beta/infrastructure/connection_repository.dart';
@@ -100,6 +101,7 @@ class MainController {
     Get.put(HttpRequestService(databaseService: databaseService));
     Get.put(EbookService(databaseService: databaseService));
     Get.put(VoiceNoteService(databaseService: databaseService));
+    Get.put(VideoFileService(databaseService: databaseService));
     Get.put(QuestionService(databaseService: databaseService));
     Get.put(AnswerService(databaseService: databaseService));
     Get.put(FlashcardService(databaseService: databaseService));

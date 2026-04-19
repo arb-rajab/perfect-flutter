@@ -15,6 +15,7 @@ class ApiConstant {
   static const String getTermsUpdates = '${_apiV1}terms/updates';
   static const String getEbook = '${_apiV1}ebooks/(TERM_ID)';
   static const String getVoice = '${_apiV1}voices/(TERM_ID)';
+  static const String getVideoFile = '${_apiV1}video-files/(TERM_ID)';
   static const String getTermContent = '${_apiV1}term/(TERM_ID)/content';
   static const String questionTagInformation =
       '${_apiV1}question-tag/(QUESTION_TAG_ID)/info/ime1/(IME1)/language/(LANGUAGE)';

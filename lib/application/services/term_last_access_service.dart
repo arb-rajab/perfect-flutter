@@ -22,10 +22,10 @@ class TermLastAccessService {
     return childrenCount > 0;
   }
 
-  Future addTermLastAccessed(Id parentId, Id childId) =>
+  Future addTermLastAccessed(Id parentId, int childId) =>
       databaseService.termsLastAccesses.insertOnConflictUpdate(TermsLastAccess(
           parentTermId: parentId.value!,
-          childId: childId.value!,
+          childId: childId,
           lastAccess: DateTime.now().millisecondsSinceEpoch));
 
   Future addTermLastAccessFromJson(dynamic data) =>

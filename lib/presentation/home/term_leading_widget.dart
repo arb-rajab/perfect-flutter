@@ -24,6 +24,8 @@ class TermLeadingWidget extends StatelessWidget {
         return const Icon(Icons.style, size: iconSize);
       case TermType.voiceNotes:
         return const Icon(Icons.audiotrack, size: iconSize);
+      case TermType.videoFile:
+        return const Icon(Icons.slow_motion_video, size: iconSize);
       default:
         return const Icon(Icons.description, size: iconSize);
     }

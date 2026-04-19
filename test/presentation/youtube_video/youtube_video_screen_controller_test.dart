@@ -21,7 +21,7 @@ import '../../common/tests.dart';
 // Mock classes
 class MockTermLastAccessService extends Mock implements TermLastAccessService {
   @override
-  Future<int> addTermLastAccessed(Id termId, Id childId) => Future.value(1);
+  Future<int> addTermLastAccessed(Id termId, int childId) => Future.value(1);
 }
 
 class MockScreenshotRepository extends Mock implements ScreenshotRepository {

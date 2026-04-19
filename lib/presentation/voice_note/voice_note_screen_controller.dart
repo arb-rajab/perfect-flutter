@@ -3,7 +3,6 @@ import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/value/id.dart';
-import 'package:beta/infrastructure/package_repository.dart';
 import 'package:beta/presentation/voice_note/platforms/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -27,7 +26,6 @@ class VoiceNoteScreenController {
     2.0
   ];
 
-  PackageRepository packageRepository = Get.find();
   TermLastAccessService termLastAccessService = Get.find();
 
   VoiceNoteScreenController(this.state) {
@@ -128,7 +126,7 @@ class AudioPlayerHandler extends BaseAudioHandler {
     await _audioPlayer.pause();
     await termLastAccessService.addTermLastAccessed(
         Id(voiceNoteScreenController.argument.term.term.id),
-        Id(_audioPlayer.position.inSeconds));
+        _audioPlayer.position.inSeconds);
   }
 
   @override
@@ -136,7 +134,7 @@ class AudioPlayerHandler extends BaseAudioHandler {
     VoiceNoteScreenController voiceNoteScreenController = Get.find();
     await termLastAccessService.addTermLastAccessed(
         Id(voiceNoteScreenController.argument.term.term.id),
-        Id(_audioPlayer.position.inSeconds));
+        _audioPlayer.position.inSeconds);
     await _audioPlayer.stop();
     await super.stop();
   }

@@ -311,7 +311,8 @@ void main() {
     testWidgets('term last accesses are reserved when cancel tapped',
         (WidgetTester tester) async {
       TermLastAccessService termLastAccessService = Get.find();
-      await termLastAccessService.addTermLastAccessed(const Id(1), const Id(1));
+      await termLastAccessService.addTermLastAccessed(
+          const Id(1), const Id(1).value!);
       await tester.pumpWidget(
         const MyApp(
           child: DeleteTermLastAccessWidget(),
@@ -333,7 +334,8 @@ void main() {
     testWidgets('term last accesses are deleted when ok tapped',
         (WidgetTester tester) async {
       TermLastAccessService termLastAccessService = Get.find();
-      await termLastAccessService.addTermLastAccessed(const Id(1), const Id(1));
+      await termLastAccessService.addTermLastAccessed(
+          const Id(1), const Id(1).value!);
       await tester.pumpWidget(
         const MyApp(
           child: DeleteTermLastAccessWidget(),

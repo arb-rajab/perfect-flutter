@@ -137,4 +137,18 @@ void main() {
 
     expect(find.text('x'), findsNothing);
   });
+
+  testWidgets('renders nothing for video file type', (tester) async {
+    final termData = createTermData(type: TermType.videoFile);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: NumberOfChildrenWidget(termData),
+        ),
+      ),
+    );
+
+    expect(find.text('x'), findsNothing);
+  });
 }

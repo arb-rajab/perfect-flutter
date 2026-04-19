@@ -98,3 +98,9 @@ class VoiceNoteScreenArgument {
 
   VoiceNoteScreenArgument({required this.term});
 }
+
+class VideoFileScreenArgument {
+  final TermData term;
+
+  VideoFileScreenArgument({required this.term});
+}

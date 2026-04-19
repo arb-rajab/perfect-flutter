@@ -78,7 +78,7 @@ class YoutubeVideoScreenController {
       if (time != "0") {
         int lastAccessedSecond = int.parse(time);
         termLastAccessService.addTermLastAccessed(
-            Id(argument.termData.term.id), Id(lastAccessedSecond));
+            Id(argument.termData.term.id), lastAccessedSecond);
         // if (destroyed) {
         //   youTubePlayerView.destroy();
         // }

@@ -117,17 +117,19 @@ class TermType {
   static const int youtubeVideos = 4;
   static const int flashcards = 5;
   static const int voiceNotes = 6;
-  
-  static const int maxTermType = 6;
+
+  static const int videoFile = 8;
+
+  static const int maxTermType = 8;
 
   static bool downloadable(TermData termData) => [
         questions,
         template,
         flashcards].contains(termData.term.type) ||
-      ([ebook, voiceNotes].contains(termData.term.type) && !kIsWeb);
+      ([ebook, voiceNotes, videoFile].contains(termData.term.type) && !kIsWeb);
 
   static bool hasFile(TermData termData) =>
-      [ebook, voiceNotes].contains(termData.term.type);
+      [ebook, voiceNotes, videoFile].contains(termData.term.type);
 
   static bool hasContent(TermData termData) =>
       [questions, template, flashcards].contains(termData.term.type);

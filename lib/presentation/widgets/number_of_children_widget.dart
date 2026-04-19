@@ -29,6 +29,9 @@ class NumberOfChildrenWidget extends StatelessWidget {
       case TermType.voiceNotes:
         icon = const Icon(Icons.audiotrack);
         break;
+      case TermType.videoFile:
+        icon = const Icon(Icons.slow_motion_video);
+        break;
       default:
         icon = const Icon(Icons.description);
     }

@@ -904,6 +904,141 @@ void main() {
             findsOneWidget);
       });
     });
+  
+    group('video file term type', () {
+      testWidgets(
+          'delete icon is not rendered for video file term type that is not downloaded',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing);
+      });
+
+      testWidgets(
+          'delete icon is rendered for video file term type that is downloaded',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsOneWidget);
+      });
+
+      testWidgets('delete icon tap shows a confirmation dialogue',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the delete icon
+        await widgetTester.tap(find.byIcon(Icons.delete));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(ConfirmDialogue), findsOneWidget);
+      });
+
+      testWidgets(
+          'delete icon tap shows a confirmation dialogue, then tapping cancel dismisses the dialogue',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the delete icon
+        await widgetTester.tap(find.byIcon(Icons.delete));
+        await widgetTester.pumpAndSettle();
+
+        // tap cancel buuton
+        await widgetTester.tap(find.text(StringConstant.cancel));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(ConfirmDialogue), findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsNothing);
+      });
+
+      testWidgets(
+          'delete icon tap shows a confirmation dialogue, then tapping ok dismisses the dialogue and deletes data',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the delete icon
+        await widgetTester.tap(find.byIcon(Icons.delete));
+        await widgetTester.pumpAndSettle();
+
+        // tap ok buuton
+        await widgetTester.tap(find.text(StringConstant.ok));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(ConfirmDialogue), findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget);
+      });
+    });
+  
   });
 
   group('download icon tests', () {
@@ -1993,6 +2128,169 @@ void main() {
             findsNothing);
       });
     });
+  
+    group('video file term type tests', () {
+      testWidgets('download icon is rendered for video files term type',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget);
+      });
+
+      testWidgets('download icon tapping shows a loading',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        mockNoConnection(
+            route: ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pump();
+
+        expect(
+            widgetWithTextAndWidget(
+                TermWidget, 'name', CircularProgressIndicator),
+            findsOneWidget);
+        await widgetTester.pumpAndSettle();
+      });
+
+      testWidgets(
+          'download icon tapping shows no connection when there is no connection',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        mockNoConnection(
+            route: ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.widgetWithText(OKDialogue, StringConstant.noConnection),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing);
+      });
+
+      testWidgets(
+          'download icon tapping shows a message when a message is recieved',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        mockMessageRecieved(
+            route: ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.widgetWithText(OKDialogue, 'a message recieved'),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing);
+      });
+
+      testWidgets('download icon tapping downloads data', (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+
+        dioAdapter.onGet(
+            "http://perfect-app.atwebpages.com/files/terms/10003581", (server) {
+          server.reply(200, 'file content');
+        });
+
+        dioAdapter.onGet(
+            ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'),
+            (server) {
+          server.reply(200, r'''
+{
+    "videoFile": {
+        "parentTermId": 3,
+        "url": "http:\/\/perfect-app.atwebpages.com\/files\/terms\/10003581",
+        "encryptionKey": "",
+        "lastUpdated": "2024-08-30 12:46:28",
+        "creation": "2024-08-30T12:44:08.000000Z",
+        "onUpdate": "2024-08-30T12:46:28.000000Z",
+        "deleted_at": null,
+        "deleted_by": null
+    },
+    "result": "success",
+    "message": ""
+}
+''');
+        });
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(OKDialogue), findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsNothing);
+      });
+    });
+  
   });
 
   group('refresh icon tests', () {
@@ -3565,6 +3863,243 @@ void main() {
             findsNothing);
       });
     });
+
+    group('video file term type tests', () {
+      testWidgets(
+          'icon is not rendered for video file term type that is not downloaded',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsNothing);
+      });
+
+      testWidgets(
+          'icon is rendered for video file term type that is downloaded but does not need update',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsNothing);
+      });
+
+      testWidgets(
+          'icon is rendered for video file term type that is downloaded and needs update',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile, needsUpdate: 1);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsOneWidget);
+      });
+
+      testWidgets('icon tapping shows a loading', (widgetTester) async {
+        await createTermData(type: TermType.videoFile, needsUpdate: 1);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        dioAdapter.onGet(
+            "http://perfect-app.atwebpages.com/files/terms/10003581", (server) {
+          server.reply(200, 'file content');
+        });
+
+        dioAdapter.onGet(
+            ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'),
+            (server) {
+          server.reply(200, r'''
+{
+    "videoFile": {
+        "parentTermId": 3,
+        "url": "http:\/\/perfect-app.atwebpages.com\/files\/terms\/10003581",
+        "encryptionKey": "",
+        "lastUpdated": "2024-08-30 12:46:28",
+        "creation": "2024-08-30T12:44:08.000000Z",
+        "onUpdate": "2024-08-30T12:46:28.000000Z",
+        "deleted_at": null,
+        "deleted_by": null
+    },
+    "result": "success",
+    "message": ""
+}
+''');
+        });
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pump();
+
+        expect(
+            widgetWithTextAndWidget(
+                TermWidget, 'name', CircularProgressIndicator),
+            findsOneWidget);
+        await widgetTester.pumpAndSettle();
+      });
+
+      testWidgets(
+          'icon tapping shows no connection when there is no connection',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile, needsUpdate: 1);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        mockNoConnection(
+            route: ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.widgetWithText(OKDialogue, StringConstant.noConnection),
+            findsOneWidget);
+        expect(widgetWithTextAndKey(TermWidget, 'name', const Key('refresh')),
+            findsOneWidget);
+      });
+
+      testWidgets('icon tapping shows a message when a message is recieved',
+          (widgetTester) async {
+        await createTermData(type: TermType.videoFile, needsUpdate: 1);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        mockMessageRecieved(
+            route: ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'));
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.widgetWithText(OKDialogue, 'a message recieved'),
+            findsOneWidget);
+        expect(widgetWithTextAndKey(TermWidget, 'name', const Key('refresh')),
+            findsOneWidget);
+      });
+
+      testWidgets('refresh icon tapping downloads data', (widgetTester) async {
+        await createTermData(type: TermType.videoFile, needsUpdate: 1);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        dioAdapter.onGet(
+            "http://perfect-app.atwebpages.com/files/terms/10003581", (server) {
+          server.reply(200, 'file content');
+        });
+
+        dioAdapter.onGet(
+            ApiConstant.getVideoFile.replaceFirst('(TERM_ID)', '3'),
+            (server) {
+          server.reply(200, r'''
+{
+    "videoFile": {
+        "parentTermId": 3,
+        "url": "http:\/\/perfect-app.atwebpages.com\/files\/terms\/10003581",
+        "encryptionKey": "",
+        "lastUpdated": "2024-08-30 12:46:28",
+        "creation": "2024-08-30T12:44:08.000000Z",
+        "onUpdate": "2024-08-30T12:46:28.000000Z",
+        "deleted_at": null,
+        "deleted_by": null
+    },
+    "result": "success",
+    "message": ""
+}
+''');
+        });
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(OKDialogue), findsNothing);
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsNothing);
+      });
+    });
+
   });
 
   group('study icon tests', () {

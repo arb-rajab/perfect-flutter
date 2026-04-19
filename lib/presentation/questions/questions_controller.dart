@@ -485,7 +485,7 @@ class QuestionsController {
     }
     if (term != null) {
       termLastAccessService.addTermLastAccessed(
-          Id(term!.id), Id(firstVisibleQuestions.question.id));
+          Id(term!.id), firstVisibleQuestions.question.id);
     } else if (questionsScreenArgument!.source ==
         QuestionScreenSource.questionTag) {
       questionTagPropertyService.addQuestionTagProperty(

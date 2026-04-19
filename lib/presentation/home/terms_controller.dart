@@ -7,6 +7,7 @@ import 'package:beta/application/services/network_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/common/exceptions.dart';
 import 'package:beta/constants/api_constant.dart';
@@ -17,6 +18,7 @@ import 'package:beta/domain/question_tag_data.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
+import 'package:beta/domain/video_file_data.dart';
 import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/presentation/dialogues/loding_dialogue.dart';
@@ -172,6 +174,8 @@ class TermsController {
         return ApiConstant.getEbook;
       } else if (termData.term.type == TermType.voiceNotes) {
         return ApiConstant.getVoice;
+      } else if (termData.term.type == TermType.videoFile) {
+        return ApiConstant.getVideoFile;
       }
       return ApiConstant.getTermContent;
     }
@@ -255,6 +259,13 @@ class TermsController {
                       VoiceNoteData.fromJson(body['voice']);
                   voiceNoteService.addVoiceNote(voiceNoteData);
                   url = voiceNoteData.url!.toString();
+                }
+                if (termData.term.type == TermType.videoFile) {
+                  VideoFileService videoFileService = Get.find();
+                  VideoFileData videoFileData =
+                      VideoFileData.fromJson(body['videoFile']);
+                  videoFileService.addVideoFile(videoFileData);
+                  url = videoFileData.url!.toString();
                 }
                 PathService pathService = Get.find();
                 String filePath = await pathService

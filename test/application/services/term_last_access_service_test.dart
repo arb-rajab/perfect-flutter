@@ -134,7 +134,7 @@ void main() {
       const parentId = Id(1);
       const childId = Id(2);
 
-      await termLastAccessService.addTermLastAccessed(parentId, childId);
+      await termLastAccessService.addTermLastAccessed(parentId, childId.value!);
 
       final allItems = await databaseService.termsLastAccesses.all().get();
       expect(allItems.length, 1);
@@ -157,7 +157,7 @@ void main() {
       const childId = Id(2);
 
       // Add the same record again (should update)
-      await termLastAccessService.addTermLastAccessed(parentId, childId);
+      await termLastAccessService.addTermLastAccessed(parentId, childId.value!);
 
       final allItems = await databaseService.termsLastAccesses.all().get();
       expect(allItems.length, 1);

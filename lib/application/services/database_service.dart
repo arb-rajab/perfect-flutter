@@ -39,6 +39,7 @@ import 'package:beta/domain/term_tree.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled.dart';
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/visible.dart';
+import 'package:beta/domain/video_file.dart';
 import 'package:beta/domain/voice_note.dart';
 import 'package:drift/drift.dart';
 import 'package:get/instance_manager.dart';
@@ -64,6 +65,7 @@ part 'database_service.g.dart'; // the generated code will be there
   TermsWithQuestionsFilteringEnabled,
   Flashcards,
   VoiceNotes,
+  VideoFiles,
   RelatedTerms,
   QuestionsLinkedToTags,
   TermsParents,
@@ -78,7 +80,7 @@ class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
   @override
-  int get schemaVersion => 40;
+  int get schemaVersion => 41;
 
   @override
   MigrationStrategy get migration {
@@ -366,6 +368,7 @@ class DatabaseService extends _$DatabaseService {
         if (from < 40) {
           await m.createTable(configs);
         }
+        if (from < 41) await m.createTable(videoFiles);
       },
     );
   }

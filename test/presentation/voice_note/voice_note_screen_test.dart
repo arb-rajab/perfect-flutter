@@ -93,7 +93,7 @@ Future main() async {
       'if there is a termlastaccess object, initial second is set accordingly',
       (WidgetTester tester) async {
     TermLastAccessService termLastAccessService = Get.find();
-    termLastAccessService.addTermLastAccessed(const Id(1), const Id(42));
+    termLastAccessService.addTermLastAccessed(const Id(1), const Id(42).value!);
     // Pump the widget
     await tester.pumpWidget(const MyApp(defaultRoute: VoiceNoteScreen.route));
     await tester.pumpAndSettle();

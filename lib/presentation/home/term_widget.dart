@@ -36,7 +36,12 @@ class _TermWidgetState extends State<TermWidget> {
         termWidgetController.termsListingController.items[widget.index];
     TermData termData = termWidgetController.termData;
     if (kIsWeb &&
-        [TermType.ebook, TermType.youtubeVideos, TermType.voiceNotes]
+        [
+          TermType.ebook,
+          TermType.youtubeVideos,
+          TermType.voiceNotes,
+          TermType.videoFile
+        ]
             .contains(termData.term.type)) {
       return const UnsupportedContentWebWidget();
     }
@@ -47,7 +52,8 @@ class _TermWidgetState extends State<TermWidget> {
       TermType.ebook,
       TermType.youtubeVideos,
       TermType.flashcards,
-      TermType.voiceNotes
+      TermType.voiceNotes,
+      TermType.videoFile
     ].contains(termData.term.type)) {
       return const UnsupportedContentWidget();
     }

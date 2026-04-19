@@ -19,6 +19,7 @@ import 'package:beta/presentation/questions_report/questions_report_screen.dart'
 import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
 import 'package:beta/presentation/settings/settings_screen.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
+import 'package:beta/presentation/video_file/video_file_screen.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/web/web_screen.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
@@ -98,6 +99,9 @@ GoRouter router(defaultRoute) => GoRouter(
       GoRoute(
           path: VoiceNoteScreen.route,
           builder: (context, state) => const VoiceNoteScreen()),
+      GoRoute(
+          path: VideoFileScreen.route,
+          builder: (context, state) => const VideoFileScreen()),
       GoRoute(
           path: ProductScreen.route,
           builder: (context, state) => ProductScreen(

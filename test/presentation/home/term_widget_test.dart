@@ -8,6 +8,7 @@ import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_linked_to_label_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
+import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/configs/links.dart';
 import 'package:beta/constants/api_constant.dart';
@@ -20,6 +21,7 @@ import 'package:beta/domain/term_parent_data.dart';
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/visible.dart';
+import 'package:beta/domain/video_file_data.dart';
 import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/main.dart';
@@ -32,6 +34,7 @@ import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/term_leading_widget.dart';
 import 'package:beta/presentation/home/term_widget.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
+import 'package:beta/presentation/video_file/video_file_screen.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/widgets/number_of_children_widget.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
@@ -1474,6 +1477,262 @@ Future main() async {
             findsNothing);
       });
     });
+
+    group('tapping video file term', () {
+      testWidgets(
+          'tapping term that is not downloaded, shows a download term dialogue',
+          (widgetTester) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        await termService.addTerms([
+          TermData(
+              const Term(
+                  name: 'grand child',
+                  enabled: 1,
+                  id: 3,
+                  uuid: 'a',
+                  type: TermType.videoFile,
+                  creation: '2022-01-01 11:11:11',
+                  free: 1,
+                  ordering: 1,
+                  needsUpdate: 0,
+                  captureable: 1,
+                  textCulumn: '',
+                  outerNote: ''),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1))
+        ]);
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(VideoFileScreen), findsNothing);
+        expect(
+            find.widgetWithText(
+                OKDialogue, StringConstant.youHaveToDownloadFirst),
+            findsOneWidget);
+      });
+
+      testWidgets(
+          'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+          (widgetTester) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        await termService.addTerms([
+          TermData(
+              const Term(
+                  name: 'grand child',
+                  enabled: 1,
+                  id: 3,
+                  uuid: 'a',
+                  type: TermType.videoFile,
+                  creation: '2022-01-01 11:11:11',
+                  free: 1,
+                  ordering: 1,
+                  needsUpdate: 0,
+                  captureable: 1,
+                  textCulumn: '',
+                  outerNote: ''),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1))
+        ]);
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(VideoFileScreen), findsNothing);
+        expect(
+            find.widgetWithText(
+                OKDialogue, StringConstant.youHaveToDownloadFirst),
+            findsOneWidget);
+
+        await widgetTester.tap(find.byKey(const Key('ok')));
+        await widgetTester.pumpAndSettle();
+        expect(find.byType(OKDialogue), findsNothing);
+      });
+
+      testWidgets('tapping expired term, shows a message',
+          (widgetTester) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        await termService.addTerms([
+          TermData(
+              const Term(
+                  name: 'grand child',
+                  enabled: 1,
+                  id: 3,
+                  uuid: 'a',
+                  type: TermType.videoFile,
+                  creation: '2022-01-01 11:11:11',
+                  // changed this variable to 0
+                  free: 0,
+                  ordering: 1,
+                  needsUpdate: 0,
+                  captureable: 1,
+                  textCulumn: '',
+                  outerNote: ''),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1))
+        ]);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(VideoFileScreen), findsNothing);
+        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget);
+      });
+
+      testWidgets(
+          'tapping expired term, shows a message, then tapping ok, dismisses the message',
+          (widgetTester) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        await termService.addTerms([
+          TermData(
+              const Term(
+                  name: 'grand child',
+                  enabled: 1,
+                  id: 3,
+                  uuid: 'a',
+                  type: TermType.videoFile,
+                  creation: '2022-01-01 11:11:11',
+                  // changed this variable to 0
+                  free: 0,
+                  ordering: 1,
+                  needsUpdate: 0,
+                  captureable: 1,
+                  textCulumn: '',
+                  outerNote: ''),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1))
+        ]);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(VideoFileScreen), findsNothing);
+        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget);
+
+        await widgetTester.tap(find.byKey(const Key('ok')));
+        await widgetTester.pumpAndSettle();
+        expect(find.byType(OKDialogue), findsNothing);
+      });
+
+      testWidgets('tapping unexpired term, opens video file screen',
+          (widgetTester) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        VideoFileService videoFileService = Get.find();
+        await termService.addTerms([
+          TermData(
+              const Term(
+                  name: 'grand child',
+                  enabled: 1,
+                  id: 3,
+                  uuid: 'a',
+                  type: TermType.videoFile,
+                  creation: '2022-01-01 11:11:11',
+                  free: 1,
+                  ordering: 1,
+                  needsUpdate: 0,
+                  captureable: 1,
+                  textCulumn: '',
+                  outerNote: ''),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1))
+        ]);
+        await videoFileService.addVideoFile(VideoFileData(const VideoFile(
+            encryptionKey: '',
+            parentTermId: 3,
+            creation: '2022-01-01 11:12:13',
+            lastUpdated: '2024-01-01 11:12:13')));
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
+
+        await widgetTester
+            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pump(const Duration(seconds: 2));
+
+        // expect(find.byType(VideoFileScreen), findsOneWidget);
+        expect(find.text('grand child'), findsOneWidget);
+        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsNothing);
+        //pump a container so that the timer is flushed and does not cause a pending timer exception after the test is done
+        await widgetTester.pumpWidget(Container());
+        await widgetTester.pumpAndSettle();
+
+      });
+    });
   });
 
   group('rendering tests', () {
@@ -1941,7 +2200,7 @@ Future main() async {
         await databaseService.seedTermsData();
         TermLastAccessService termLastAccessService = Get.find();
         await termLastAccessService.addTermLastAccessed(
-            const Id(1), const Id(1));
+            const Id(1), const Id(1).value!);
 
         await widgetTester
             .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));

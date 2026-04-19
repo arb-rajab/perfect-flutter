@@ -194,6 +194,35 @@ void main() {
     expect(icon.size, 50);
   });
 
+  testWidgets('displays video icon for video file term type', (tester) async {
+    termData.term = termData.term.copyWith(type: TermType.videoFile);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: TermLeadingWidget(termData),
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.slow_motion_video), findsOneWidget);
+  });
+
+  testWidgets('displays video icon with correct size', (tester) async {
+    termData.term = termData.term.copyWith(type: TermType.videoFile);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: TermLeadingWidget(termData),
+        ),
+      ),
+    );
+
+    final icon = tester.widget<Icon>(find.byIcon(Icons.slow_motion_video));
+    expect(icon.size, 50);
+  });
+
   testWidgets('displays default description icon for term type',
       (tester) async {
     termData.term = termData.term.copyWith(type: TermType.term);

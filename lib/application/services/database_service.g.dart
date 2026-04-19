@@ -5398,6 +5398,278 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   }
 }
 
+class $VideoFilesTable extends VideoFiles
+    with TableInfo<$VideoFilesTable, VideoFile> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VideoFilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _encryptionKeyMeta =
+      const VerificationMeta('encryptionKey');
+  @override
+  late final GeneratedColumn<String> encryptionKey = GeneratedColumn<String>(
+      'encryptionKey', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _parentTermIdMeta =
+      const VerificationMeta('parentTermId');
+  @override
+  late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
+      'parentTermId', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _creationMeta =
+      const VerificationMeta('creation');
+  @override
+  late final GeneratedColumn<String> creation = GeneratedColumn<String>(
+      'creation', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _lastUpdatedMeta =
+      const VerificationMeta('lastUpdated');
+  @override
+  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
+      'lastUpdated', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [encryptionKey, parentTermId, creation, lastUpdated];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'videoFiles';
+  @override
+  VerificationContext validateIntegrity(Insertable<VideoFile> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('encryptionKey')) {
+      context.handle(
+          _encryptionKeyMeta,
+          encryptionKey.isAcceptableOrUnknown(
+              data['encryptionKey']!, _encryptionKeyMeta));
+    } else if (isInserting) {
+      context.missing(_encryptionKeyMeta);
+    }
+    if (data.containsKey('parentTermId')) {
+      context.handle(
+          _parentTermIdMeta,
+          parentTermId.isAcceptableOrUnknown(
+              data['parentTermId']!, _parentTermIdMeta));
+    }
+    if (data.containsKey('creation')) {
+      context.handle(_creationMeta,
+          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+    } else if (isInserting) {
+      context.missing(_creationMeta);
+    }
+    if (data.containsKey('lastUpdated')) {
+      context.handle(
+          _lastUpdatedMeta,
+          lastUpdated.isAcceptableOrUnknown(
+              data['lastUpdated']!, _lastUpdatedMeta));
+    } else if (isInserting) {
+      context.missing(_lastUpdatedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {parentTermId};
+  @override
+  VideoFile map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VideoFile(
+      encryptionKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
+      parentTermId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
+      creation: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
+      lastUpdated: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
+    );
+  }
+
+  @override
+  $VideoFilesTable createAlias(String alias) {
+    return $VideoFilesTable(attachedDatabase, alias);
+  }
+}
+
+class VideoFile extends DataClass implements Insertable<VideoFile> {
+  final String encryptionKey;
+  final int parentTermId;
+  final String creation;
+  final String lastUpdated;
+  const VideoFile(
+      {required this.encryptionKey,
+      required this.parentTermId,
+      required this.creation,
+      required this.lastUpdated});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['encryptionKey'] = Variable<String>(encryptionKey);
+    map['parentTermId'] = Variable<int>(parentTermId);
+    map['creation'] = Variable<String>(creation);
+    map['lastUpdated'] = Variable<String>(lastUpdated);
+    return map;
+  }
+
+  VideoFilesCompanion toCompanion(bool nullToAbsent) {
+    return VideoFilesCompanion(
+      encryptionKey: Value(encryptionKey),
+      parentTermId: Value(parentTermId),
+      creation: Value(creation),
+      lastUpdated: Value(lastUpdated),
+    );
+  }
+
+  factory VideoFile.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VideoFile(
+      encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
+      parentTermId: serializer.fromJson<int>(json['parentTermId']),
+      creation: serializer.fromJson<String>(json['creation']),
+      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'encryptionKey': serializer.toJson<String>(encryptionKey),
+      'parentTermId': serializer.toJson<int>(parentTermId),
+      'creation': serializer.toJson<String>(creation),
+      'lastUpdated': serializer.toJson<String>(lastUpdated),
+    };
+  }
+
+  VideoFile copyWith(
+          {String? encryptionKey,
+          int? parentTermId,
+          String? creation,
+          String? lastUpdated}) =>
+      VideoFile(
+        encryptionKey: encryptionKey ?? this.encryptionKey,
+        parentTermId: parentTermId ?? this.parentTermId,
+        creation: creation ?? this.creation,
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+      );
+  VideoFile copyWithCompanion(VideoFilesCompanion data) {
+    return VideoFile(
+      encryptionKey: data.encryptionKey.present
+          ? data.encryptionKey.value
+          : this.encryptionKey,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+      creation: data.creation.present ? data.creation.value : this.creation,
+      lastUpdated:
+          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VideoFile(')
+          ..write('encryptionKey: $encryptionKey, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('creation: $creation, ')
+          ..write('lastUpdated: $lastUpdated')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(encryptionKey, parentTermId, creation, lastUpdated);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VideoFile &&
+          other.encryptionKey == this.encryptionKey &&
+          other.parentTermId == this.parentTermId &&
+          other.creation == this.creation &&
+          other.lastUpdated == this.lastUpdated);
+}
+
+class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
+  final Value<String> encryptionKey;
+  final Value<int> parentTermId;
+  final Value<String> creation;
+  final Value<String> lastUpdated;
+  const VideoFilesCompanion({
+    this.encryptionKey = const Value.absent(),
+    this.parentTermId = const Value.absent(),
+    this.creation = const Value.absent(),
+    this.lastUpdated = const Value.absent(),
+  });
+  VideoFilesCompanion.insert({
+    required String encryptionKey,
+    this.parentTermId = const Value.absent(),
+    required String creation,
+    required String lastUpdated,
+  })  : encryptionKey = Value(encryptionKey),
+        creation = Value(creation),
+        lastUpdated = Value(lastUpdated);
+  static Insertable<VideoFile> custom({
+    Expression<String>? encryptionKey,
+    Expression<int>? parentTermId,
+    Expression<String>? creation,
+    Expression<String>? lastUpdated,
+  }) {
+    return RawValuesInsertable({
+      if (encryptionKey != null) 'encryptionKey': encryptionKey,
+      if (parentTermId != null) 'parentTermId': parentTermId,
+      if (creation != null) 'creation': creation,
+      if (lastUpdated != null) 'lastUpdated': lastUpdated,
+    });
+  }
+
+  VideoFilesCompanion copyWith(
+      {Value<String>? encryptionKey,
+      Value<int>? parentTermId,
+      Value<String>? creation,
+      Value<String>? lastUpdated}) {
+    return VideoFilesCompanion(
+      encryptionKey: encryptionKey ?? this.encryptionKey,
+      parentTermId: parentTermId ?? this.parentTermId,
+      creation: creation ?? this.creation,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (encryptionKey.present) {
+      map['encryptionKey'] = Variable<String>(encryptionKey.value);
+    }
+    if (parentTermId.present) {
+      map['parentTermId'] = Variable<int>(parentTermId.value);
+    }
+    if (creation.present) {
+      map['creation'] = Variable<String>(creation.value);
+    }
+    if (lastUpdated.present) {
+      map['lastUpdated'] = Variable<String>(lastUpdated.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VideoFilesCompanion(')
+          ..write('encryptionKey: $encryptionKey, ')
+          ..write('parentTermId: $parentTermId, ')
+          ..write('creation: $creation, ')
+          ..write('lastUpdated: $lastUpdated')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $RelatedTermsTable extends RelatedTerms
     with TableInfo<$RelatedTermsTable, RelatedTerm> {
   @override
@@ -7281,6 +7553,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
       $TermsWithQuestionsFilteringEnabledTable(this);
   late final $FlashcardsTable flashcards = $FlashcardsTable(this);
   late final $VoiceNotesTable voiceNotes = $VoiceNotesTable(this);
+  late final $VideoFilesTable videoFiles = $VideoFilesTable(this);
   late final $RelatedTermsTable relatedTerms = $RelatedTermsTable(this);
   late final $QuestionsLinkedToTagsTable questionsLinkedToTags =
       $QuestionsLinkedToTagsTable(this);
@@ -7344,6 +7617,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
         termsWithQuestionsFilteringEnabled,
         flashcards,
         voiceNotes,
+        videoFiles,
         relatedTerms,
         questionsLinkedToTags,
         termsParents,
@@ -10363,6 +10637,152 @@ typedef $$VoiceNotesTableProcessedTableManager = ProcessedTableManager<
     (VoiceNote, BaseReferences<_$DatabaseService, $VoiceNotesTable, VoiceNote>),
     VoiceNote,
     PrefetchHooks Function()>;
+typedef $$VideoFilesTableCreateCompanionBuilder = VideoFilesCompanion Function({
+  required String encryptionKey,
+  Value<int> parentTermId,
+  required String creation,
+  required String lastUpdated,
+});
+typedef $$VideoFilesTableUpdateCompanionBuilder = VideoFilesCompanion Function({
+  Value<String> encryptionKey,
+  Value<int> parentTermId,
+  Value<String> creation,
+  Value<String> lastUpdated,
+});
+
+class $$VideoFilesTableFilterComposer
+    extends Composer<_$DatabaseService, $VideoFilesTable> {
+  $$VideoFilesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get encryptionKey => $composableBuilder(
+      column: $table.encryptionKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get parentTermId => $composableBuilder(
+      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get creation => $composableBuilder(
+      column: $table.creation, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => ColumnFilters(column));
+}
+
+class $$VideoFilesTableOrderingComposer
+    extends Composer<_$DatabaseService, $VideoFilesTable> {
+  $$VideoFilesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get encryptionKey => $composableBuilder(
+      column: $table.encryptionKey,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get parentTermId => $composableBuilder(
+      column: $table.parentTermId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get creation => $composableBuilder(
+      column: $table.creation, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => ColumnOrderings(column));
+}
+
+class $$VideoFilesTableAnnotationComposer
+    extends Composer<_$DatabaseService, $VideoFilesTable> {
+  $$VideoFilesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get encryptionKey => $composableBuilder(
+      column: $table.encryptionKey, builder: (column) => column);
+
+  GeneratedColumn<int> get parentTermId => $composableBuilder(
+      column: $table.parentTermId, builder: (column) => column);
+
+  GeneratedColumn<String> get creation =>
+      $composableBuilder(column: $table.creation, builder: (column) => column);
+
+  GeneratedColumn<String> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => column);
+}
+
+class $$VideoFilesTableTableManager extends RootTableManager<
+    _$DatabaseService,
+    $VideoFilesTable,
+    VideoFile,
+    $$VideoFilesTableFilterComposer,
+    $$VideoFilesTableOrderingComposer,
+    $$VideoFilesTableAnnotationComposer,
+    $$VideoFilesTableCreateCompanionBuilder,
+    $$VideoFilesTableUpdateCompanionBuilder,
+    (VideoFile, BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>),
+    VideoFile,
+    PrefetchHooks Function()> {
+  $$VideoFilesTableTableManager(_$DatabaseService db, $VideoFilesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VideoFilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VideoFilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VideoFilesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> encryptionKey = const Value.absent(),
+            Value<int> parentTermId = const Value.absent(),
+            Value<String> creation = const Value.absent(),
+            Value<String> lastUpdated = const Value.absent(),
+          }) =>
+              VideoFilesCompanion(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+          createCompanionCallback: ({
+            required String encryptionKey,
+            Value<int> parentTermId = const Value.absent(),
+            required String creation,
+            required String lastUpdated,
+          }) =>
+              VideoFilesCompanion.insert(
+            encryptionKey: encryptionKey,
+            parentTermId: parentTermId,
+            creation: creation,
+            lastUpdated: lastUpdated,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$VideoFilesTableProcessedTableManager = ProcessedTableManager<
+    _$DatabaseService,
+    $VideoFilesTable,
+    VideoFile,
+    $$VideoFilesTableFilterComposer,
+    $$VideoFilesTableOrderingComposer,
+    $$VideoFilesTableAnnotationComposer,
+    $$VideoFilesTableCreateCompanionBuilder,
+    $$VideoFilesTableUpdateCompanionBuilder,
+    (VideoFile, BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>),
+    VideoFile,
+    PrefetchHooks Function()>;
 typedef $$RelatedTermsTableCreateCompanionBuilder = RelatedTermsCompanion
     Function({
   required int anotherTermId,
@@ -11602,6 +12022,8 @@ class $DatabaseServiceManager {
       $$FlashcardsTableTableManager(_db, _db.flashcards);
   $$VoiceNotesTableTableManager get voiceNotes =>
       $$VoiceNotesTableTableManager(_db, _db.voiceNotes);
+  $$VideoFilesTableTableManager get videoFiles =>
+      $$VideoFilesTableTableManager(_db, _db.videoFiles);
   $$RelatedTermsTableTableManager get relatedTerms =>
       $$RelatedTermsTableTableManager(_db, _db.relatedTerms);
   $$QuestionsLinkedToTagsTableTableManager get questionsLinkedToTags =>
