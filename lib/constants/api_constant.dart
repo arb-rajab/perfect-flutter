@@ -40,4 +40,6 @@ class ApiConstant {
 
   static const String news = '${_apiV1}news';
   static const String newss = '$news/(NEWS_ID)';
+
+  static const String createPaymentIntent = '${_apiV1}payments/create-intent';
 }

@@ -11,6 +11,7 @@ import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
 import 'package:beta/application/services/http_request_service.dart';
 import 'package:beta/application/services/path/shared.dart';
+import 'package:beta/application/services/payment_service.dart';
 import 'package:beta/application/services/question_linked_to_tag_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
@@ -130,6 +131,11 @@ class MainController {
     Get.put(ClipboardRepository());
     Get.put(ShareService());
     Get.put(DownloadService());
+
+    PaymentService paymentService = Get.put(PaymentService());
+    if (!testing) {
+      await paymentService.initialize();
+    }
   }
 }
 

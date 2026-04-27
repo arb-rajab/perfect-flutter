@@ -22,3 +22,6 @@ List newFeatures = [
   StringConstant.addStudiedTermsFeature.tr(),
   StringConstant.addFavoriteTermsFeature.tr(),
 ];
+
+String stripePublishableKey =
+    'pk_test_51TOJUKEzDW8z7LzIOfEVn0V6tNfmqiNz2NXEyILd803CfhDC0coCeIRshei5Yoa1h8LYjiFxUyRlykWKLYjTgvCt00IFdH3QJv';
