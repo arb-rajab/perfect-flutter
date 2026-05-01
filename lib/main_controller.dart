@@ -10,6 +10,7 @@ import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
 import 'package:beta/application/services/http_request_service.dart';
+import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/payment_service.dart';
 import 'package:beta/application/services/question_linked_to_tag_service.dart';
@@ -106,6 +107,7 @@ class MainController {
     Get.put(QuestionService(databaseService: databaseService));
     Get.put(AnswerService(databaseService: databaseService));
     Get.put(FlashcardService(databaseService: databaseService));
+    Get.put(ImageService(databaseService: databaseService));
     Get.put(QuestionMediaService(databaseService: databaseService));
     Get.put(QuestionTagService(databaseService: databaseService));
     Get.put(QuestionLinkedToTagService(databaseService: databaseService));

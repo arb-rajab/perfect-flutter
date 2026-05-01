@@ -6,15 +6,14 @@ part 'term_print.freezed.dart';
 part 'term_print.g.dart';
 
 @freezed
-@JsonSerializable()
-class TermPrint with _$TermPrint {
+abstract class TermPrint with _$TermPrint {
   factory TermPrint(
       {@GiftTypeJsonConverter() required GiftType gift,
       @OtherGiftJsonConverter() required OtherGift otherGift}) = _TermPrint;
 
-  static TermPrint fromJson(Map<String, dynamic> json) =>
+  factory TermPrint.fromJson(Map<String, dynamic> json) =>
       _$TermPrintFromJson(json);
 
-  static Map<String, dynamic> toJson(TermPrint instance) =>
-      _$TermPrintToJson(instance);
+  // static Map<String, dynamic> toJson(TermPrint instance) =>
+  //     _$TermPrintToJson(instance);
 }

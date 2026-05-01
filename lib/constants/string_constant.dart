@@ -129,16 +129,8 @@ class StringConstant {
   static const _whatsNew = 'whats-new';
   static const whatsNew = '$_whatsNew.whats-new';
   static const whatsNewInVersion = '$_whatsNew.whats-new-in-version';
-  static const addContactUsScreen = '$_whatsNew.add-contact-us-screen';
-  static const addFrequentQuestionsScreen =
-      '$_whatsNew.add-frequent-questions-screen';
-  static const supportNightMode = '$_whatsNew.support-night-mode';
-  static const supportCustomTextSize = '$_whatsNew.support-custom-text-size';
-  static const supportUserDataDeletion =
-      '$_whatsNew.support-user-data-deletion';
-  static const addStudiedTermsFeature = '$_whatsNew.add-studied-terms-feature';
-  static const addFavoriteTermsFeature =
-      '$_whatsNew.add-favorite-terms-feature';
+  static const addVideosScreen = '$_whatsNew.add-videos-screen';
+  static const addImagesScreen = '$_whatsNew.add-images-screen';
 
   static const _browseTerms = 'browse-terms';
   static const browseTerms = '$_browseTerms.browse-terms';

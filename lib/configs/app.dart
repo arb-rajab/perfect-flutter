@@ -14,13 +14,8 @@ const String vapidKey =
 const String clarityProjectId = 'u90l12dvnj';
 
 List newFeatures = [
-  StringConstant.addContactUsScreen.tr(),
-  StringConstant.addFrequentQuestionsScreen.tr(),
-  StringConstant.supportNightMode.tr(),
-  StringConstant.supportCustomTextSize.tr(),
-  StringConstant.supportUserDataDeletion.tr(),
-  StringConstant.addStudiedTermsFeature.tr(),
-  StringConstant.addFavoriteTermsFeature.tr(),
+  StringConstant.addVideosScreen.tr(),
+  StringConstant.addImagesScreen.tr(),
 ];
 
 String stripePublishableKey =

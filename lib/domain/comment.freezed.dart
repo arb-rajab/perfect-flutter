@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,309 +9,383 @@ part of 'comment.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Comment {
-  @IdJsonConverter()
-  Id get id => throw _privateConstructorUsedError;
-  @TextJsonConverter()
-  Text get content => throw _privateConstructorUsedError;
-  @DeviceJsonConverter()
-  Device? get device => throw _privateConstructorUsedError;
-  @AdminJsonConverter()
-  Admin? get admin => throw _privateConstructorUsedError;
-  @NumberOfSubTermsJsonConverter()
-  NumberOfSubTerms get numberOfComments => throw _privateConstructorUsedError;
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $CommentCopyWith<Comment> get copyWith => throw _privateConstructorUsedError;
+@IdJsonConverter() Id get id;@TextJsonConverter() Text get content;@DeviceJsonConverter() Device? get device;@AdminJsonConverter() Admin? get admin;@NumberOfSubTermsJsonConverter() NumberOfSubTerms get numberOfComments;
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CommentCopyWith<Comment> get copyWith => _$CommentCopyWithImpl<Comment>(this as Comment, _$identity);
+
+  /// Serializes this Comment to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Comment&&(identical(other.id, id) || other.id == id)&&(identical(other.content, content) || other.content == content)&&(identical(other.device, device) || other.device == device)&&(identical(other.admin, admin) || other.admin == admin)&&(identical(other.numberOfComments, numberOfComments) || other.numberOfComments == numberOfComments));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,content,device,admin,numberOfComments);
+
+@override
+String toString() {
+  return 'Comment(id: $id, content: $content, device: $device, admin: $admin, numberOfComments: $numberOfComments)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $CommentCopyWith<$Res> {
-  factory $CommentCopyWith(Comment value, $Res Function(Comment) then) =
-      _$CommentCopyWithImpl<$Res, Comment>;
-  @useResult
-  $Res call(
-      {@IdJsonConverter() Id id,
-      @TextJsonConverter() Text content,
-      @DeviceJsonConverter() Device? device,
-      @AdminJsonConverter() Admin? admin,
-      @NumberOfSubTermsJsonConverter() NumberOfSubTerms numberOfComments});
+abstract mixin class $CommentCopyWith<$Res>  {
+  factory $CommentCopyWith(Comment value, $Res Function(Comment) _then) = _$CommentCopyWithImpl;
+@useResult
+$Res call({
+@IdJsonConverter() Id id,@TextJsonConverter() Text content,@DeviceJsonConverter() Device? device,@AdminJsonConverter() Admin? admin,@NumberOfSubTermsJsonConverter() NumberOfSubTerms numberOfComments
+});
 
-  $IdCopyWith<$Res> get id;
-  $TextCopyWith<$Res> get content;
-  $DeviceCopyWith<$Res>? get device;
-  $AdminCopyWith<$Res>? get admin;
-  $NumberOfSubTermsCopyWith<$Res> get numberOfComments;
+
+$IdCopyWith<$Res> get id;$TextCopyWith<$Res> get content;$DeviceCopyWith<$Res>? get device;$AdminCopyWith<$Res>? get admin;$NumberOfSubTermsCopyWith<$Res> get numberOfComments;
+
 }
-
 /// @nodoc
-class _$CommentCopyWithImpl<$Res, $Val extends Comment>
+class _$CommentCopyWithImpl<$Res>
     implements $CommentCopyWith<$Res> {
-  _$CommentCopyWithImpl(this._value, this._then);
+  _$CommentCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final Comment _self;
+  final $Res Function(Comment) _then;
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? content = null,
-    Object? device = freezed,
-    Object? admin = freezed,
-    Object? numberOfComments = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as Id,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as Text,
-      device: freezed == device
-          ? _value.device
-          : device // ignore: cast_nullable_to_non_nullable
-              as Device?,
-      admin: freezed == admin
-          ? _value.admin
-          : admin // ignore: cast_nullable_to_non_nullable
-              as Admin?,
-      numberOfComments: null == numberOfComments
-          ? _value.numberOfComments
-          : numberOfComments // ignore: cast_nullable_to_non_nullable
-              as NumberOfSubTerms,
-    ) as $Val);
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? content = null,Object? device = freezed,Object? admin = freezed,Object? numberOfComments = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as Id,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as Text,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as Device?,admin: freezed == admin ? _self.admin : admin // ignore: cast_nullable_to_non_nullable
+as Admin?,numberOfComments: null == numberOfComments ? _self.numberOfComments : numberOfComments // ignore: cast_nullable_to_non_nullable
+as NumberOfSubTerms,
+  ));
+}
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$IdCopyWith<$Res> get id {
+  
+  return $IdCopyWith<$Res>(_self.id, (value) {
+    return _then(_self.copyWith(id: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TextCopyWith<$Res> get content {
+  
+  return $TextCopyWith<$Res>(_self.content, (value) {
+    return _then(_self.copyWith(content: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DeviceCopyWith<$Res>? get device {
+    if (_self.device == null) {
+    return null;
   }
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $IdCopyWith<$Res> get id {
-    return $IdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
-    });
+  return $DeviceCopyWith<$Res>(_self.device!, (value) {
+    return _then(_self.copyWith(device: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdminCopyWith<$Res>? get admin {
+    if (_self.admin == null) {
+    return null;
   }
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TextCopyWith<$Res> get content {
-    return $TextCopyWith<$Res>(_value.content, (value) {
-      return _then(_value.copyWith(content: value) as $Val);
-    });
-  }
+  return $AdminCopyWith<$Res>(_self.admin!, (value) {
+    return _then(_self.copyWith(admin: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NumberOfSubTermsCopyWith<$Res> get numberOfComments {
+  
+  return $NumberOfSubTermsCopyWith<$Res>(_self.numberOfComments, (value) {
+    return _then(_self.copyWith(numberOfComments: value));
+  });
+}
+}
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $DeviceCopyWith<$Res>? get device {
-    if (_value.device == null) {
-      return null;
-    }
 
-    return $DeviceCopyWith<$Res>(_value.device!, (value) {
-      return _then(_value.copyWith(device: value) as $Val);
-    });
-  }
+/// Adds pattern-matching-related methods to [Comment].
+extension CommentPatterns on Comment {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AdminCopyWith<$Res>? get admin {
-    if (_value.admin == null) {
-      return null;
-    }
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Comment value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Comment() when $default != null:
+return $default(_that);case _:
+  return orElse();
 
-    return $AdminCopyWith<$Res>(_value.admin!, (value) {
-      return _then(_value.copyWith(admin: value) as $Val);
-    });
-  }
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $NumberOfSubTermsCopyWith<$Res> get numberOfComments {
-    return $NumberOfSubTermsCopyWith<$Res>(_value.numberOfComments, (value) {
-      return _then(_value.copyWith(numberOfComments: value) as $Val);
-    });
-  }
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Comment value)  $default,){
+final _that = this;
+switch (_that) {
+case _Comment():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Comment value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Comment() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IdJsonConverter()  Id id, @TextJsonConverter()  Text content, @DeviceJsonConverter()  Device? device, @AdminJsonConverter()  Admin? admin, @NumberOfSubTermsJsonConverter()  NumberOfSubTerms numberOfComments)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Comment() when $default != null:
+return $default(_that.id,_that.content,_that.device,_that.admin,_that.numberOfComments);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IdJsonConverter()  Id id, @TextJsonConverter()  Text content, @DeviceJsonConverter()  Device? device, @AdminJsonConverter()  Admin? admin, @NumberOfSubTermsJsonConverter()  NumberOfSubTerms numberOfComments)  $default,) {final _that = this;
+switch (_that) {
+case _Comment():
+return $default(_that.id,_that.content,_that.device,_that.admin,_that.numberOfComments);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IdJsonConverter()  Id id, @TextJsonConverter()  Text content, @DeviceJsonConverter()  Device? device, @AdminJsonConverter()  Admin? admin, @NumberOfSubTermsJsonConverter()  NumberOfSubTerms numberOfComments)?  $default,) {final _that = this;
+switch (_that) {
+case _Comment() when $default != null:
+return $default(_that.id,_that.content,_that.device,_that.admin,_that.numberOfComments);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$CommentImplCopyWith<$Res> implements $CommentCopyWith<$Res> {
-  factory _$$CommentImplCopyWith(
-          _$CommentImpl value, $Res Function(_$CommentImpl) then) =
-      __$$CommentImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@IdJsonConverter() Id id,
-      @TextJsonConverter() Text content,
-      @DeviceJsonConverter() Device? device,
-      @AdminJsonConverter() Admin? admin,
-      @NumberOfSubTermsJsonConverter() NumberOfSubTerms numberOfComments});
+@JsonSerializable()
 
-  @override
-  $IdCopyWith<$Res> get id;
-  @override
-  $TextCopyWith<$Res> get content;
-  @override
-  $DeviceCopyWith<$Res>? get device;
-  @override
-  $AdminCopyWith<$Res>? get admin;
-  @override
-  $NumberOfSubTermsCopyWith<$Res> get numberOfComments;
+class _Comment implements Comment {
+   _Comment({@IdJsonConverter() required this.id, @TextJsonConverter() required this.content, @DeviceJsonConverter() this.device, @AdminJsonConverter() this.admin, @NumberOfSubTermsJsonConverter() required this.numberOfComments});
+  factory _Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
+
+@override@IdJsonConverter() final  Id id;
+@override@TextJsonConverter() final  Text content;
+@override@DeviceJsonConverter() final  Device? device;
+@override@AdminJsonConverter() final  Admin? admin;
+@override@NumberOfSubTermsJsonConverter() final  NumberOfSubTerms numberOfComments;
+
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CommentCopyWith<_Comment> get copyWith => __$CommentCopyWithImpl<_Comment>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CommentToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Comment&&(identical(other.id, id) || other.id == id)&&(identical(other.content, content) || other.content == content)&&(identical(other.device, device) || other.device == device)&&(identical(other.admin, admin) || other.admin == admin)&&(identical(other.numberOfComments, numberOfComments) || other.numberOfComments == numberOfComments));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,content,device,admin,numberOfComments);
+
+@override
+String toString() {
+  return 'Comment(id: $id, content: $content, device: $device, admin: $admin, numberOfComments: $numberOfComments)';
+}
+
+
 }
 
 /// @nodoc
-class __$$CommentImplCopyWithImpl<$Res>
-    extends _$CommentCopyWithImpl<$Res, _$CommentImpl>
-    implements _$$CommentImplCopyWith<$Res> {
-  __$$CommentImplCopyWithImpl(
-      _$CommentImpl _value, $Res Function(_$CommentImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
+  factory _$CommentCopyWith(_Comment value, $Res Function(_Comment) _then) = __$CommentCopyWithImpl;
+@override @useResult
+$Res call({
+@IdJsonConverter() Id id,@TextJsonConverter() Text content,@DeviceJsonConverter() Device? device,@AdminJsonConverter() Admin? admin,@NumberOfSubTermsJsonConverter() NumberOfSubTerms numberOfComments
+});
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? content = null,
-    Object? device = freezed,
-    Object? admin = freezed,
-    Object? numberOfComments = null,
-  }) {
-    return _then(_$CommentImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as Id,
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as Text,
-      device: freezed == device
-          ? _value.device
-          : device // ignore: cast_nullable_to_non_nullable
-              as Device?,
-      admin: freezed == admin
-          ? _value.admin
-          : admin // ignore: cast_nullable_to_non_nullable
-              as Admin?,
-      numberOfComments: null == numberOfComments
-          ? _value.numberOfComments
-          : numberOfComments // ignore: cast_nullable_to_non_nullable
-              as NumberOfSubTerms,
-    ));
-  }
+
+@override $IdCopyWith<$Res> get id;@override $TextCopyWith<$Res> get content;@override $DeviceCopyWith<$Res>? get device;@override $AdminCopyWith<$Res>? get admin;@override $NumberOfSubTermsCopyWith<$Res> get numberOfComments;
+
 }
-
 /// @nodoc
+class __$CommentCopyWithImpl<$Res>
+    implements _$CommentCopyWith<$Res> {
+  __$CommentCopyWithImpl(this._self, this._then);
 
-class _$CommentImpl implements _Comment {
-  _$CommentImpl(
-      {@IdJsonConverter() required this.id,
-      @TextJsonConverter() required this.content,
-      @DeviceJsonConverter() this.device,
-      @AdminJsonConverter() this.admin,
-      @NumberOfSubTermsJsonConverter() required this.numberOfComments});
+  final _Comment _self;
+  final $Res Function(_Comment) _then;
 
-  @override
-  @IdJsonConverter()
-  final Id id;
-  @override
-  @TextJsonConverter()
-  final Text content;
-  @override
-  @DeviceJsonConverter()
-  final Device? device;
-  @override
-  @AdminJsonConverter()
-  final Admin? admin;
-  @override
-  @NumberOfSubTermsJsonConverter()
-  final NumberOfSubTerms numberOfComments;
-
-  @override
-  String toString() {
-    return 'Comment(id: $id, content: $content, device: $device, admin: $admin, numberOfComments: $numberOfComments)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CommentImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.device, device) || other.device == device) &&
-            (identical(other.admin, admin) || other.admin == admin) &&
-            (identical(other.numberOfComments, numberOfComments) ||
-                other.numberOfComments == numberOfComments));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, content, device, admin, numberOfComments);
-
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
-      __$$CommentImplCopyWithImpl<_$CommentImpl>(this, _$identity);
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? content = null,Object? device = freezed,Object? admin = freezed,Object? numberOfComments = null,}) {
+  return _then(_Comment(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as Id,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as Text,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as Device?,admin: freezed == admin ? _self.admin : admin // ignore: cast_nullable_to_non_nullable
+as Admin?,numberOfComments: null == numberOfComments ? _self.numberOfComments : numberOfComments // ignore: cast_nullable_to_non_nullable
+as NumberOfSubTerms,
+  ));
 }
 
-abstract class _Comment implements Comment {
-  factory _Comment(
-      {@IdJsonConverter() required final Id id,
-      @TextJsonConverter() required final Text content,
-      @DeviceJsonConverter() final Device? device,
-      @AdminJsonConverter() final Admin? admin,
-      @NumberOfSubTermsJsonConverter()
-      required final NumberOfSubTerms numberOfComments}) = _$CommentImpl;
+/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$IdCopyWith<$Res> get id {
+  
+  return $IdCopyWith<$Res>(_self.id, (value) {
+    return _then(_self.copyWith(id: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TextCopyWith<$Res> get content {
+  
+  return $TextCopyWith<$Res>(_self.content, (value) {
+    return _then(_self.copyWith(content: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DeviceCopyWith<$Res>? get device {
+    if (_self.device == null) {
+    return null;
+  }
 
-  @override
-  @IdJsonConverter()
-  Id get id;
-  @override
-  @TextJsonConverter()
-  Text get content;
-  @override
-  @DeviceJsonConverter()
-  Device? get device;
-  @override
-  @AdminJsonConverter()
-  Admin? get admin;
-  @override
-  @NumberOfSubTermsJsonConverter()
-  NumberOfSubTerms get numberOfComments;
+  return $DeviceCopyWith<$Res>(_self.device!, (value) {
+    return _then(_self.copyWith(device: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdminCopyWith<$Res>? get admin {
+    if (_self.admin == null) {
+    return null;
+  }
 
-  /// Create a copy of Comment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  return $AdminCopyWith<$Res>(_self.admin!, (value) {
+    return _then(_self.copyWith(admin: value));
+  });
+}/// Create a copy of Comment
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$NumberOfSubTermsCopyWith<$Res> get numberOfComments {
+  
+  return $NumberOfSubTermsCopyWith<$Res>(_self.numberOfComments, (value) {
+    return _then(_self.copyWith(numberOfComments: value));
+  });
 }
+}
+
+// dart format on

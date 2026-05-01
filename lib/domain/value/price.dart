@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'price.freezed.dart';
 
 @freezed
-class Price with _$Price {
+abstract class Price with _$Price {
   @Assert("(value!=null&&value>=0)||value == null")
   const factory Price(int? value) = _Price;
 }

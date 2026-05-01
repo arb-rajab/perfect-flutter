@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'layer.freezed.dart';
 
 @freezed
-class Layer with _$Layer {
+abstract class Layer with _$Layer {
   @Assert("value>=0")
   const factory Layer(int value) = _Layer;
 }

@@ -337,7 +337,20 @@ class TermsController {
                                     NumberOfSubTerms(
                                         body['flashcards'].length));
                               }
-                            } else {
+                      } else if (termData.term.type == TermType.images) {
+                        if (state.mounted) {
+                          state.setState(
+                            () =>
+                                actionsWidgetState
+                                    .widget
+                                    .termWidgetController
+                                    .termData
+                                    .numberOfImages = NumberOfSubTerms(
+                                  body['images'].length,
+                                ),
+                          );
+                        }
+                      } else {
                               if (state.mounted) {
                                 state.setState(() => actionsWidgetState
                                         .widget

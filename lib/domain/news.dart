@@ -8,8 +8,7 @@ part 'news.freezed.dart';
 part 'news.g.dart';
 
 @freezed
-@JsonSerializable()
-class News with _$News {
+abstract class News with _$News {
   factory News(
       {@IdJsonConverter() required Id id,
       @TitleJsonConverter() required Title title,
@@ -19,7 +18,7 @@ class News with _$News {
       @DateTimeConverter()
       required DateTime createdAt}) = _News;
 
-  static News fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
+  factory News.fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
 
-  static Map<String, dynamic> toJson(News instance) => _$NewsToJson(instance);
+  // static Map<String, dynamic> toJson(News instance) => _$NewsToJson(instance);
 }

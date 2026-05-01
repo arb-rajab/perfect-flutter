@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'root_term_id.freezed.dart';
 
 @freezed
-class RootTermId with _$RootTermId {
+abstract class RootTermId with _$RootTermId {
   const factory RootTermId(int value) = _RootTermId;
 }
 

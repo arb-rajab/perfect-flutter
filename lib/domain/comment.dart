@@ -9,8 +9,7 @@ part 'comment.freezed.dart';
 part 'comment.g.dart';
 
 @freezed
-@JsonSerializable()
-class Comment with _$Comment {
+abstract class Comment with _$Comment {
   factory Comment(
       {@IdJsonConverter() required Id id,
       @TextJsonConverter() required Text content,
@@ -19,8 +18,9 @@ class Comment with _$Comment {
       @NumberOfSubTermsJsonConverter()
       required NumberOfSubTerms numberOfComments}) = _Comment;
 
-  static Comment fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
+  factory Comment.fromJson(Map<String, dynamic> json) =>
+      _$CommentFromJson(json);
 
-  static Map<String, dynamic> toJson(Comment instance) =>
-      _$CommentToJson(instance);
+  // Map<String, dynamic> toJson(Comment instance) =>
+  //     _$CommentToJson(instance);
 }

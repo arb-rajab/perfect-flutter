@@ -113,9 +113,9 @@ void main() async {
         id: const Id(1),
         content: const domain_text.Text('Admin comment'),
         device: null,
-        admin: Admin(
-          id: const Id(999),
-          username: const domain_title.Title('AdminUser'),
+        admin: const Admin(
+          id: Id(999),
+          username: domain_title.Title('AdminUser'),
         ),
         numberOfComments: const NumberOfSubTerms(0),
       );

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,74 +9,198 @@ part of 'splash_screen_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
-mixin _$SplashScreenState {}
+mixin _$SplashScreenState {
 
-/// @nodoc
-abstract class $SplashScreenStateCopyWith<$Res> {
-  factory $SplashScreenStateCopyWith(
-          SplashScreenState value, $Res Function(SplashScreenState) then) =
-      _$SplashScreenStateCopyWithImpl<$Res, SplashScreenState>;
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashScreenState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SplashScreenState()';
+}
+
+
 }
 
 /// @nodoc
-class _$SplashScreenStateCopyWithImpl<$Res, $Val extends SplashScreenState>
-    implements $SplashScreenStateCopyWith<$Res> {
-  _$SplashScreenStateCopyWithImpl(this._value, this._then);
+class $SplashScreenStateCopyWith<$Res>  {
+$SplashScreenStateCopyWith(SplashScreenState _, $Res Function(SplashScreenState) __);
+}
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
 
-  /// Create a copy of SplashScreenState
-  /// with the given fields replaced by the non-null parameter values.
+/// Adds pattern-matching-related methods to [SplashScreenState].
+extension SplashScreenStatePatterns on SplashScreenState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SplashScreenState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _SplashScreenState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SplashScreenState value)  $default,){
+final _that = this;
+switch (_that) {
+case _SplashScreenState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SplashScreenState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _SplashScreenState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _SplashScreenState() when $default != null:
+return $default();case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,) {final _that = this;
+switch (_that) {
+case _SplashScreenState():
+return $default();case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,) {final _that = this;
+switch (_that) {
+case _SplashScreenState() when $default != null:
+return $default();case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$SplashScreenStateImplCopyWith<$Res> {
-  factory _$$SplashScreenStateImplCopyWith(_$SplashScreenStateImpl value,
-          $Res Function(_$SplashScreenStateImpl) then) =
-      __$$SplashScreenStateImplCopyWithImpl<$Res>;
+
+
+class _SplashScreenState implements SplashScreenState {
+  const _SplashScreenState();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SplashScreenState);
 }
 
-/// @nodoc
-class __$$SplashScreenStateImplCopyWithImpl<$Res>
-    extends _$SplashScreenStateCopyWithImpl<$Res, _$SplashScreenStateImpl>
-    implements _$$SplashScreenStateImplCopyWith<$Res> {
-  __$$SplashScreenStateImplCopyWithImpl(_$SplashScreenStateImpl _value,
-      $Res Function(_$SplashScreenStateImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of SplashScreenState
-  /// with the given fields replaced by the non-null parameter values.
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SplashScreenState()';
 }
 
-/// @nodoc
 
-class _$SplashScreenStateImpl implements _SplashScreenState {
-  const _$SplashScreenStateImpl();
-
-  @override
-  String toString() {
-    return 'SplashScreenState()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SplashScreenStateImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
 }
 
-abstract class _SplashScreenState implements SplashScreenState {
-  const factory _SplashScreenState() = _$SplashScreenStateImpl;
-}
+
+
+
+// dart format on

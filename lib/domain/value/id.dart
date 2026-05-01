@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'id.freezed.dart';
 
 @freezed
-class Id with _$Id {
+abstract class Id with _$Id {
   @Assert("(value!=null&&value>0)||value==null")
   const factory Id(int? value) = _Id;
 }

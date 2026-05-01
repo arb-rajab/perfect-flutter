@@ -6,12 +6,12 @@ part of 'device.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Device _$DeviceFromJson(Map<String, dynamic> json) => Device(
-      id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
-      name: Name.fromJson(json['name'] as Map<String, dynamic>),
-    );
+_Device _$DeviceFromJson(Map<String, dynamic> json) => _Device(
+  id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
+  name: Name.fromJson(json['name'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
-      'id': const IdJsonConverter().toJson(instance.id),
-      'name': instance.name,
-    };
+Map<String, dynamic> _$DeviceToJson(_Device instance) => <String, dynamic>{
+  'id': const IdJsonConverter().toJson(instance.id),
+  'name': instance.name,
+};

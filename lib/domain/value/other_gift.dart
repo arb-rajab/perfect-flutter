@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'other_gift.freezed.dart';
 
 @freezed
-class OtherGift with _$OtherGift {
+abstract class OtherGift with _$OtherGift {
   const factory OtherGift([
     String? value,
   ]) = _OtherGift;

@@ -5,13 +5,12 @@ part 'name.freezed.dart';
 part 'name.g.dart';
 
 @freezed
-@JsonSerializable()
-class Name with _$Name {
+abstract class Name with _$Name {
   factory Name({
     @TitleJsonConverter() required Title name,
   }) = _Name;
 
-  static Name fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
+  factory Name.fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
 
   // static Map<String, dynamic> toJson(Name instance) => _$NameToJson(instance);
 }

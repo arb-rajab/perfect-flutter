@@ -48,6 +48,36 @@ Future main() async {
     expect(find.text('10'), findsOneWidget);
   });
 
+  testWidgets('images icon is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(
+      MyApp(
+        child: NumberOfChildrenWidget(
+          originalTermData
+            ..term = originalTermData.term.copyWith(type: TermType.images)
+            ..numberOfImages = const NumberOfSubTerms(10),
+        ),
+      ),
+    );
+    await widgetTester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.image), findsOneWidget);
+  });
+
+  testWidgets('images number of images is rendered', (widgetTester) async {
+    await widgetTester.pumpWidget(
+      MyApp(
+        child: NumberOfChildrenWidget(
+          originalTermData
+            ..term = originalTermData.term.copyWith(type: TermType.images)
+            ..numberOfImages = const NumberOfSubTerms(10),
+        ),
+      ),
+    );
+    await widgetTester.pumpAndSettle();
+
+    expect(find.text('10'), findsOneWidget);
+  });
+
   testWidgets('questions icon is rendered', (widgetTester) async {
     await widgetTester.pumpWidget(MyApp(
       child: NumberOfChildrenWidget(originalTermData

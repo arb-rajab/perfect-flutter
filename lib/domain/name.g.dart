@@ -6,10 +6,9 @@ part of 'name.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Name _$NameFromJson(Map<String, dynamic> json) => Name(
-      name: const TitleJsonConverter().fromJson(json['name'] as String),
-    );
+_Name _$NameFromJson(Map<String, dynamic> json) =>
+    _Name(name: const TitleJsonConverter().fromJson(json['name'] as String));
 
-Map<String, dynamic> _$NameToJson(Name instance) => <String, dynamic>{
-      'name': const TitleJsonConverter().toJson(instance.name),
-    };
+Map<String, dynamic> _$NameToJson(_Name instance) => <String, dynamic>{
+  'name': const TitleJsonConverter().toJson(instance.name),
+};

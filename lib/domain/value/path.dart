@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'path.freezed.dart';
 
 @freezed
-class Path with _$Path {
+abstract class Path with _$Path {
   const factory Path([
     String? value,
   ]) = _Path;

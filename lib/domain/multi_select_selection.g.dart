@@ -6,16 +6,16 @@ part of 'multi_select_selection.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MultiSelectSelection _$MultiSelectSelectionFromJson(
-        Map<String, dynamic> json) =>
-    MultiSelectSelection(
-      id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
-      title: const TitleJsonConverter().fromJson(json['title'] as String),
-    );
+_MultiSelectSelection _$MultiSelectSelectionFromJson(
+  Map<String, dynamic> json,
+) => _MultiSelectSelection(
+  id: const IdJsonConverter().fromJson((json['id'] as num?)?.toInt()),
+  title: const TitleJsonConverter().fromJson(json['title'] as String),
+);
 
 Map<String, dynamic> _$MultiSelectSelectionToJson(
-        MultiSelectSelection instance) =>
-    <String, dynamic>{
-      'id': const IdJsonConverter().toJson(instance.id),
-      'title': const TitleJsonConverter().toJson(instance.title),
-    };
+  _MultiSelectSelection instance,
+) => <String, dynamic>{
+  'id': const IdJsonConverter().toJson(instance.id),
+  'title': const TitleJsonConverter().toJson(instance.title),
+};

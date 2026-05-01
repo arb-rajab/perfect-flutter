@@ -15,6 +15,7 @@ class TermData extends ItemData {
   NumberOfSubTerms? numberOfSubTerms;
   NumberOfSubTerms? numberOfQuestions;
   NumberOfSubTerms? numberOfFlashcards;
+  NumberOfSubTerms? numberOfImages;
   NumberOfSubTerms? numberOfRelatedTerms;
   Term term;
   Visible? visible;
@@ -30,7 +31,9 @@ class TermData extends ItemData {
       this.labelId,
       this.numberOfQuestions,
       this.numberOfFlashcards,
-      this.numberOfRelatedTerms});
+    this.numberOfRelatedTerms,
+    this.numberOfImages,
+  });
 
   bool isVisible() {
     if (visible == null) return false;
@@ -41,7 +44,11 @@ class TermData extends ItemData {
     if (json['enabled'] == null) json['enabled'] = 1;
     if (json['needsUpdate'] == null) json['needsUpdate'] = 0;
     TermData termData = TermData(Term.fromJson(json));
-    termData.path = const PathJsonConverter().fromJson(json['path']);
+    termData.path = const PathJsonConverter().fromJson(
+      json['path'] is List
+          ? json['path'].map((item) => item['name']).join('/')
+          : json['path'],
+    );
     termData.numberOfSubTerms = const NumberOfSubTermsJsonConverter()
         .fromJson(json['numberOfSubTerms']);
     termData.deletedAt =
@@ -53,6 +60,9 @@ class TermData extends ItemData {
         .fromJson(json['numberOfQuestions']);
     termData.numberOfFlashcards = const NumberOfSubTermsJsonConverter()
         .fromJson(json['numberOfFlashcards']);
+    termData.numberOfImages = const NumberOfSubTermsJsonConverter().fromJson(
+      json['numberOfImages'],
+    );
     termData.numberOfRelatedTerms = const NumberOfSubTermsJsonConverter()
         .fromJson(json['numberOfRelatedTerms']);
     return termData;
@@ -73,6 +83,9 @@ class TermData extends ItemData {
           const NumberOfSubTermsJsonConverter().toJson(numberOfQuestions!),
       'numberOfFlashcards':
           const NumberOfSubTermsJsonConverter().toJson(numberOfFlashcards!),
+      'numberOfImages': const NumberOfSubTermsJsonConverter().toJson(
+        numberOfImages!,
+      ),
       'numberOfRelatedTerms':
           const NumberOfSubTermsJsonConverter().toJson(numberOfRelatedTerms!)
     };
@@ -87,6 +100,7 @@ class TermData extends ItemData {
         numberOfQuestions: NumberOfSubTerms(row.read<int>('numberOfQuestions')),
         numberOfFlashcards:
             NumberOfSubTerms(row.read<int>('numberOfFlashcards')),
+      numberOfImages: NumberOfSubTerms(row.read<int>('numberOfImages')),
         numberOfRelatedTerms:
             NumberOfSubTerms(row.read<int>('numberOfRelatedTerms')));
   }
@@ -106,6 +120,7 @@ class TermData extends ItemData {
       labelId,
       numberOfQuestions,
       numberOfFlashcards,
+    numberOfImages,
       numberOfRelatedTerms);
 }
 
@@ -117,7 +132,7 @@ class TermType {
   static const int youtubeVideos = 4;
   static const int flashcards = 5;
   static const int voiceNotes = 6;
-
+  static const int images = 7;
   static const int videoFile = 8;
 
   static const int maxTermType = 8;
@@ -125,12 +140,12 @@ class TermType {
   static bool downloadable(TermData termData) => [
         questions,
         template,
-        flashcards].contains(termData.term.type) ||
+        flashcards, images].contains(termData.term.type) ||
       ([ebook, voiceNotes, videoFile].contains(termData.term.type) && !kIsWeb);
 
   static bool hasFile(TermData termData) =>
       [ebook, voiceNotes, videoFile].contains(termData.term.type);
 
   static bool hasContent(TermData termData) =>
-      [questions, template, flashcards].contains(termData.term.type);
+      [questions, template, flashcards, images].contains(termData.term.type);
 }

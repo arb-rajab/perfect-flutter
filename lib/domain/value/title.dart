@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'title.freezed.dart';
 
 @freezed
-class Title with _$Title {
+abstract class Title with _$Title {
   const factory Title([
     String? value,
   ]) = _Title;

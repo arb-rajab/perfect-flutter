@@ -16,6 +16,7 @@ import 'package:beta/domain/ebook.dart';
 import 'package:beta/domain/fcm_topic.dart';
 import 'package:beta/domain/flashcard.dart';
 import 'package:beta/domain/http_request.dart';
+import 'package:beta/domain/image.dart';
 import 'package:beta/domain/question.dart';
 import 'package:beta/domain/question_linked_to_tag.dart';
 import 'package:beta/domain/question_media.dart';
@@ -74,13 +75,14 @@ part 'database_service.g.dart'; // the generated code will be there
   TermLabels,
   TermsLinkedToLabels,
   TermProperties,
-  Configs
+  Configs,
+  Images
 ])
 class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
   @override
-  int get schemaVersion => 41;
+  int get schemaVersion => 42;
 
   @override
   MigrationStrategy get migration {
@@ -369,6 +371,7 @@ class DatabaseService extends _$DatabaseService {
           await m.createTable(configs);
         }
         if (from < 41) await m.createTable(videoFiles);
+        if (from < 42) await m.createTable(images);
       },
     );
   }

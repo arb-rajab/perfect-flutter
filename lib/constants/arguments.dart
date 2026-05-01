@@ -93,6 +93,15 @@ class FlashcardsScreenArgument {
       {required this.query, required this.title, required this.term});
 }
 
+class ImagesScreenArgument {
+  final String query;
+  final String title;
+  final TermData term;
+
+  ImagesScreenArgument(
+      {required this.query, required this.title, required this.term});
+}
+
 class VoiceNoteScreenArgument {
   final TermData term;
 

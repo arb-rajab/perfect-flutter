@@ -1,6 +1,7 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
+import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/term_label_service.dart';
@@ -33,12 +34,13 @@ import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/term_leading_widget.dart';
 import 'package:beta/presentation/home/term_widget.dart';
+import 'package:beta/presentation/images/images_screen.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/video_file/video_file_screen.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen.dart';
 import 'package:beta/presentation/widgets/number_of_children_widget.dart';
 import 'package:beta/presentation/youtube_video/youtube_video_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
 
@@ -1223,6 +1225,188 @@ Future main() async {
             find.widgetWithText(
                 OKDialogue, StringConstant.youHaveToDownloadFirst),
             findsNothing);
+      });
+    });
+
+group('tapping images term', () {
+      testWidgets(
+        'tapping term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.images,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(ImagesScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets(
+        'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.images,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(ImagesScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
+
+      testWidgets('tapping term that is downloaded, shows images screen', (
+        widgetTester,
+      ) async {
+        await databaseService.seedTermsData();
+        TermService termService = Get.find();
+        ImageService imageService = Get.find();
+        await termService.addTerms([
+          TermData(
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.images,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
+        ]);
+        await imageService.addImages([
+          const Image(
+            id: 1000,
+            url: 'url',
+            title: 'head',
+            info: 'tail',
+            parentTermId: 3,
+          ),
+        ]);
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        //tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        //tap the grand child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(ImageService), findsOneWidget);
+        expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
+        expect(
+          find.widgetWithText(
+            OKDialogue,
+            StringConstant.youHaveToDownloadFirst,
+          ),
+          findsNothing,
+        );
       });
     });
 

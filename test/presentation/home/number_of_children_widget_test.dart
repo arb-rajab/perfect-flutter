@@ -124,6 +124,19 @@ void main() {
     expect(find.text('10'), findsOneWidget);
   });
 
+  testWidgets('renders image icon with count for images type', (tester) async {
+    final termData = createTermData(type: TermType.images)
+      ..numberOfImages = const NumberOfSubTerms(10);
+
+    await tester.pumpWidget(
+      MaterialApp(home: Scaffold(body: NumberOfChildrenWidget(termData))),
+    );
+
+    expect(find.byIcon(Icons.image), findsOneWidget);
+    expect(find.text('x'), findsOneWidget);
+    expect(find.text('10'), findsOneWidget);
+  });
+
   testWidgets('renders nothing for voiceNotes type', (tester) async {
     final termData = createTermData(type: TermType.voiceNotes);
 

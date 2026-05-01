@@ -9,7 +9,7 @@ part 'product_type.freezed.dart';
 part 'product_type.g.dart';
 
 @freezed
-class ProductType with _$ProductType {
+abstract class ProductType with _$ProductType {
   factory ProductType({
     @ProductTypeIdJsonConverter() required ProductTypeId id,
     @JsonKey(name: 'parent_type_id')

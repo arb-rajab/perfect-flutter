@@ -6,12 +6,30 @@ xmlns:tools="http://schemas.android.com/tools">
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
 <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+<uses-sdk tools:overrideLibrary="io.flutter.plugins.videoplayer,
+                                com.stripe.android.paymentsheet,
+                                com.stripe.android.payments,
+                                com.stripe.android.ui.core,
+                                com.stripe.android,
+                                com.stripe.android.stripe3ds2,
+                                com.stripe.android.financialconnections,
+                                com.stripe.android.financialconnections.lite,
+                                com.stripe.android.financialconnections.core,
+                                com.stripe.android.uicore,
+                                com.stripe.payments.model,
+                                com.stripe.android.core,
+                                com.google.android.gms.wallet,
+                                com.stripe.hcaptcha,
+                                com.stripe.attestation,
+                                androidx.*"
+                                />
     <application
         android:label="Perfect"
         android:name="${applicationName}"
         android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"

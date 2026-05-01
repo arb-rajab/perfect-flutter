@@ -150,6 +150,16 @@ void main() {
     expect(find.byIcon(Icons.style), findsOneWidget);
   });
 
+  testWidgets('displays image icon for images term type', (tester) async {
+    termData.term = termData.term.copyWith(type: TermType.images);
+
+    await tester.pumpWidget(
+      MaterialApp(home: Scaffold(body: TermLeadingWidget(termData))),
+    );
+
+    expect(find.byIcon(Icons.image), findsOneWidget);
+  });
+
   testWidgets('displays ztyle icon with correct size', (tester) async {
     termData.term = termData.term.copyWith(type: TermType.flashcards);
 
@@ -162,6 +172,17 @@ void main() {
     );
 
     final icon = tester.widget<Icon>(find.byIcon(Icons.style));
+    expect(icon.size, 50);
+  });
+
+  testWidgets('displays images icon with correct size', (tester) async {
+    termData.term = termData.term.copyWith(type: TermType.images);
+
+    await tester.pumpWidget(
+      MaterialApp(home: Scaffold(body: TermLeadingWidget(termData))),
+    );
+
+    final icon = tester.widget<Icon>(find.byIcon(Icons.image));
     expect(icon.size, 50);
   });
 

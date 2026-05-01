@@ -32,6 +32,7 @@ import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/home/actions_widget.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
+import 'package:beta/presentation/images/images_screen.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/video_file/video_file_screen.dart';
 import 'package:beta/presentation/voice_note/voice_note_screen.dart';
@@ -98,6 +99,13 @@ class TermWidgetController {
       if (state.mounted) {
         state.setState(() {
           isDownloaded = termData.numberOfFlashcards!.value! > 0;
+        });
+      }
+    }
+    else if (termData.term.type == TermType.images) {
+      if (state.mounted) {
+        state.setState(() {
+          isDownloaded = termData.numberOfImages!.value! > 0;
         });
       }
     }
@@ -297,19 +305,30 @@ class TermWidgetController {
                                       .numberOfFlashcards =
                                   NumberOfSubTerms(body['flashcards'].length));
                             }
-                          } else {
+                    } else if (termData.term.type == TermType.images) {
                             if (state.mounted) {
                               state.setState(() => actionsWidgetState
-                                      .widget
-                                      .termWidgetController
-                                      .termData
+                                  .widget
+                                  .termWidgetController
+                                  .termData
+                                  .numberOfImages = NumberOfSubTerms(
+                                body['images'].length,
+                              ),
+                        );
+                      }
+                    } else if (state.mounted) {
+                      state.setState(
+                        () =>
+                            actionsWidgetState
+                                .widget
+                                .termWidgetController
+                                .termData
                                       .numberOfQuestions =
                                   NumberOfSubTerms(body['questions'].length));
-                            }
-                          }
+                    }
                           _setTermUpdated();
-                        }
-                      });
+                  }
+                });
                     },
                     onConnectionFailed: _onConnectionFailed,
                     onMessageReceived: _onMessageReceived)
@@ -462,6 +481,27 @@ class TermWidgetController {
           } else {
             showOkDialogue(state.context,
                 content: StringConstant.youHaveToDownloadFirst.tr());
+          }
+        }
+        break;
+      case TermType.images:
+        if (state.mounted) {
+          if (isDownloaded) {
+            Get.delete<ImagesScreenArgument>();
+            Get.put(
+              ImagesScreenArgument(
+                query:
+                    'select * from images where parentTermId=${termData.term.id}',
+                title: termData.term.name,
+                term: termData,
+              ),
+            );
+            state.context.push(ImagesScreen.route);
+          } else {
+            showOkDialogue(
+              state.context,
+              content: StringConstant.youHaveToDownloadFirst.tr(),
+            );
           }
         }
         break;

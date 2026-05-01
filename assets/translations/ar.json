@@ -109,13 +109,8 @@
     "whats-new": {
         "whats-new": "ما الجديد",
         "whats-new-in-version": "ما الجديد في النسخة (VERSION)",
-        "add-contact-us-screen": "إضافة صفحة معلومات التواصل",
-        "add-frequent-questions-screen": "إضافة صفحة الأسئلة الشائعة",
-        "support-night-mode": "دعم الوضع الليلي",
-        "support-custom-text-size": "السماح بتغيير حجم النص",
-        "support-user-data-deletion": "السماح بحذف البيانات التي يخزنها المستخدم في التطبيق",
-        "add-studied-terms-feature": "إضافة ميزة الأقسام الدراسية المدروسة",
-        "add-favorite-terms-feature": "إضافة ميزة الأقسام الدراسية المفضلة"
+        "add-videos-screen":"دعم محتوى تعليمي على شكل فيديوهات",
+        "add-images-screen":"دعم محتوى تعليمي على شكل صور ذات شرح"
     },
     "browse-terms": {
         "browse-terms": "تصفح",

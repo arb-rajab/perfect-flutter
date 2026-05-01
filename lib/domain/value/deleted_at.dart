@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'deleted_at.freezed.dart';
 
 @freezed
-class DeletedAt with _$DeletedAt {
+abstract class DeletedAt with _$DeletedAt {
   const factory DeletedAt([String? value]) = _DeletedAt;
 }
 

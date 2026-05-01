@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'gift_type.freezed.dart';
 
 @freezed
-class GiftType with _$GiftType {
+abstract class GiftType with _$GiftType {
   @Assert("value>=0&&value<=2")
   const factory GiftType(
     int value,

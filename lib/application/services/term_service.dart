@@ -2,6 +2,7 @@ import 'package:beta/application/services/answer_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
+import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/question_linked_to_tag_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_service.dart';
@@ -17,7 +18,7 @@ class TermService {
   final FirebaseRepository firebaseRepository;
 
   final String _termsSelectClause =
-      "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) where ";
+      "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards,(SElECT COUNT(*) FROM images WHERE parentTermId=t.id ) as numberOfImages ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) where ";
   static const String _termsOrderClause =
       " order by tl.id desc,ordering desc,creation desc";
   TermService(
@@ -87,7 +88,7 @@ class TermService {
           .first;
 
   Future<List<TermData>> getFirstLayerTerms() => _queryTerms(
-      "t.id in (select termId from termsParents where parentTermId=rootTermId) and (((numberOfQuestions>0 or numberOfSubTerms>0 or numberOfFlashcards>0)and enabled=1) or enabled=0 )");
+      "t.id in (select termId from termsParents where parentTermId=rootTermId) and (((numberOfQuestions>0 or numberOfSubTerms>0 or numberOfFlashcards>0 or numberOfImages>0) and enabled=1) or enabled=0 )");
 
   Future<List<TermData>> getSubTerms(int termId) => _queryTerms(
       "t.id in (select termId from termsParents where parentTermId=$termId)");
@@ -117,7 +118,7 @@ class TermService {
       List<
           TermData>> getRecentTerms({int? limit, int? offset}) => databaseService
       .customSelect(
-          "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) inner join termsLastAccess on termsLastAccess.parentTermId=t.id  where t.type!=0 group by t.id order by termsLastAccess.lastAccess desc ${limit != null ? 'limit $limit' : ''} ${offset != null ? 'offset $offset' : ''}")
+          "select t.*,tt.id as tagId,tl.id as labelId,(SElECT COUNT(*) FROM termsParents WHERE parentTermId=t.id) as numberOfSubTerms, (SElECT COUNT(*) FROM questions WHERE parentTermId=t.id ) as numberOfQuestions ,(SElECT COUNT(*) FROM flashcards WHERE parentTermId=t.id ) as numberOfFlashcards, (SElECT COUNT(*) FROM images WHERE parentTermId=t.id ) as numberOfImages ,(SElECT COUNT(*) FROM relatedTerms WHERE t.id in (termId,anotherTermId) ) as numberOfRelatedTerms from terms t left outer join termsTags tt on tt.id in (select tagId from termsLinkedToTags where termId=t.id) left outer join termsLabels tl on tl.id in (select labelId from termsLinkedToLabels where termId=t.id) inner join termsLastAccess on termsLastAccess.parentTermId=t.id  where t.type!=0 group by t.id order by termsLastAccess.lastAccess desc ${limit != null ? 'limit $limit' : ''} ${offset != null ? 'offset $offset' : ''}")
       .watch()
       .map((rows) => rows.map((row) => TermData.fromMap(row)).toList())
       .first;
@@ -175,6 +176,9 @@ class TermService {
     await (databaseService.delete(databaseService.flashcards)
           ..where((flashcard) => flashcard.parentTermId.isIn(termIds)))
         .go();
+    await (databaseService.delete(databaseService.images)
+          ..where((image) => image.parentTermId.isIn(termIds)))
+        .go();
     await (databaseService.delete(databaseService.questionsLinkedToTags)
           ..where((tbl) => tbl.questionId.isIn(questionIds)))
         .go();
@@ -212,6 +216,8 @@ class TermService {
       List<Flashcard> flashcards = (body['flashcards'] as List)
           .map((e) => Flashcard.fromJson(e))
           .toList();
+      List<Image> images =
+          (body['images'] as List).map((e) => Image.fromJson(e)).toList();
       List<Answer> answers =
           (body['answers'] as List).map((e) => Answer.fromJson(e)).toList();
       List<QuestionMedia> questionMedias = (body['media'] as List)
@@ -230,6 +236,8 @@ class TermService {
       await answerService.addAnswers(answers);
       FlashcardService flashcardService = Get.find();
       await flashcardService.addFlashcards(flashcards);
+      ImageService imageService = Get.find();
+      await imageService.addImages(images);
       QuestionMediaService questionMediaService = Get.find();
       await questionMediaService.addQuestionMedias(questionMedias);
       QuestionTagService questionTagService = Get.find();

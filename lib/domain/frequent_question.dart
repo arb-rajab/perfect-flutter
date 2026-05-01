@@ -7,17 +7,16 @@ part 'frequent_question.freezed.dart';
 part 'frequent_question.g.dart';
 
 @freezed
-@JsonSerializable()
-class FrequentQuestion with _$FrequentQuestion {
+abstract class FrequentQuestion with _$FrequentQuestion {
   factory FrequentQuestion(
           {@IdJsonConverter() required Id id,
           @TitleJsonConverter() required Title title,
           @DescriptionJsonConverter() required Description description}) =
       _FrequentQuestion;
 
-  static FrequentQuestion fromJson(Map<String, dynamic> json) =>
+  factory FrequentQuestion.fromJson(Map<String, dynamic> json) =>
       _$FrequentQuestionFromJson(json);
 
-  static Map<String, dynamic> toJson(FrequentQuestion instance) =>
-      _$FrequentQuestionToJson(instance);
+  // static Map<String, dynamic> toJson(FrequentQuestion instance) =>
+  //     _$FrequentQuestionToJson(instance);
 }

@@ -16,13 +16,15 @@ class ActionsWidget extends StatefulWidget {
   final bool downloading;
   final double? downloadProgress;
   final TermWidgetController termWidgetController;
-  const ActionsWidget(this.termWidgetController,
-      {super.key,
-      required this.downloaded,
-      required this.studied,
-      required this.favorite,
-      required this.downloading,
-      required this.downloadProgress});
+  const ActionsWidget(
+    this.termWidgetController, {
+    super.key,
+    required this.downloaded,
+    required this.studied,
+    required this.favorite,
+    required this.downloading,
+    required this.downloadProgress,
+  });
 
   @override
   State<ActionsWidget> createState() => _ActionsWidgetState();
@@ -43,36 +45,40 @@ class _ActionsWidgetState extends State<ActionsWidget> {
             !widget.downloading &&
             !widget.termWidgetController.isDownloadingInBackground(termData))
           IconButton(
-              onPressed: () {
-                showConfirmationDialog(context, () async {
-                  if (TermType.hasContent(termData)) {
-                    await termService.deleteTermContent(termData.term);
-                    widget.termWidgetController.state.setState(() {
-                      widget.termWidgetController.isDownloaded = false;
-                      termData.numberOfFlashcards = const NumberOfSubTerms(0);
-                      termData.numberOfQuestions = const NumberOfSubTerms(0);
-                    });
-                  } else if (TermType.hasFile(termData)) {
-                    PathService pathService = Get.find();
-                    await pathService.deleteFileFromSupport(
-                        'term$separator${termData.term.id}');
-                    widget.termWidgetController.state.setState(() {
-                      widget.termWidgetController.isDownloaded = false;
-                    });
-                  }
-                });
-              },
-              icon: Icon(
-                Icons.delete,
-                color: Theme.of(context).colorScheme.error,
-              )),
+            onPressed: () {
+              showConfirmationDialog(context, () async {
+                if (TermType.hasContent(termData)) {
+                  await termService.deleteTermContent(termData.term);
+                  widget.termWidgetController.state.setState(() {
+                    widget.termWidgetController.isDownloaded = false;
+                    termData.numberOfFlashcards = const NumberOfSubTerms(0);
+                    termData.numberOfImages = const NumberOfSubTerms(0);
+                    termData.numberOfQuestions = const NumberOfSubTerms(0);
+                  });
+                } else if (TermType.hasFile(termData)) {
+                  PathService pathService = Get.find();
+                  await pathService.deleteFileFromSupport(
+                    'term$separator${termData.term.id}',
+                  );
+                  widget.termWidgetController.state.setState(() {
+                    widget.termWidgetController.isDownloaded = false;
+                  });
+                }
+              });
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Theme.of(context).colorScheme.error,
+            ),
+          ),
         if (TermType.downloadable(termData) &&
             !widget.downloaded &&
             !widget.downloading &&
             !widget.termWidgetController.isDownloadingInBackground(termData))
           IconButton(
-              onPressed: widget.termWidgetController.downloadContent,
-              icon: const Icon(Icons.cloud_download))
+            onPressed: widget.termWidgetController.downloadContent,
+            icon: const Icon(Icons.cloud_download),
+          )
         else if (widget.downloading ||
             widget.termWidgetController.isDownloadingInBackground(termData))
           CircularProgressIndicator(value: widget.downloadProgress),
@@ -81,9 +87,10 @@ class _ActionsWidgetState extends State<ActionsWidget> {
             widget.downloaded)
           if (!widget.downloading)
             IconButton(
-                key: const Key('refresh'),
-                onPressed: widget.termWidgetController.downloadContent,
-                icon: const Icon(Icons.refresh))
+              key: const Key('refresh'),
+              onPressed: widget.termWidgetController.downloadContent,
+              icon: const Icon(Icons.refresh),
+            )
           else
             CircularProgressIndicator(value: widget.downloadProgress),
         if (termData.term.type != TermType.term)
@@ -120,19 +127,20 @@ class _ActionsWidgetState extends State<ActionsWidget> {
           ),
         if (termData.numberOfRelatedTerms!.value! > 0)
           IconButton(
-              onPressed: () async {
-                List<TermData> relatedTerms =
-                    await termService.getTermRelatedTerms(termData);
-                TermsController termsController = Get.find();
-                Get.delete<TermData>(tag: 'relatedTerm');
-                Get.put(termData, tag: 'relatedTerm');
-                termsController.state.setState(() {
-                  // termsController.relatedTerms = relatedTerms;
-                  termsController.termsDatas = relatedTerms;
-                  // termsListingController.items = relatedTerms;
-                });
-              },
-              icon: const Icon(Icons.link))
+            onPressed: () async {
+              List<TermData> relatedTerms = await termService
+                  .getTermRelatedTerms(termData);
+              TermsController termsController = Get.find();
+              Get.delete<TermData>(tag: 'relatedTerm');
+              Get.put(termData, tag: 'relatedTerm');
+              termsController.state.setState(() {
+                // termsController.relatedTerms = relatedTerms;
+                termsController.termsDatas = relatedTerms;
+                // termsListingController.items = relatedTerms;
+              });
+            },
+            icon: const Icon(Icons.link),
+          ),
       ],
     );
   }

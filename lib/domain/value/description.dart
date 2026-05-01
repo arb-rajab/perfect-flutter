@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'description.freezed.dart';
 
 @freezed
-class Description with _$Description {
+abstract class Description with _$Description {
   const factory Description([
     String? value,
   ]) = _Description;

@@ -6,23 +6,21 @@ part 'admin.freezed.dart';
 part 'admin.g.dart';
 
 @freezed
-@JsonSerializable()
-class Admin with _$Admin {
-  factory Admin(
-      {@IdJsonConverter() required Id id,
-      @TitleJsonConverter() required Title username}) = _Admin;
+abstract class Admin with _$Admin {
+  const factory Admin({
+    @IdJsonConverter() required Id id,
+    @TitleJsonConverter() required Title username,
+  }) = _Admin;
 
-  static Admin fromJson(Map<String, dynamic> json) => _$AdminFromJson(json);
-
-  // static Map<String, dynamic> toJson(Admin instance) => _$AdminToJson(instance);
+  factory Admin.fromJson(Map<String, dynamic> json) => _$AdminFromJson(json);
 }
 
-class AdminJsonConverter extends JsonConverter {
+class AdminJsonConverter extends JsonConverter<Admin, Map<String, dynamic>> {
   const AdminJsonConverter();
 
   @override
-  fromJson(json) => _$AdminFromJson(json);
+  Admin fromJson(Map<String, dynamic> json) => Admin.fromJson(json);
 
   @override
-  toJson(object) => _$AdminToJson(object);
+  Map<String, dynamic> toJson(Admin object) => object.toJson();
 }

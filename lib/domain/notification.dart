@@ -10,8 +10,7 @@ part 'notification.freezed.dart';
 part 'notification.g.dart';
 
 @freezed
-@JsonSerializable()
-class Notification with _$Notification {
+abstract class Notification with _$Notification {
   factory Notification(
       {@IdJsonConverter() required Id id,
       @TitleJsonConverter() required Title title,
@@ -20,9 +19,9 @@ class Notification with _$Notification {
       @BooleanConverter() required bool? seen,
       @DateTimeConverter() required DateTime creation}) = _Notification;
 
-  static Notification fromJson(Map<String, dynamic> json) =>
+  factory Notification.fromJson(Map<String, dynamic> json) =>
       _$NotificationFromJson(json);
 
-  static Map<String, dynamic> toJson(Notification instance) =>
-      _$NotificationToJson(instance);
+  // static Map<String, dynamic> toJson(Notification instance) =>
+  //     _$NotificationToJson(instance);
 }

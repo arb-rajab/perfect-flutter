@@ -7,6 +7,7 @@ import 'package:beta/presentation/discussion/discussion_screen.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/flashcards/flashcards_screen.dart';
+import 'package:beta/presentation/images/images_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/news/news_screen.dart';
@@ -96,6 +97,9 @@ GoRouter router(defaultRoute) => GoRouter(
       GoRoute(
           path: FlashcardsScreen.route,
           builder: (context, state) => const FlashcardsScreen()),
+      GoRoute(
+          path: ImagesScreen.route,
+          builder: (context, state) => const ImagesScreen()),
       GoRoute(
           path: VoiceNoteScreen.route,
           builder: (context, state) => const VoiceNoteScreen()),

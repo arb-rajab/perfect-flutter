@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,131 +9,263 @@ part of 'text.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$Text {
-  String? get value => throw _privateConstructorUsedError;
 
-  /// Create a copy of Text
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TextCopyWith<Text> get copyWith => throw _privateConstructorUsedError;
+ String? get value;
+/// Create a copy of Text
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TextCopyWith<Text> get copyWith => _$TextCopyWithImpl<Text>(this as Text, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Text&&(identical(other.value, value) || other.value == value));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,value);
+
+@override
+String toString() {
+  return 'Text(value: $value)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $TextCopyWith<$Res> {
-  factory $TextCopyWith(Text value, $Res Function(Text) then) =
-      _$TextCopyWithImpl<$Res, Text>;
-  @useResult
-  $Res call({String? value});
-}
+abstract mixin class $TextCopyWith<$Res>  {
+  factory $TextCopyWith(Text value, $Res Function(Text) _then) = _$TextCopyWithImpl;
+@useResult
+$Res call({
+ String? value
+});
 
+
+
+
+}
 /// @nodoc
-class _$TextCopyWithImpl<$Res, $Val extends Text>
+class _$TextCopyWithImpl<$Res>
     implements $TextCopyWith<$Res> {
-  _$TextCopyWithImpl(this._value, this._then);
+  _$TextCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final Text _self;
+  final $Res Function(Text) _then;
 
-  /// Create a copy of Text
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = freezed,
-  }) {
-    return _then(_value.copyWith(
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of Text
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? value = freezed,}) {
+  return _then(_self.copyWith(
+value: freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Text].
+extension TextPatterns on Text {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Text value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Text() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Text value)  $default,){
+final _that = this;
+switch (_that) {
+case _Text():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Text value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Text() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? value)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Text() when $default != null:
+return $default(_that.value);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? value)  $default,) {final _that = this;
+switch (_that) {
+case _Text():
+return $default(_that.value);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? value)?  $default,) {final _that = this;
+switch (_that) {
+case _Text() when $default != null:
+return $default(_that.value);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$TextImplCopyWith<$Res> implements $TextCopyWith<$Res> {
-  factory _$$TextImplCopyWith(
-          _$TextImpl value, $Res Function(_$TextImpl) then) =
-      __$$TextImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String? value});
+
+
+class _Text implements Text {
+  const _Text([this.value]);
+  
+
+@override final  String? value;
+
+/// Create a copy of Text
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TextCopyWith<_Text> get copyWith => __$TextCopyWithImpl<_Text>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Text&&(identical(other.value, value) || other.value == value));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,value);
+
+@override
+String toString() {
+  return 'Text(value: $value)';
+}
+
+
 }
 
 /// @nodoc
-class __$$TextImplCopyWithImpl<$Res>
-    extends _$TextCopyWithImpl<$Res, _$TextImpl>
-    implements _$$TextImplCopyWith<$Res> {
-  __$$TextImplCopyWithImpl(_$TextImpl _value, $Res Function(_$TextImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$TextCopyWith<$Res> implements $TextCopyWith<$Res> {
+  factory _$TextCopyWith(_Text value, $Res Function(_Text) _then) = __$TextCopyWithImpl;
+@override @useResult
+$Res call({
+ String? value
+});
 
-  /// Create a copy of Text
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = freezed,
-  }) {
-    return _then(_$TextImpl(
-      freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+
+
+
 }
-
 /// @nodoc
+class __$TextCopyWithImpl<$Res>
+    implements _$TextCopyWith<$Res> {
+  __$TextCopyWithImpl(this._self, this._then);
 
-class _$TextImpl implements _Text {
-  const _$TextImpl([this.value]);
+  final _Text _self;
+  final $Res Function(_Text) _then;
 
-  @override
-  final String? value;
-
-  @override
-  String toString() {
-    return 'Text(value: $value)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TextImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  /// Create a copy of Text
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$TextImplCopyWith<_$TextImpl> get copyWith =>
-      __$$TextImplCopyWithImpl<_$TextImpl>(this, _$identity);
+/// Create a copy of Text
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? value = freezed,}) {
+  return _then(_Text(
+freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-abstract class _Text implements Text {
-  const factory _Text([final String? value]) = _$TextImpl;
 
-  @override
-  String? get value;
-
-  /// Create a copy of Text
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TextImplCopyWith<_$TextImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on

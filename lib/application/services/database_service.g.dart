@@ -11,98 +11,150 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, Coupon> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _serialMeta = const VerificationMeta('serial');
   @override
   late final GeneratedColumn<String> serial = GeneratedColumn<String>(
-      'serial', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'serial',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumn<int> type = GeneratedColumn<int>(
-      'type', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _freeMeta = const VerificationMeta('free');
   @override
   late final GeneratedColumn<int> free = GeneratedColumn<int>(
-      'free', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(1));
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'free',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _activationDateMeta =
-      const VerificationMeta('activationDate');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _activationDateMeta = const VerificationMeta(
+    'activationDate',
+  );
   @override
   late final GeneratedColumn<String> activationDate = GeneratedColumn<String>(
-      'activationDate', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _expirationDaysMeta =
-      const VerificationMeta('expirationDays');
+    'activationDate',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _expirationDaysMeta = const VerificationMeta(
+    'expirationDays',
+  );
   @override
   late final GeneratedColumn<int> expirationDays = GeneratedColumn<int>(
-      'expirationDays', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(-1));
+    'expirationDays',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(-1),
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, serial, type, free, creation, activationDate, expirationDays];
+  List<GeneratedColumn> get $columns => [
+    id,
+    serial,
+    type,
+    free,
+    creation,
+    activationDate,
+    expirationDays,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'coupons';
   @override
-  VerificationContext validateIntegrity(Insertable<Coupon> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Coupon> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('serial')) {
-      context.handle(_serialMeta,
-          serial.isAcceptableOrUnknown(data['serial']!, _serialMeta));
+      context.handle(
+        _serialMeta,
+        serial.isAcceptableOrUnknown(data['serial']!, _serialMeta),
+      );
     } else if (isInserting) {
       context.missing(_serialMeta);
     }
     if (data.containsKey('type')) {
       context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
     if (data.containsKey('free')) {
       context.handle(
-          _freeMeta, free.isAcceptableOrUnknown(data['free']!, _freeMeta));
+        _freeMeta,
+        free.isAcceptableOrUnknown(data['free']!, _freeMeta),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('activationDate')) {
       context.handle(
+        _activationDateMeta,
+        activationDate.isAcceptableOrUnknown(
+          data['activationDate']!,
           _activationDateMeta,
-          activationDate.isAcceptableOrUnknown(
-              data['activationDate']!, _activationDateMeta));
+        ),
+      );
     }
     if (data.containsKey('expirationDays')) {
       context.handle(
+        _expirationDaysMeta,
+        expirationDays.isAcceptableOrUnknown(
+          data['expirationDays']!,
           _expirationDaysMeta,
-          expirationDays.isAcceptableOrUnknown(
-              data['expirationDays']!, _expirationDaysMeta));
+        ),
+      );
     }
     return context;
   }
@@ -113,20 +165,34 @@ class $CouponsTable extends Coupons with TableInfo<$CouponsTable, Coupon> {
   Coupon map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Coupon(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      serial: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}serial'])!,
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
-      free: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}free'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      activationDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}activationDate']),
-      expirationDays: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}expirationDays'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      serial: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}serial'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}type'],
+      )!,
+      free: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}free'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      activationDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}activationDate'],
+      ),
+      expirationDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}expirationDays'],
+      )!,
     );
   }
 
@@ -144,14 +210,15 @@ class Coupon extends DataClass implements Insertable<Coupon> {
   final String creation;
   final String? activationDate;
   final int expirationDays;
-  const Coupon(
-      {required this.id,
-      required this.serial,
-      required this.type,
-      required this.free,
-      required this.creation,
-      this.activationDate,
-      required this.expirationDays});
+  const Coupon({
+    required this.id,
+    required this.serial,
+    required this.type,
+    required this.free,
+    required this.creation,
+    this.activationDate,
+    required this.expirationDays,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -181,8 +248,10 @@ class Coupon extends DataClass implements Insertable<Coupon> {
     );
   }
 
-  factory Coupon.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Coupon.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Coupon(
       id: serializer.fromJson<int>(json['id']),
@@ -208,24 +277,25 @@ class Coupon extends DataClass implements Insertable<Coupon> {
     };
   }
 
-  Coupon copyWith(
-          {int? id,
-          String? serial,
-          int? type,
-          int? free,
-          String? creation,
-          Value<String?> activationDate = const Value.absent(),
-          int? expirationDays}) =>
-      Coupon(
-        id: id ?? this.id,
-        serial: serial ?? this.serial,
-        type: type ?? this.type,
-        free: free ?? this.free,
-        creation: creation ?? this.creation,
-        activationDate:
-            activationDate.present ? activationDate.value : this.activationDate,
-        expirationDays: expirationDays ?? this.expirationDays,
-      );
+  Coupon copyWith({
+    int? id,
+    String? serial,
+    int? type,
+    int? free,
+    String? creation,
+    Value<String?> activationDate = const Value.absent(),
+    int? expirationDays,
+  }) => Coupon(
+    id: id ?? this.id,
+    serial: serial ?? this.serial,
+    type: type ?? this.type,
+    free: free ?? this.free,
+    creation: creation ?? this.creation,
+    activationDate: activationDate.present
+        ? activationDate.value
+        : this.activationDate,
+    expirationDays: expirationDays ?? this.expirationDays,
+  );
   Coupon copyWithCompanion(CouponsCompanion data) {
     return Coupon(
       id: data.id.present ? data.id.value : this.id,
@@ -258,7 +328,14 @@ class Coupon extends DataClass implements Insertable<Coupon> {
 
   @override
   int get hashCode => Object.hash(
-      id, serial, type, free, creation, activationDate, expirationDays);
+    id,
+    serial,
+    type,
+    free,
+    creation,
+    activationDate,
+    expirationDays,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -297,9 +374,9 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
     required String creation,
     this.activationDate = const Value.absent(),
     this.expirationDays = const Value.absent(),
-  })  : serial = Value(serial),
-        type = Value(type),
-        creation = Value(creation);
+  }) : serial = Value(serial),
+       type = Value(type),
+       creation = Value(creation);
   static Insertable<Coupon> custom({
     Expression<int>? id,
     Expression<String>? serial,
@@ -320,14 +397,15 @@ class CouponsCompanion extends UpdateCompanion<Coupon> {
     });
   }
 
-  CouponsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? serial,
-      Value<int>? type,
-      Value<int>? free,
-      Value<String>? creation,
-      Value<String?>? activationDate,
-      Value<int>? expirationDays}) {
+  CouponsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? serial,
+    Value<int>? type,
+    Value<int>? free,
+    Value<String>? creation,
+    Value<String?>? activationDate,
+    Value<int>? expirationDays,
+  }) {
     return CouponsCompanion(
       id: id ?? this.id,
       serial: serial ?? this.serial,
@@ -389,105 +467,158 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
   @override
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumn<int> type = GeneratedColumn<int>(
-      'type', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _enabledMeta =
-      const VerificationMeta('enabled');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _enabledMeta = const VerificationMeta(
+    'enabled',
+  );
   @override
   late final GeneratedColumn<int> enabled = GeneratedColumn<int>(
-      'enabled', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(1));
+    'enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
   static const VerificationMeta _freeMeta = const VerificationMeta('free');
   @override
   late final GeneratedColumn<int> free = GeneratedColumn<int>(
-      'free', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _orderingMeta =
-      const VerificationMeta('ordering');
+    'free',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orderingMeta = const VerificationMeta(
+    'ordering',
+  );
   @override
   late final GeneratedColumn<int> ordering = GeneratedColumn<int>(
-      'ordering', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _needsUpdateMeta =
-      const VerificationMeta('needsUpdate');
+    'ordering',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _needsUpdateMeta = const VerificationMeta(
+    'needsUpdate',
+  );
   @override
   late final GeneratedColumn<int> needsUpdate = GeneratedColumn<int>(
-      'needsUpdate', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
-  static const VerificationMeta _captureableMeta =
-      const VerificationMeta('captureable');
+    'needsUpdate',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _captureableMeta = const VerificationMeta(
+    'captureable',
+  );
   @override
   late final GeneratedColumn<int> captureable = GeneratedColumn<int>(
-      'captureable', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(1));
-  static const VerificationMeta _textCulumnMeta =
-      const VerificationMeta('textCulumn');
+    'captureable',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _textCulumnMeta = const VerificationMeta(
+    'textCulumn',
+  );
   @override
   late final GeneratedColumn<String> textCulumn = GeneratedColumn<String>(
-      'text', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _outerNoteMeta =
-      const VerificationMeta('outerNote');
+    'text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _outerNoteMeta = const VerificationMeta(
+    'outerNote',
+  );
   @override
   late final GeneratedColumn<String> outerNote = GeneratedColumn<String>(
-      'outerNote', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(''));
+    'outerNote',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuid,
-        name,
-        type,
-        creation,
-        enabled,
-        free,
-        ordering,
-        needsUpdate,
-        captureable,
-        textCulumn,
-        outerNote
-      ];
+    id,
+    uuid,
+    name,
+    type,
+    creation,
+    enabled,
+    free,
+    ordering,
+    needsUpdate,
+    captureable,
+    textCulumn,
+    outerNote,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'terms';
   @override
-  VerificationContext validateIntegrity(Insertable<Term> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Term> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -495,65 +626,89 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
     }
     if (data.containsKey('uuid')) {
       context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
     } else if (isInserting) {
       context.missing(_uuidMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('type')) {
       context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('enabled')) {
-      context.handle(_enabledMeta,
-          enabled.isAcceptableOrUnknown(data['enabled']!, _enabledMeta));
+      context.handle(
+        _enabledMeta,
+        enabled.isAcceptableOrUnknown(data['enabled']!, _enabledMeta),
+      );
     }
     if (data.containsKey('free')) {
       context.handle(
-          _freeMeta, free.isAcceptableOrUnknown(data['free']!, _freeMeta));
+        _freeMeta,
+        free.isAcceptableOrUnknown(data['free']!, _freeMeta),
+      );
     } else if (isInserting) {
       context.missing(_freeMeta);
     }
     if (data.containsKey('ordering')) {
-      context.handle(_orderingMeta,
-          ordering.isAcceptableOrUnknown(data['ordering']!, _orderingMeta));
+      context.handle(
+        _orderingMeta,
+        ordering.isAcceptableOrUnknown(data['ordering']!, _orderingMeta),
+      );
     } else if (isInserting) {
       context.missing(_orderingMeta);
     }
     if (data.containsKey('needsUpdate')) {
       context.handle(
+        _needsUpdateMeta,
+        needsUpdate.isAcceptableOrUnknown(
+          data['needsUpdate']!,
           _needsUpdateMeta,
-          needsUpdate.isAcceptableOrUnknown(
-              data['needsUpdate']!, _needsUpdateMeta));
+        ),
+      );
     }
     if (data.containsKey('captureable')) {
       context.handle(
+        _captureableMeta,
+        captureable.isAcceptableOrUnknown(
+          data['captureable']!,
           _captureableMeta,
-          captureable.isAcceptableOrUnknown(
-              data['captureable']!, _captureableMeta));
+        ),
+      );
     }
     if (data.containsKey('text')) {
-      context.handle(_textCulumnMeta,
-          textCulumn.isAcceptableOrUnknown(data['text']!, _textCulumnMeta));
+      context.handle(
+        _textCulumnMeta,
+        textCulumn.isAcceptableOrUnknown(data['text']!, _textCulumnMeta),
+      );
     } else if (isInserting) {
       context.missing(_textCulumnMeta);
     }
     if (data.containsKey('outerNote')) {
-      context.handle(_outerNoteMeta,
-          outerNote.isAcceptableOrUnknown(data['outerNote']!, _outerNoteMeta));
+      context.handle(
+        _outerNoteMeta,
+        outerNote.isAcceptableOrUnknown(data['outerNote']!, _outerNoteMeta),
+      );
     }
     return context;
   }
@@ -564,30 +719,54 @@ class $TermsTable extends Terms with TableInfo<$TermsTable, Term> {
   Term map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Term(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      enabled: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}enabled'])!,
-      free: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}free'])!,
-      ordering: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ordering'])!,
-      needsUpdate: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}needsUpdate'])!,
-      captureable: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}captureable'])!,
-      textCulumn: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}text'])!,
-      outerNote: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}outerNote'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}type'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      enabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}enabled'],
+      )!,
+      free: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}free'],
+      )!,
+      ordering: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ordering'],
+      )!,
+      needsUpdate: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}needsUpdate'],
+      )!,
+      captureable: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}captureable'],
+      )!,
+      textCulumn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text'],
+      )!,
+      outerNote: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}outerNote'],
+      )!,
     );
   }
 
@@ -610,19 +789,20 @@ class Term extends DataClass implements Insertable<Term> {
   final int captureable;
   final String textCulumn;
   final String outerNote;
-  const Term(
-      {required this.id,
-      required this.uuid,
-      required this.name,
-      required this.type,
-      required this.creation,
-      required this.enabled,
-      required this.free,
-      required this.ordering,
-      required this.needsUpdate,
-      required this.captureable,
-      required this.textCulumn,
-      required this.outerNote});
+  const Term({
+    required this.id,
+    required this.uuid,
+    required this.name,
+    required this.type,
+    required this.creation,
+    required this.enabled,
+    required this.free,
+    required this.ordering,
+    required this.needsUpdate,
+    required this.captureable,
+    required this.textCulumn,
+    required this.outerNote,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -658,8 +838,10 @@ class Term extends DataClass implements Insertable<Term> {
     );
   }
 
-  factory Term.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Term.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Term(
       id: serializer.fromJson<int>(json['id']),
@@ -695,33 +877,33 @@ class Term extends DataClass implements Insertable<Term> {
     };
   }
 
-  Term copyWith(
-          {int? id,
-          String? uuid,
-          String? name,
-          int? type,
-          String? creation,
-          int? enabled,
-          int? free,
-          int? ordering,
-          int? needsUpdate,
-          int? captureable,
-          String? textCulumn,
-          String? outerNote}) =>
-      Term(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        name: name ?? this.name,
-        type: type ?? this.type,
-        creation: creation ?? this.creation,
-        enabled: enabled ?? this.enabled,
-        free: free ?? this.free,
-        ordering: ordering ?? this.ordering,
-        needsUpdate: needsUpdate ?? this.needsUpdate,
-        captureable: captureable ?? this.captureable,
-        textCulumn: textCulumn ?? this.textCulumn,
-        outerNote: outerNote ?? this.outerNote,
-      );
+  Term copyWith({
+    int? id,
+    String? uuid,
+    String? name,
+    int? type,
+    String? creation,
+    int? enabled,
+    int? free,
+    int? ordering,
+    int? needsUpdate,
+    int? captureable,
+    String? textCulumn,
+    String? outerNote,
+  }) => Term(
+    id: id ?? this.id,
+    uuid: uuid ?? this.uuid,
+    name: name ?? this.name,
+    type: type ?? this.type,
+    creation: creation ?? this.creation,
+    enabled: enabled ?? this.enabled,
+    free: free ?? this.free,
+    ordering: ordering ?? this.ordering,
+    needsUpdate: needsUpdate ?? this.needsUpdate,
+    captureable: captureable ?? this.captureable,
+    textCulumn: textCulumn ?? this.textCulumn,
+    outerNote: outerNote ?? this.outerNote,
+  );
   Term copyWithCompanion(TermsCompanion data) {
     return Term(
       id: data.id.present ? data.id.value : this.id,
@@ -732,12 +914,15 @@ class Term extends DataClass implements Insertable<Term> {
       enabled: data.enabled.present ? data.enabled.value : this.enabled,
       free: data.free.present ? data.free.value : this.free,
       ordering: data.ordering.present ? data.ordering.value : this.ordering,
-      needsUpdate:
-          data.needsUpdate.present ? data.needsUpdate.value : this.needsUpdate,
-      captureable:
-          data.captureable.present ? data.captureable.value : this.captureable,
-      textCulumn:
-          data.textCulumn.present ? data.textCulumn.value : this.textCulumn,
+      needsUpdate: data.needsUpdate.present
+          ? data.needsUpdate.value
+          : this.needsUpdate,
+      captureable: data.captureable.present
+          ? data.captureable.value
+          : this.captureable,
+      textCulumn: data.textCulumn.present
+          ? data.textCulumn.value
+          : this.textCulumn,
       outerNote: data.outerNote.present ? data.outerNote.value : this.outerNote,
     );
   }
@@ -762,8 +947,20 @@ class Term extends DataClass implements Insertable<Term> {
   }
 
   @override
-  int get hashCode => Object.hash(id, uuid, name, type, creation, enabled, free,
-      ordering, needsUpdate, captureable, textCulumn, outerNote);
+  int get hashCode => Object.hash(
+    id,
+    uuid,
+    name,
+    type,
+    creation,
+    enabled,
+    free,
+    ordering,
+    needsUpdate,
+    captureable,
+    textCulumn,
+    outerNote,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -822,13 +1019,13 @@ class TermsCompanion extends UpdateCompanion<Term> {
     this.captureable = const Value.absent(),
     required String textCulumn,
     this.outerNote = const Value.absent(),
-  })  : uuid = Value(uuid),
-        name = Value(name),
-        type = Value(type),
-        creation = Value(creation),
-        free = Value(free),
-        ordering = Value(ordering),
-        textCulumn = Value(textCulumn);
+  }) : uuid = Value(uuid),
+       name = Value(name),
+       type = Value(type),
+       creation = Value(creation),
+       free = Value(free),
+       ordering = Value(ordering),
+       textCulumn = Value(textCulumn);
   static Insertable<Term> custom({
     Expression<int>? id,
     Expression<String>? uuid,
@@ -859,19 +1056,20 @@ class TermsCompanion extends UpdateCompanion<Term> {
     });
   }
 
-  TermsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? uuid,
-      Value<String>? name,
-      Value<int>? type,
-      Value<String>? creation,
-      Value<int>? enabled,
-      Value<int>? free,
-      Value<int>? ordering,
-      Value<int>? needsUpdate,
-      Value<int>? captureable,
-      Value<String>? textCulumn,
-      Value<String>? outerNote}) {
+  TermsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? uuid,
+    Value<String>? name,
+    Value<int>? type,
+    Value<String>? creation,
+    Value<int>? enabled,
+    Value<int>? free,
+    Value<int>? ordering,
+    Value<int>? needsUpdate,
+    Value<int>? captureable,
+    Value<String>? textCulumn,
+    Value<String>? outerNote,
+  }) {
     return TermsCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -958,82 +1156,124 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
   @override
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _titleTranslationMeta =
-      const VerificationMeta('titleTranslation');
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleTranslationMeta = const VerificationMeta(
+    'titleTranslation',
+  );
   @override
   late final GeneratedColumn<String> titleTranslation = GeneratedColumn<String>(
-      'titleTranslation', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(''));
-  static const VerificationMeta _isCorrectMeta =
-      const VerificationMeta('isCorrect');
+    'titleTranslation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _isCorrectMeta = const VerificationMeta(
+    'isCorrect',
+  );
   @override
   late final GeneratedColumn<int> isCorrect = GeneratedColumn<int>(
-      'isCorrect', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _parentQuestionIdMeta =
-      const VerificationMeta('parentQuestionId');
+    'isCorrect',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentQuestionIdMeta = const VerificationMeta(
+    'parentQuestionId',
+  );
   @override
   late final GeneratedColumn<int> parentQuestionId = GeneratedColumn<int>(
-      'parentQuestionId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _specialCharacterMeta =
-      const VerificationMeta('specialCharacter');
+    'parentQuestionId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _specialCharacterMeta = const VerificationMeta(
+    'specialCharacter',
+  );
   @override
   late final GeneratedColumn<int> specialCharacter = GeneratedColumn<int>(
-      'specialCharacter', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'specialCharacter',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _checkedCountMeta =
-      const VerificationMeta('checkedCount');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _checkedCountMeta = const VerificationMeta(
+    'checkedCount',
+  );
   @override
   late final GeneratedColumn<int> checkedCount = GeneratedColumn<int>(
-      'checkedCount', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
+    'checkedCount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuid,
-        title,
-        titleTranslation,
-        isCorrect,
-        parentQuestionId,
-        specialCharacter,
-        creation,
-        checkedCount
-      ];
+    id,
+    uuid,
+    title,
+    titleTranslation,
+    isCorrect,
+    parentQuestionId,
+    specialCharacter,
+    creation,
+    checkedCount,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'answers';
   @override
-  VerificationContext validateIntegrity(Insertable<Answer> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Answer> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1041,55 +1281,75 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
     }
     if (data.containsKey('uuid')) {
       context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
     } else if (isInserting) {
       context.missing(_uuidMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('titleTranslation')) {
       context.handle(
+        _titleTranslationMeta,
+        titleTranslation.isAcceptableOrUnknown(
+          data['titleTranslation']!,
           _titleTranslationMeta,
-          titleTranslation.isAcceptableOrUnknown(
-              data['titleTranslation']!, _titleTranslationMeta));
+        ),
+      );
     }
     if (data.containsKey('isCorrect')) {
-      context.handle(_isCorrectMeta,
-          isCorrect.isAcceptableOrUnknown(data['isCorrect']!, _isCorrectMeta));
+      context.handle(
+        _isCorrectMeta,
+        isCorrect.isAcceptableOrUnknown(data['isCorrect']!, _isCorrectMeta),
+      );
     } else if (isInserting) {
       context.missing(_isCorrectMeta);
     }
     if (data.containsKey('parentQuestionId')) {
       context.handle(
+        _parentQuestionIdMeta,
+        parentQuestionId.isAcceptableOrUnknown(
+          data['parentQuestionId']!,
           _parentQuestionIdMeta,
-          parentQuestionId.isAcceptableOrUnknown(
-              data['parentQuestionId']!, _parentQuestionIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentQuestionIdMeta);
     }
     if (data.containsKey('specialCharacter')) {
       context.handle(
+        _specialCharacterMeta,
+        specialCharacter.isAcceptableOrUnknown(
+          data['specialCharacter']!,
           _specialCharacterMeta,
-          specialCharacter.isAcceptableOrUnknown(
-              data['specialCharacter']!, _specialCharacterMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_specialCharacterMeta);
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('checkedCount')) {
       context.handle(
+        _checkedCountMeta,
+        checkedCount.isAcceptableOrUnknown(
+          data['checkedCount']!,
           _checkedCountMeta,
-          checkedCount.isAcceptableOrUnknown(
-              data['checkedCount']!, _checkedCountMeta));
+        ),
+      );
     }
     return context;
   }
@@ -1100,24 +1360,42 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
   Answer map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Answer(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
       titleTranslation: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}titleTranslation'])!,
-      isCorrect: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}isCorrect'])!,
-      parentQuestionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentQuestionId'])!,
-      specialCharacter: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}specialCharacter'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      checkedCount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}checkedCount'])!,
+        DriftSqlType.string,
+        data['${effectivePrefix}titleTranslation'],
+      )!,
+      isCorrect: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}isCorrect'],
+      )!,
+      parentQuestionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentQuestionId'],
+      )!,
+      specialCharacter: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}specialCharacter'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      checkedCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}checkedCount'],
+      )!,
     );
   }
 
@@ -1137,16 +1415,17 @@ class Answer extends DataClass implements Insertable<Answer> {
   final int specialCharacter;
   final String creation;
   final int checkedCount;
-  const Answer(
-      {required this.id,
-      required this.uuid,
-      required this.title,
-      required this.titleTranslation,
-      required this.isCorrect,
-      required this.parentQuestionId,
-      required this.specialCharacter,
-      required this.creation,
-      required this.checkedCount});
+  const Answer({
+    required this.id,
+    required this.uuid,
+    required this.title,
+    required this.titleTranslation,
+    required this.isCorrect,
+    required this.parentQuestionId,
+    required this.specialCharacter,
+    required this.creation,
+    required this.checkedCount,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1176,8 +1455,10 @@ class Answer extends DataClass implements Insertable<Answer> {
     );
   }
 
-  factory Answer.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Answer.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Answer(
       id: serializer.fromJson<int>(json['id']),
@@ -1207,27 +1488,27 @@ class Answer extends DataClass implements Insertable<Answer> {
     };
   }
 
-  Answer copyWith(
-          {int? id,
-          String? uuid,
-          String? title,
-          String? titleTranslation,
-          int? isCorrect,
-          int? parentQuestionId,
-          int? specialCharacter,
-          String? creation,
-          int? checkedCount}) =>
-      Answer(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        title: title ?? this.title,
-        titleTranslation: titleTranslation ?? this.titleTranslation,
-        isCorrect: isCorrect ?? this.isCorrect,
-        parentQuestionId: parentQuestionId ?? this.parentQuestionId,
-        specialCharacter: specialCharacter ?? this.specialCharacter,
-        creation: creation ?? this.creation,
-        checkedCount: checkedCount ?? this.checkedCount,
-      );
+  Answer copyWith({
+    int? id,
+    String? uuid,
+    String? title,
+    String? titleTranslation,
+    int? isCorrect,
+    int? parentQuestionId,
+    int? specialCharacter,
+    String? creation,
+    int? checkedCount,
+  }) => Answer(
+    id: id ?? this.id,
+    uuid: uuid ?? this.uuid,
+    title: title ?? this.title,
+    titleTranslation: titleTranslation ?? this.titleTranslation,
+    isCorrect: isCorrect ?? this.isCorrect,
+    parentQuestionId: parentQuestionId ?? this.parentQuestionId,
+    specialCharacter: specialCharacter ?? this.specialCharacter,
+    creation: creation ?? this.creation,
+    checkedCount: checkedCount ?? this.checkedCount,
+  );
   Answer copyWithCompanion(AnswersCompanion data) {
     return Answer(
       id: data.id.present ? data.id.value : this.id,
@@ -1267,8 +1548,17 @@ class Answer extends DataClass implements Insertable<Answer> {
   }
 
   @override
-  int get hashCode => Object.hash(id, uuid, title, titleTranslation, isCorrect,
-      parentQuestionId, specialCharacter, creation, checkedCount);
+  int get hashCode => Object.hash(
+    id,
+    uuid,
+    title,
+    titleTranslation,
+    isCorrect,
+    parentQuestionId,
+    specialCharacter,
+    creation,
+    checkedCount,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1315,12 +1605,12 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
     required int specialCharacter,
     required String creation,
     this.checkedCount = const Value.absent(),
-  })  : uuid = Value(uuid),
-        title = Value(title),
-        isCorrect = Value(isCorrect),
-        parentQuestionId = Value(parentQuestionId),
-        specialCharacter = Value(specialCharacter),
-        creation = Value(creation);
+  }) : uuid = Value(uuid),
+       title = Value(title),
+       isCorrect = Value(isCorrect),
+       parentQuestionId = Value(parentQuestionId),
+       specialCharacter = Value(specialCharacter),
+       creation = Value(creation);
   static Insertable<Answer> custom({
     Expression<int>? id,
     Expression<String>? uuid,
@@ -1345,16 +1635,17 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
     });
   }
 
-  AnswersCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? uuid,
-      Value<String>? title,
-      Value<String>? titleTranslation,
-      Value<int>? isCorrect,
-      Value<int>? parentQuestionId,
-      Value<int>? specialCharacter,
-      Value<String>? creation,
-      Value<int>? checkedCount}) {
+  AnswersCompanion copyWith({
+    Value<int>? id,
+    Value<String>? uuid,
+    Value<String>? title,
+    Value<String>? titleTranslation,
+    Value<int>? isCorrect,
+    Value<int>? parentQuestionId,
+    Value<int>? specialCharacter,
+    Value<String>? creation,
+    Value<int>? checkedCount,
+  }) {
     return AnswersCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -1427,118 +1718,180 @@ class $QuestionsTable extends Questions
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
   @override
   late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
-      'uuid', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'uuid',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _titleTranslationMeta =
-      const VerificationMeta('titleTranslation');
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleTranslationMeta = const VerificationMeta(
+    'titleTranslation',
+  );
   @override
   late final GeneratedColumn<String> titleTranslation = GeneratedColumn<String>(
-      'titleTranslation', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(''));
-  static const VerificationMeta _labelIdMeta =
-      const VerificationMeta('labelId');
+    'titleTranslation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _labelIdMeta = const VerificationMeta(
+    'labelId',
+  );
   @override
   late final GeneratedColumn<int> labelId = GeneratedColumn<int>(
-      'labelId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'labelId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _noteMeta = const VerificationMeta('note');
   @override
   late final GeneratedColumn<String> note = GeneratedColumn<String>(
-      'note', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _noteTranslationMeta =
-      const VerificationMeta('noteTranslation');
+    'note',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteTranslationMeta = const VerificationMeta(
+    'noteTranslation',
+  );
   @override
   late final GeneratedColumn<String> noteTranslation = GeneratedColumn<String>(
-      'noteTranslation', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(''));
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'noteTranslation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _specialCharacterMeta =
-      const VerificationMeta('specialCharacter');
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _specialCharacterMeta = const VerificationMeta(
+    'specialCharacter',
+  );
   @override
   late final GeneratedColumn<int> specialCharacter = GeneratedColumn<int>(
-      'specialCharacter', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'specialCharacter',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumn<int> type = GeneratedColumn<int>(
-      'type', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _editedMeta = const VerificationMeta('edited');
   @override
   late final GeneratedColumn<int> edited = GeneratedColumn<int>(
-      'edited', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
-  static const VerificationMeta _imageUrlMeta =
-      const VerificationMeta('imageUrl');
+    'edited',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
+    'imageUrl',
+  );
   @override
   late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
-      'imageUrl', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(''));
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'imageUrl',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _editionDateMeta =
-      const VerificationMeta('editionDate');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _editionDateMeta = const VerificationMeta(
+    'editionDate',
+  );
   @override
   late final GeneratedColumn<String> editionDate = GeneratedColumn<String>(
-      'editionDate', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'editionDate',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuid,
-        title,
-        titleTranslation,
-        labelId,
-        note,
-        noteTranslation,
-        parentTermId,
-        specialCharacter,
-        type,
-        edited,
-        imageUrl,
-        creation,
-        editionDate
-      ];
+    id,
+    uuid,
+    title,
+    titleTranslation,
+    labelId,
+    note,
+    noteTranslation,
+    parentTermId,
+    specialCharacter,
+    type,
+    edited,
+    imageUrl,
+    creation,
+    editionDate,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'questions';
   @override
-  VerificationContext validateIntegrity(Insertable<Question> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Question> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1546,81 +1899,112 @@ class $QuestionsTable extends Questions
     }
     if (data.containsKey('uuid')) {
       context.handle(
-          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+        _uuidMeta,
+        uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
+      );
     } else if (isInserting) {
       context.missing(_uuidMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('titleTranslation')) {
       context.handle(
+        _titleTranslationMeta,
+        titleTranslation.isAcceptableOrUnknown(
+          data['titleTranslation']!,
           _titleTranslationMeta,
-          titleTranslation.isAcceptableOrUnknown(
-              data['titleTranslation']!, _titleTranslationMeta));
+        ),
+      );
     }
     if (data.containsKey('labelId')) {
-      context.handle(_labelIdMeta,
-          labelId.isAcceptableOrUnknown(data['labelId']!, _labelIdMeta));
+      context.handle(
+        _labelIdMeta,
+        labelId.isAcceptableOrUnknown(data['labelId']!, _labelIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_labelIdMeta);
     }
     if (data.containsKey('note')) {
       context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
     } else if (isInserting) {
       context.missing(_noteMeta);
     }
     if (data.containsKey('noteTranslation')) {
       context.handle(
+        _noteTranslationMeta,
+        noteTranslation.isAcceptableOrUnknown(
+          data['noteTranslation']!,
           _noteTranslationMeta,
-          noteTranslation.isAcceptableOrUnknown(
-              data['noteTranslation']!, _noteTranslationMeta));
+        ),
+      );
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTermIdMeta);
     }
     if (data.containsKey('specialCharacter')) {
       context.handle(
+        _specialCharacterMeta,
+        specialCharacter.isAcceptableOrUnknown(
+          data['specialCharacter']!,
           _specialCharacterMeta,
-          specialCharacter.isAcceptableOrUnknown(
-              data['specialCharacter']!, _specialCharacterMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_specialCharacterMeta);
     }
     if (data.containsKey('type')) {
       context.handle(
-          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
     if (data.containsKey('edited')) {
-      context.handle(_editedMeta,
-          edited.isAcceptableOrUnknown(data['edited']!, _editedMeta));
+      context.handle(
+        _editedMeta,
+        edited.isAcceptableOrUnknown(data['edited']!, _editedMeta),
+      );
     }
     if (data.containsKey('imageUrl')) {
-      context.handle(_imageUrlMeta,
-          imageUrl.isAcceptableOrUnknown(data['imageUrl']!, _imageUrlMeta));
+      context.handle(
+        _imageUrlMeta,
+        imageUrl.isAcceptableOrUnknown(data['imageUrl']!, _imageUrlMeta),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('editionDate')) {
       context.handle(
+        _editionDateMeta,
+        editionDate.isAcceptableOrUnknown(
+          data['editionDate']!,
           _editionDateMeta,
-          editionDate.isAcceptableOrUnknown(
-              data['editionDate']!, _editionDateMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_editionDateMeta);
     }
@@ -1633,34 +2017,62 @@ class $QuestionsTable extends Questions
   Question map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Question(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuid: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      uuid: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}uuid'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
       titleTranslation: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}titleTranslation'])!,
-      labelId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}labelId'])!,
-      note: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}note'])!,
+        DriftSqlType.string,
+        data['${effectivePrefix}titleTranslation'],
+      )!,
+      labelId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}labelId'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      )!,
       noteTranslation: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}noteTranslation'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      specialCharacter: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}specialCharacter'])!,
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
-      edited: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}edited'])!,
-      imageUrl: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}imageUrl'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      editionDate: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}editionDate'])!,
+        DriftSqlType.string,
+        data['${effectivePrefix}noteTranslation'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      specialCharacter: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}specialCharacter'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}type'],
+      )!,
+      edited: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}edited'],
+      )!,
+      imageUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}imageUrl'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      editionDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}editionDate'],
+      )!,
     );
   }
 
@@ -1685,21 +2097,22 @@ class Question extends DataClass implements Insertable<Question> {
   final String imageUrl;
   final String creation;
   final String editionDate;
-  const Question(
-      {required this.id,
-      required this.uuid,
-      required this.title,
-      required this.titleTranslation,
-      required this.labelId,
-      required this.note,
-      required this.noteTranslation,
-      required this.parentTermId,
-      required this.specialCharacter,
-      required this.type,
-      required this.edited,
-      required this.imageUrl,
-      required this.creation,
-      required this.editionDate});
+  const Question({
+    required this.id,
+    required this.uuid,
+    required this.title,
+    required this.titleTranslation,
+    required this.labelId,
+    required this.note,
+    required this.noteTranslation,
+    required this.parentTermId,
+    required this.specialCharacter,
+    required this.type,
+    required this.edited,
+    required this.imageUrl,
+    required this.creation,
+    required this.editionDate,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1739,8 +2152,10 @@ class Question extends DataClass implements Insertable<Question> {
     );
   }
 
-  factory Question.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Question.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Question(
       id: serializer.fromJson<int>(json['id']),
@@ -1780,37 +2195,37 @@ class Question extends DataClass implements Insertable<Question> {
     };
   }
 
-  Question copyWith(
-          {int? id,
-          String? uuid,
-          String? title,
-          String? titleTranslation,
-          int? labelId,
-          String? note,
-          String? noteTranslation,
-          int? parentTermId,
-          int? specialCharacter,
-          int? type,
-          int? edited,
-          String? imageUrl,
-          String? creation,
-          String? editionDate}) =>
-      Question(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        title: title ?? this.title,
-        titleTranslation: titleTranslation ?? this.titleTranslation,
-        labelId: labelId ?? this.labelId,
-        note: note ?? this.note,
-        noteTranslation: noteTranslation ?? this.noteTranslation,
-        parentTermId: parentTermId ?? this.parentTermId,
-        specialCharacter: specialCharacter ?? this.specialCharacter,
-        type: type ?? this.type,
-        edited: edited ?? this.edited,
-        imageUrl: imageUrl ?? this.imageUrl,
-        creation: creation ?? this.creation,
-        editionDate: editionDate ?? this.editionDate,
-      );
+  Question copyWith({
+    int? id,
+    String? uuid,
+    String? title,
+    String? titleTranslation,
+    int? labelId,
+    String? note,
+    String? noteTranslation,
+    int? parentTermId,
+    int? specialCharacter,
+    int? type,
+    int? edited,
+    String? imageUrl,
+    String? creation,
+    String? editionDate,
+  }) => Question(
+    id: id ?? this.id,
+    uuid: uuid ?? this.uuid,
+    title: title ?? this.title,
+    titleTranslation: titleTranslation ?? this.titleTranslation,
+    labelId: labelId ?? this.labelId,
+    note: note ?? this.note,
+    noteTranslation: noteTranslation ?? this.noteTranslation,
+    parentTermId: parentTermId ?? this.parentTermId,
+    specialCharacter: specialCharacter ?? this.specialCharacter,
+    type: type ?? this.type,
+    edited: edited ?? this.edited,
+    imageUrl: imageUrl ?? this.imageUrl,
+    creation: creation ?? this.creation,
+    editionDate: editionDate ?? this.editionDate,
+  );
   Question copyWithCompanion(QuestionsCompanion data) {
     return Question(
       id: data.id.present ? data.id.value : this.id,
@@ -1834,8 +2249,9 @@ class Question extends DataClass implements Insertable<Question> {
       edited: data.edited.present ? data.edited.value : this.edited,
       imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
       creation: data.creation.present ? data.creation.value : this.creation,
-      editionDate:
-          data.editionDate.present ? data.editionDate.value : this.editionDate,
+      editionDate: data.editionDate.present
+          ? data.editionDate.value
+          : this.editionDate,
     );
   }
 
@@ -1862,20 +2278,21 @@ class Question extends DataClass implements Insertable<Question> {
 
   @override
   int get hashCode => Object.hash(
-      id,
-      uuid,
-      title,
-      titleTranslation,
-      labelId,
-      note,
-      noteTranslation,
-      parentTermId,
-      specialCharacter,
-      type,
-      edited,
-      imageUrl,
-      creation,
-      editionDate);
+    id,
+    uuid,
+    title,
+    titleTranslation,
+    labelId,
+    note,
+    noteTranslation,
+    parentTermId,
+    specialCharacter,
+    type,
+    edited,
+    imageUrl,
+    creation,
+    editionDate,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1942,15 +2359,15 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     this.imageUrl = const Value.absent(),
     required String creation,
     required String editionDate,
-  })  : uuid = Value(uuid),
-        title = Value(title),
-        labelId = Value(labelId),
-        note = Value(note),
-        parentTermId = Value(parentTermId),
-        specialCharacter = Value(specialCharacter),
-        type = Value(type),
-        creation = Value(creation),
-        editionDate = Value(editionDate);
+  }) : uuid = Value(uuid),
+       title = Value(title),
+       labelId = Value(labelId),
+       note = Value(note),
+       parentTermId = Value(parentTermId),
+       specialCharacter = Value(specialCharacter),
+       type = Value(type),
+       creation = Value(creation),
+       editionDate = Value(editionDate);
   static Insertable<Question> custom({
     Expression<int>? id,
     Expression<String>? uuid,
@@ -1985,21 +2402,22 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     });
   }
 
-  QuestionsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? uuid,
-      Value<String>? title,
-      Value<String>? titleTranslation,
-      Value<int>? labelId,
-      Value<String>? note,
-      Value<String>? noteTranslation,
-      Value<int>? parentTermId,
-      Value<int>? specialCharacter,
-      Value<int>? type,
-      Value<int>? edited,
-      Value<String>? imageUrl,
-      Value<String>? creation,
-      Value<String>? editionDate}) {
+  QuestionsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? uuid,
+    Value<String>? title,
+    Value<String>? titleTranslation,
+    Value<int>? labelId,
+    Value<String>? note,
+    Value<String>? noteTranslation,
+    Value<int>? parentTermId,
+    Value<int>? specialCharacter,
+    Value<int>? type,
+    Value<int>? edited,
+    Value<String>? imageUrl,
+    Value<String>? creation,
+    Value<String>? editionDate,
+  }) {
     return QuestionsCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -2097,44 +2515,73 @@ class $QuestionTagsTable extends QuestionTags
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentTagIdMeta =
-      const VerificationMeta('parentTagId');
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTagIdMeta = const VerificationMeta(
+    'parentTagId',
+  );
   @override
   late final GeneratedColumn<int> parentTagId = GeneratedColumn<int>(
-      'parentTagId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _hasInformationMeta =
-      const VerificationMeta('hasInformation');
+    'parentTagId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _hasInformationMeta = const VerificationMeta(
+    'hasInformation',
+  );
   @override
   late final GeneratedColumn<int> hasInformation = GeneratedColumn<int>(
-      'hasInformation', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'hasInformation',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, parentTagId, hasInformation, creation];
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    parentTagId,
+    hasInformation,
+    creation,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'questionTags';
   @override
-  VerificationContext validateIntegrity(Insertable<QuestionTag> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<QuestionTag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -2142,27 +2589,37 @@ class $QuestionTagsTable extends QuestionTags
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('parentTagId')) {
       context.handle(
+        _parentTagIdMeta,
+        parentTagId.isAcceptableOrUnknown(
+          data['parentTagId']!,
           _parentTagIdMeta,
-          parentTagId.isAcceptableOrUnknown(
-              data['parentTagId']!, _parentTagIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTagIdMeta);
     }
     if (data.containsKey('hasInformation')) {
       context.handle(
+        _hasInformationMeta,
+        hasInformation.isAcceptableOrUnknown(
+          data['hasInformation']!,
           _hasInformationMeta,
-          hasInformation.isAcceptableOrUnknown(
-              data['hasInformation']!, _hasInformationMeta));
+        ),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
@@ -2175,16 +2632,26 @@ class $QuestionTagsTable extends QuestionTags
   QuestionTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionTag(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      parentTagId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTagId'])!,
-      hasInformation: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}hasInformation'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      parentTagId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTagId'],
+      )!,
+      hasInformation: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}hasInformation'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
     );
   }
 
@@ -2200,12 +2667,13 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
   final int parentTagId;
   final int hasInformation;
   final String creation;
-  const QuestionTag(
-      {required this.id,
-      required this.name,
-      required this.parentTagId,
-      required this.hasInformation,
-      required this.creation});
+  const QuestionTag({
+    required this.id,
+    required this.name,
+    required this.parentTagId,
+    required this.hasInformation,
+    required this.creation,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2227,8 +2695,10 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
     );
   }
 
-  factory QuestionTag.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory QuestionTag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionTag(
       id: serializer.fromJson<int>(json['id']),
@@ -2250,25 +2720,26 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
     };
   }
 
-  QuestionTag copyWith(
-          {int? id,
-          String? name,
-          int? parentTagId,
-          int? hasInformation,
-          String? creation}) =>
-      QuestionTag(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        parentTagId: parentTagId ?? this.parentTagId,
-        hasInformation: hasInformation ?? this.hasInformation,
-        creation: creation ?? this.creation,
-      );
+  QuestionTag copyWith({
+    int? id,
+    String? name,
+    int? parentTagId,
+    int? hasInformation,
+    String? creation,
+  }) => QuestionTag(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    parentTagId: parentTagId ?? this.parentTagId,
+    hasInformation: hasInformation ?? this.hasInformation,
+    creation: creation ?? this.creation,
+  );
   QuestionTag copyWithCompanion(QuestionTagsCompanion data) {
     return QuestionTag(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
-      parentTagId:
-          data.parentTagId.present ? data.parentTagId.value : this.parentTagId,
+      parentTagId: data.parentTagId.present
+          ? data.parentTagId.value
+          : this.parentTagId,
       hasInformation: data.hasInformation.present
           ? data.hasInformation.value
           : this.hasInformation,
@@ -2321,9 +2792,9 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     required int parentTagId,
     this.hasInformation = const Value.absent(),
     required String creation,
-  })  : name = Value(name),
-        parentTagId = Value(parentTagId),
-        creation = Value(creation);
+  }) : name = Value(name),
+       parentTagId = Value(parentTagId),
+       creation = Value(creation);
   static Insertable<QuestionTag> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -2340,12 +2811,13 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     });
   }
 
-  QuestionTagsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? name,
-      Value<int>? parentTagId,
-      Value<int>? hasInformation,
-      Value<String>? creation}) {
+  QuestionTagsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<int>? parentTagId,
+    Value<int>? hasInformation,
+    Value<String>? creation,
+  }) {
     return QuestionTagsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -2398,25 +2870,43 @@ class $QuestionMediasTable extends QuestionMedias
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
-      'url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentQuestionIdMeta =
-      const VerificationMeta('parentQuestionId');
+    'url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentQuestionIdMeta = const VerificationMeta(
+    'parentQuestionId',
+  );
   @override
   late final GeneratedColumn<int> parentQuestionId = GeneratedColumn<int>(
-      'parentQuestionId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'parentQuestionId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [id, url, parentQuestionId, creation];
   @override
@@ -2425,8 +2915,10 @@ class $QuestionMediasTable extends QuestionMedias
   String get actualTableName => $name;
   static const String $name = 'questionMedias';
   @override
-  VerificationContext validateIntegrity(Insertable<QuestionMedia> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<QuestionMedia> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -2436,21 +2928,28 @@ class $QuestionMediasTable extends QuestionMedias
     }
     if (data.containsKey('url')) {
       context.handle(
-          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+        _urlMeta,
+        url.isAcceptableOrUnknown(data['url']!, _urlMeta),
+      );
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
     if (data.containsKey('parentQuestionId')) {
       context.handle(
+        _parentQuestionIdMeta,
+        parentQuestionId.isAcceptableOrUnknown(
+          data['parentQuestionId']!,
           _parentQuestionIdMeta,
-          parentQuestionId.isAcceptableOrUnknown(
-              data['parentQuestionId']!, _parentQuestionIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentQuestionIdMeta);
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
@@ -2463,14 +2962,22 @@ class $QuestionMediasTable extends QuestionMedias
   QuestionMedia map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionMedia(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      url: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
-      parentQuestionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentQuestionId'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
+      parentQuestionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentQuestionId'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
     );
   }
 
@@ -2485,11 +2992,12 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
   final String url;
   final int parentQuestionId;
   final String creation;
-  const QuestionMedia(
-      {required this.id,
-      required this.url,
-      required this.parentQuestionId,
-      required this.creation});
+  const QuestionMedia({
+    required this.id,
+    required this.url,
+    required this.parentQuestionId,
+    required this.creation,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2509,8 +3017,10 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
     );
   }
 
-  factory QuestionMedia.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory QuestionMedia.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionMedia(
       id: serializer.fromJson<int>(json['id']),
@@ -2530,14 +3040,17 @@ class QuestionMedia extends DataClass implements Insertable<QuestionMedia> {
     };
   }
 
-  QuestionMedia copyWith(
-          {int? id, String? url, int? parentQuestionId, String? creation}) =>
-      QuestionMedia(
-        id: id ?? this.id,
-        url: url ?? this.url,
-        parentQuestionId: parentQuestionId ?? this.parentQuestionId,
-        creation: creation ?? this.creation,
-      );
+  QuestionMedia copyWith({
+    int? id,
+    String? url,
+    int? parentQuestionId,
+    String? creation,
+  }) => QuestionMedia(
+    id: id ?? this.id,
+    url: url ?? this.url,
+    parentQuestionId: parentQuestionId ?? this.parentQuestionId,
+    creation: creation ?? this.creation,
+  );
   QuestionMedia copyWithCompanion(QuestionMediasCompanion data) {
     return QuestionMedia(
       id: data.id.present ? data.id.value : this.id,
@@ -2591,10 +3104,10 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
     required int parentQuestionId,
     required String creation,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        url = Value(url),
-        parentQuestionId = Value(parentQuestionId),
-        creation = Value(creation);
+  }) : id = Value(id),
+       url = Value(url),
+       parentQuestionId = Value(parentQuestionId),
+       creation = Value(creation);
   static Insertable<QuestionMedia> custom({
     Expression<int>? id,
     Expression<String>? url,
@@ -2611,12 +3124,13 @@ class QuestionMediasCompanion extends UpdateCompanion<QuestionMedia> {
     });
   }
 
-  QuestionMediasCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? url,
-      Value<int>? parentQuestionId,
-      Value<String>? creation,
-      Value<int>? rowid}) {
+  QuestionMediasCompanion copyWith({
+    Value<int>? id,
+    Value<String>? url,
+    Value<int>? parentQuestionId,
+    Value<String>? creation,
+    Value<int>? rowid,
+  }) {
     return QuestionMediasCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
@@ -2669,17 +3183,25 @@ class $FcmTopicsTable extends FcmTopics
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _subscriptionSucceedMeta =
       const VerificationMeta('subscriptionSucceed');
   @override
   late final GeneratedColumn<bool> subscriptionSucceed = GeneratedColumn<bool>(
-      'subscriptionSucceed', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("subscriptionSucceed" IN (0, 1))'));
+    'subscriptionSucceed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("subscriptionSucceed" IN (0, 1))',
+    ),
+  );
   @override
   List<GeneratedColumn> get $columns => [title, subscriptionSucceed];
   @override
@@ -2688,21 +3210,28 @@ class $FcmTopicsTable extends FcmTopics
   String get actualTableName => $name;
   static const String $name = 'FCMTopics';
   @override
-  VerificationContext validateIntegrity(Insertable<FcmTopic> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<FcmTopic> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('subscriptionSucceed')) {
       context.handle(
+        _subscriptionSucceedMeta,
+        subscriptionSucceed.isAcceptableOrUnknown(
+          data['subscriptionSucceed']!,
           _subscriptionSucceedMeta,
-          subscriptionSucceed.isAcceptableOrUnknown(
-              data['subscriptionSucceed']!, _subscriptionSucceedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_subscriptionSucceedMeta);
     }
@@ -2715,10 +3244,14 @@ class $FcmTopicsTable extends FcmTopics
   FcmTopic map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return FcmTopic(
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
       subscriptionSucceed: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}subscriptionSucceed'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}subscriptionSucceed'],
+      )!,
     );
   }
 
@@ -2747,13 +3280,16 @@ class FcmTopic extends DataClass implements Insertable<FcmTopic> {
     );
   }
 
-  factory FcmTopic.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory FcmTopic.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return FcmTopic(
       title: serializer.fromJson<String>(json['title']),
-      subscriptionSucceed:
-          serializer.fromJson<bool>(json['subscriptionSucceed']),
+      subscriptionSucceed: serializer.fromJson<bool>(
+        json['subscriptionSucceed'],
+      ),
     );
   }
   @override
@@ -2766,9 +3302,9 @@ class FcmTopic extends DataClass implements Insertable<FcmTopic> {
   }
 
   FcmTopic copyWith({String? title, bool? subscriptionSucceed}) => FcmTopic(
-        title: title ?? this.title,
-        subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
-      );
+    title: title ?? this.title,
+    subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
+  );
   FcmTopic copyWithCompanion(FcmTopicsCompanion data) {
     return FcmTopic(
       title: data.title.present ? data.title.value : this.title,
@@ -2810,8 +3346,8 @@ class FcmTopicsCompanion extends UpdateCompanion<FcmTopic> {
     required String title,
     required bool subscriptionSucceed,
     this.rowid = const Value.absent(),
-  })  : title = Value(title),
-        subscriptionSucceed = Value(subscriptionSucceed);
+  }) : title = Value(title),
+       subscriptionSucceed = Value(subscriptionSucceed);
   static Insertable<FcmTopic> custom({
     Expression<String>? title,
     Expression<bool>? subscriptionSucceed,
@@ -2825,10 +3361,11 @@ class FcmTopicsCompanion extends UpdateCompanion<FcmTopic> {
     });
   }
 
-  FcmTopicsCompanion copyWith(
-      {Value<String>? title,
-      Value<bool>? subscriptionSucceed,
-      Value<int>? rowid}) {
+  FcmTopicsCompanion copyWith({
+    Value<String>? title,
+    Value<bool>? subscriptionSucceed,
+    Value<int>? rowid,
+  }) {
     return FcmTopicsCompanion(
       title: title ?? this.title,
       subscriptionSucceed: subscriptionSucceed ?? this.subscriptionSucceed,
@@ -2868,22 +3405,35 @@ class $AnswerPropertiesTable extends AnswerProperties
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $AnswerPropertiesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _answerIdMeta =
-      const VerificationMeta('answerId');
+  static const VerificationMeta _answerIdMeta = const VerificationMeta(
+    'answerId',
+  );
   @override
   late final GeneratedColumn<int> answerId = GeneratedColumn<int>(
-      'answerId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'answerId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
   late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [answerId, name, value];
   @override
@@ -2892,25 +3442,33 @@ class $AnswerPropertiesTable extends AnswerProperties
   String get actualTableName => $name;
   static const String $name = 'answerProperties';
   @override
-  VerificationContext validateIntegrity(Insertable<AnswerProperty> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<AnswerProperty> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('answerId')) {
-      context.handle(_answerIdMeta,
-          answerId.isAcceptableOrUnknown(data['answerId']!, _answerIdMeta));
+      context.handle(
+        _answerIdMeta,
+        answerId.isAcceptableOrUnknown(data['answerId']!, _answerIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_answerIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -2923,12 +3481,18 @@ class $AnswerPropertiesTable extends AnswerProperties
   AnswerProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return AnswerProperty(
-      answerId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}answerId'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      answerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}answerId'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -2942,8 +3506,11 @@ class AnswerProperty extends DataClass implements Insertable<AnswerProperty> {
   final int answerId;
   final String name;
   final String value;
-  const AnswerProperty(
-      {required this.answerId, required this.name, required this.value});
+  const AnswerProperty({
+    required this.answerId,
+    required this.name,
+    required this.value,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2961,8 +3528,10 @@ class AnswerProperty extends DataClass implements Insertable<AnswerProperty> {
     );
   }
 
-  factory AnswerProperty.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory AnswerProperty.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AnswerProperty(
       answerId: serializer.fromJson<int>(json['answerId']),
@@ -3031,9 +3600,9 @@ class AnswerPropertiesCompanion extends UpdateCompanion<AnswerProperty> {
     required String name,
     required String value,
     this.rowid = const Value.absent(),
-  })  : answerId = Value(answerId),
-        name = Value(name),
-        value = Value(value);
+  }) : answerId = Value(answerId),
+       name = Value(name),
+       value = Value(value);
   static Insertable<AnswerProperty> custom({
     Expression<int>? answerId,
     Expression<String>? name,
@@ -3048,11 +3617,12 @@ class AnswerPropertiesCompanion extends UpdateCompanion<AnswerProperty> {
     });
   }
 
-  AnswerPropertiesCompanion copyWith(
-      {Value<int>? answerId,
-      Value<String>? name,
-      Value<String>? value,
-      Value<int>? rowid}) {
+  AnswerPropertiesCompanion copyWith({
+    Value<int>? answerId,
+    Value<String>? name,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
     return AnswerPropertiesCompanion(
       answerId: answerId ?? this.answerId,
       name: name ?? this.name,
@@ -3097,17 +3667,26 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $CouponsLinkedToTermsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _couponIdMeta =
-      const VerificationMeta('couponId');
+  static const VerificationMeta _couponIdMeta = const VerificationMeta(
+    'couponId',
+  );
   @override
   late final GeneratedColumn<int> couponId = GeneratedColumn<int>(
-      'couponId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'couponId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [couponId, termId];
   @override
@@ -3117,19 +3696,24 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   static const String $name = 'couponsLinkedToTerms';
   @override
   VerificationContext validateIntegrity(
-      Insertable<CouponsLinkedToTerm> instance,
-      {bool isInserting = false}) {
+    Insertable<CouponsLinkedToTerm> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('couponId')) {
-      context.handle(_couponIdMeta,
-          couponId.isAcceptableOrUnknown(data['couponId']!, _couponIdMeta));
+      context.handle(
+        _couponIdMeta,
+        couponId.isAcceptableOrUnknown(data['couponId']!, _couponIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_couponIdMeta);
     }
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
@@ -3142,10 +3726,14 @@ class $CouponsLinkedToTermsTable extends CouponsLinkedToTerms
   CouponsLinkedToTerm map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CouponsLinkedToTerm(
-      couponId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}couponId'])!,
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      couponId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}couponId'],
+      )!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
     );
   }
 
@@ -3175,8 +3763,10 @@ class CouponsLinkedToTerm extends DataClass
     );
   }
 
-  factory CouponsLinkedToTerm.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory CouponsLinkedToTerm.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CouponsLinkedToTerm(
       couponId: serializer.fromJson<int>(json['couponId']),
@@ -3237,8 +3827,8 @@ class CouponsLinkedToTermsCompanion
     required int couponId,
     required int termId,
     this.rowid = const Value.absent(),
-  })  : couponId = Value(couponId),
-        termId = Value(termId);
+  }) : couponId = Value(couponId),
+       termId = Value(termId);
   static Insertable<CouponsLinkedToTerm> custom({
     Expression<int>? couponId,
     Expression<int>? termId,
@@ -3251,8 +3841,11 @@ class CouponsLinkedToTermsCompanion
     });
   }
 
-  CouponsLinkedToTermsCompanion copyWith(
-      {Value<int>? couponId, Value<int>? termId, Value<int>? rowid}) {
+  CouponsLinkedToTermsCompanion copyWith({
+    Value<int>? couponId,
+    Value<int>? termId,
+    Value<int>? rowid,
+  }) {
     return CouponsLinkedToTermsCompanion(
       couponId: couponId ?? this.couponId,
       termId: termId ?? this.termId,
@@ -3295,21 +3888,33 @@ class $TermTreesTable extends TermTrees
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _depthMeta = const VerificationMeta('depth');
   @override
   late final GeneratedColumn<int> depth = GeneratedColumn<int>(
-      'depth', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
+    'depth',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [termId, parentTermId, depth];
   @override
@@ -3318,27 +3923,36 @@ class $TermTreesTable extends TermTrees
   String get actualTableName => $name;
   static const String $name = 'termTrees';
   @override
-  VerificationContext validateIntegrity(Insertable<TermTree> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermTree> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTermIdMeta);
     }
     if (data.containsKey('depth')) {
       context.handle(
-          _depthMeta, depth.isAcceptableOrUnknown(data['depth']!, _depthMeta));
+        _depthMeta,
+        depth.isAcceptableOrUnknown(data['depth']!, _depthMeta),
+      );
     }
     return context;
   }
@@ -3349,12 +3963,18 @@ class $TermTreesTable extends TermTrees
   TermTree map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermTree(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      depth: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}depth'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      depth: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}depth'],
+      )!,
     );
   }
 
@@ -3368,8 +3988,11 @@ class TermTree extends DataClass implements Insertable<TermTree> {
   final int termId;
   final int parentTermId;
   final int depth;
-  const TermTree(
-      {required this.termId, required this.parentTermId, required this.depth});
+  const TermTree({
+    required this.termId,
+    required this.parentTermId,
+    required this.depth,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3387,8 +4010,10 @@ class TermTree extends DataClass implements Insertable<TermTree> {
     );
   }
 
-  factory TermTree.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermTree.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermTree(
       termId: serializer.fromJson<int>(json['termId']),
@@ -3407,10 +4032,10 @@ class TermTree extends DataClass implements Insertable<TermTree> {
   }
 
   TermTree copyWith({int? termId, int? parentTermId, int? depth}) => TermTree(
-        termId: termId ?? this.termId,
-        parentTermId: parentTermId ?? this.parentTermId,
-        depth: depth ?? this.depth,
-      );
+    termId: termId ?? this.termId,
+    parentTermId: parentTermId ?? this.parentTermId,
+    depth: depth ?? this.depth,
+  );
   TermTree copyWithCompanion(TermTreesCompanion data) {
     return TermTree(
       termId: data.termId.present ? data.termId.value : this.termId,
@@ -3458,8 +4083,8 @@ class TermTreesCompanion extends UpdateCompanion<TermTree> {
     required int parentTermId,
     this.depth = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : termId = Value(termId),
-        parentTermId = Value(parentTermId);
+  }) : termId = Value(termId),
+       parentTermId = Value(parentTermId);
   static Insertable<TermTree> custom({
     Expression<int>? termId,
     Expression<int>? parentTermId,
@@ -3474,11 +4099,12 @@ class TermTreesCompanion extends UpdateCompanion<TermTree> {
     });
   }
 
-  TermTreesCompanion copyWith(
-      {Value<int>? termId,
-      Value<int>? parentTermId,
-      Value<int>? depth,
-      Value<int>? rowid}) {
+  TermTreesCompanion copyWith({
+    Value<int>? termId,
+    Value<int>? parentTermId,
+    Value<int>? depth,
+    Value<int>? rowid,
+  }) {
     return TermTreesCompanion(
       termId: termId ?? this.termId,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -3522,72 +4148,109 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $EbooksTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _encryptionKeyMeta =
-      const VerificationMeta('encryptionKey');
+  static const VerificationMeta _encryptionKeyMeta = const VerificationMeta(
+    'encryptionKey',
+  );
   @override
   late final GeneratedColumn<String> encryptionKey = GeneratedColumn<String>(
-      'encryptionKey', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'encryptionKey',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'parentTermId',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _lastUpdatedMeta =
-      const VerificationMeta('lastUpdated');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
+    'lastUpdated',
+  );
   @override
   late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-      'lastUpdated', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'lastUpdated',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [encryptionKey, parentTermId, creation, lastUpdated];
+  List<GeneratedColumn> get $columns => [
+    encryptionKey,
+    parentTermId,
+    creation,
+    lastUpdated,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'ebooks';
   @override
-  VerificationContext validateIntegrity(Insertable<Ebook> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Ebook> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('encryptionKey')) {
       context.handle(
+        _encryptionKeyMeta,
+        encryptionKey.isAcceptableOrUnknown(
+          data['encryptionKey']!,
           _encryptionKeyMeta,
-          encryptionKey.isAcceptableOrUnknown(
-              data['encryptionKey']!, _encryptionKeyMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_encryptionKeyMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('lastUpdated')) {
       context.handle(
+        _lastUpdatedMeta,
+        lastUpdated.isAcceptableOrUnknown(
+          data['lastUpdated']!,
           _lastUpdatedMeta,
-          lastUpdated.isAcceptableOrUnknown(
-              data['lastUpdated']!, _lastUpdatedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_lastUpdatedMeta);
     }
@@ -3600,14 +4263,22 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
   Ebook map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Ebook(
-      encryptionKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      lastUpdated: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
+      encryptionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}encryptionKey'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      lastUpdated: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lastUpdated'],
+      )!,
     );
   }
 
@@ -3622,11 +4293,12 @@ class Ebook extends DataClass implements Insertable<Ebook> {
   final int parentTermId;
   final String creation;
   final String lastUpdated;
-  const Ebook(
-      {required this.encryptionKey,
-      required this.parentTermId,
-      required this.creation,
-      required this.lastUpdated});
+  const Ebook({
+    required this.encryptionKey,
+    required this.parentTermId,
+    required this.creation,
+    required this.lastUpdated,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3646,8 +4318,10 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     );
   }
 
-  factory Ebook.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Ebook.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Ebook(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
@@ -3667,17 +4341,17 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     };
   }
 
-  Ebook copyWith(
-          {String? encryptionKey,
-          int? parentTermId,
-          String? creation,
-          String? lastUpdated}) =>
-      Ebook(
-        encryptionKey: encryptionKey ?? this.encryptionKey,
-        parentTermId: parentTermId ?? this.parentTermId,
-        creation: creation ?? this.creation,
-        lastUpdated: lastUpdated ?? this.lastUpdated,
-      );
+  Ebook copyWith({
+    String? encryptionKey,
+    int? parentTermId,
+    String? creation,
+    String? lastUpdated,
+  }) => Ebook(
+    encryptionKey: encryptionKey ?? this.encryptionKey,
+    parentTermId: parentTermId ?? this.parentTermId,
+    creation: creation ?? this.creation,
+    lastUpdated: lastUpdated ?? this.lastUpdated,
+  );
   Ebook copyWithCompanion(EbooksCompanion data) {
     return Ebook(
       encryptionKey: data.encryptionKey.present
@@ -3687,8 +4361,9 @@ class Ebook extends DataClass implements Insertable<Ebook> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      lastUpdated: data.lastUpdated.present
+          ? data.lastUpdated.value
+          : this.lastUpdated,
     );
   }
 
@@ -3732,9 +4407,9 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
     this.parentTermId = const Value.absent(),
     required String creation,
     required String lastUpdated,
-  })  : encryptionKey = Value(encryptionKey),
-        creation = Value(creation),
-        lastUpdated = Value(lastUpdated);
+  }) : encryptionKey = Value(encryptionKey),
+       creation = Value(creation),
+       lastUpdated = Value(lastUpdated);
   static Insertable<Ebook> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
@@ -3749,11 +4424,12 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
     });
   }
 
-  EbooksCompanion copyWith(
-      {Value<String>? encryptionKey,
-      Value<int>? parentTermId,
-      Value<String>? creation,
-      Value<String>? lastUpdated}) {
+  EbooksCompanion copyWith({
+    Value<String>? encryptionKey,
+    Value<int>? parentTermId,
+    Value<String>? creation,
+    Value<String>? lastUpdated,
+  }) {
     return EbooksCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -3798,26 +4474,40 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $TermsLastAccessesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _childIdMeta =
-      const VerificationMeta('childId');
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _childIdMeta = const VerificationMeta(
+    'childId',
+  );
   @override
   late final GeneratedColumn<int> childId = GeneratedColumn<int>(
-      'childId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _lastAccessMeta =
-      const VerificationMeta('lastAccess');
+    'childId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastAccessMeta = const VerificationMeta(
+    'lastAccess',
+  );
   @override
   late final GeneratedColumn<int> lastAccess = GeneratedColumn<int>(
-      'lastAccess', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now().millisecondsSinceEpoch));
+    'lastAccess',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: Constant(DateTime.now().millisecondsSinceEpoch),
+  );
   @override
   List<GeneratedColumn> get $columns => [parentTermId, childId, lastAccess];
   @override
@@ -3826,29 +4516,36 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   String get actualTableName => $name;
   static const String $name = 'termsLastAccess';
   @override
-  VerificationContext validateIntegrity(Insertable<TermsLastAccess> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermsLastAccess> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTermIdMeta);
     }
     if (data.containsKey('childId')) {
-      context.handle(_childIdMeta,
-          childId.isAcceptableOrUnknown(data['childId']!, _childIdMeta));
+      context.handle(
+        _childIdMeta,
+        childId.isAcceptableOrUnknown(data['childId']!, _childIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_childIdMeta);
     }
     if (data.containsKey('lastAccess')) {
       context.handle(
-          _lastAccessMeta,
-          lastAccess.isAcceptableOrUnknown(
-              data['lastAccess']!, _lastAccessMeta));
+        _lastAccessMeta,
+        lastAccess.isAcceptableOrUnknown(data['lastAccess']!, _lastAccessMeta),
+      );
     }
     return context;
   }
@@ -3859,12 +4556,18 @@ class $TermsLastAccessesTable extends TermsLastAccesses
   TermsLastAccess map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermsLastAccess(
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      childId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}childId'])!,
-      lastAccess: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}lastAccess'])!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      childId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}childId'],
+      )!,
+      lastAccess: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}lastAccess'],
+      )!,
     );
   }
 
@@ -3878,10 +4581,11 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
   final int parentTermId;
   final int childId;
   final int lastAccess;
-  const TermsLastAccess(
-      {required this.parentTermId,
-      required this.childId,
-      required this.lastAccess});
+  const TermsLastAccess({
+    required this.parentTermId,
+    required this.childId,
+    required this.lastAccess,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -3899,8 +4603,10 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
     );
   }
 
-  factory TermsLastAccess.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermsLastAccess.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermsLastAccess(
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
@@ -3918,21 +4624,24 @@ class TermsLastAccess extends DataClass implements Insertable<TermsLastAccess> {
     };
   }
 
-  TermsLastAccess copyWith(
-          {int? parentTermId, int? childId, int? lastAccess}) =>
-      TermsLastAccess(
-        parentTermId: parentTermId ?? this.parentTermId,
-        childId: childId ?? this.childId,
-        lastAccess: lastAccess ?? this.lastAccess,
-      );
+  TermsLastAccess copyWith({
+    int? parentTermId,
+    int? childId,
+    int? lastAccess,
+  }) => TermsLastAccess(
+    parentTermId: parentTermId ?? this.parentTermId,
+    childId: childId ?? this.childId,
+    lastAccess: lastAccess ?? this.lastAccess,
+  );
   TermsLastAccess copyWithCompanion(TermsLastAccessesCompanion data) {
     return TermsLastAccess(
       parentTermId: data.parentTermId.present
           ? data.parentTermId.value
           : this.parentTermId,
       childId: data.childId.present ? data.childId.value : this.childId,
-      lastAccess:
-          data.lastAccess.present ? data.lastAccess.value : this.lastAccess,
+      lastAccess: data.lastAccess.present
+          ? data.lastAccess.value
+          : this.lastAccess,
     );
   }
 
@@ -3973,8 +4682,8 @@ class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
     required int childId,
     this.lastAccess = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : parentTermId = Value(parentTermId),
-        childId = Value(childId);
+  }) : parentTermId = Value(parentTermId),
+       childId = Value(childId);
   static Insertable<TermsLastAccess> custom({
     Expression<int>? parentTermId,
     Expression<int>? childId,
@@ -3989,11 +4698,12 @@ class TermsLastAccessesCompanion extends UpdateCompanion<TermsLastAccess> {
     });
   }
 
-  TermsLastAccessesCompanion copyWith(
-      {Value<int>? parentTermId,
-      Value<int>? childId,
-      Value<int>? lastAccess,
-      Value<int>? rowid}) {
+  TermsLastAccessesCompanion copyWith({
+    Value<int>? parentTermId,
+    Value<int>? childId,
+    Value<int>? lastAccess,
+    Value<int>? rowid,
+  }) {
     return TermsLastAccessesCompanion(
       parentTermId: parentTermId ?? this.parentTermId,
       childId: childId ?? this.childId,
@@ -4038,22 +4748,35 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $QuestionTagPropertiesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _questionTagIdMeta =
-      const VerificationMeta('questionTagId');
+  static const VerificationMeta _questionTagIdMeta = const VerificationMeta(
+    'questionTagId',
+  );
   @override
   late final GeneratedColumn<int> questionTagId = GeneratedColumn<int>(
-      'questionTagId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'questionTagId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
   late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [questionTagId, name, value];
   @override
@@ -4063,27 +4786,35 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   static const String $name = 'questionTagProperties';
   @override
   VerificationContext validateIntegrity(
-      Insertable<QuestionTagProperty> instance,
-      {bool isInserting = false}) {
+    Insertable<QuestionTagProperty> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('questionTagId')) {
       context.handle(
+        _questionTagIdMeta,
+        questionTagId.isAcceptableOrUnknown(
+          data['questionTagId']!,
           _questionTagIdMeta,
-          questionTagId.isAcceptableOrUnknown(
-              data['questionTagId']!, _questionTagIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_questionTagIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -4096,12 +4827,18 @@ class $QuestionTagPropertiesTable extends QuestionTagProperties
   QuestionTagProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionTagProperty(
-      questionTagId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}questionTagId'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      questionTagId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}questionTagId'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -4116,8 +4853,11 @@ class QuestionTagProperty extends DataClass
   final int questionTagId;
   final String name;
   final String value;
-  const QuestionTagProperty(
-      {required this.questionTagId, required this.name, required this.value});
+  const QuestionTagProperty({
+    required this.questionTagId,
+    required this.name,
+    required this.value,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4135,8 +4875,10 @@ class QuestionTagProperty extends DataClass
     );
   }
 
-  factory QuestionTagProperty.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory QuestionTagProperty.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionTagProperty(
       questionTagId: serializer.fromJson<int>(json['questionTagId']),
@@ -4154,13 +4896,15 @@ class QuestionTagProperty extends DataClass
     };
   }
 
-  QuestionTagProperty copyWith(
-          {int? questionTagId, String? name, String? value}) =>
-      QuestionTagProperty(
-        questionTagId: questionTagId ?? this.questionTagId,
-        name: name ?? this.name,
-        value: value ?? this.value,
-      );
+  QuestionTagProperty copyWith({
+    int? questionTagId,
+    String? name,
+    String? value,
+  }) => QuestionTagProperty(
+    questionTagId: questionTagId ?? this.questionTagId,
+    name: name ?? this.name,
+    value: value ?? this.value,
+  );
   QuestionTagProperty copyWithCompanion(QuestionTagPropertiesCompanion data) {
     return QuestionTagProperty(
       questionTagId: data.questionTagId.present
@@ -4209,9 +4953,9 @@ class QuestionTagPropertiesCompanion
     required String name,
     required String value,
     this.rowid = const Value.absent(),
-  })  : questionTagId = Value(questionTagId),
-        name = Value(name),
-        value = Value(value);
+  }) : questionTagId = Value(questionTagId),
+       name = Value(name),
+       value = Value(value);
   static Insertable<QuestionTagProperty> custom({
     Expression<int>? questionTagId,
     Expression<String>? name,
@@ -4226,11 +4970,12 @@ class QuestionTagPropertiesCompanion
     });
   }
 
-  QuestionTagPropertiesCompanion copyWith(
-      {Value<int>? questionTagId,
-      Value<String>? name,
-      Value<String>? value,
-      Value<int>? rowid}) {
+  QuestionTagPropertiesCompanion copyWith({
+    Value<int>? questionTagId,
+    Value<String>? name,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
     return QuestionTagPropertiesCompanion(
       questionTagId: questionTagId ?? this.questionTagId,
       name: name ?? this.name,
@@ -4275,22 +5020,35 @@ class $QuestionPropertiesTable extends QuestionProperties
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $QuestionPropertiesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _questionIdMeta =
-      const VerificationMeta('questionId');
+  static const VerificationMeta _questionIdMeta = const VerificationMeta(
+    'questionId',
+  );
   @override
   late final GeneratedColumn<int> questionId = GeneratedColumn<int>(
-      'questionId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'questionId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
   late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [questionId, name, value];
   @override
@@ -4299,27 +5057,33 @@ class $QuestionPropertiesTable extends QuestionProperties
   String get actualTableName => $name;
   static const String $name = 'questionProperties';
   @override
-  VerificationContext validateIntegrity(Insertable<QuestionProperty> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<QuestionProperty> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('questionId')) {
       context.handle(
-          _questionIdMeta,
-          questionId.isAcceptableOrUnknown(
-              data['questionId']!, _questionIdMeta));
+        _questionIdMeta,
+        questionId.isAcceptableOrUnknown(data['questionId']!, _questionIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_questionIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -4332,12 +5096,18 @@ class $QuestionPropertiesTable extends QuestionProperties
   QuestionProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionProperty(
-      questionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}questionId'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      questionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}questionId'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -4352,8 +5122,11 @@ class QuestionProperty extends DataClass
   final int questionId;
   final String name;
   final String value;
-  const QuestionProperty(
-      {required this.questionId, required this.name, required this.value});
+  const QuestionProperty({
+    required this.questionId,
+    required this.name,
+    required this.value,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4371,8 +5144,10 @@ class QuestionProperty extends DataClass
     );
   }
 
-  factory QuestionProperty.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory QuestionProperty.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionProperty(
       questionId: serializer.fromJson<int>(json['questionId']),
@@ -4398,8 +5173,9 @@ class QuestionProperty extends DataClass
       );
   QuestionProperty copyWithCompanion(QuestionPropertiesCompanion data) {
     return QuestionProperty(
-      questionId:
-          data.questionId.present ? data.questionId.value : this.questionId,
+      questionId: data.questionId.present
+          ? data.questionId.value
+          : this.questionId,
       name: data.name.present ? data.name.value : this.name,
       value: data.value.present ? data.value.value : this.value,
     );
@@ -4442,9 +5218,9 @@ class QuestionPropertiesCompanion extends UpdateCompanion<QuestionProperty> {
     required String name,
     required String value,
     this.rowid = const Value.absent(),
-  })  : questionId = Value(questionId),
-        name = Value(name),
-        value = Value(value);
+  }) : questionId = Value(questionId),
+       name = Value(name),
+       value = Value(value);
   static Insertable<QuestionProperty> custom({
     Expression<int>? questionId,
     Expression<String>? name,
@@ -4459,11 +5235,12 @@ class QuestionPropertiesCompanion extends UpdateCompanion<QuestionProperty> {
     });
   }
 
-  QuestionPropertiesCompanion copyWith(
-      {Value<int>? questionId,
-      Value<String>? name,
-      Value<String>? value,
-      Value<int>? rowid}) {
+  QuestionPropertiesCompanion copyWith({
+    Value<int>? questionId,
+    Value<String>? name,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
     return QuestionPropertiesCompanion(
       questionId: questionId ?? this.questionId,
       name: name ?? this.name,
@@ -4511,22 +5288,34 @@ class $HttpRequestsTable extends HttpRequests
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
-      'url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _mappMeta = const VerificationMeta('mapp');
   @override
   late final GeneratedColumn<String> mapp = GeneratedColumn<String>(
-      'map', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'map',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [id, url, mapp];
   @override
@@ -4535,8 +5324,10 @@ class $HttpRequestsTable extends HttpRequests
   String get actualTableName => $name;
   static const String $name = 'httpRequests';
   @override
-  VerificationContext validateIntegrity(Insertable<HttpRequest> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<HttpRequest> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -4544,13 +5335,17 @@ class $HttpRequestsTable extends HttpRequests
     }
     if (data.containsKey('url')) {
       context.handle(
-          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+        _urlMeta,
+        url.isAcceptableOrUnknown(data['url']!, _urlMeta),
+      );
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
     if (data.containsKey('map')) {
       context.handle(
-          _mappMeta, mapp.isAcceptableOrUnknown(data['map']!, _mappMeta));
+        _mappMeta,
+        mapp.isAcceptableOrUnknown(data['map']!, _mappMeta),
+      );
     } else if (isInserting) {
       context.missing(_mappMeta);
     }
@@ -4563,12 +5358,18 @@ class $HttpRequestsTable extends HttpRequests
   HttpRequest map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return HttpRequest(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      url: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
-      mapp: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}map'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
+      mapp: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}map'],
+      )!,
     );
   }
 
@@ -4600,8 +5401,10 @@ class HttpRequest extends DataClass implements Insertable<HttpRequest> {
     );
   }
 
-  factory HttpRequest.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory HttpRequest.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return HttpRequest(
       id: serializer.fromJson<int>(json['id']),
@@ -4620,10 +5423,10 @@ class HttpRequest extends DataClass implements Insertable<HttpRequest> {
   }
 
   HttpRequest copyWith({int? id, String? url, String? mapp}) => HttpRequest(
-        id: id ?? this.id,
-        url: url ?? this.url,
-        mapp: mapp ?? this.mapp,
-      );
+    id: id ?? this.id,
+    url: url ?? this.url,
+    mapp: mapp ?? this.mapp,
+  );
   HttpRequest copyWithCompanion(HttpRequestsCompanion data) {
     return HttpRequest(
       id: data.id.present ? data.id.value : this.id,
@@ -4666,8 +5469,8 @@ class HttpRequestsCompanion extends UpdateCompanion<HttpRequest> {
     this.id = const Value.absent(),
     required String url,
     required String mapp,
-  })  : url = Value(url),
-        mapp = Value(mapp);
+  }) : url = Value(url),
+       mapp = Value(mapp);
   static Insertable<HttpRequest> custom({
     Expression<int>? id,
     Expression<String>? url,
@@ -4680,8 +5483,11 @@ class HttpRequestsCompanion extends UpdateCompanion<HttpRequest> {
     });
   }
 
-  HttpRequestsCompanion copyWith(
-      {Value<int>? id, Value<String>? url, Value<String>? mapp}) {
+  HttpRequestsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? url,
+    Value<String>? mapp,
+  }) {
     return HttpRequestsCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
@@ -4718,18 +5524,26 @@ class HttpRequestsCompanion extends UpdateCompanion<HttpRequest> {
 class $TermsWithQuestionsFilteringEnabledTable
     extends TermsWithQuestionsFilteringEnabled
     with
-        TableInfo<$TermsWithQuestionsFilteringEnabledTable,
-            TermsWithQuestionsFilteringEnabledData> {
+        TableInfo<
+          $TermsWithQuestionsFilteringEnabledTable,
+          TermsWithQuestionsFilteringEnabledData
+        > {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TermsWithQuestionsFilteringEnabledTable(this.attachedDatabase,
-      [this._alias]);
+  $TermsWithQuestionsFilteringEnabledTable(
+    this.attachedDatabase, [
+    this._alias,
+  ]);
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'term_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'term_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [termId];
   @override
@@ -4739,13 +5553,16 @@ class $TermsWithQuestionsFilteringEnabledTable
   static const String $name = 'termsWithQuestionsFilteringEnabled';
   @override
   VerificationContext validateIntegrity(
-      Insertable<TermsWithQuestionsFilteringEnabledData> instance,
-      {bool isInserting = false}) {
+    Insertable<TermsWithQuestionsFilteringEnabledData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('term_id')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['term_id']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['term_id']!, _termIdMeta),
+      );
     }
     return context;
   }
@@ -4753,12 +5570,16 @@ class $TermsWithQuestionsFilteringEnabledTable
   @override
   Set<GeneratedColumn> get $primaryKey => {termId};
   @override
-  TermsWithQuestionsFilteringEnabledData map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
+  TermsWithQuestionsFilteringEnabledData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermsWithQuestionsFilteringEnabledData(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}term_id'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}term_id'],
+      )!,
     );
   }
 
@@ -4780,14 +5601,13 @@ class TermsWithQuestionsFilteringEnabledData extends DataClass
   }
 
   TermsWithQuestionsFilteringEnabledCompanion toCompanion(bool nullToAbsent) {
-    return TermsWithQuestionsFilteringEnabledCompanion(
-      termId: Value(termId),
-    );
+    return TermsWithQuestionsFilteringEnabledCompanion(termId: Value(termId));
   }
 
   factory TermsWithQuestionsFilteringEnabledData.fromJson(
-      Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermsWithQuestionsFilteringEnabledData(
       termId: serializer.fromJson<int>(json['termId']),
@@ -4796,17 +5616,14 @@ class TermsWithQuestionsFilteringEnabledData extends DataClass
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'termId': serializer.toJson<int>(termId),
-    };
+    return <String, dynamic>{'termId': serializer.toJson<int>(termId)};
   }
 
   TermsWithQuestionsFilteringEnabledData copyWith({int? termId}) =>
-      TermsWithQuestionsFilteringEnabledData(
-        termId: termId ?? this.termId,
-      );
+      TermsWithQuestionsFilteringEnabledData(termId: termId ?? this.termId);
   TermsWithQuestionsFilteringEnabledData copyWithCompanion(
-      TermsWithQuestionsFilteringEnabledCompanion data) {
+    TermsWithQuestionsFilteringEnabledCompanion data,
+  ) {
     return TermsWithQuestionsFilteringEnabledData(
       termId: data.termId.present ? data.termId.value : this.termId,
     );
@@ -4841,9 +5658,7 @@ class TermsWithQuestionsFilteringEnabledCompanion
   static Insertable<TermsWithQuestionsFilteringEnabledData> custom({
     Expression<int>? termId,
   }) {
-    return RawValuesInsertable({
-      if (termId != null) 'term_id': termId,
-    });
+    return RawValuesInsertable({if (termId != null) 'term_id': termId});
   }
 
   TermsWithQuestionsFilteringEnabledCompanion copyWith({Value<int>? termId}) {
@@ -4879,24 +5694,41 @@ class $FlashcardsTable extends Flashcards
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _headMeta = const VerificationMeta('head');
   @override
   late final GeneratedColumn<String> head = GeneratedColumn<String>(
-      'head', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'head',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _tailMeta = const VerificationMeta('tail');
   @override
   late final GeneratedColumn<String> tail = GeneratedColumn<String>(
-      'tail', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'tail',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [id, head, tail, parentTermId];
   @override
@@ -4905,8 +5737,10 @@ class $FlashcardsTable extends Flashcards
   String get actualTableName => $name;
   static const String $name = 'flashcards';
   @override
-  VerificationContext validateIntegrity(Insertable<Flashcard> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Flashcard> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -4914,21 +5748,28 @@ class $FlashcardsTable extends Flashcards
     }
     if (data.containsKey('head')) {
       context.handle(
-          _headMeta, head.isAcceptableOrUnknown(data['head']!, _headMeta));
+        _headMeta,
+        head.isAcceptableOrUnknown(data['head']!, _headMeta),
+      );
     } else if (isInserting) {
       context.missing(_headMeta);
     }
     if (data.containsKey('tail')) {
       context.handle(
-          _tailMeta, tail.isAcceptableOrUnknown(data['tail']!, _tailMeta));
+        _tailMeta,
+        tail.isAcceptableOrUnknown(data['tail']!, _tailMeta),
+      );
     } else if (isInserting) {
       context.missing(_tailMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTermIdMeta);
     }
@@ -4941,14 +5782,22 @@ class $FlashcardsTable extends Flashcards
   Flashcard map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Flashcard(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      head: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}head'])!,
-      tail: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}tail'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      head: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}head'],
+      )!,
+      tail: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tail'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
     );
   }
 
@@ -4963,11 +5812,12 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
   final String head;
   final String tail;
   final int parentTermId;
-  const Flashcard(
-      {required this.id,
-      required this.head,
-      required this.tail,
-      required this.parentTermId});
+  const Flashcard({
+    required this.id,
+    required this.head,
+    required this.tail,
+    required this.parentTermId,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4987,8 +5837,10 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     );
   }
 
-  factory Flashcard.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Flashcard.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Flashcard(
       id: serializer.fromJson<int>(json['id']),
@@ -5008,14 +5860,17 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     };
   }
 
-  Flashcard copyWith(
-          {int? id, String? head, String? tail, int? parentTermId}) =>
-      Flashcard(
-        id: id ?? this.id,
-        head: head ?? this.head,
-        tail: tail ?? this.tail,
-        parentTermId: parentTermId ?? this.parentTermId,
-      );
+  Flashcard copyWith({
+    int? id,
+    String? head,
+    String? tail,
+    int? parentTermId,
+  }) => Flashcard(
+    id: id ?? this.id,
+    head: head ?? this.head,
+    tail: tail ?? this.tail,
+    parentTermId: parentTermId ?? this.parentTermId,
+  );
   Flashcard copyWithCompanion(FlashcardsCompanion data) {
     return Flashcard(
       id: data.id.present ? data.id.value : this.id,
@@ -5066,9 +5921,9 @@ class FlashcardsCompanion extends UpdateCompanion<Flashcard> {
     required String head,
     required String tail,
     required int parentTermId,
-  })  : head = Value(head),
-        tail = Value(tail),
-        parentTermId = Value(parentTermId);
+  }) : head = Value(head),
+       tail = Value(tail),
+       parentTermId = Value(parentTermId);
   static Insertable<Flashcard> custom({
     Expression<int>? id,
     Expression<String>? head,
@@ -5083,11 +5938,12 @@ class FlashcardsCompanion extends UpdateCompanion<Flashcard> {
     });
   }
 
-  FlashcardsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? head,
-      Value<String>? tail,
-      Value<int>? parentTermId}) {
+  FlashcardsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? head,
+    Value<String>? tail,
+    Value<int>? parentTermId,
+  }) {
     return FlashcardsCompanion(
       id: id ?? this.id,
       head: head ?? this.head,
@@ -5132,68 +5988,105 @@ class $VoiceNotesTable extends VoiceNotes
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $VoiceNotesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _encryptionKeyMeta =
-      const VerificationMeta('encryptionKey');
+  static const VerificationMeta _encryptionKeyMeta = const VerificationMeta(
+    'encryptionKey',
+  );
   @override
   late final GeneratedColumn<String> encryptionKey = GeneratedColumn<String>(
-      'encryptionKey', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'encryptionKey',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _lastUpdatedMeta =
-      const VerificationMeta('lastUpdated');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
+    'lastUpdated',
+  );
   @override
   late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-      'lastUpdated', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'lastUpdated',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [encryptionKey, parentTermId, creation, lastUpdated];
+  List<GeneratedColumn> get $columns => [
+    encryptionKey,
+    parentTermId,
+    creation,
+    lastUpdated,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'voiceNotes';
   @override
-  VerificationContext validateIntegrity(Insertable<VoiceNote> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<VoiceNote> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('encryptionKey')) {
       context.handle(
+        _encryptionKeyMeta,
+        encryptionKey.isAcceptableOrUnknown(
+          data['encryptionKey']!,
           _encryptionKeyMeta,
-          encryptionKey.isAcceptableOrUnknown(
-              data['encryptionKey']!, _encryptionKeyMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_encryptionKeyMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('lastUpdated')) {
       context.handle(
+        _lastUpdatedMeta,
+        lastUpdated.isAcceptableOrUnknown(
+          data['lastUpdated']!,
           _lastUpdatedMeta,
-          lastUpdated.isAcceptableOrUnknown(
-              data['lastUpdated']!, _lastUpdatedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_lastUpdatedMeta);
     }
@@ -5206,14 +6099,22 @@ class $VoiceNotesTable extends VoiceNotes
   VoiceNote map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return VoiceNote(
-      encryptionKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      lastUpdated: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
+      encryptionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}encryptionKey'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      lastUpdated: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lastUpdated'],
+      )!,
     );
   }
 
@@ -5228,11 +6129,12 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   final int parentTermId;
   final String creation;
   final String lastUpdated;
-  const VoiceNote(
-      {required this.encryptionKey,
-      required this.parentTermId,
-      required this.creation,
-      required this.lastUpdated});
+  const VoiceNote({
+    required this.encryptionKey,
+    required this.parentTermId,
+    required this.creation,
+    required this.lastUpdated,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5252,8 +6154,10 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     );
   }
 
-  factory VoiceNote.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory VoiceNote.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VoiceNote(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
@@ -5273,17 +6177,17 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     };
   }
 
-  VoiceNote copyWith(
-          {String? encryptionKey,
-          int? parentTermId,
-          String? creation,
-          String? lastUpdated}) =>
-      VoiceNote(
-        encryptionKey: encryptionKey ?? this.encryptionKey,
-        parentTermId: parentTermId ?? this.parentTermId,
-        creation: creation ?? this.creation,
-        lastUpdated: lastUpdated ?? this.lastUpdated,
-      );
+  VoiceNote copyWith({
+    String? encryptionKey,
+    int? parentTermId,
+    String? creation,
+    String? lastUpdated,
+  }) => VoiceNote(
+    encryptionKey: encryptionKey ?? this.encryptionKey,
+    parentTermId: parentTermId ?? this.parentTermId,
+    creation: creation ?? this.creation,
+    lastUpdated: lastUpdated ?? this.lastUpdated,
+  );
   VoiceNote copyWithCompanion(VoiceNotesCompanion data) {
     return VoiceNote(
       encryptionKey: data.encryptionKey.present
@@ -5293,8 +6197,9 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      lastUpdated: data.lastUpdated.present
+          ? data.lastUpdated.value
+          : this.lastUpdated,
     );
   }
 
@@ -5338,9 +6243,9 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     this.parentTermId = const Value.absent(),
     required String creation,
     required String lastUpdated,
-  })  : encryptionKey = Value(encryptionKey),
-        creation = Value(creation),
-        lastUpdated = Value(lastUpdated);
+  }) : encryptionKey = Value(encryptionKey),
+       creation = Value(creation),
+       lastUpdated = Value(lastUpdated);
   static Insertable<VoiceNote> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
@@ -5355,11 +6260,12 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     });
   }
 
-  VoiceNotesCompanion copyWith(
-      {Value<String>? encryptionKey,
-      Value<int>? parentTermId,
-      Value<String>? creation,
-      Value<String>? lastUpdated}) {
+  VoiceNotesCompanion copyWith({
+    Value<String>? encryptionKey,
+    Value<int>? parentTermId,
+    Value<String>? creation,
+    Value<String>? lastUpdated,
+  }) {
     return VoiceNotesCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -5404,68 +6310,105 @@ class $VideoFilesTable extends VideoFiles
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $VideoFilesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _encryptionKeyMeta =
-      const VerificationMeta('encryptionKey');
+  static const VerificationMeta _encryptionKeyMeta = const VerificationMeta(
+    'encryptionKey',
+  );
   @override
   late final GeneratedColumn<String> encryptionKey = GeneratedColumn<String>(
-      'encryptionKey', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'encryptionKey',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _lastUpdatedMeta =
-      const VerificationMeta('lastUpdated');
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
+    'lastUpdated',
+  );
   @override
   late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-      'lastUpdated', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'lastUpdated',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [encryptionKey, parentTermId, creation, lastUpdated];
+  List<GeneratedColumn> get $columns => [
+    encryptionKey,
+    parentTermId,
+    creation,
+    lastUpdated,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'videoFiles';
   @override
-  VerificationContext validateIntegrity(Insertable<VideoFile> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<VideoFile> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('encryptionKey')) {
       context.handle(
+        _encryptionKeyMeta,
+        encryptionKey.isAcceptableOrUnknown(
+          data['encryptionKey']!,
           _encryptionKeyMeta,
-          encryptionKey.isAcceptableOrUnknown(
-              data['encryptionKey']!, _encryptionKeyMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_encryptionKeyMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
     if (data.containsKey('lastUpdated')) {
       context.handle(
+        _lastUpdatedMeta,
+        lastUpdated.isAcceptableOrUnknown(
+          data['lastUpdated']!,
           _lastUpdatedMeta,
-          lastUpdated.isAcceptableOrUnknown(
-              data['lastUpdated']!, _lastUpdatedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_lastUpdatedMeta);
     }
@@ -5478,14 +6421,22 @@ class $VideoFilesTable extends VideoFiles
   VideoFile map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return VideoFile(
-      encryptionKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}encryptionKey'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
-      lastUpdated: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}lastUpdated'])!,
+      encryptionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}encryptionKey'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
+      lastUpdated: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lastUpdated'],
+      )!,
     );
   }
 
@@ -5500,11 +6451,12 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
   final int parentTermId;
   final String creation;
   final String lastUpdated;
-  const VideoFile(
-      {required this.encryptionKey,
-      required this.parentTermId,
-      required this.creation,
-      required this.lastUpdated});
+  const VideoFile({
+    required this.encryptionKey,
+    required this.parentTermId,
+    required this.creation,
+    required this.lastUpdated,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -5524,8 +6476,10 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
     );
   }
 
-  factory VideoFile.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory VideoFile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VideoFile(
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
@@ -5545,17 +6499,17 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
     };
   }
 
-  VideoFile copyWith(
-          {String? encryptionKey,
-          int? parentTermId,
-          String? creation,
-          String? lastUpdated}) =>
-      VideoFile(
-        encryptionKey: encryptionKey ?? this.encryptionKey,
-        parentTermId: parentTermId ?? this.parentTermId,
-        creation: creation ?? this.creation,
-        lastUpdated: lastUpdated ?? this.lastUpdated,
-      );
+  VideoFile copyWith({
+    String? encryptionKey,
+    int? parentTermId,
+    String? creation,
+    String? lastUpdated,
+  }) => VideoFile(
+    encryptionKey: encryptionKey ?? this.encryptionKey,
+    parentTermId: parentTermId ?? this.parentTermId,
+    creation: creation ?? this.creation,
+    lastUpdated: lastUpdated ?? this.lastUpdated,
+  );
   VideoFile copyWithCompanion(VideoFilesCompanion data) {
     return VideoFile(
       encryptionKey: data.encryptionKey.present
@@ -5565,8 +6519,9 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      lastUpdated: data.lastUpdated.present
+          ? data.lastUpdated.value
+          : this.lastUpdated,
     );
   }
 
@@ -5610,9 +6565,9 @@ class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
     this.parentTermId = const Value.absent(),
     required String creation,
     required String lastUpdated,
-  })  : encryptionKey = Value(encryptionKey),
-        creation = Value(creation),
-        lastUpdated = Value(lastUpdated);
+  }) : encryptionKey = Value(encryptionKey),
+       creation = Value(creation),
+       lastUpdated = Value(lastUpdated);
   static Insertable<VideoFile> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
@@ -5627,11 +6582,12 @@ class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
     });
   }
 
-  VideoFilesCompanion copyWith(
-      {Value<String>? encryptionKey,
-      Value<int>? parentTermId,
-      Value<String>? creation,
-      Value<String>? lastUpdated}) {
+  VideoFilesCompanion copyWith({
+    Value<String>? encryptionKey,
+    Value<int>? parentTermId,
+    Value<String>? creation,
+    Value<String>? lastUpdated,
+  }) {
     return VideoFilesCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -5676,17 +6632,26 @@ class $RelatedTermsTable extends RelatedTerms
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $RelatedTermsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _anotherTermIdMeta =
-      const VerificationMeta('anotherTermId');
+  static const VerificationMeta _anotherTermIdMeta = const VerificationMeta(
+    'anotherTermId',
+  );
   @override
   late final GeneratedColumn<int> anotherTermId = GeneratedColumn<int>(
-      'anotherTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'anotherTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [anotherTermId, termId];
   @override
@@ -5695,21 +6660,28 @@ class $RelatedTermsTable extends RelatedTerms
   String get actualTableName => $name;
   static const String $name = 'relatedTerms';
   @override
-  VerificationContext validateIntegrity(Insertable<RelatedTerm> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<RelatedTerm> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('anotherTermId')) {
       context.handle(
+        _anotherTermIdMeta,
+        anotherTermId.isAcceptableOrUnknown(
+          data['anotherTermId']!,
           _anotherTermIdMeta,
-          anotherTermId.isAcceptableOrUnknown(
-              data['anotherTermId']!, _anotherTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_anotherTermIdMeta);
     }
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
@@ -5722,10 +6694,14 @@ class $RelatedTermsTable extends RelatedTerms
   RelatedTerm map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RelatedTerm(
-      anotherTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}anotherTermId'])!,
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
+      anotherTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}anotherTermId'],
+      )!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
     );
   }
 
@@ -5754,8 +6730,10 @@ class RelatedTerm extends DataClass implements Insertable<RelatedTerm> {
     );
   }
 
-  factory RelatedTerm.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory RelatedTerm.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RelatedTerm(
       anotherTermId: serializer.fromJson<int>(json['anotherTermId']),
@@ -5772,9 +6750,9 @@ class RelatedTerm extends DataClass implements Insertable<RelatedTerm> {
   }
 
   RelatedTerm copyWith({int? anotherTermId, int? termId}) => RelatedTerm(
-        anotherTermId: anotherTermId ?? this.anotherTermId,
-        termId: termId ?? this.termId,
-      );
+    anotherTermId: anotherTermId ?? this.anotherTermId,
+    termId: termId ?? this.termId,
+  );
   RelatedTerm copyWithCompanion(RelatedTermsCompanion data) {
     return RelatedTerm(
       anotherTermId: data.anotherTermId.present
@@ -5816,8 +6794,8 @@ class RelatedTermsCompanion extends UpdateCompanion<RelatedTerm> {
     required int anotherTermId,
     required int termId,
     this.rowid = const Value.absent(),
-  })  : anotherTermId = Value(anotherTermId),
-        termId = Value(termId);
+  }) : anotherTermId = Value(anotherTermId),
+       termId = Value(termId);
   static Insertable<RelatedTerm> custom({
     Expression<int>? anotherTermId,
     Expression<int>? termId,
@@ -5830,8 +6808,11 @@ class RelatedTermsCompanion extends UpdateCompanion<RelatedTerm> {
     });
   }
 
-  RelatedTermsCompanion copyWith(
-      {Value<int>? anotherTermId, Value<int>? termId, Value<int>? rowid}) {
+  RelatedTermsCompanion copyWith({
+    Value<int>? anotherTermId,
+    Value<int>? termId,
+    Value<int>? rowid,
+  }) {
     return RelatedTermsCompanion(
       anotherTermId: anotherTermId ?? this.anotherTermId,
       termId: termId ?? this.termId,
@@ -5871,17 +6852,26 @@ class $QuestionsLinkedToTagsTable extends QuestionsLinkedToTags
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $QuestionsLinkedToTagsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _questionIdMeta =
-      const VerificationMeta('questionId');
+  static const VerificationMeta _questionIdMeta = const VerificationMeta(
+    'questionId',
+  );
   @override
   late final GeneratedColumn<int> questionId = GeneratedColumn<int>(
-      'questionId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'questionId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
   @override
   late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
-      'tagId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'tagId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [questionId, tagId];
   @override
@@ -5891,21 +6881,24 @@ class $QuestionsLinkedToTagsTable extends QuestionsLinkedToTags
   static const String $name = 'questionsLinkedToTags';
   @override
   VerificationContext validateIntegrity(
-      Insertable<QuestionsLinkedToTag> instance,
-      {bool isInserting = false}) {
+    Insertable<QuestionsLinkedToTag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('questionId')) {
       context.handle(
-          _questionIdMeta,
-          questionId.isAcceptableOrUnknown(
-              data['questionId']!, _questionIdMeta));
+        _questionIdMeta,
+        questionId.isAcceptableOrUnknown(data['questionId']!, _questionIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_questionIdMeta);
     }
     if (data.containsKey('tagId')) {
       context.handle(
-          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta));
+        _tagIdMeta,
+        tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_tagIdMeta);
     }
@@ -5918,10 +6911,14 @@ class $QuestionsLinkedToTagsTable extends QuestionsLinkedToTags
   QuestionsLinkedToTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionsLinkedToTag(
-      questionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}questionId'])!,
-      tagId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}tagId'])!,
+      questionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}questionId'],
+      )!,
+      tagId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}tagId'],
+      )!,
     );
   }
 
@@ -5951,8 +6948,10 @@ class QuestionsLinkedToTag extends DataClass
     );
   }
 
-  factory QuestionsLinkedToTag.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory QuestionsLinkedToTag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionsLinkedToTag(
       questionId: serializer.fromJson<int>(json['questionId']),
@@ -5975,8 +6974,9 @@ class QuestionsLinkedToTag extends DataClass
       );
   QuestionsLinkedToTag copyWithCompanion(QuestionsLinkedToTagsCompanion data) {
     return QuestionsLinkedToTag(
-      questionId:
-          data.questionId.present ? data.questionId.value : this.questionId,
+      questionId: data.questionId.present
+          ? data.questionId.value
+          : this.questionId,
       tagId: data.tagId.present ? data.tagId.value : this.tagId,
     );
   }
@@ -6014,8 +7014,8 @@ class QuestionsLinkedToTagsCompanion
     required int questionId,
     required int tagId,
     this.rowid = const Value.absent(),
-  })  : questionId = Value(questionId),
-        tagId = Value(tagId);
+  }) : questionId = Value(questionId),
+       tagId = Value(tagId);
   static Insertable<QuestionsLinkedToTag> custom({
     Expression<int>? questionId,
     Expression<int>? tagId,
@@ -6028,8 +7028,11 @@ class QuestionsLinkedToTagsCompanion
     });
   }
 
-  QuestionsLinkedToTagsCompanion copyWith(
-      {Value<int>? questionId, Value<int>? tagId, Value<int>? rowid}) {
+  QuestionsLinkedToTagsCompanion copyWith({
+    Value<int>? questionId,
+    Value<int>? tagId,
+    Value<int>? rowid,
+  }) {
     return QuestionsLinkedToTagsCompanion(
       questionId: questionId ?? this.questionId,
       tagId: tagId ?? this.tagId,
@@ -6072,64 +7075,96 @@ class $TermsParentsTable extends TermsParents
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _parentTermIdMeta =
-      const VerificationMeta('parentTermId');
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
   @override
   late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
-      'parentTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _rootTermIdMeta =
-      const VerificationMeta('rootTermId');
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rootTermIdMeta = const VerificationMeta(
+    'rootTermId',
+  );
   @override
   late final GeneratedColumn<int> rootTermId = GeneratedColumn<int>(
-      'rootTermId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _creationMeta =
-      const VerificationMeta('creation');
+    'rootTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _creationMeta = const VerificationMeta(
+    'creation',
+  );
   @override
   late final GeneratedColumn<String> creation = GeneratedColumn<String>(
-      'creation', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'creation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [termId, parentTermId, rootTermId, creation];
+  List<GeneratedColumn> get $columns => [
+    termId,
+    parentTermId,
+    rootTermId,
+    creation,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'termsParents';
   @override
-  VerificationContext validateIntegrity(Insertable<TermsParent> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermsParent> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
     if (data.containsKey('parentTermId')) {
       context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
           _parentTermIdMeta,
-          parentTermId.isAcceptableOrUnknown(
-              data['parentTermId']!, _parentTermIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_parentTermIdMeta);
     }
     if (data.containsKey('rootTermId')) {
       context.handle(
-          _rootTermIdMeta,
-          rootTermId.isAcceptableOrUnknown(
-              data['rootTermId']!, _rootTermIdMeta));
+        _rootTermIdMeta,
+        rootTermId.isAcceptableOrUnknown(data['rootTermId']!, _rootTermIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_rootTermIdMeta);
     }
     if (data.containsKey('creation')) {
-      context.handle(_creationMeta,
-          creation.isAcceptableOrUnknown(data['creation']!, _creationMeta));
+      context.handle(
+        _creationMeta,
+        creation.isAcceptableOrUnknown(data['creation']!, _creationMeta),
+      );
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
@@ -6142,14 +7177,22 @@ class $TermsParentsTable extends TermsParents
   TermsParent map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermsParent(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
-      parentTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}parentTermId'])!,
-      rootTermId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}rootTermId'])!,
-      creation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}creation'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+      rootTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rootTermId'],
+      )!,
+      creation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}creation'],
+      )!,
     );
   }
 
@@ -6164,11 +7207,12 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
   final int parentTermId;
   final int rootTermId;
   final String creation;
-  const TermsParent(
-      {required this.termId,
-      required this.parentTermId,
-      required this.rootTermId,
-      required this.creation});
+  const TermsParent({
+    required this.termId,
+    required this.parentTermId,
+    required this.rootTermId,
+    required this.creation,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6188,8 +7232,10 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
     );
   }
 
-  factory TermsParent.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermsParent.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermsParent(
       termId: serializer.fromJson<int>(json['termId']),
@@ -6209,25 +7255,26 @@ class TermsParent extends DataClass implements Insertable<TermsParent> {
     };
   }
 
-  TermsParent copyWith(
-          {int? termId,
-          int? parentTermId,
-          int? rootTermId,
-          String? creation}) =>
-      TermsParent(
-        termId: termId ?? this.termId,
-        parentTermId: parentTermId ?? this.parentTermId,
-        rootTermId: rootTermId ?? this.rootTermId,
-        creation: creation ?? this.creation,
-      );
+  TermsParent copyWith({
+    int? termId,
+    int? parentTermId,
+    int? rootTermId,
+    String? creation,
+  }) => TermsParent(
+    termId: termId ?? this.termId,
+    parentTermId: parentTermId ?? this.parentTermId,
+    rootTermId: rootTermId ?? this.rootTermId,
+    creation: creation ?? this.creation,
+  );
   TermsParent copyWithCompanion(TermsParentsCompanion data) {
     return TermsParent(
       termId: data.termId.present ? data.termId.value : this.termId,
       parentTermId: data.parentTermId.present
           ? data.parentTermId.value
           : this.parentTermId,
-      rootTermId:
-          data.rootTermId.present ? data.rootTermId.value : this.rootTermId,
+      rootTermId: data.rootTermId.present
+          ? data.rootTermId.value
+          : this.rootTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
     );
   }
@@ -6274,10 +7321,10 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
     required int rootTermId,
     required String creation,
     this.rowid = const Value.absent(),
-  })  : termId = Value(termId),
-        parentTermId = Value(parentTermId),
-        rootTermId = Value(rootTermId),
-        creation = Value(creation);
+  }) : termId = Value(termId),
+       parentTermId = Value(parentTermId),
+       rootTermId = Value(rootTermId),
+       creation = Value(creation);
   static Insertable<TermsParent> custom({
     Expression<int>? termId,
     Expression<int>? parentTermId,
@@ -6294,12 +7341,13 @@ class TermsParentsCompanion extends UpdateCompanion<TermsParent> {
     });
   }
 
-  TermsParentsCompanion copyWith(
-      {Value<int>? termId,
-      Value<int>? parentTermId,
-      Value<int>? rootTermId,
-      Value<String>? creation,
-      Value<int>? rowid}) {
+  TermsParentsCompanion copyWith({
+    Value<int>? termId,
+    Value<int>? parentTermId,
+    Value<int>? rootTermId,
+    Value<String>? creation,
+    Value<int>? rowid,
+  }) {
     return TermsParentsCompanion(
       termId: termId ?? this.termId,
       parentTermId: parentTermId ?? this.parentTermId,
@@ -6351,21 +7399,33 @@ class $TermTagsTable extends TermTags with TableInfo<$TermTagsTable, TermTag> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _orderingMeta =
-      const VerificationMeta('ordering');
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orderingMeta = const VerificationMeta(
+    'ordering',
+  );
   @override
   late final GeneratedColumn<int> ordering = GeneratedColumn<int>(
-      'ordering', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultValue: const Constant(0));
+    'ordering',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [id, name, ordering];
   @override
@@ -6374,8 +7434,10 @@ class $TermTagsTable extends TermTags with TableInfo<$TermTagsTable, TermTag> {
   String get actualTableName => $name;
   static const String $name = 'termsTags';
   @override
-  VerificationContext validateIntegrity(Insertable<TermTag> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermTag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -6383,13 +7445,17 @@ class $TermTagsTable extends TermTags with TableInfo<$TermTagsTable, TermTag> {
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('ordering')) {
-      context.handle(_orderingMeta,
-          ordering.isAcceptableOrUnknown(data['ordering']!, _orderingMeta));
+      context.handle(
+        _orderingMeta,
+        ordering.isAcceptableOrUnknown(data['ordering']!, _orderingMeta),
+      );
     }
     return context;
   }
@@ -6400,12 +7466,18 @@ class $TermTagsTable extends TermTags with TableInfo<$TermTagsTable, TermTag> {
   TermTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermTag(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      ordering: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}ordering'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      ordering: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ordering'],
+      )!,
     );
   }
 
@@ -6437,8 +7509,10 @@ class TermTag extends DataClass implements Insertable<TermTag> {
     );
   }
 
-  factory TermTag.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermTag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermTag(
       id: serializer.fromJson<int>(json['id']),
@@ -6457,10 +7531,10 @@ class TermTag extends DataClass implements Insertable<TermTag> {
   }
 
   TermTag copyWith({int? id, String? name, int? ordering}) => TermTag(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        ordering: ordering ?? this.ordering,
-      );
+    id: id ?? this.id,
+    name: name ?? this.name,
+    ordering: ordering ?? this.ordering,
+  );
   TermTag copyWithCompanion(TermTagsCompanion data) {
     return TermTag(
       id: data.id.present ? data.id.value : this.id,
@@ -6516,8 +7590,11 @@ class TermTagsCompanion extends UpdateCompanion<TermTag> {
     });
   }
 
-  TermTagsCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<int>? ordering}) {
+  TermTagsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<int>? ordering,
+  }) {
     return TermTagsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -6560,13 +7637,21 @@ class $TermsLinkedToTagsTable extends TermsLinkedToTags
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
   @override
   late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
-      'tagId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'tagId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [termId, tagId];
   @override
@@ -6575,19 +7660,25 @@ class $TermsLinkedToTagsTable extends TermsLinkedToTags
   String get actualTableName => $name;
   static const String $name = 'termsLinkedToTags';
   @override
-  VerificationContext validateIntegrity(Insertable<TermsLinkedToTag> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermsLinkedToTag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
     if (data.containsKey('tagId')) {
       context.handle(
-          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta));
+        _tagIdMeta,
+        tagId.isAcceptableOrUnknown(data['tagId']!, _tagIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_tagIdMeta);
     }
@@ -6600,10 +7691,14 @@ class $TermsLinkedToTagsTable extends TermsLinkedToTags
   TermsLinkedToTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermsLinkedToTag(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
-      tagId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}tagId'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
+      tagId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}tagId'],
+      )!,
     );
   }
 
@@ -6633,8 +7728,10 @@ class TermsLinkedToTag extends DataClass
     );
   }
 
-  factory TermsLinkedToTag.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermsLinkedToTag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermsLinkedToTag(
       termId: serializer.fromJson<int>(json['termId']),
@@ -6651,9 +7748,9 @@ class TermsLinkedToTag extends DataClass
   }
 
   TermsLinkedToTag copyWith({int? termId, int? tagId}) => TermsLinkedToTag(
-        termId: termId ?? this.termId,
-        tagId: tagId ?? this.tagId,
-      );
+    termId: termId ?? this.termId,
+    tagId: tagId ?? this.tagId,
+  );
   TermsLinkedToTag copyWithCompanion(TermsLinkedToTagsCompanion data) {
     return TermsLinkedToTag(
       termId: data.termId.present ? data.termId.value : this.termId,
@@ -6693,8 +7790,8 @@ class TermsLinkedToTagsCompanion extends UpdateCompanion<TermsLinkedToTag> {
     required int termId,
     required int tagId,
     this.rowid = const Value.absent(),
-  })  : termId = Value(termId),
-        tagId = Value(tagId);
+  }) : termId = Value(termId),
+       tagId = Value(tagId);
   static Insertable<TermsLinkedToTag> custom({
     Expression<int>? termId,
     Expression<int>? tagId,
@@ -6707,8 +7804,11 @@ class TermsLinkedToTagsCompanion extends UpdateCompanion<TermsLinkedToTag> {
     });
   }
 
-  TermsLinkedToTagsCompanion copyWith(
-      {Value<int>? termId, Value<int>? tagId, Value<int>? rowid}) {
+  TermsLinkedToTagsCompanion copyWith({
+    Value<int>? termId,
+    Value<int>? tagId,
+    Value<int>? rowid,
+  }) {
     return TermsLinkedToTagsCompanion(
       termId: termId ?? this.termId,
       tagId: tagId ?? this.tagId,
@@ -6751,13 +7851,21 @@ class $TermLabelsTable extends TermLabels
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [id, name];
   @override
@@ -6766,8 +7874,10 @@ class $TermLabelsTable extends TermLabels
   String get actualTableName => $name;
   static const String $name = 'termsLabels';
   @override
-  VerificationContext validateIntegrity(Insertable<TermLabel> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermLabel> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -6775,7 +7885,9 @@ class $TermLabelsTable extends TermLabels
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
@@ -6788,10 +7900,14 @@ class $TermLabelsTable extends TermLabels
   TermLabel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermLabel(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
     );
   }
 
@@ -6814,14 +7930,13 @@ class TermLabel extends DataClass implements Insertable<TermLabel> {
   }
 
   TermLabelsCompanion toCompanion(bool nullToAbsent) {
-    return TermLabelsCompanion(
-      id: Value(id),
-      name: Value(name),
-    );
+    return TermLabelsCompanion(id: Value(id), name: Value(name));
   }
 
-  factory TermLabel.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermLabel.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermLabel(
       id: serializer.fromJson<int>(json['id']),
@@ -6837,10 +7952,8 @@ class TermLabel extends DataClass implements Insertable<TermLabel> {
     };
   }
 
-  TermLabel copyWith({int? id, String? name}) => TermLabel(
-        id: id ?? this.id,
-        name: name ?? this.name,
-      );
+  TermLabel copyWith({int? id, String? name}) =>
+      TermLabel(id: id ?? this.id, name: name ?? this.name);
   TermLabel copyWithCompanion(TermLabelsCompanion data) {
     return TermLabel(
       id: data.id.present ? data.id.value : this.id,
@@ -6887,10 +8000,7 @@ class TermLabelsCompanion extends UpdateCompanion<TermLabel> {
   }
 
   TermLabelsCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return TermLabelsCompanion(
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
+    return TermLabelsCompanion(id: id ?? this.id, name: name ?? this.name);
   }
 
   @override
@@ -6924,14 +8034,23 @@ class $TermsLinkedToLabelsTable extends TermsLinkedToLabels
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _labelIdMeta =
-      const VerificationMeta('labelId');
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _labelIdMeta = const VerificationMeta(
+    'labelId',
+  );
   @override
   late final GeneratedColumn<int> labelId = GeneratedColumn<int>(
-      'labelId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'labelId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [termId, labelId];
   @override
@@ -6940,19 +8059,25 @@ class $TermsLinkedToLabelsTable extends TermsLinkedToLabels
   String get actualTableName => $name;
   static const String $name = 'termsLinkedToLabels';
   @override
-  VerificationContext validateIntegrity(Insertable<TermsLinkedToLabel> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermsLinkedToLabel> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
     if (data.containsKey('labelId')) {
-      context.handle(_labelIdMeta,
-          labelId.isAcceptableOrUnknown(data['labelId']!, _labelIdMeta));
+      context.handle(
+        _labelIdMeta,
+        labelId.isAcceptableOrUnknown(data['labelId']!, _labelIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_labelIdMeta);
     }
@@ -6965,10 +8090,14 @@ class $TermsLinkedToLabelsTable extends TermsLinkedToLabels
   TermsLinkedToLabel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermsLinkedToLabel(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
-      labelId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}labelId'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
+      labelId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}labelId'],
+      )!,
     );
   }
 
@@ -6998,8 +8127,10 @@ class TermsLinkedToLabel extends DataClass
     );
   }
 
-  factory TermsLinkedToLabel.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermsLinkedToLabel.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermsLinkedToLabel(
       termId: serializer.fromJson<int>(json['termId']),
@@ -7059,8 +8190,8 @@ class TermsLinkedToLabelsCompanion extends UpdateCompanion<TermsLinkedToLabel> {
     required int termId,
     required int labelId,
     this.rowid = const Value.absent(),
-  })  : termId = Value(termId),
-        labelId = Value(labelId);
+  }) : termId = Value(termId),
+       labelId = Value(labelId);
   static Insertable<TermsLinkedToLabel> custom({
     Expression<int>? termId,
     Expression<int>? labelId,
@@ -7073,8 +8204,11 @@ class TermsLinkedToLabelsCompanion extends UpdateCompanion<TermsLinkedToLabel> {
     });
   }
 
-  TermsLinkedToLabelsCompanion copyWith(
-      {Value<int>? termId, Value<int>? labelId, Value<int>? rowid}) {
+  TermsLinkedToLabelsCompanion copyWith({
+    Value<int>? termId,
+    Value<int>? labelId,
+    Value<int>? rowid,
+  }) {
     return TermsLinkedToLabelsCompanion(
       termId: termId ?? this.termId,
       labelId: labelId ?? this.labelId,
@@ -7117,18 +8251,30 @@ class $TermPropertiesTable extends TermProperties
   static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
   @override
   late final GeneratedColumn<int> termId = GeneratedColumn<int>(
-      'termId', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'termId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
   late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [termId, name, value];
   @override
@@ -7137,25 +8283,33 @@ class $TermPropertiesTable extends TermProperties
   String get actualTableName => $name;
   static const String $name = 'termProperties';
   @override
-  VerificationContext validateIntegrity(Insertable<TermProperty> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<TermProperty> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('termId')) {
-      context.handle(_termIdMeta,
-          termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta));
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['termId']!, _termIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_termIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -7168,12 +8322,18 @@ class $TermPropertiesTable extends TermProperties
   TermProperty map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TermProperty(
-      termId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}termId'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}termId'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -7187,8 +8347,11 @@ class TermProperty extends DataClass implements Insertable<TermProperty> {
   final int termId;
   final String name;
   final String value;
-  const TermProperty(
-      {required this.termId, required this.name, required this.value});
+  const TermProperty({
+    required this.termId,
+    required this.name,
+    required this.value,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7206,8 +8369,10 @@ class TermProperty extends DataClass implements Insertable<TermProperty> {
     );
   }
 
-  factory TermProperty.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TermProperty.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TermProperty(
       termId: serializer.fromJson<int>(json['termId']),
@@ -7276,9 +8441,9 @@ class TermPropertiesCompanion extends UpdateCompanion<TermProperty> {
     required String name,
     required String value,
     this.rowid = const Value.absent(),
-  })  : termId = Value(termId),
-        name = Value(name),
-        value = Value(value);
+  }) : termId = Value(termId),
+       name = Value(name),
+       value = Value(value);
   static Insertable<TermProperty> custom({
     Expression<int>? termId,
     Expression<String>? name,
@@ -7293,11 +8458,12 @@ class TermPropertiesCompanion extends UpdateCompanion<TermProperty> {
     });
   }
 
-  TermPropertiesCompanion copyWith(
-      {Value<int>? termId,
-      Value<String>? name,
-      Value<String>? value,
-      Value<int>? rowid}) {
+  TermPropertiesCompanion copyWith({
+    Value<int>? termId,
+    Value<String>? name,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
     return TermPropertiesCompanion(
       termId: termId ?? this.termId,
       name: name ?? this.name,
@@ -7344,13 +8510,21 @@ class $ConfigsTable extends Configs with TableInfo<$ConfigsTable, Config> {
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
   late final GeneratedColumn<String> value = GeneratedColumn<String>(
-      'value', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'value',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [title, value];
   @override
@@ -7359,19 +8533,25 @@ class $ConfigsTable extends Configs with TableInfo<$ConfigsTable, Config> {
   String get actualTableName => $name;
   static const String $name = 'configs';
   @override
-  VerificationContext validateIntegrity(Insertable<Config> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Config> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('value')) {
       context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -7384,10 +8564,14 @@ class $ConfigsTable extends Configs with TableInfo<$ConfigsTable, Config> {
   Config map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Config(
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      value: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -7410,14 +8594,13 @@ class Config extends DataClass implements Insertable<Config> {
   }
 
   ConfigsCompanion toCompanion(bool nullToAbsent) {
-    return ConfigsCompanion(
-      title: Value(title),
-      value: Value(value),
-    );
+    return ConfigsCompanion(title: Value(title), value: Value(value));
   }
 
-  factory Config.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Config.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Config(
       title: serializer.fromJson<String>(json['title']),
@@ -7433,10 +8616,8 @@ class Config extends DataClass implements Insertable<Config> {
     };
   }
 
-  Config copyWith({String? title, String? value}) => Config(
-        title: title ?? this.title,
-        value: value ?? this.value,
-      );
+  Config copyWith({String? title, String? value}) =>
+      Config(title: title ?? this.title, value: value ?? this.value);
   Config copyWithCompanion(ConfigsCompanion data) {
     return Config(
       title: data.title.present ? data.title.value : this.title,
@@ -7476,8 +8657,8 @@ class ConfigsCompanion extends UpdateCompanion<Config> {
     required String title,
     required String value,
     this.rowid = const Value.absent(),
-  })  : title = Value(title),
-        value = Value(value);
+  }) : title = Value(title),
+       value = Value(value);
   static Insertable<Config> custom({
     Expression<String>? title,
     Expression<String>? value,
@@ -7490,8 +8671,11 @@ class ConfigsCompanion extends UpdateCompanion<Config> {
     });
   }
 
-  ConfigsCompanion copyWith(
-      {Value<String>? title, Value<String>? value, Value<int>? rowid}) {
+  ConfigsCompanion copyWith({
+    Value<String>? title,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
     return ConfigsCompanion(
       title: title ?? this.title,
       value: value ?? this.value,
@@ -7525,6 +8709,346 @@ class ConfigsCompanion extends UpdateCompanion<Config> {
   }
 }
 
+class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ImagesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
+  @override
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
+    'url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _infoMeta = const VerificationMeta('info');
+  @override
+  late final GeneratedColumn<String> info = GeneratedColumn<String>(
+    'info',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _parentTermIdMeta = const VerificationMeta(
+    'parentTermId',
+  );
+  @override
+  late final GeneratedColumn<int> parentTermId = GeneratedColumn<int>(
+    'parentTermId',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, url, title, info, parentTermId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'images';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Image> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('url')) {
+      context.handle(
+        _urlMeta,
+        url.isAcceptableOrUnknown(data['url']!, _urlMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('info')) {
+      context.handle(
+        _infoMeta,
+        info.isAcceptableOrUnknown(data['info']!, _infoMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_infoMeta);
+    }
+    if (data.containsKey('parentTermId')) {
+      context.handle(
+        _parentTermIdMeta,
+        parentTermId.isAcceptableOrUnknown(
+          data['parentTermId']!,
+          _parentTermIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_parentTermIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Image map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Image(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      info: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}info'],
+      )!,
+      parentTermId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}parentTermId'],
+      )!,
+    );
+  }
+
+  @override
+  $ImagesTable createAlias(String alias) {
+    return $ImagesTable(attachedDatabase, alias);
+  }
+}
+
+class Image extends DataClass implements Insertable<Image> {
+  final int id;
+  final String url;
+  final String title;
+  final String info;
+  final int parentTermId;
+  const Image({
+    required this.id,
+    required this.url,
+    required this.title,
+    required this.info,
+    required this.parentTermId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['url'] = Variable<String>(url);
+    map['title'] = Variable<String>(title);
+    map['info'] = Variable<String>(info);
+    map['parentTermId'] = Variable<int>(parentTermId);
+    return map;
+  }
+
+  ImagesCompanion toCompanion(bool nullToAbsent) {
+    return ImagesCompanion(
+      id: Value(id),
+      url: Value(url),
+      title: Value(title),
+      info: Value(info),
+      parentTermId: Value(parentTermId),
+    );
+  }
+
+  factory Image.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Image(
+      id: serializer.fromJson<int>(json['id']),
+      url: serializer.fromJson<String>(json['url']),
+      title: serializer.fromJson<String>(json['title']),
+      info: serializer.fromJson<String>(json['info']),
+      parentTermId: serializer.fromJson<int>(json['parentTermId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'url': serializer.toJson<String>(url),
+      'title': serializer.toJson<String>(title),
+      'info': serializer.toJson<String>(info),
+      'parentTermId': serializer.toJson<int>(parentTermId),
+    };
+  }
+
+  Image copyWith({
+    int? id,
+    String? url,
+    String? title,
+    String? info,
+    int? parentTermId,
+  }) => Image(
+    id: id ?? this.id,
+    url: url ?? this.url,
+    title: title ?? this.title,
+    info: info ?? this.info,
+    parentTermId: parentTermId ?? this.parentTermId,
+  );
+  Image copyWithCompanion(ImagesCompanion data) {
+    return Image(
+      id: data.id.present ? data.id.value : this.id,
+      url: data.url.present ? data.url.value : this.url,
+      title: data.title.present ? data.title.value : this.title,
+      info: data.info.present ? data.info.value : this.info,
+      parentTermId: data.parentTermId.present
+          ? data.parentTermId.value
+          : this.parentTermId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Image(')
+          ..write('id: $id, ')
+          ..write('url: $url, ')
+          ..write('title: $title, ')
+          ..write('info: $info, ')
+          ..write('parentTermId: $parentTermId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, url, title, info, parentTermId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Image &&
+          other.id == this.id &&
+          other.url == this.url &&
+          other.title == this.title &&
+          other.info == this.info &&
+          other.parentTermId == this.parentTermId);
+}
+
+class ImagesCompanion extends UpdateCompanion<Image> {
+  final Value<int> id;
+  final Value<String> url;
+  final Value<String> title;
+  final Value<String> info;
+  final Value<int> parentTermId;
+  const ImagesCompanion({
+    this.id = const Value.absent(),
+    this.url = const Value.absent(),
+    this.title = const Value.absent(),
+    this.info = const Value.absent(),
+    this.parentTermId = const Value.absent(),
+  });
+  ImagesCompanion.insert({
+    this.id = const Value.absent(),
+    required String url,
+    required String title,
+    required String info,
+    required int parentTermId,
+  }) : url = Value(url),
+       title = Value(title),
+       info = Value(info),
+       parentTermId = Value(parentTermId);
+  static Insertable<Image> custom({
+    Expression<int>? id,
+    Expression<String>? url,
+    Expression<String>? title,
+    Expression<String>? info,
+    Expression<int>? parentTermId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (url != null) 'url': url,
+      if (title != null) 'title': title,
+      if (info != null) 'info': info,
+      if (parentTermId != null) 'parentTermId': parentTermId,
+    });
+  }
+
+  ImagesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? url,
+    Value<String>? title,
+    Value<String>? info,
+    Value<int>? parentTermId,
+  }) {
+    return ImagesCompanion(
+      id: id ?? this.id,
+      url: url ?? this.url,
+      title: title ?? this.title,
+      info: info ?? this.info,
+      parentTermId: parentTermId ?? this.parentTermId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (info.present) {
+      map['info'] = Variable<String>(info.value);
+    }
+    if (parentTermId.present) {
+      map['parentTermId'] = Variable<int>(parentTermId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ImagesCompanion(')
+          ..write('id: $id, ')
+          ..write('url: $url, ')
+          ..write('title: $title, ')
+          ..write('info: $info, ')
+          ..write('parentTermId: $parentTermId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
   $DatabaseServiceManager get managers => $DatabaseServiceManager(this);
@@ -7535,8 +9059,9 @@ abstract class _$DatabaseService extends GeneratedDatabase {
   late final $QuestionTagsTable questionTags = $QuestionTagsTable(this);
   late final $QuestionMediasTable questionMedias = $QuestionMediasTable(this);
   late final $FcmTopicsTable fcmTopics = $FcmTopicsTable(this);
-  late final $AnswerPropertiesTable answerProperties =
-      $AnswerPropertiesTable(this);
+  late final $AnswerPropertiesTable answerProperties = $AnswerPropertiesTable(
+    this,
+  );
   late final $CouponsLinkedToTermsTable couponsLinkedToTerms =
       $CouponsLinkedToTermsTable(this);
   late final $TermTreesTable termTrees = $TermTreesTable(this);
@@ -7549,8 +9074,9 @@ abstract class _$DatabaseService extends GeneratedDatabase {
       $QuestionPropertiesTable(this);
   late final $HttpRequestsTable httpRequests = $HttpRequestsTable(this);
   late final $TermsWithQuestionsFilteringEnabledTable
-      termsWithQuestionsFilteringEnabled =
-      $TermsWithQuestionsFilteringEnabledTable(this);
+  termsWithQuestionsFilteringEnabled = $TermsWithQuestionsFilteringEnabledTable(
+    this,
+  );
   late final $FlashcardsTable flashcards = $FlashcardsTable(this);
   late final $VoiceNotesTable voiceNotes = $VoiceNotesTable(this);
   late final $VideoFilesTable videoFiles = $VideoFilesTable(this);
@@ -7566,102 +9092,134 @@ abstract class _$DatabaseService extends GeneratedDatabase {
       $TermsLinkedToLabelsTable(this);
   late final $TermPropertiesTable termProperties = $TermPropertiesTable(this);
   late final $ConfigsTable configs = $ConfigsTable(this);
-  late final Index parentQuestionIdIndex = Index('parentQuestionIdIndex',
-      'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)');
-  late final Index qIndex1 =
-      Index('qIndex1', 'CREATE INDEX qIndex1 ON questions (parentTermId)');
-  late final Index questionTagsIndex1 = Index('questionTagsIndex1',
-      'CREATE INDEX questionTagsIndex1 ON questionTags (parentTagId)');
-  late final Index questionMediasIndex1 = Index('questionMediasIndex1',
-      'CREATE INDEX questionMediasIndex1 ON questionMedias (parentQuestionId)');
-  late final Index answersIndex1 = Index('answersIndex1',
-      'CREATE INDEX answersIndex1 ON answerProperties (answerId)');
-  late final Index qtpIndex1 = Index('qtpIndex1',
-      'CREATE INDEX qtpIndex1 ON questionTagProperties (questionTagId)');
+  late final $ImagesTable images = $ImagesTable(this);
+  late final Index parentQuestionIdIndex = Index(
+    'parentQuestionIdIndex',
+    'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)',
+  );
+  late final Index qIndex1 = Index(
+    'qIndex1',
+    'CREATE INDEX qIndex1 ON questions (parentTermId)',
+  );
+  late final Index questionTagsIndex1 = Index(
+    'questionTagsIndex1',
+    'CREATE INDEX questionTagsIndex1 ON questionTags (parentTagId)',
+  );
+  late final Index questionMediasIndex1 = Index(
+    'questionMediasIndex1',
+    'CREATE INDEX questionMediasIndex1 ON questionMedias (parentQuestionId)',
+  );
+  late final Index answersIndex1 = Index(
+    'answersIndex1',
+    'CREATE INDEX answersIndex1 ON answerProperties (answerId)',
+  );
+  late final Index qtpIndex1 = Index(
+    'qtpIndex1',
+    'CREATE INDEX qtpIndex1 ON questionTagProperties (questionTagId)',
+  );
   late final Index qpIndex1 = Index(
-      'qpIndex1', 'CREATE INDEX qpIndex1 ON questionProperties (questionId)');
-  late final Index qlttIndex1 = Index('qlttIndex1',
-      'CREATE INDEX qlttIndex1 ON questionsLinkedToTags (questionId)');
+    'qpIndex1',
+    'CREATE INDEX qpIndex1 ON questionProperties (questionId)',
+  );
+  late final Index qlttIndex1 = Index(
+    'qlttIndex1',
+    'CREATE INDEX qlttIndex1 ON questionsLinkedToTags (questionId)',
+  );
   late final Index qlttIndex2 = Index(
-      'qlttIndex2', 'CREATE INDEX qlttIndex2 ON questionsLinkedToTags (tagId)');
+    'qlttIndex2',
+    'CREATE INDEX qlttIndex2 ON questionsLinkedToTags (tagId)',
+  );
   late final Index tlttIndex1 = Index(
-      'tlttIndex1', 'CREATE INDEX tlttIndex1 ON termsLinkedToTags (termId)');
+    'tlttIndex1',
+    'CREATE INDEX tlttIndex1 ON termsLinkedToTags (termId)',
+  );
   late final Index tlttIndex2 = Index(
-      'tlttIndex2', 'CREATE INDEX tlttIndex2 ON termsLinkedToTags (tagId)');
+    'tlttIndex2',
+    'CREATE INDEX tlttIndex2 ON termsLinkedToTags (tagId)',
+  );
   late final Index tltlIndex1 = Index(
-      'tltlIndex1', 'CREATE INDEX tltlIndex1 ON termsLinkedToLabels (termId)');
+    'tltlIndex1',
+    'CREATE INDEX tltlIndex1 ON termsLinkedToLabels (termId)',
+  );
   late final Index tltlIndex2 = Index(
-      'tltlIndex2', 'CREATE INDEX tltlIndex2 ON termsLinkedToLabels (labelId)');
+    'tltlIndex2',
+    'CREATE INDEX tltlIndex2 ON termsLinkedToLabels (labelId)',
+  );
   late final Index termsIndex1 = Index(
-      'termsIndex1', 'CREATE INDEX termsIndex1 ON termProperties (termId)');
+    'termsIndex1',
+    'CREATE INDEX termsIndex1 ON termProperties (termId)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        coupons,
-        terms,
-        answers,
-        questions,
-        questionTags,
-        questionMedias,
-        fcmTopics,
-        answerProperties,
-        couponsLinkedToTerms,
-        termTrees,
-        ebooks,
-        termsLastAccesses,
-        questionTagProperties,
-        questionProperties,
-        httpRequests,
-        termsWithQuestionsFilteringEnabled,
-        flashcards,
-        voiceNotes,
-        videoFiles,
-        relatedTerms,
-        questionsLinkedToTags,
-        termsParents,
-        termTags,
-        termsLinkedToTags,
-        termLabels,
-        termsLinkedToLabels,
-        termProperties,
-        configs,
-        parentQuestionIdIndex,
-        qIndex1,
-        questionTagsIndex1,
-        questionMediasIndex1,
-        answersIndex1,
-        qtpIndex1,
-        qpIndex1,
-        qlttIndex1,
-        qlttIndex2,
-        tlttIndex1,
-        tlttIndex2,
-        tltlIndex1,
-        tltlIndex2,
-        termsIndex1
-      ];
+    coupons,
+    terms,
+    answers,
+    questions,
+    questionTags,
+    questionMedias,
+    fcmTopics,
+    answerProperties,
+    couponsLinkedToTerms,
+    termTrees,
+    ebooks,
+    termsLastAccesses,
+    questionTagProperties,
+    questionProperties,
+    httpRequests,
+    termsWithQuestionsFilteringEnabled,
+    flashcards,
+    voiceNotes,
+    videoFiles,
+    relatedTerms,
+    questionsLinkedToTags,
+    termsParents,
+    termTags,
+    termsLinkedToTags,
+    termLabels,
+    termsLinkedToLabels,
+    termProperties,
+    configs,
+    images,
+    parentQuestionIdIndex,
+    qIndex1,
+    questionTagsIndex1,
+    questionMediasIndex1,
+    answersIndex1,
+    qtpIndex1,
+    qpIndex1,
+    qlttIndex1,
+    qlttIndex2,
+    tlttIndex1,
+    tlttIndex2,
+    tltlIndex1,
+    tltlIndex2,
+    termsIndex1,
+  ];
 }
 
-typedef $$CouponsTableCreateCompanionBuilder = CouponsCompanion Function({
-  Value<int> id,
-  required String serial,
-  required int type,
-  Value<int> free,
-  required String creation,
-  Value<String?> activationDate,
-  Value<int> expirationDays,
-});
-typedef $$CouponsTableUpdateCompanionBuilder = CouponsCompanion Function({
-  Value<int> id,
-  Value<String> serial,
-  Value<int> type,
-  Value<int> free,
-  Value<String> creation,
-  Value<String?> activationDate,
-  Value<int> expirationDays,
-});
+typedef $$CouponsTableCreateCompanionBuilder =
+    CouponsCompanion Function({
+      Value<int> id,
+      required String serial,
+      required int type,
+      Value<int> free,
+      required String creation,
+      Value<String?> activationDate,
+      Value<int> expirationDays,
+    });
+typedef $$CouponsTableUpdateCompanionBuilder =
+    CouponsCompanion Function({
+      Value<int> id,
+      Value<String> serial,
+      Value<int> type,
+      Value<int> free,
+      Value<String> creation,
+      Value<String?> activationDate,
+      Value<int> expirationDays,
+    });
 
 class $$CouponsTableFilterComposer
     extends Composer<_$DatabaseService, $CouponsTable> {
@@ -7673,27 +9231,39 @@ class $$CouponsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get serial => $composableBuilder(
-      column: $table.serial, builder: (column) => ColumnFilters(column));
+    column: $table.serial,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnFilters(column));
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get free => $composableBuilder(
-      column: $table.free, builder: (column) => ColumnFilters(column));
+    column: $table.free,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get activationDate => $composableBuilder(
-      column: $table.activationDate,
-      builder: (column) => ColumnFilters(column));
+    column: $table.activationDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get expirationDays => $composableBuilder(
-      column: $table.expirationDays,
-      builder: (column) => ColumnFilters(column));
+    column: $table.expirationDays,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$CouponsTableOrderingComposer
@@ -7706,27 +9276,39 @@ class $$CouponsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get serial => $composableBuilder(
-      column: $table.serial, builder: (column) => ColumnOrderings(column));
+    column: $table.serial,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnOrderings(column));
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get free => $composableBuilder(
-      column: $table.free, builder: (column) => ColumnOrderings(column));
+    column: $table.free,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get activationDate => $composableBuilder(
-      column: $table.activationDate,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.activationDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get expirationDays => $composableBuilder(
-      column: $table.expirationDays,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.expirationDays,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CouponsTableAnnotationComposer
@@ -7754,26 +9336,34 @@ class $$CouponsTableAnnotationComposer
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<String> get activationDate => $composableBuilder(
-      column: $table.activationDate, builder: (column) => column);
+    column: $table.activationDate,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get expirationDays => $composableBuilder(
-      column: $table.expirationDays, builder: (column) => column);
+    column: $table.expirationDays,
+    builder: (column) => column,
+  );
 }
 
-class $$CouponsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $CouponsTable,
-    Coupon,
-    $$CouponsTableFilterComposer,
-    $$CouponsTableOrderingComposer,
-    $$CouponsTableAnnotationComposer,
-    $$CouponsTableCreateCompanionBuilder,
-    $$CouponsTableUpdateCompanionBuilder,
-    (Coupon, BaseReferences<_$DatabaseService, $CouponsTable, Coupon>),
-    Coupon,
-    PrefetchHooks Function()> {
+class $$CouponsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $CouponsTable,
+          Coupon,
+          $$CouponsTableFilterComposer,
+          $$CouponsTableOrderingComposer,
+          $$CouponsTableAnnotationComposer,
+          $$CouponsTableCreateCompanionBuilder,
+          $$CouponsTableUpdateCompanionBuilder,
+          (Coupon, BaseReferences<_$DatabaseService, $CouponsTable, Coupon>),
+          Coupon,
+          PrefetchHooks Function()
+        > {
   $$CouponsTableTableManager(_$DatabaseService db, $CouponsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -7782,89 +9372,94 @@ class $$CouponsTableTableManager extends RootTableManager<
               $$CouponsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$CouponsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> serial = const Value.absent(),
-            Value<int> type = const Value.absent(),
-            Value<int> free = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<String?> activationDate = const Value.absent(),
-            Value<int> expirationDays = const Value.absent(),
-          }) =>
-              CouponsCompanion(
-            id: id,
-            serial: serial,
-            type: type,
-            free: free,
-            creation: creation,
-            activationDate: activationDate,
-            expirationDays: expirationDays,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String serial,
-            required int type,
-            Value<int> free = const Value.absent(),
-            required String creation,
-            Value<String?> activationDate = const Value.absent(),
-            Value<int> expirationDays = const Value.absent(),
-          }) =>
-              CouponsCompanion.insert(
-            id: id,
-            serial: serial,
-            type: type,
-            free: free,
-            creation: creation,
-            activationDate: activationDate,
-            expirationDays: expirationDays,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> serial = const Value.absent(),
+                Value<int> type = const Value.absent(),
+                Value<int> free = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<String?> activationDate = const Value.absent(),
+                Value<int> expirationDays = const Value.absent(),
+              }) => CouponsCompanion(
+                id: id,
+                serial: serial,
+                type: type,
+                free: free,
+                creation: creation,
+                activationDate: activationDate,
+                expirationDays: expirationDays,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String serial,
+                required int type,
+                Value<int> free = const Value.absent(),
+                required String creation,
+                Value<String?> activationDate = const Value.absent(),
+                Value<int> expirationDays = const Value.absent(),
+              }) => CouponsCompanion.insert(
+                id: id,
+                serial: serial,
+                type: type,
+                free: free,
+                creation: creation,
+                activationDate: activationDate,
+                expirationDays: expirationDays,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$CouponsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $CouponsTable,
-    Coupon,
-    $$CouponsTableFilterComposer,
-    $$CouponsTableOrderingComposer,
-    $$CouponsTableAnnotationComposer,
-    $$CouponsTableCreateCompanionBuilder,
-    $$CouponsTableUpdateCompanionBuilder,
-    (Coupon, BaseReferences<_$DatabaseService, $CouponsTable, Coupon>),
-    Coupon,
-    PrefetchHooks Function()>;
-typedef $$TermsTableCreateCompanionBuilder = TermsCompanion Function({
-  Value<int> id,
-  required String uuid,
-  required String name,
-  required int type,
-  required String creation,
-  Value<int> enabled,
-  required int free,
-  required int ordering,
-  Value<int> needsUpdate,
-  Value<int> captureable,
-  required String textCulumn,
-  Value<String> outerNote,
-});
-typedef $$TermsTableUpdateCompanionBuilder = TermsCompanion Function({
-  Value<int> id,
-  Value<String> uuid,
-  Value<String> name,
-  Value<int> type,
-  Value<String> creation,
-  Value<int> enabled,
-  Value<int> free,
-  Value<int> ordering,
-  Value<int> needsUpdate,
-  Value<int> captureable,
-  Value<String> textCulumn,
-  Value<String> outerNote,
-});
+typedef $$CouponsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $CouponsTable,
+      Coupon,
+      $$CouponsTableFilterComposer,
+      $$CouponsTableOrderingComposer,
+      $$CouponsTableAnnotationComposer,
+      $$CouponsTableCreateCompanionBuilder,
+      $$CouponsTableUpdateCompanionBuilder,
+      (Coupon, BaseReferences<_$DatabaseService, $CouponsTable, Coupon>),
+      Coupon,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsTableCreateCompanionBuilder =
+    TermsCompanion Function({
+      Value<int> id,
+      required String uuid,
+      required String name,
+      required int type,
+      required String creation,
+      Value<int> enabled,
+      required int free,
+      required int ordering,
+      Value<int> needsUpdate,
+      Value<int> captureable,
+      required String textCulumn,
+      Value<String> outerNote,
+    });
+typedef $$TermsTableUpdateCompanionBuilder =
+    TermsCompanion Function({
+      Value<int> id,
+      Value<String> uuid,
+      Value<String> name,
+      Value<int> type,
+      Value<String> creation,
+      Value<int> enabled,
+      Value<int> free,
+      Value<int> ordering,
+      Value<int> needsUpdate,
+      Value<int> captureable,
+      Value<String> textCulumn,
+      Value<String> outerNote,
+    });
 
 class $$TermsTableFilterComposer
     extends Composer<_$DatabaseService, $TermsTable> {
@@ -7876,40 +9471,64 @@ class $$TermsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnFilters(column));
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnFilters(column));
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get enabled => $composableBuilder(
-      column: $table.enabled, builder: (column) => ColumnFilters(column));
+    column: $table.enabled,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get free => $composableBuilder(
-      column: $table.free, builder: (column) => ColumnFilters(column));
+    column: $table.free,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get ordering => $composableBuilder(
-      column: $table.ordering, builder: (column) => ColumnFilters(column));
+    column: $table.ordering,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get needsUpdate => $composableBuilder(
-      column: $table.needsUpdate, builder: (column) => ColumnFilters(column));
+    column: $table.needsUpdate,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get captureable => $composableBuilder(
-      column: $table.captureable, builder: (column) => ColumnFilters(column));
+    column: $table.captureable,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get textCulumn => $composableBuilder(
-      column: $table.textCulumn, builder: (column) => ColumnFilters(column));
+    column: $table.textCulumn,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get outerNote => $composableBuilder(
-      column: $table.outerNote, builder: (column) => ColumnFilters(column));
+    column: $table.outerNote,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsTableOrderingComposer
@@ -7922,40 +9541,64 @@ class $$TermsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnOrderings(column));
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get enabled => $composableBuilder(
-      column: $table.enabled, builder: (column) => ColumnOrderings(column));
+    column: $table.enabled,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get free => $composableBuilder(
-      column: $table.free, builder: (column) => ColumnOrderings(column));
+    column: $table.free,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get ordering => $composableBuilder(
-      column: $table.ordering, builder: (column) => ColumnOrderings(column));
+    column: $table.ordering,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get needsUpdate => $composableBuilder(
-      column: $table.needsUpdate, builder: (column) => ColumnOrderings(column));
+    column: $table.needsUpdate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get captureable => $composableBuilder(
-      column: $table.captureable, builder: (column) => ColumnOrderings(column));
+    column: $table.captureable,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get textCulumn => $composableBuilder(
-      column: $table.textCulumn, builder: (column) => ColumnOrderings(column));
+    column: $table.textCulumn,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get outerNote => $composableBuilder(
-      column: $table.outerNote, builder: (column) => ColumnOrderings(column));
+    column: $table.outerNote,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsTableAnnotationComposer
@@ -7992,32 +9635,42 @@ class $$TermsTableAnnotationComposer
       $composableBuilder(column: $table.ordering, builder: (column) => column);
 
   GeneratedColumn<int> get needsUpdate => $composableBuilder(
-      column: $table.needsUpdate, builder: (column) => column);
+    column: $table.needsUpdate,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get captureable => $composableBuilder(
-      column: $table.captureable, builder: (column) => column);
+    column: $table.captureable,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get textCulumn => $composableBuilder(
-      column: $table.textCulumn, builder: (column) => column);
+    column: $table.textCulumn,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get outerNote =>
       $composableBuilder(column: $table.outerNote, builder: (column) => column);
 }
 
-class $$TermsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermsTable,
-    Term,
-    $$TermsTableFilterComposer,
-    $$TermsTableOrderingComposer,
-    $$TermsTableAnnotationComposer,
-    $$TermsTableCreateCompanionBuilder,
-    $$TermsTableUpdateCompanionBuilder,
-    (Term, BaseReferences<_$DatabaseService, $TermsTable, Term>),
-    Term,
-    PrefetchHooks Function()> {
+class $$TermsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsTable,
+          Term,
+          $$TermsTableFilterComposer,
+          $$TermsTableOrderingComposer,
+          $$TermsTableAnnotationComposer,
+          $$TermsTableCreateCompanionBuilder,
+          $$TermsTableUpdateCompanionBuilder,
+          (Term, BaseReferences<_$DatabaseService, $TermsTable, Term>),
+          Term,
+          PrefetchHooks Function()
+        > {
   $$TermsTableTableManager(_$DatabaseService db, $TermsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -8026,103 +9679,108 @@ class $$TermsTableTableManager extends RootTableManager<
               $$TermsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> uuid = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<int> type = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<int> enabled = const Value.absent(),
-            Value<int> free = const Value.absent(),
-            Value<int> ordering = const Value.absent(),
-            Value<int> needsUpdate = const Value.absent(),
-            Value<int> captureable = const Value.absent(),
-            Value<String> textCulumn = const Value.absent(),
-            Value<String> outerNote = const Value.absent(),
-          }) =>
-              TermsCompanion(
-            id: id,
-            uuid: uuid,
-            name: name,
-            type: type,
-            creation: creation,
-            enabled: enabled,
-            free: free,
-            ordering: ordering,
-            needsUpdate: needsUpdate,
-            captureable: captureable,
-            textCulumn: textCulumn,
-            outerNote: outerNote,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String uuid,
-            required String name,
-            required int type,
-            required String creation,
-            Value<int> enabled = const Value.absent(),
-            required int free,
-            required int ordering,
-            Value<int> needsUpdate = const Value.absent(),
-            Value<int> captureable = const Value.absent(),
-            required String textCulumn,
-            Value<String> outerNote = const Value.absent(),
-          }) =>
-              TermsCompanion.insert(
-            id: id,
-            uuid: uuid,
-            name: name,
-            type: type,
-            creation: creation,
-            enabled: enabled,
-            free: free,
-            ordering: ordering,
-            needsUpdate: needsUpdate,
-            captureable: captureable,
-            textCulumn: textCulumn,
-            outerNote: outerNote,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> uuid = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> type = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<int> enabled = const Value.absent(),
+                Value<int> free = const Value.absent(),
+                Value<int> ordering = const Value.absent(),
+                Value<int> needsUpdate = const Value.absent(),
+                Value<int> captureable = const Value.absent(),
+                Value<String> textCulumn = const Value.absent(),
+                Value<String> outerNote = const Value.absent(),
+              }) => TermsCompanion(
+                id: id,
+                uuid: uuid,
+                name: name,
+                type: type,
+                creation: creation,
+                enabled: enabled,
+                free: free,
+                ordering: ordering,
+                needsUpdate: needsUpdate,
+                captureable: captureable,
+                textCulumn: textCulumn,
+                outerNote: outerNote,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String uuid,
+                required String name,
+                required int type,
+                required String creation,
+                Value<int> enabled = const Value.absent(),
+                required int free,
+                required int ordering,
+                Value<int> needsUpdate = const Value.absent(),
+                Value<int> captureable = const Value.absent(),
+                required String textCulumn,
+                Value<String> outerNote = const Value.absent(),
+              }) => TermsCompanion.insert(
+                id: id,
+                uuid: uuid,
+                name: name,
+                type: type,
+                creation: creation,
+                enabled: enabled,
+                free: free,
+                ordering: ordering,
+                needsUpdate: needsUpdate,
+                captureable: captureable,
+                textCulumn: textCulumn,
+                outerNote: outerNote,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermsTable,
-    Term,
-    $$TermsTableFilterComposer,
-    $$TermsTableOrderingComposer,
-    $$TermsTableAnnotationComposer,
-    $$TermsTableCreateCompanionBuilder,
-    $$TermsTableUpdateCompanionBuilder,
-    (Term, BaseReferences<_$DatabaseService, $TermsTable, Term>),
-    Term,
-    PrefetchHooks Function()>;
-typedef $$AnswersTableCreateCompanionBuilder = AnswersCompanion Function({
-  Value<int> id,
-  required String uuid,
-  required String title,
-  Value<String> titleTranslation,
-  required int isCorrect,
-  required int parentQuestionId,
-  required int specialCharacter,
-  required String creation,
-  Value<int> checkedCount,
-});
-typedef $$AnswersTableUpdateCompanionBuilder = AnswersCompanion Function({
-  Value<int> id,
-  Value<String> uuid,
-  Value<String> title,
-  Value<String> titleTranslation,
-  Value<int> isCorrect,
-  Value<int> parentQuestionId,
-  Value<int> specialCharacter,
-  Value<String> creation,
-  Value<int> checkedCount,
-});
+typedef $$TermsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsTable,
+      Term,
+      $$TermsTableFilterComposer,
+      $$TermsTableOrderingComposer,
+      $$TermsTableAnnotationComposer,
+      $$TermsTableCreateCompanionBuilder,
+      $$TermsTableUpdateCompanionBuilder,
+      (Term, BaseReferences<_$DatabaseService, $TermsTable, Term>),
+      Term,
+      PrefetchHooks Function()
+    >;
+typedef $$AnswersTableCreateCompanionBuilder =
+    AnswersCompanion Function({
+      Value<int> id,
+      required String uuid,
+      required String title,
+      Value<String> titleTranslation,
+      required int isCorrect,
+      required int parentQuestionId,
+      required int specialCharacter,
+      required String creation,
+      Value<int> checkedCount,
+    });
+typedef $$AnswersTableUpdateCompanionBuilder =
+    AnswersCompanion Function({
+      Value<int> id,
+      Value<String> uuid,
+      Value<String> title,
+      Value<String> titleTranslation,
+      Value<int> isCorrect,
+      Value<int> parentQuestionId,
+      Value<int> specialCharacter,
+      Value<String> creation,
+      Value<int> checkedCount,
+    });
 
 class $$AnswersTableFilterComposer
     extends Composer<_$DatabaseService, $AnswersTable> {
@@ -8134,34 +9792,49 @@ class $$AnswersTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnFilters(column));
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation,
-      builder: (column) => ColumnFilters(column));
+    column: $table.titleTranslation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get isCorrect => $composableBuilder(
-      column: $table.isCorrect, builder: (column) => ColumnFilters(column));
+    column: $table.isCorrect,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId,
-      builder: (column) => ColumnFilters(column));
+    column: $table.parentQuestionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter,
-      builder: (column) => ColumnFilters(column));
+    column: $table.specialCharacter,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get checkedCount => $composableBuilder(
-      column: $table.checkedCount, builder: (column) => ColumnFilters(column));
+    column: $table.checkedCount,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$AnswersTableOrderingComposer
@@ -8174,35 +9847,49 @@ class $$AnswersTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.titleTranslation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get isCorrect => $composableBuilder(
-      column: $table.isCorrect, builder: (column) => ColumnOrderings(column));
+    column: $table.isCorrect,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentQuestionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.specialCharacter,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get checkedCount => $composableBuilder(
-      column: $table.checkedCount,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.checkedCount,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AnswersTableAnnotationComposer
@@ -8224,38 +9911,50 @@ class $$AnswersTableAnnotationComposer
       $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation, builder: (column) => column);
+    column: $table.titleTranslation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get isCorrect =>
       $composableBuilder(column: $table.isCorrect, builder: (column) => column);
 
   GeneratedColumn<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId, builder: (column) => column);
+    column: $table.parentQuestionId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter, builder: (column) => column);
+    column: $table.specialCharacter,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<int> get checkedCount => $composableBuilder(
-      column: $table.checkedCount, builder: (column) => column);
+    column: $table.checkedCount,
+    builder: (column) => column,
+  );
 }
 
-class $$AnswersTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $AnswersTable,
-    Answer,
-    $$AnswersTableFilterComposer,
-    $$AnswersTableOrderingComposer,
-    $$AnswersTableAnnotationComposer,
-    $$AnswersTableCreateCompanionBuilder,
-    $$AnswersTableUpdateCompanionBuilder,
-    (Answer, BaseReferences<_$DatabaseService, $AnswersTable, Answer>),
-    Answer,
-    PrefetchHooks Function()> {
+class $$AnswersTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $AnswersTable,
+          Answer,
+          $$AnswersTableFilterComposer,
+          $$AnswersTableOrderingComposer,
+          $$AnswersTableAnnotationComposer,
+          $$AnswersTableCreateCompanionBuilder,
+          $$AnswersTableUpdateCompanionBuilder,
+          (Answer, BaseReferences<_$DatabaseService, $AnswersTable, Answer>),
+          Answer,
+          PrefetchHooks Function()
+        > {
   $$AnswersTableTableManager(_$DatabaseService db, $AnswersTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -8264,101 +9963,106 @@ class $$AnswersTableTableManager extends RootTableManager<
               $$AnswersTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$AnswersTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> uuid = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String> titleTranslation = const Value.absent(),
-            Value<int> isCorrect = const Value.absent(),
-            Value<int> parentQuestionId = const Value.absent(),
-            Value<int> specialCharacter = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<int> checkedCount = const Value.absent(),
-          }) =>
-              AnswersCompanion(
-            id: id,
-            uuid: uuid,
-            title: title,
-            titleTranslation: titleTranslation,
-            isCorrect: isCorrect,
-            parentQuestionId: parentQuestionId,
-            specialCharacter: specialCharacter,
-            creation: creation,
-            checkedCount: checkedCount,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String uuid,
-            required String title,
-            Value<String> titleTranslation = const Value.absent(),
-            required int isCorrect,
-            required int parentQuestionId,
-            required int specialCharacter,
-            required String creation,
-            Value<int> checkedCount = const Value.absent(),
-          }) =>
-              AnswersCompanion.insert(
-            id: id,
-            uuid: uuid,
-            title: title,
-            titleTranslation: titleTranslation,
-            isCorrect: isCorrect,
-            parentQuestionId: parentQuestionId,
-            specialCharacter: specialCharacter,
-            creation: creation,
-            checkedCount: checkedCount,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> uuid = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> titleTranslation = const Value.absent(),
+                Value<int> isCorrect = const Value.absent(),
+                Value<int> parentQuestionId = const Value.absent(),
+                Value<int> specialCharacter = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<int> checkedCount = const Value.absent(),
+              }) => AnswersCompanion(
+                id: id,
+                uuid: uuid,
+                title: title,
+                titleTranslation: titleTranslation,
+                isCorrect: isCorrect,
+                parentQuestionId: parentQuestionId,
+                specialCharacter: specialCharacter,
+                creation: creation,
+                checkedCount: checkedCount,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String uuid,
+                required String title,
+                Value<String> titleTranslation = const Value.absent(),
+                required int isCorrect,
+                required int parentQuestionId,
+                required int specialCharacter,
+                required String creation,
+                Value<int> checkedCount = const Value.absent(),
+              }) => AnswersCompanion.insert(
+                id: id,
+                uuid: uuid,
+                title: title,
+                titleTranslation: titleTranslation,
+                isCorrect: isCorrect,
+                parentQuestionId: parentQuestionId,
+                specialCharacter: specialCharacter,
+                creation: creation,
+                checkedCount: checkedCount,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$AnswersTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $AnswersTable,
-    Answer,
-    $$AnswersTableFilterComposer,
-    $$AnswersTableOrderingComposer,
-    $$AnswersTableAnnotationComposer,
-    $$AnswersTableCreateCompanionBuilder,
-    $$AnswersTableUpdateCompanionBuilder,
-    (Answer, BaseReferences<_$DatabaseService, $AnswersTable, Answer>),
-    Answer,
-    PrefetchHooks Function()>;
-typedef $$QuestionsTableCreateCompanionBuilder = QuestionsCompanion Function({
-  Value<int> id,
-  required String uuid,
-  required String title,
-  Value<String> titleTranslation,
-  required int labelId,
-  required String note,
-  Value<String> noteTranslation,
-  required int parentTermId,
-  required int specialCharacter,
-  required int type,
-  Value<int> edited,
-  Value<String> imageUrl,
-  required String creation,
-  required String editionDate,
-});
-typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
-  Value<int> id,
-  Value<String> uuid,
-  Value<String> title,
-  Value<String> titleTranslation,
-  Value<int> labelId,
-  Value<String> note,
-  Value<String> noteTranslation,
-  Value<int> parentTermId,
-  Value<int> specialCharacter,
-  Value<int> type,
-  Value<int> edited,
-  Value<String> imageUrl,
-  Value<String> creation,
-  Value<String> editionDate,
-});
+typedef $$AnswersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $AnswersTable,
+      Answer,
+      $$AnswersTableFilterComposer,
+      $$AnswersTableOrderingComposer,
+      $$AnswersTableAnnotationComposer,
+      $$AnswersTableCreateCompanionBuilder,
+      $$AnswersTableUpdateCompanionBuilder,
+      (Answer, BaseReferences<_$DatabaseService, $AnswersTable, Answer>),
+      Answer,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionsTableCreateCompanionBuilder =
+    QuestionsCompanion Function({
+      Value<int> id,
+      required String uuid,
+      required String title,
+      Value<String> titleTranslation,
+      required int labelId,
+      required String note,
+      Value<String> noteTranslation,
+      required int parentTermId,
+      required int specialCharacter,
+      required int type,
+      Value<int> edited,
+      Value<String> imageUrl,
+      required String creation,
+      required String editionDate,
+    });
+typedef $$QuestionsTableUpdateCompanionBuilder =
+    QuestionsCompanion Function({
+      Value<int> id,
+      Value<String> uuid,
+      Value<String> title,
+      Value<String> titleTranslation,
+      Value<int> labelId,
+      Value<String> note,
+      Value<String> noteTranslation,
+      Value<int> parentTermId,
+      Value<int> specialCharacter,
+      Value<int> type,
+      Value<int> edited,
+      Value<String> imageUrl,
+      Value<String> creation,
+      Value<String> editionDate,
+    });
 
 class $$QuestionsTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionsTable> {
@@ -8370,49 +10074,74 @@ class $$QuestionsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnFilters(column));
+    column: $table.uuid,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation,
-      builder: (column) => ColumnFilters(column));
+    column: $table.titleTranslation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get labelId => $composableBuilder(
-      column: $table.labelId, builder: (column) => ColumnFilters(column));
+    column: $table.labelId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get note => $composableBuilder(
-      column: $table.note, builder: (column) => ColumnFilters(column));
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get noteTranslation => $composableBuilder(
-      column: $table.noteTranslation,
-      builder: (column) => ColumnFilters(column));
+    column: $table.noteTranslation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter,
-      builder: (column) => ColumnFilters(column));
+    column: $table.specialCharacter,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnFilters(column));
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get edited => $composableBuilder(
-      column: $table.edited, builder: (column) => ColumnFilters(column));
+    column: $table.edited,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get imageUrl => $composableBuilder(
-      column: $table.imageUrl, builder: (column) => ColumnFilters(column));
+    column: $table.imageUrl,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get editionDate => $composableBuilder(
-      column: $table.editionDate, builder: (column) => ColumnFilters(column));
+    column: $table.editionDate,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionsTableOrderingComposer
@@ -8425,50 +10154,74 @@ class $$QuestionsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get uuid => $composableBuilder(
-      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+    column: $table.uuid,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.titleTranslation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get labelId => $composableBuilder(
-      column: $table.labelId, builder: (column) => ColumnOrderings(column));
+    column: $table.labelId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get note => $composableBuilder(
-      column: $table.note, builder: (column) => ColumnOrderings(column));
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get noteTranslation => $composableBuilder(
-      column: $table.noteTranslation,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.noteTranslation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.specialCharacter,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnOrderings(column));
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get edited => $composableBuilder(
-      column: $table.edited, builder: (column) => ColumnOrderings(column));
+    column: $table.edited,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get imageUrl => $composableBuilder(
-      column: $table.imageUrl, builder: (column) => ColumnOrderings(column));
+    column: $table.imageUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get editionDate => $composableBuilder(
-      column: $table.editionDate, builder: (column) => ColumnOrderings(column));
+    column: $table.editionDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionsTableAnnotationComposer
@@ -8490,7 +10243,9 @@ class $$QuestionsTableAnnotationComposer
       $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<String> get titleTranslation => $composableBuilder(
-      column: $table.titleTranslation, builder: (column) => column);
+    column: $table.titleTranslation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get labelId =>
       $composableBuilder(column: $table.labelId, builder: (column) => column);
@@ -8499,13 +10254,19 @@ class $$QuestionsTableAnnotationComposer
       $composableBuilder(column: $table.note, builder: (column) => column);
 
   GeneratedColumn<String> get noteTranslation => $composableBuilder(
-      column: $table.noteTranslation, builder: (column) => column);
+    column: $table.noteTranslation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get specialCharacter => $composableBuilder(
-      column: $table.specialCharacter, builder: (column) => column);
+    column: $table.specialCharacter,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
@@ -8520,23 +10281,32 @@ class $$QuestionsTableAnnotationComposer
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<String> get editionDate => $composableBuilder(
-      column: $table.editionDate, builder: (column) => column);
+    column: $table.editionDate,
+    builder: (column) => column,
+  );
 }
 
-class $$QuestionsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionsTable,
-    Question,
-    $$QuestionsTableFilterComposer,
-    $$QuestionsTableOrderingComposer,
-    $$QuestionsTableAnnotationComposer,
-    $$QuestionsTableCreateCompanionBuilder,
-    $$QuestionsTableUpdateCompanionBuilder,
-    (Question, BaseReferences<_$DatabaseService, $QuestionsTable, Question>),
-    Question,
-    PrefetchHooks Function()> {
+class $$QuestionsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionsTable,
+          Question,
+          $$QuestionsTableFilterComposer,
+          $$QuestionsTableOrderingComposer,
+          $$QuestionsTableAnnotationComposer,
+          $$QuestionsTableCreateCompanionBuilder,
+          $$QuestionsTableUpdateCompanionBuilder,
+          (
+            Question,
+            BaseReferences<_$DatabaseService, $QuestionsTable, Question>,
+          ),
+          Question,
+          PrefetchHooks Function()
+        > {
   $$QuestionsTableTableManager(_$DatabaseService db, $QuestionsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -8545,105 +10315,108 @@ class $$QuestionsTableTableManager extends RootTableManager<
               $$QuestionsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> uuid = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String> titleTranslation = const Value.absent(),
-            Value<int> labelId = const Value.absent(),
-            Value<String> note = const Value.absent(),
-            Value<String> noteTranslation = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<int> specialCharacter = const Value.absent(),
-            Value<int> type = const Value.absent(),
-            Value<int> edited = const Value.absent(),
-            Value<String> imageUrl = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<String> editionDate = const Value.absent(),
-          }) =>
-              QuestionsCompanion(
-            id: id,
-            uuid: uuid,
-            title: title,
-            titleTranslation: titleTranslation,
-            labelId: labelId,
-            note: note,
-            noteTranslation: noteTranslation,
-            parentTermId: parentTermId,
-            specialCharacter: specialCharacter,
-            type: type,
-            edited: edited,
-            imageUrl: imageUrl,
-            creation: creation,
-            editionDate: editionDate,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String uuid,
-            required String title,
-            Value<String> titleTranslation = const Value.absent(),
-            required int labelId,
-            required String note,
-            Value<String> noteTranslation = const Value.absent(),
-            required int parentTermId,
-            required int specialCharacter,
-            required int type,
-            Value<int> edited = const Value.absent(),
-            Value<String> imageUrl = const Value.absent(),
-            required String creation,
-            required String editionDate,
-          }) =>
-              QuestionsCompanion.insert(
-            id: id,
-            uuid: uuid,
-            title: title,
-            titleTranslation: titleTranslation,
-            labelId: labelId,
-            note: note,
-            noteTranslation: noteTranslation,
-            parentTermId: parentTermId,
-            specialCharacter: specialCharacter,
-            type: type,
-            edited: edited,
-            imageUrl: imageUrl,
-            creation: creation,
-            editionDate: editionDate,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> uuid = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> titleTranslation = const Value.absent(),
+                Value<int> labelId = const Value.absent(),
+                Value<String> note = const Value.absent(),
+                Value<String> noteTranslation = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<int> specialCharacter = const Value.absent(),
+                Value<int> type = const Value.absent(),
+                Value<int> edited = const Value.absent(),
+                Value<String> imageUrl = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<String> editionDate = const Value.absent(),
+              }) => QuestionsCompanion(
+                id: id,
+                uuid: uuid,
+                title: title,
+                titleTranslation: titleTranslation,
+                labelId: labelId,
+                note: note,
+                noteTranslation: noteTranslation,
+                parentTermId: parentTermId,
+                specialCharacter: specialCharacter,
+                type: type,
+                edited: edited,
+                imageUrl: imageUrl,
+                creation: creation,
+                editionDate: editionDate,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String uuid,
+                required String title,
+                Value<String> titleTranslation = const Value.absent(),
+                required int labelId,
+                required String note,
+                Value<String> noteTranslation = const Value.absent(),
+                required int parentTermId,
+                required int specialCharacter,
+                required int type,
+                Value<int> edited = const Value.absent(),
+                Value<String> imageUrl = const Value.absent(),
+                required String creation,
+                required String editionDate,
+              }) => QuestionsCompanion.insert(
+                id: id,
+                uuid: uuid,
+                title: title,
+                titleTranslation: titleTranslation,
+                labelId: labelId,
+                note: note,
+                noteTranslation: noteTranslation,
+                parentTermId: parentTermId,
+                specialCharacter: specialCharacter,
+                type: type,
+                edited: edited,
+                imageUrl: imageUrl,
+                creation: creation,
+                editionDate: editionDate,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $QuestionsTable,
-    Question,
-    $$QuestionsTableFilterComposer,
-    $$QuestionsTableOrderingComposer,
-    $$QuestionsTableAnnotationComposer,
-    $$QuestionsTableCreateCompanionBuilder,
-    $$QuestionsTableUpdateCompanionBuilder,
-    (Question, BaseReferences<_$DatabaseService, $QuestionsTable, Question>),
-    Question,
-    PrefetchHooks Function()>;
-typedef $$QuestionTagsTableCreateCompanionBuilder = QuestionTagsCompanion
-    Function({
-  Value<int> id,
-  required String name,
-  required int parentTagId,
-  Value<int> hasInformation,
-  required String creation,
-});
-typedef $$QuestionTagsTableUpdateCompanionBuilder = QuestionTagsCompanion
-    Function({
-  Value<int> id,
-  Value<String> name,
-  Value<int> parentTagId,
-  Value<int> hasInformation,
-  Value<String> creation,
-});
+typedef $$QuestionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionsTable,
+      Question,
+      $$QuestionsTableFilterComposer,
+      $$QuestionsTableOrderingComposer,
+      $$QuestionsTableAnnotationComposer,
+      $$QuestionsTableCreateCompanionBuilder,
+      $$QuestionsTableUpdateCompanionBuilder,
+      (Question, BaseReferences<_$DatabaseService, $QuestionsTable, Question>),
+      Question,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionTagsTableCreateCompanionBuilder =
+    QuestionTagsCompanion Function({
+      Value<int> id,
+      required String name,
+      required int parentTagId,
+      Value<int> hasInformation,
+      required String creation,
+    });
+typedef $$QuestionTagsTableUpdateCompanionBuilder =
+    QuestionTagsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<int> parentTagId,
+      Value<int> hasInformation,
+      Value<String> creation,
+    });
 
 class $$QuestionTagsTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionTagsTable> {
@@ -8655,20 +10428,29 @@ class $$QuestionTagsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTagId => $composableBuilder(
-      column: $table.parentTagId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTagId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get hasInformation => $composableBuilder(
-      column: $table.hasInformation,
-      builder: (column) => ColumnFilters(column));
+    column: $table.hasInformation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionTagsTableOrderingComposer
@@ -8681,20 +10463,29 @@ class $$QuestionTagsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTagId => $composableBuilder(
-      column: $table.parentTagId, builder: (column) => ColumnOrderings(column));
+    column: $table.parentTagId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get hasInformation => $composableBuilder(
-      column: $table.hasInformation,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.hasInformation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionTagsTableAnnotationComposer
@@ -8713,33 +10504,42 @@ class $$QuestionTagsTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<int> get parentTagId => $composableBuilder(
-      column: $table.parentTagId, builder: (column) => column);
+    column: $table.parentTagId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get hasInformation => $composableBuilder(
-      column: $table.hasInformation, builder: (column) => column);
+    column: $table.hasInformation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 }
 
-class $$QuestionTagsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionTagsTable,
-    QuestionTag,
-    $$QuestionTagsTableFilterComposer,
-    $$QuestionTagsTableOrderingComposer,
-    $$QuestionTagsTableAnnotationComposer,
-    $$QuestionTagsTableCreateCompanionBuilder,
-    $$QuestionTagsTableUpdateCompanionBuilder,
-    (
-      QuestionTag,
-      BaseReferences<_$DatabaseService, $QuestionTagsTable, QuestionTag>
-    ),
-    QuestionTag,
-    PrefetchHooks Function()> {
+class $$QuestionTagsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionTagsTable,
+          QuestionTag,
+          $$QuestionTagsTableFilterComposer,
+          $$QuestionTagsTableOrderingComposer,
+          $$QuestionTagsTableAnnotationComposer,
+          $$QuestionTagsTableCreateCompanionBuilder,
+          $$QuestionTagsTableUpdateCompanionBuilder,
+          (
+            QuestionTag,
+            BaseReferences<_$DatabaseService, $QuestionTagsTable, QuestionTag>,
+          ),
+          QuestionTag,
+          PrefetchHooks Function()
+        > {
   $$QuestionTagsTableTableManager(
-      _$DatabaseService db, $QuestionTagsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $QuestionTagsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -8748,72 +10548,75 @@ class $$QuestionTagsTableTableManager extends RootTableManager<
               $$QuestionTagsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionTagsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<int> parentTagId = const Value.absent(),
-            Value<int> hasInformation = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-          }) =>
-              QuestionTagsCompanion(
-            id: id,
-            name: name,
-            parentTagId: parentTagId,
-            hasInformation: hasInformation,
-            creation: creation,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String name,
-            required int parentTagId,
-            Value<int> hasInformation = const Value.absent(),
-            required String creation,
-          }) =>
-              QuestionTagsCompanion.insert(
-            id: id,
-            name: name,
-            parentTagId: parentTagId,
-            hasInformation: hasInformation,
-            creation: creation,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> parentTagId = const Value.absent(),
+                Value<int> hasInformation = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+              }) => QuestionTagsCompanion(
+                id: id,
+                name: name,
+                parentTagId: parentTagId,
+                hasInformation: hasInformation,
+                creation: creation,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                required int parentTagId,
+                Value<int> hasInformation = const Value.absent(),
+                required String creation,
+              }) => QuestionTagsCompanion.insert(
+                id: id,
+                name: name,
+                parentTagId: parentTagId,
+                hasInformation: hasInformation,
+                creation: creation,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionTagsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $QuestionTagsTable,
-    QuestionTag,
-    $$QuestionTagsTableFilterComposer,
-    $$QuestionTagsTableOrderingComposer,
-    $$QuestionTagsTableAnnotationComposer,
-    $$QuestionTagsTableCreateCompanionBuilder,
-    $$QuestionTagsTableUpdateCompanionBuilder,
-    (
+typedef $$QuestionTagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionTagsTable,
       QuestionTag,
-      BaseReferences<_$DatabaseService, $QuestionTagsTable, QuestionTag>
-    ),
-    QuestionTag,
-    PrefetchHooks Function()>;
-typedef $$QuestionMediasTableCreateCompanionBuilder = QuestionMediasCompanion
-    Function({
-  required int id,
-  required String url,
-  required int parentQuestionId,
-  required String creation,
-  Value<int> rowid,
-});
-typedef $$QuestionMediasTableUpdateCompanionBuilder = QuestionMediasCompanion
-    Function({
-  Value<int> id,
-  Value<String> url,
-  Value<int> parentQuestionId,
-  Value<String> creation,
-  Value<int> rowid,
-});
+      $$QuestionTagsTableFilterComposer,
+      $$QuestionTagsTableOrderingComposer,
+      $$QuestionTagsTableAnnotationComposer,
+      $$QuestionTagsTableCreateCompanionBuilder,
+      $$QuestionTagsTableUpdateCompanionBuilder,
+      (
+        QuestionTag,
+        BaseReferences<_$DatabaseService, $QuestionTagsTable, QuestionTag>,
+      ),
+      QuestionTag,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionMediasTableCreateCompanionBuilder =
+    QuestionMediasCompanion Function({
+      required int id,
+      required String url,
+      required int parentQuestionId,
+      required String creation,
+      Value<int> rowid,
+    });
+typedef $$QuestionMediasTableUpdateCompanionBuilder =
+    QuestionMediasCompanion Function({
+      Value<int> id,
+      Value<String> url,
+      Value<int> parentQuestionId,
+      Value<String> creation,
+      Value<int> rowid,
+    });
 
 class $$QuestionMediasTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionMediasTable> {
@@ -8825,17 +10628,24 @@ class $$QuestionMediasTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnFilters(column));
+    column: $table.url,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId,
-      builder: (column) => ColumnFilters(column));
+    column: $table.parentQuestionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionMediasTableOrderingComposer
@@ -8848,17 +10658,24 @@ class $$QuestionMediasTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnOrderings(column));
+    column: $table.url,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentQuestionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionMediasTableAnnotationComposer
@@ -8877,30 +10694,41 @@ class $$QuestionMediasTableAnnotationComposer
       $composableBuilder(column: $table.url, builder: (column) => column);
 
   GeneratedColumn<int> get parentQuestionId => $composableBuilder(
-      column: $table.parentQuestionId, builder: (column) => column);
+    column: $table.parentQuestionId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 }
 
-class $$QuestionMediasTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionMediasTable,
-    QuestionMedia,
-    $$QuestionMediasTableFilterComposer,
-    $$QuestionMediasTableOrderingComposer,
-    $$QuestionMediasTableAnnotationComposer,
-    $$QuestionMediasTableCreateCompanionBuilder,
-    $$QuestionMediasTableUpdateCompanionBuilder,
-    (
-      QuestionMedia,
-      BaseReferences<_$DatabaseService, $QuestionMediasTable, QuestionMedia>
-    ),
-    QuestionMedia,
-    PrefetchHooks Function()> {
+class $$QuestionMediasTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionMediasTable,
+          QuestionMedia,
+          $$QuestionMediasTableFilterComposer,
+          $$QuestionMediasTableOrderingComposer,
+          $$QuestionMediasTableAnnotationComposer,
+          $$QuestionMediasTableCreateCompanionBuilder,
+          $$QuestionMediasTableUpdateCompanionBuilder,
+          (
+            QuestionMedia,
+            BaseReferences<
+              _$DatabaseService,
+              $QuestionMediasTable,
+              QuestionMedia
+            >,
+          ),
+          QuestionMedia,
+          PrefetchHooks Function()
+        > {
   $$QuestionMediasTableTableManager(
-      _$DatabaseService db, $QuestionMediasTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $QuestionMediasTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -8909,66 +10737,71 @@ class $$QuestionMediasTableTableManager extends RootTableManager<
               $$QuestionMediasTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionMediasTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> url = const Value.absent(),
-            Value<int> parentQuestionId = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionMediasCompanion(
-            id: id,
-            url: url,
-            parentQuestionId: parentQuestionId,
-            creation: creation,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int id,
-            required String url,
-            required int parentQuestionId,
-            required String creation,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionMediasCompanion.insert(
-            id: id,
-            url: url,
-            parentQuestionId: parentQuestionId,
-            creation: creation,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> url = const Value.absent(),
+                Value<int> parentQuestionId = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionMediasCompanion(
+                id: id,
+                url: url,
+                parentQuestionId: parentQuestionId,
+                creation: creation,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int id,
+                required String url,
+                required int parentQuestionId,
+                required String creation,
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionMediasCompanion.insert(
+                id: id,
+                url: url,
+                parentQuestionId: parentQuestionId,
+                creation: creation,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionMediasTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $QuestionMediasTable,
-    QuestionMedia,
-    $$QuestionMediasTableFilterComposer,
-    $$QuestionMediasTableOrderingComposer,
-    $$QuestionMediasTableAnnotationComposer,
-    $$QuestionMediasTableCreateCompanionBuilder,
-    $$QuestionMediasTableUpdateCompanionBuilder,
-    (
+typedef $$QuestionMediasTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionMediasTable,
       QuestionMedia,
-      BaseReferences<_$DatabaseService, $QuestionMediasTable, QuestionMedia>
-    ),
-    QuestionMedia,
-    PrefetchHooks Function()>;
-typedef $$FcmTopicsTableCreateCompanionBuilder = FcmTopicsCompanion Function({
-  required String title,
-  required bool subscriptionSucceed,
-  Value<int> rowid,
-});
-typedef $$FcmTopicsTableUpdateCompanionBuilder = FcmTopicsCompanion Function({
-  Value<String> title,
-  Value<bool> subscriptionSucceed,
-  Value<int> rowid,
-});
+      $$QuestionMediasTableFilterComposer,
+      $$QuestionMediasTableOrderingComposer,
+      $$QuestionMediasTableAnnotationComposer,
+      $$QuestionMediasTableCreateCompanionBuilder,
+      $$QuestionMediasTableUpdateCompanionBuilder,
+      (
+        QuestionMedia,
+        BaseReferences<_$DatabaseService, $QuestionMediasTable, QuestionMedia>,
+      ),
+      QuestionMedia,
+      PrefetchHooks Function()
+    >;
+typedef $$FcmTopicsTableCreateCompanionBuilder =
+    FcmTopicsCompanion Function({
+      required String title,
+      required bool subscriptionSucceed,
+      Value<int> rowid,
+    });
+typedef $$FcmTopicsTableUpdateCompanionBuilder =
+    FcmTopicsCompanion Function({
+      Value<String> title,
+      Value<bool> subscriptionSucceed,
+      Value<int> rowid,
+    });
 
 class $$FcmTopicsTableFilterComposer
     extends Composer<_$DatabaseService, $FcmTopicsTable> {
@@ -8980,11 +10813,14 @@ class $$FcmTopicsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<bool> get subscriptionSucceed => $composableBuilder(
-      column: $table.subscriptionSucceed,
-      builder: (column) => ColumnFilters(column));
+    column: $table.subscriptionSucceed,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$FcmTopicsTableOrderingComposer
@@ -8997,11 +10833,14 @@ class $$FcmTopicsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<bool> get subscriptionSucceed => $composableBuilder(
-      column: $table.subscriptionSucceed,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.subscriptionSucceed,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$FcmTopicsTableAnnotationComposer
@@ -9017,23 +10856,32 @@ class $$FcmTopicsTableAnnotationComposer
       $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<bool> get subscriptionSucceed => $composableBuilder(
-      column: $table.subscriptionSucceed, builder: (column) => column);
+    column: $table.subscriptionSucceed,
+    builder: (column) => column,
+  );
 }
 
-class $$FcmTopicsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $FcmTopicsTable,
-    FcmTopic,
-    $$FcmTopicsTableFilterComposer,
-    $$FcmTopicsTableOrderingComposer,
-    $$FcmTopicsTableAnnotationComposer,
-    $$FcmTopicsTableCreateCompanionBuilder,
-    $$FcmTopicsTableUpdateCompanionBuilder,
-    (FcmTopic, BaseReferences<_$DatabaseService, $FcmTopicsTable, FcmTopic>),
-    FcmTopic,
-    PrefetchHooks Function()> {
+class $$FcmTopicsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $FcmTopicsTable,
+          FcmTopic,
+          $$FcmTopicsTableFilterComposer,
+          $$FcmTopicsTableOrderingComposer,
+          $$FcmTopicsTableAnnotationComposer,
+          $$FcmTopicsTableCreateCompanionBuilder,
+          $$FcmTopicsTableUpdateCompanionBuilder,
+          (
+            FcmTopic,
+            BaseReferences<_$DatabaseService, $FcmTopicsTable, FcmTopic>,
+          ),
+          FcmTopic,
+          PrefetchHooks Function()
+        > {
   $$FcmTopicsTableTableManager(_$DatabaseService db, $FcmTopicsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -9042,59 +10890,62 @@ class $$FcmTopicsTableTableManager extends RootTableManager<
               $$FcmTopicsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$FcmTopicsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> title = const Value.absent(),
-            Value<bool> subscriptionSucceed = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              FcmTopicsCompanion(
-            title: title,
-            subscriptionSucceed: subscriptionSucceed,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String title,
-            required bool subscriptionSucceed,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              FcmTopicsCompanion.insert(
-            title: title,
-            subscriptionSucceed: subscriptionSucceed,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> title = const Value.absent(),
+                Value<bool> subscriptionSucceed = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FcmTopicsCompanion(
+                title: title,
+                subscriptionSucceed: subscriptionSucceed,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String title,
+                required bool subscriptionSucceed,
+                Value<int> rowid = const Value.absent(),
+              }) => FcmTopicsCompanion.insert(
+                title: title,
+                subscriptionSucceed: subscriptionSucceed,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$FcmTopicsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $FcmTopicsTable,
-    FcmTopic,
-    $$FcmTopicsTableFilterComposer,
-    $$FcmTopicsTableOrderingComposer,
-    $$FcmTopicsTableAnnotationComposer,
-    $$FcmTopicsTableCreateCompanionBuilder,
-    $$FcmTopicsTableUpdateCompanionBuilder,
-    (FcmTopic, BaseReferences<_$DatabaseService, $FcmTopicsTable, FcmTopic>),
-    FcmTopic,
-    PrefetchHooks Function()>;
-typedef $$AnswerPropertiesTableCreateCompanionBuilder
-    = AnswerPropertiesCompanion Function({
-  required int answerId,
-  required String name,
-  required String value,
-  Value<int> rowid,
-});
-typedef $$AnswerPropertiesTableUpdateCompanionBuilder
-    = AnswerPropertiesCompanion Function({
-  Value<int> answerId,
-  Value<String> name,
-  Value<String> value,
-  Value<int> rowid,
-});
+typedef $$FcmTopicsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $FcmTopicsTable,
+      FcmTopic,
+      $$FcmTopicsTableFilterComposer,
+      $$FcmTopicsTableOrderingComposer,
+      $$FcmTopicsTableAnnotationComposer,
+      $$FcmTopicsTableCreateCompanionBuilder,
+      $$FcmTopicsTableUpdateCompanionBuilder,
+      (FcmTopic, BaseReferences<_$DatabaseService, $FcmTopicsTable, FcmTopic>),
+      FcmTopic,
+      PrefetchHooks Function()
+    >;
+typedef $$AnswerPropertiesTableCreateCompanionBuilder =
+    AnswerPropertiesCompanion Function({
+      required int answerId,
+      required String name,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$AnswerPropertiesTableUpdateCompanionBuilder =
+    AnswerPropertiesCompanion Function({
+      Value<int> answerId,
+      Value<String> name,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
 class $$AnswerPropertiesTableFilterComposer
     extends Composer<_$DatabaseService, $AnswerPropertiesTable> {
@@ -9106,13 +10957,19 @@ class $$AnswerPropertiesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get answerId => $composableBuilder(
-      column: $table.answerId, builder: (column) => ColumnFilters(column));
+    column: $table.answerId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$AnswerPropertiesTableOrderingComposer
@@ -9125,13 +10982,19 @@ class $$AnswerPropertiesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get answerId => $composableBuilder(
-      column: $table.answerId, builder: (column) => ColumnOrderings(column));
+    column: $table.answerId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AnswerPropertiesTableAnnotationComposer
@@ -9153,24 +11016,33 @@ class $$AnswerPropertiesTableAnnotationComposer
       $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
-class $$AnswerPropertiesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $AnswerPropertiesTable,
-    AnswerProperty,
-    $$AnswerPropertiesTableFilterComposer,
-    $$AnswerPropertiesTableOrderingComposer,
-    $$AnswerPropertiesTableAnnotationComposer,
-    $$AnswerPropertiesTableCreateCompanionBuilder,
-    $$AnswerPropertiesTableUpdateCompanionBuilder,
-    (
-      AnswerProperty,
-      BaseReferences<_$DatabaseService, $AnswerPropertiesTable, AnswerProperty>
-    ),
-    AnswerProperty,
-    PrefetchHooks Function()> {
+class $$AnswerPropertiesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $AnswerPropertiesTable,
+          AnswerProperty,
+          $$AnswerPropertiesTableFilterComposer,
+          $$AnswerPropertiesTableOrderingComposer,
+          $$AnswerPropertiesTableAnnotationComposer,
+          $$AnswerPropertiesTableCreateCompanionBuilder,
+          $$AnswerPropertiesTableUpdateCompanionBuilder,
+          (
+            AnswerProperty,
+            BaseReferences<
+              _$DatabaseService,
+              $AnswerPropertiesTable,
+              AnswerProperty
+            >,
+          ),
+          AnswerProperty,
+          PrefetchHooks Function()
+        > {
   $$AnswerPropertiesTableTableManager(
-      _$DatabaseService db, $AnswerPropertiesTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $AnswerPropertiesTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -9179,64 +11051,71 @@ class $$AnswerPropertiesTableTableManager extends RootTableManager<
               $$AnswerPropertiesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$AnswerPropertiesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> answerId = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AnswerPropertiesCompanion(
-            answerId: answerId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int answerId,
-            required String name,
-            required String value,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AnswerPropertiesCompanion.insert(
-            answerId: answerId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> answerId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AnswerPropertiesCompanion(
+                answerId: answerId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int answerId,
+                required String name,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => AnswerPropertiesCompanion.insert(
+                answerId: answerId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$AnswerPropertiesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $AnswerPropertiesTable,
-    AnswerProperty,
-    $$AnswerPropertiesTableFilterComposer,
-    $$AnswerPropertiesTableOrderingComposer,
-    $$AnswerPropertiesTableAnnotationComposer,
-    $$AnswerPropertiesTableCreateCompanionBuilder,
-    $$AnswerPropertiesTableUpdateCompanionBuilder,
-    (
+typedef $$AnswerPropertiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $AnswerPropertiesTable,
       AnswerProperty,
-      BaseReferences<_$DatabaseService, $AnswerPropertiesTable, AnswerProperty>
-    ),
-    AnswerProperty,
-    PrefetchHooks Function()>;
-typedef $$CouponsLinkedToTermsTableCreateCompanionBuilder
-    = CouponsLinkedToTermsCompanion Function({
-  required int couponId,
-  required int termId,
-  Value<int> rowid,
-});
-typedef $$CouponsLinkedToTermsTableUpdateCompanionBuilder
-    = CouponsLinkedToTermsCompanion Function({
-  Value<int> couponId,
-  Value<int> termId,
-  Value<int> rowid,
-});
+      $$AnswerPropertiesTableFilterComposer,
+      $$AnswerPropertiesTableOrderingComposer,
+      $$AnswerPropertiesTableAnnotationComposer,
+      $$AnswerPropertiesTableCreateCompanionBuilder,
+      $$AnswerPropertiesTableUpdateCompanionBuilder,
+      (
+        AnswerProperty,
+        BaseReferences<
+          _$DatabaseService,
+          $AnswerPropertiesTable,
+          AnswerProperty
+        >,
+      ),
+      AnswerProperty,
+      PrefetchHooks Function()
+    >;
+typedef $$CouponsLinkedToTermsTableCreateCompanionBuilder =
+    CouponsLinkedToTermsCompanion Function({
+      required int couponId,
+      required int termId,
+      Value<int> rowid,
+    });
+typedef $$CouponsLinkedToTermsTableUpdateCompanionBuilder =
+    CouponsLinkedToTermsCompanion Function({
+      Value<int> couponId,
+      Value<int> termId,
+      Value<int> rowid,
+    });
 
 class $$CouponsLinkedToTermsTableFilterComposer
     extends Composer<_$DatabaseService, $CouponsLinkedToTermsTable> {
@@ -9248,10 +11127,14 @@ class $$CouponsLinkedToTermsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get couponId => $composableBuilder(
-      column: $table.couponId, builder: (column) => ColumnFilters(column));
+    column: $table.couponId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$CouponsLinkedToTermsTableOrderingComposer
@@ -9264,10 +11147,14 @@ class $$CouponsLinkedToTermsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get couponId => $composableBuilder(
-      column: $table.couponId, builder: (column) => ColumnOrderings(column));
+    column: $table.couponId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CouponsLinkedToTermsTableAnnotationComposer
@@ -9286,91 +11173,110 @@ class $$CouponsLinkedToTermsTableAnnotationComposer
       $composableBuilder(column: $table.termId, builder: (column) => column);
 }
 
-class $$CouponsLinkedToTermsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $CouponsLinkedToTermsTable,
-    CouponsLinkedToTerm,
-    $$CouponsLinkedToTermsTableFilterComposer,
-    $$CouponsLinkedToTermsTableOrderingComposer,
-    $$CouponsLinkedToTermsTableAnnotationComposer,
-    $$CouponsLinkedToTermsTableCreateCompanionBuilder,
-    $$CouponsLinkedToTermsTableUpdateCompanionBuilder,
-    (
-      CouponsLinkedToTerm,
-      BaseReferences<_$DatabaseService, $CouponsLinkedToTermsTable,
-          CouponsLinkedToTerm>
-    ),
-    CouponsLinkedToTerm,
-    PrefetchHooks Function()> {
+class $$CouponsLinkedToTermsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $CouponsLinkedToTermsTable,
+          CouponsLinkedToTerm,
+          $$CouponsLinkedToTermsTableFilterComposer,
+          $$CouponsLinkedToTermsTableOrderingComposer,
+          $$CouponsLinkedToTermsTableAnnotationComposer,
+          $$CouponsLinkedToTermsTableCreateCompanionBuilder,
+          $$CouponsLinkedToTermsTableUpdateCompanionBuilder,
+          (
+            CouponsLinkedToTerm,
+            BaseReferences<
+              _$DatabaseService,
+              $CouponsLinkedToTermsTable,
+              CouponsLinkedToTerm
+            >,
+          ),
+          CouponsLinkedToTerm,
+          PrefetchHooks Function()
+        > {
   $$CouponsLinkedToTermsTableTableManager(
-      _$DatabaseService db, $CouponsLinkedToTermsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $CouponsLinkedToTermsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
               $$CouponsLinkedToTermsTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
               $$CouponsLinkedToTermsTableOrderingComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
               $$CouponsLinkedToTermsTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> couponId = const Value.absent(),
-            Value<int> termId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              CouponsLinkedToTermsCompanion(
-            couponId: couponId,
-            termId: termId,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int couponId,
-            required int termId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              CouponsLinkedToTermsCompanion.insert(
-            couponId: couponId,
-            termId: termId,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> couponId = const Value.absent(),
+                Value<int> termId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CouponsLinkedToTermsCompanion(
+                couponId: couponId,
+                termId: termId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int couponId,
+                required int termId,
+                Value<int> rowid = const Value.absent(),
+              }) => CouponsLinkedToTermsCompanion.insert(
+                couponId: couponId,
+                termId: termId,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$CouponsLinkedToTermsTableProcessedTableManager
-    = ProcessedTableManager<
-        _$DatabaseService,
-        $CouponsLinkedToTermsTable,
+typedef $$CouponsLinkedToTermsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $CouponsLinkedToTermsTable,
+      CouponsLinkedToTerm,
+      $$CouponsLinkedToTermsTableFilterComposer,
+      $$CouponsLinkedToTermsTableOrderingComposer,
+      $$CouponsLinkedToTermsTableAnnotationComposer,
+      $$CouponsLinkedToTermsTableCreateCompanionBuilder,
+      $$CouponsLinkedToTermsTableUpdateCompanionBuilder,
+      (
         CouponsLinkedToTerm,
-        $$CouponsLinkedToTermsTableFilterComposer,
-        $$CouponsLinkedToTermsTableOrderingComposer,
-        $$CouponsLinkedToTermsTableAnnotationComposer,
-        $$CouponsLinkedToTermsTableCreateCompanionBuilder,
-        $$CouponsLinkedToTermsTableUpdateCompanionBuilder,
-        (
-          CouponsLinkedToTerm,
-          BaseReferences<_$DatabaseService, $CouponsLinkedToTermsTable,
-              CouponsLinkedToTerm>
-        ),
-        CouponsLinkedToTerm,
-        PrefetchHooks Function()>;
-typedef $$TermTreesTableCreateCompanionBuilder = TermTreesCompanion Function({
-  required int termId,
-  required int parentTermId,
-  Value<int> depth,
-  Value<int> rowid,
-});
-typedef $$TermTreesTableUpdateCompanionBuilder = TermTreesCompanion Function({
-  Value<int> termId,
-  Value<int> parentTermId,
-  Value<int> depth,
-  Value<int> rowid,
-});
+        BaseReferences<
+          _$DatabaseService,
+          $CouponsLinkedToTermsTable,
+          CouponsLinkedToTerm
+        >,
+      ),
+      CouponsLinkedToTerm,
+      PrefetchHooks Function()
+    >;
+typedef $$TermTreesTableCreateCompanionBuilder =
+    TermTreesCompanion Function({
+      required int termId,
+      required int parentTermId,
+      Value<int> depth,
+      Value<int> rowid,
+    });
+typedef $$TermTreesTableUpdateCompanionBuilder =
+    TermTreesCompanion Function({
+      Value<int> termId,
+      Value<int> parentTermId,
+      Value<int> depth,
+      Value<int> rowid,
+    });
 
 class $$TermTreesTableFilterComposer
     extends Composer<_$DatabaseService, $TermTreesTable> {
@@ -9382,13 +11288,19 @@ class $$TermTreesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get depth => $composableBuilder(
-      column: $table.depth, builder: (column) => ColumnFilters(column));
+    column: $table.depth,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermTreesTableOrderingComposer
@@ -9401,14 +11313,19 @@ class $$TermTreesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get depth => $composableBuilder(
-      column: $table.depth, builder: (column) => ColumnOrderings(column));
+    column: $table.depth,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermTreesTableAnnotationComposer
@@ -9424,26 +11341,35 @@ class $$TermTreesTableAnnotationComposer
       $composableBuilder(column: $table.termId, builder: (column) => column);
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get depth =>
       $composableBuilder(column: $table.depth, builder: (column) => column);
 }
 
-class $$TermTreesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermTreesTable,
-    TermTree,
-    $$TermTreesTableFilterComposer,
-    $$TermTreesTableOrderingComposer,
-    $$TermTreesTableAnnotationComposer,
-    $$TermTreesTableCreateCompanionBuilder,
-    $$TermTreesTableUpdateCompanionBuilder,
-    (TermTree, BaseReferences<_$DatabaseService, $TermTreesTable, TermTree>),
-    TermTree,
-    PrefetchHooks Function()> {
+class $$TermTreesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermTreesTable,
+          TermTree,
+          $$TermTreesTableFilterComposer,
+          $$TermTreesTableOrderingComposer,
+          $$TermTreesTableAnnotationComposer,
+          $$TermTreesTableCreateCompanionBuilder,
+          $$TermTreesTableUpdateCompanionBuilder,
+          (
+            TermTree,
+            BaseReferences<_$DatabaseService, $TermTreesTable, TermTree>,
+          ),
+          TermTree,
+          PrefetchHooks Function()
+        > {
   $$TermTreesTableTableManager(_$DatabaseService db, $TermTreesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -9452,61 +11378,66 @@ class $$TermTreesTableTableManager extends RootTableManager<
               $$TermTreesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermTreesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<int> depth = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermTreesCompanion(
-            termId: termId,
-            parentTermId: parentTermId,
-            depth: depth,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int termId,
-            required int parentTermId,
-            Value<int> depth = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermTreesCompanion.insert(
-            termId: termId,
-            parentTermId: parentTermId,
-            depth: depth,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> termId = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<int> depth = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermTreesCompanion(
+                termId: termId,
+                parentTermId: parentTermId,
+                depth: depth,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int termId,
+                required int parentTermId,
+                Value<int> depth = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermTreesCompanion.insert(
+                termId: termId,
+                parentTermId: parentTermId,
+                depth: depth,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermTreesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermTreesTable,
-    TermTree,
-    $$TermTreesTableFilterComposer,
-    $$TermTreesTableOrderingComposer,
-    $$TermTreesTableAnnotationComposer,
-    $$TermTreesTableCreateCompanionBuilder,
-    $$TermTreesTableUpdateCompanionBuilder,
-    (TermTree, BaseReferences<_$DatabaseService, $TermTreesTable, TermTree>),
-    TermTree,
-    PrefetchHooks Function()>;
-typedef $$EbooksTableCreateCompanionBuilder = EbooksCompanion Function({
-  required String encryptionKey,
-  Value<int> parentTermId,
-  required String creation,
-  required String lastUpdated,
-});
-typedef $$EbooksTableUpdateCompanionBuilder = EbooksCompanion Function({
-  Value<String> encryptionKey,
-  Value<int> parentTermId,
-  Value<String> creation,
-  Value<String> lastUpdated,
-});
+typedef $$TermTreesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermTreesTable,
+      TermTree,
+      $$TermTreesTableFilterComposer,
+      $$TermTreesTableOrderingComposer,
+      $$TermTreesTableAnnotationComposer,
+      $$TermTreesTableCreateCompanionBuilder,
+      $$TermTreesTableUpdateCompanionBuilder,
+      (TermTree, BaseReferences<_$DatabaseService, $TermTreesTable, TermTree>),
+      TermTree,
+      PrefetchHooks Function()
+    >;
+typedef $$EbooksTableCreateCompanionBuilder =
+    EbooksCompanion Function({
+      required String encryptionKey,
+      Value<int> parentTermId,
+      required String creation,
+      required String lastUpdated,
+    });
+typedef $$EbooksTableUpdateCompanionBuilder =
+    EbooksCompanion Function({
+      Value<String> encryptionKey,
+      Value<int> parentTermId,
+      Value<String> creation,
+      Value<String> lastUpdated,
+    });
 
 class $$EbooksTableFilterComposer
     extends Composer<_$DatabaseService, $EbooksTable> {
@@ -9518,16 +11449,24 @@ class $$EbooksTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => ColumnFilters(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnFilters(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$EbooksTableOrderingComposer
@@ -9540,18 +11479,24 @@ class $$EbooksTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnOrderings(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$EbooksTableAnnotationComposer
@@ -9564,32 +11509,42 @@ class $$EbooksTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => column);
+    column: $table.encryptionKey,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => column);
+    column: $table.lastUpdated,
+    builder: (column) => column,
+  );
 }
 
-class $$EbooksTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $EbooksTable,
-    Ebook,
-    $$EbooksTableFilterComposer,
-    $$EbooksTableOrderingComposer,
-    $$EbooksTableAnnotationComposer,
-    $$EbooksTableCreateCompanionBuilder,
-    $$EbooksTableUpdateCompanionBuilder,
-    (Ebook, BaseReferences<_$DatabaseService, $EbooksTable, Ebook>),
-    Ebook,
-    PrefetchHooks Function()> {
+class $$EbooksTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $EbooksTable,
+          Ebook,
+          $$EbooksTableFilterComposer,
+          $$EbooksTableOrderingComposer,
+          $$EbooksTableAnnotationComposer,
+          $$EbooksTableCreateCompanionBuilder,
+          $$EbooksTableUpdateCompanionBuilder,
+          (Ebook, BaseReferences<_$DatabaseService, $EbooksTable, Ebook>),
+          Ebook,
+          PrefetchHooks Function()
+        > {
   $$EbooksTableTableManager(_$DatabaseService db, $EbooksTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -9598,63 +11553,66 @@ class $$EbooksTableTableManager extends RootTableManager<
               $$EbooksTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$EbooksTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> encryptionKey = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<String> lastUpdated = const Value.absent(),
-          }) =>
-              EbooksCompanion(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
-          createCompanionCallback: ({
-            required String encryptionKey,
-            Value<int> parentTermId = const Value.absent(),
-            required String creation,
-            required String lastUpdated,
-          }) =>
-              EbooksCompanion.insert(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> encryptionKey = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<String> lastUpdated = const Value.absent(),
+              }) => EbooksCompanion(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
+          createCompanionCallback:
+              ({
+                required String encryptionKey,
+                Value<int> parentTermId = const Value.absent(),
+                required String creation,
+                required String lastUpdated,
+              }) => EbooksCompanion.insert(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$EbooksTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $EbooksTable,
-    Ebook,
-    $$EbooksTableFilterComposer,
-    $$EbooksTableOrderingComposer,
-    $$EbooksTableAnnotationComposer,
-    $$EbooksTableCreateCompanionBuilder,
-    $$EbooksTableUpdateCompanionBuilder,
-    (Ebook, BaseReferences<_$DatabaseService, $EbooksTable, Ebook>),
-    Ebook,
-    PrefetchHooks Function()>;
-typedef $$TermsLastAccessesTableCreateCompanionBuilder
-    = TermsLastAccessesCompanion Function({
-  required int parentTermId,
-  required int childId,
-  Value<int> lastAccess,
-  Value<int> rowid,
-});
-typedef $$TermsLastAccessesTableUpdateCompanionBuilder
-    = TermsLastAccessesCompanion Function({
-  Value<int> parentTermId,
-  Value<int> childId,
-  Value<int> lastAccess,
-  Value<int> rowid,
-});
+typedef $$EbooksTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $EbooksTable,
+      Ebook,
+      $$EbooksTableFilterComposer,
+      $$EbooksTableOrderingComposer,
+      $$EbooksTableAnnotationComposer,
+      $$EbooksTableCreateCompanionBuilder,
+      $$EbooksTableUpdateCompanionBuilder,
+      (Ebook, BaseReferences<_$DatabaseService, $EbooksTable, Ebook>),
+      Ebook,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsLastAccessesTableCreateCompanionBuilder =
+    TermsLastAccessesCompanion Function({
+      required int parentTermId,
+      required int childId,
+      Value<int> lastAccess,
+      Value<int> rowid,
+    });
+typedef $$TermsLastAccessesTableUpdateCompanionBuilder =
+    TermsLastAccessesCompanion Function({
+      Value<int> parentTermId,
+      Value<int> childId,
+      Value<int> lastAccess,
+      Value<int> rowid,
+    });
 
 class $$TermsLastAccessesTableFilterComposer
     extends Composer<_$DatabaseService, $TermsLastAccessesTable> {
@@ -9666,13 +11624,19 @@ class $$TermsLastAccessesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get childId => $composableBuilder(
-      column: $table.childId, builder: (column) => ColumnFilters(column));
+    column: $table.childId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get lastAccess => $composableBuilder(
-      column: $table.lastAccess, builder: (column) => ColumnFilters(column));
+    column: $table.lastAccess,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsLastAccessesTableOrderingComposer
@@ -9685,14 +11649,19 @@ class $$TermsLastAccessesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get childId => $composableBuilder(
-      column: $table.childId, builder: (column) => ColumnOrderings(column));
+    column: $table.childId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get lastAccess => $composableBuilder(
-      column: $table.lastAccess, builder: (column) => ColumnOrderings(column));
+    column: $table.lastAccess,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsLastAccessesTableAnnotationComposer
@@ -9705,34 +11674,46 @@ class $$TermsLastAccessesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get childId =>
       $composableBuilder(column: $table.childId, builder: (column) => column);
 
   GeneratedColumn<int> get lastAccess => $composableBuilder(
-      column: $table.lastAccess, builder: (column) => column);
+    column: $table.lastAccess,
+    builder: (column) => column,
+  );
 }
 
-class $$TermsLastAccessesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermsLastAccessesTable,
-    TermsLastAccess,
-    $$TermsLastAccessesTableFilterComposer,
-    $$TermsLastAccessesTableOrderingComposer,
-    $$TermsLastAccessesTableAnnotationComposer,
-    $$TermsLastAccessesTableCreateCompanionBuilder,
-    $$TermsLastAccessesTableUpdateCompanionBuilder,
-    (
-      TermsLastAccess,
-      BaseReferences<_$DatabaseService, $TermsLastAccessesTable,
-          TermsLastAccess>
-    ),
-    TermsLastAccess,
-    PrefetchHooks Function()> {
+class $$TermsLastAccessesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsLastAccessesTable,
+          TermsLastAccess,
+          $$TermsLastAccessesTableFilterComposer,
+          $$TermsLastAccessesTableOrderingComposer,
+          $$TermsLastAccessesTableAnnotationComposer,
+          $$TermsLastAccessesTableCreateCompanionBuilder,
+          $$TermsLastAccessesTableUpdateCompanionBuilder,
+          (
+            TermsLastAccess,
+            BaseReferences<
+              _$DatabaseService,
+              $TermsLastAccessesTable,
+              TermsLastAccess
+            >,
+          ),
+          TermsLastAccess,
+          PrefetchHooks Function()
+        > {
   $$TermsLastAccessesTableTableManager(
-      _$DatabaseService db, $TermsLastAccessesTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermsLastAccessesTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -9741,68 +11722,76 @@ class $$TermsLastAccessesTableTableManager extends RootTableManager<
               $$TermsLastAccessesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermsLastAccessesTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> parentTermId = const Value.absent(),
-            Value<int> childId = const Value.absent(),
-            Value<int> lastAccess = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLastAccessesCompanion(
-            parentTermId: parentTermId,
-            childId: childId,
-            lastAccess: lastAccess,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int parentTermId,
-            required int childId,
-            Value<int> lastAccess = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLastAccessesCompanion.insert(
-            parentTermId: parentTermId,
-            childId: childId,
-            lastAccess: lastAccess,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> parentTermId = const Value.absent(),
+                Value<int> childId = const Value.absent(),
+                Value<int> lastAccess = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLastAccessesCompanion(
+                parentTermId: parentTermId,
+                childId: childId,
+                lastAccess: lastAccess,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int parentTermId,
+                required int childId,
+                Value<int> lastAccess = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLastAccessesCompanion.insert(
+                parentTermId: parentTermId,
+                childId: childId,
+                lastAccess: lastAccess,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsLastAccessesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermsLastAccessesTable,
-    TermsLastAccess,
-    $$TermsLastAccessesTableFilterComposer,
-    $$TermsLastAccessesTableOrderingComposer,
-    $$TermsLastAccessesTableAnnotationComposer,
-    $$TermsLastAccessesTableCreateCompanionBuilder,
-    $$TermsLastAccessesTableUpdateCompanionBuilder,
-    (
+typedef $$TermsLastAccessesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsLastAccessesTable,
       TermsLastAccess,
-      BaseReferences<_$DatabaseService, $TermsLastAccessesTable,
-          TermsLastAccess>
-    ),
-    TermsLastAccess,
-    PrefetchHooks Function()>;
-typedef $$QuestionTagPropertiesTableCreateCompanionBuilder
-    = QuestionTagPropertiesCompanion Function({
-  required int questionTagId,
-  required String name,
-  required String value,
-  Value<int> rowid,
-});
-typedef $$QuestionTagPropertiesTableUpdateCompanionBuilder
-    = QuestionTagPropertiesCompanion Function({
-  Value<int> questionTagId,
-  Value<String> name,
-  Value<String> value,
-  Value<int> rowid,
-});
+      $$TermsLastAccessesTableFilterComposer,
+      $$TermsLastAccessesTableOrderingComposer,
+      $$TermsLastAccessesTableAnnotationComposer,
+      $$TermsLastAccessesTableCreateCompanionBuilder,
+      $$TermsLastAccessesTableUpdateCompanionBuilder,
+      (
+        TermsLastAccess,
+        BaseReferences<
+          _$DatabaseService,
+          $TermsLastAccessesTable,
+          TermsLastAccess
+        >,
+      ),
+      TermsLastAccess,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionTagPropertiesTableCreateCompanionBuilder =
+    QuestionTagPropertiesCompanion Function({
+      required int questionTagId,
+      required String name,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$QuestionTagPropertiesTableUpdateCompanionBuilder =
+    QuestionTagPropertiesCompanion Function({
+      Value<int> questionTagId,
+      Value<String> name,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
 class $$QuestionTagPropertiesTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionTagPropertiesTable> {
@@ -9814,13 +11803,19 @@ class $$QuestionTagPropertiesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get questionTagId => $composableBuilder(
-      column: $table.questionTagId, builder: (column) => ColumnFilters(column));
+    column: $table.questionTagId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionTagPropertiesTableOrderingComposer
@@ -9833,14 +11828,19 @@ class $$QuestionTagPropertiesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get questionTagId => $composableBuilder(
-      column: $table.questionTagId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.questionTagId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionTagPropertiesTableAnnotationComposer
@@ -9853,7 +11853,9 @@ class $$QuestionTagPropertiesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get questionTagId => $composableBuilder(
-      column: $table.questionTagId, builder: (column) => column);
+    column: $table.questionTagId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
@@ -9862,98 +11864,117 @@ class $$QuestionTagPropertiesTableAnnotationComposer
       $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
-class $$QuestionTagPropertiesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionTagPropertiesTable,
-    QuestionTagProperty,
-    $$QuestionTagPropertiesTableFilterComposer,
-    $$QuestionTagPropertiesTableOrderingComposer,
-    $$QuestionTagPropertiesTableAnnotationComposer,
-    $$QuestionTagPropertiesTableCreateCompanionBuilder,
-    $$QuestionTagPropertiesTableUpdateCompanionBuilder,
-    (
-      QuestionTagProperty,
-      BaseReferences<_$DatabaseService, $QuestionTagPropertiesTable,
-          QuestionTagProperty>
-    ),
-    QuestionTagProperty,
-    PrefetchHooks Function()> {
+class $$QuestionTagPropertiesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionTagPropertiesTable,
+          QuestionTagProperty,
+          $$QuestionTagPropertiesTableFilterComposer,
+          $$QuestionTagPropertiesTableOrderingComposer,
+          $$QuestionTagPropertiesTableAnnotationComposer,
+          $$QuestionTagPropertiesTableCreateCompanionBuilder,
+          $$QuestionTagPropertiesTableUpdateCompanionBuilder,
+          (
+            QuestionTagProperty,
+            BaseReferences<
+              _$DatabaseService,
+              $QuestionTagPropertiesTable,
+              QuestionTagProperty
+            >,
+          ),
+          QuestionTagProperty,
+          PrefetchHooks Function()
+        > {
   $$QuestionTagPropertiesTableTableManager(
-      _$DatabaseService db, $QuestionTagPropertiesTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $QuestionTagPropertiesTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
               $$QuestionTagPropertiesTableFilterComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createOrderingComposer: () =>
               $$QuestionTagPropertiesTableOrderingComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
               $$QuestionTagPropertiesTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> questionTagId = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionTagPropertiesCompanion(
-            questionTagId: questionTagId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int questionTagId,
-            required String name,
-            required String value,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionTagPropertiesCompanion.insert(
-            questionTagId: questionTagId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> questionTagId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionTagPropertiesCompanion(
+                questionTagId: questionTagId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int questionTagId,
+                required String name,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionTagPropertiesCompanion.insert(
+                questionTagId: questionTagId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionTagPropertiesTableProcessedTableManager
-    = ProcessedTableManager<
-        _$DatabaseService,
-        $QuestionTagPropertiesTable,
+typedef $$QuestionTagPropertiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionTagPropertiesTable,
+      QuestionTagProperty,
+      $$QuestionTagPropertiesTableFilterComposer,
+      $$QuestionTagPropertiesTableOrderingComposer,
+      $$QuestionTagPropertiesTableAnnotationComposer,
+      $$QuestionTagPropertiesTableCreateCompanionBuilder,
+      $$QuestionTagPropertiesTableUpdateCompanionBuilder,
+      (
         QuestionTagProperty,
-        $$QuestionTagPropertiesTableFilterComposer,
-        $$QuestionTagPropertiesTableOrderingComposer,
-        $$QuestionTagPropertiesTableAnnotationComposer,
-        $$QuestionTagPropertiesTableCreateCompanionBuilder,
-        $$QuestionTagPropertiesTableUpdateCompanionBuilder,
-        (
-          QuestionTagProperty,
-          BaseReferences<_$DatabaseService, $QuestionTagPropertiesTable,
-              QuestionTagProperty>
-        ),
-        QuestionTagProperty,
-        PrefetchHooks Function()>;
-typedef $$QuestionPropertiesTableCreateCompanionBuilder
-    = QuestionPropertiesCompanion Function({
-  required int questionId,
-  required String name,
-  required String value,
-  Value<int> rowid,
-});
-typedef $$QuestionPropertiesTableUpdateCompanionBuilder
-    = QuestionPropertiesCompanion Function({
-  Value<int> questionId,
-  Value<String> name,
-  Value<String> value,
-  Value<int> rowid,
-});
+        BaseReferences<
+          _$DatabaseService,
+          $QuestionTagPropertiesTable,
+          QuestionTagProperty
+        >,
+      ),
+      QuestionTagProperty,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionPropertiesTableCreateCompanionBuilder =
+    QuestionPropertiesCompanion Function({
+      required int questionId,
+      required String name,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$QuestionPropertiesTableUpdateCompanionBuilder =
+    QuestionPropertiesCompanion Function({
+      Value<int> questionId,
+      Value<String> name,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
 class $$QuestionPropertiesTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionPropertiesTable> {
@@ -9965,13 +11986,19 @@ class $$QuestionPropertiesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => ColumnFilters(column));
+    column: $table.questionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionPropertiesTableOrderingComposer
@@ -9984,13 +12011,19 @@ class $$QuestionPropertiesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => ColumnOrderings(column));
+    column: $table.questionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionPropertiesTableAnnotationComposer
@@ -10003,7 +12036,9 @@ class $$QuestionPropertiesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => column);
+    column: $table.questionId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
@@ -10012,25 +12047,33 @@ class $$QuestionPropertiesTableAnnotationComposer
       $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
-class $$QuestionPropertiesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionPropertiesTable,
-    QuestionProperty,
-    $$QuestionPropertiesTableFilterComposer,
-    $$QuestionPropertiesTableOrderingComposer,
-    $$QuestionPropertiesTableAnnotationComposer,
-    $$QuestionPropertiesTableCreateCompanionBuilder,
-    $$QuestionPropertiesTableUpdateCompanionBuilder,
-    (
-      QuestionProperty,
-      BaseReferences<_$DatabaseService, $QuestionPropertiesTable,
-          QuestionProperty>
-    ),
-    QuestionProperty,
-    PrefetchHooks Function()> {
+class $$QuestionPropertiesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionPropertiesTable,
+          QuestionProperty,
+          $$QuestionPropertiesTableFilterComposer,
+          $$QuestionPropertiesTableOrderingComposer,
+          $$QuestionPropertiesTableAnnotationComposer,
+          $$QuestionPropertiesTableCreateCompanionBuilder,
+          $$QuestionPropertiesTableUpdateCompanionBuilder,
+          (
+            QuestionProperty,
+            BaseReferences<
+              _$DatabaseService,
+              $QuestionPropertiesTable,
+              QuestionProperty
+            >,
+          ),
+          QuestionProperty,
+          PrefetchHooks Function()
+        > {
   $$QuestionPropertiesTableTableManager(
-      _$DatabaseService db, $QuestionPropertiesTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $QuestionPropertiesTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10039,66 +12082,74 @@ class $$QuestionPropertiesTableTableManager extends RootTableManager<
               $$QuestionPropertiesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionPropertiesTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> questionId = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionPropertiesCompanion(
-            questionId: questionId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int questionId,
-            required String name,
-            required String value,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionPropertiesCompanion.insert(
-            questionId: questionId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> questionId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionPropertiesCompanion(
+                questionId: questionId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int questionId,
+                required String name,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionPropertiesCompanion.insert(
+                questionId: questionId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionPropertiesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $QuestionPropertiesTable,
-    QuestionProperty,
-    $$QuestionPropertiesTableFilterComposer,
-    $$QuestionPropertiesTableOrderingComposer,
-    $$QuestionPropertiesTableAnnotationComposer,
-    $$QuestionPropertiesTableCreateCompanionBuilder,
-    $$QuestionPropertiesTableUpdateCompanionBuilder,
-    (
+typedef $$QuestionPropertiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionPropertiesTable,
       QuestionProperty,
-      BaseReferences<_$DatabaseService, $QuestionPropertiesTable,
-          QuestionProperty>
-    ),
-    QuestionProperty,
-    PrefetchHooks Function()>;
-typedef $$HttpRequestsTableCreateCompanionBuilder = HttpRequestsCompanion
-    Function({
-  Value<int> id,
-  required String url,
-  required String mapp,
-});
-typedef $$HttpRequestsTableUpdateCompanionBuilder = HttpRequestsCompanion
-    Function({
-  Value<int> id,
-  Value<String> url,
-  Value<String> mapp,
-});
+      $$QuestionPropertiesTableFilterComposer,
+      $$QuestionPropertiesTableOrderingComposer,
+      $$QuestionPropertiesTableAnnotationComposer,
+      $$QuestionPropertiesTableCreateCompanionBuilder,
+      $$QuestionPropertiesTableUpdateCompanionBuilder,
+      (
+        QuestionProperty,
+        BaseReferences<
+          _$DatabaseService,
+          $QuestionPropertiesTable,
+          QuestionProperty
+        >,
+      ),
+      QuestionProperty,
+      PrefetchHooks Function()
+    >;
+typedef $$HttpRequestsTableCreateCompanionBuilder =
+    HttpRequestsCompanion Function({
+      Value<int> id,
+      required String url,
+      required String mapp,
+    });
+typedef $$HttpRequestsTableUpdateCompanionBuilder =
+    HttpRequestsCompanion Function({
+      Value<int> id,
+      Value<String> url,
+      Value<String> mapp,
+    });
 
 class $$HttpRequestsTableFilterComposer
     extends Composer<_$DatabaseService, $HttpRequestsTable> {
@@ -10110,13 +12161,19 @@ class $$HttpRequestsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnFilters(column));
+    column: $table.url,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get mapp => $composableBuilder(
-      column: $table.mapp, builder: (column) => ColumnFilters(column));
+    column: $table.mapp,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$HttpRequestsTableOrderingComposer
@@ -10129,13 +12186,19 @@ class $$HttpRequestsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnOrderings(column));
+    column: $table.url,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get mapp => $composableBuilder(
-      column: $table.mapp, builder: (column) => ColumnOrderings(column));
+    column: $table.mapp,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$HttpRequestsTableAnnotationComposer
@@ -10157,24 +12220,29 @@ class $$HttpRequestsTableAnnotationComposer
       $composableBuilder(column: $table.mapp, builder: (column) => column);
 }
 
-class $$HttpRequestsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $HttpRequestsTable,
-    HttpRequest,
-    $$HttpRequestsTableFilterComposer,
-    $$HttpRequestsTableOrderingComposer,
-    $$HttpRequestsTableAnnotationComposer,
-    $$HttpRequestsTableCreateCompanionBuilder,
-    $$HttpRequestsTableUpdateCompanionBuilder,
-    (
-      HttpRequest,
-      BaseReferences<_$DatabaseService, $HttpRequestsTable, HttpRequest>
-    ),
-    HttpRequest,
-    PrefetchHooks Function()> {
+class $$HttpRequestsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $HttpRequestsTable,
+          HttpRequest,
+          $$HttpRequestsTableFilterComposer,
+          $$HttpRequestsTableOrderingComposer,
+          $$HttpRequestsTableAnnotationComposer,
+          $$HttpRequestsTableCreateCompanionBuilder,
+          $$HttpRequestsTableUpdateCompanionBuilder,
+          (
+            HttpRequest,
+            BaseReferences<_$DatabaseService, $HttpRequestsTable, HttpRequest>,
+          ),
+          HttpRequest,
+          PrefetchHooks Function()
+        > {
   $$HttpRequestsTableTableManager(
-      _$DatabaseService db, $HttpRequestsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $HttpRequestsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10183,59 +12251,51 @@ class $$HttpRequestsTableTableManager extends RootTableManager<
               $$HttpRequestsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$HttpRequestsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> url = const Value.absent(),
-            Value<String> mapp = const Value.absent(),
-          }) =>
-              HttpRequestsCompanion(
-            id: id,
-            url: url,
-            mapp: mapp,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String url,
-            required String mapp,
-          }) =>
-              HttpRequestsCompanion.insert(
-            id: id,
-            url: url,
-            mapp: mapp,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> url = const Value.absent(),
+                Value<String> mapp = const Value.absent(),
+              }) => HttpRequestsCompanion(id: id, url: url, mapp: mapp),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String url,
+                required String mapp,
+              }) => HttpRequestsCompanion.insert(id: id, url: url, mapp: mapp),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$HttpRequestsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $HttpRequestsTable,
-    HttpRequest,
-    $$HttpRequestsTableFilterComposer,
-    $$HttpRequestsTableOrderingComposer,
-    $$HttpRequestsTableAnnotationComposer,
-    $$HttpRequestsTableCreateCompanionBuilder,
-    $$HttpRequestsTableUpdateCompanionBuilder,
-    (
+typedef $$HttpRequestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $HttpRequestsTable,
       HttpRequest,
-      BaseReferences<_$DatabaseService, $HttpRequestsTable, HttpRequest>
-    ),
-    HttpRequest,
-    PrefetchHooks Function()>;
-typedef $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder
-    = TermsWithQuestionsFilteringEnabledCompanion Function({
-  Value<int> termId,
-});
-typedef $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder
-    = TermsWithQuestionsFilteringEnabledCompanion Function({
-  Value<int> termId,
-});
+      $$HttpRequestsTableFilterComposer,
+      $$HttpRequestsTableOrderingComposer,
+      $$HttpRequestsTableAnnotationComposer,
+      $$HttpRequestsTableCreateCompanionBuilder,
+      $$HttpRequestsTableUpdateCompanionBuilder,
+      (
+        HttpRequest,
+        BaseReferences<_$DatabaseService, $HttpRequestsTable, HttpRequest>,
+      ),
+      HttpRequest,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder =
+    TermsWithQuestionsFilteringEnabledCompanion Function({Value<int> termId});
+typedef $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder =
+    TermsWithQuestionsFilteringEnabledCompanion Function({Value<int> termId});
 
-class $$TermsWithQuestionsFilteringEnabledTableFilterComposer extends Composer<
-    _$DatabaseService, $TermsWithQuestionsFilteringEnabledTable> {
+class $$TermsWithQuestionsFilteringEnabledTableFilterComposer
+    extends
+        Composer<_$DatabaseService, $TermsWithQuestionsFilteringEnabledTable> {
   $$TermsWithQuestionsFilteringEnabledTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -10244,12 +12304,14 @@ class $$TermsWithQuestionsFilteringEnabledTableFilterComposer extends Composer<
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsWithQuestionsFilteringEnabledTableOrderingComposer
-    extends Composer<_$DatabaseService,
-        $TermsWithQuestionsFilteringEnabledTable> {
+    extends
+        Composer<_$DatabaseService, $TermsWithQuestionsFilteringEnabledTable> {
   $$TermsWithQuestionsFilteringEnabledTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -10258,12 +12320,14 @@ class $$TermsWithQuestionsFilteringEnabledTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer
-    extends Composer<_$DatabaseService,
-        $TermsWithQuestionsFilteringEnabledTable> {
+    extends
+        Composer<_$DatabaseService, $TermsWithQuestionsFilteringEnabledTable> {
   $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -10276,88 +12340,100 @@ class $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer
 }
 
 class $$TermsWithQuestionsFilteringEnabledTableTableManager
-    extends RootTableManager<
-        _$DatabaseService,
-        $TermsWithQuestionsFilteringEnabledTable,
-        TermsWithQuestionsFilteringEnabledData,
-        $$TermsWithQuestionsFilteringEnabledTableFilterComposer,
-        $$TermsWithQuestionsFilteringEnabledTableOrderingComposer,
-        $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer,
-        $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder,
-        $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder,
-        (
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsWithQuestionsFilteringEnabledTable,
           TermsWithQuestionsFilteringEnabledData,
-          BaseReferences<
+          $$TermsWithQuestionsFilteringEnabledTableFilterComposer,
+          $$TermsWithQuestionsFilteringEnabledTableOrderingComposer,
+          $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer,
+          $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder,
+          $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder,
+          (
+            TermsWithQuestionsFilteringEnabledData,
+            BaseReferences<
               _$DatabaseService,
               $TermsWithQuestionsFilteringEnabledTable,
-              TermsWithQuestionsFilteringEnabledData>
-        ),
-        TermsWithQuestionsFilteringEnabledData,
-        PrefetchHooks Function()> {
+              TermsWithQuestionsFilteringEnabledData
+            >,
+          ),
+          TermsWithQuestionsFilteringEnabledData,
+          PrefetchHooks Function()
+        > {
   $$TermsWithQuestionsFilteringEnabledTableTableManager(
-      _$DatabaseService db, $TermsWithQuestionsFilteringEnabledTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermsWithQuestionsFilteringEnabledTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
               $$TermsWithQuestionsFilteringEnabledTableFilterComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createOrderingComposer: () =>
               $$TermsWithQuestionsFilteringEnabledTableOrderingComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
               $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-          }) =>
-              TermsWithQuestionsFilteringEnabledCompanion(
-            termId: termId,
-          ),
-          createCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-          }) =>
-              TermsWithQuestionsFilteringEnabledCompanion.insert(
-            termId: termId,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({Value<int> termId = const Value.absent()}) =>
+                  TermsWithQuestionsFilteringEnabledCompanion(termId: termId),
+          createCompanionCallback:
+              ({Value<int> termId = const Value.absent()}) =>
+                  TermsWithQuestionsFilteringEnabledCompanion.insert(
+                    termId: termId,
+                  ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsWithQuestionsFilteringEnabledTableProcessedTableManager
-    = ProcessedTableManager<
-        _$DatabaseService,
-        $TermsWithQuestionsFilteringEnabledTable,
+typedef $$TermsWithQuestionsFilteringEnabledTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsWithQuestionsFilteringEnabledTable,
+      TermsWithQuestionsFilteringEnabledData,
+      $$TermsWithQuestionsFilteringEnabledTableFilterComposer,
+      $$TermsWithQuestionsFilteringEnabledTableOrderingComposer,
+      $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer,
+      $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder,
+      $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder,
+      (
         TermsWithQuestionsFilteringEnabledData,
-        $$TermsWithQuestionsFilteringEnabledTableFilterComposer,
-        $$TermsWithQuestionsFilteringEnabledTableOrderingComposer,
-        $$TermsWithQuestionsFilteringEnabledTableAnnotationComposer,
-        $$TermsWithQuestionsFilteringEnabledTableCreateCompanionBuilder,
-        $$TermsWithQuestionsFilteringEnabledTableUpdateCompanionBuilder,
-        (
-          TermsWithQuestionsFilteringEnabledData,
-          BaseReferences<
-              _$DatabaseService,
-              $TermsWithQuestionsFilteringEnabledTable,
-              TermsWithQuestionsFilteringEnabledData>
-        ),
-        TermsWithQuestionsFilteringEnabledData,
-        PrefetchHooks Function()>;
-typedef $$FlashcardsTableCreateCompanionBuilder = FlashcardsCompanion Function({
-  Value<int> id,
-  required String head,
-  required String tail,
-  required int parentTermId,
-});
-typedef $$FlashcardsTableUpdateCompanionBuilder = FlashcardsCompanion Function({
-  Value<int> id,
-  Value<String> head,
-  Value<String> tail,
-  Value<int> parentTermId,
-});
+        BaseReferences<
+          _$DatabaseService,
+          $TermsWithQuestionsFilteringEnabledTable,
+          TermsWithQuestionsFilteringEnabledData
+        >,
+      ),
+      TermsWithQuestionsFilteringEnabledData,
+      PrefetchHooks Function()
+    >;
+typedef $$FlashcardsTableCreateCompanionBuilder =
+    FlashcardsCompanion Function({
+      Value<int> id,
+      required String head,
+      required String tail,
+      required int parentTermId,
+    });
+typedef $$FlashcardsTableUpdateCompanionBuilder =
+    FlashcardsCompanion Function({
+      Value<int> id,
+      Value<String> head,
+      Value<String> tail,
+      Value<int> parentTermId,
+    });
 
 class $$FlashcardsTableFilterComposer
     extends Composer<_$DatabaseService, $FlashcardsTable> {
@@ -10369,16 +12445,24 @@ class $$FlashcardsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get head => $composableBuilder(
-      column: $table.head, builder: (column) => ColumnFilters(column));
+    column: $table.head,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get tail => $composableBuilder(
-      column: $table.tail, builder: (column) => ColumnFilters(column));
+    column: $table.tail,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$FlashcardsTableOrderingComposer
@@ -10391,17 +12475,24 @@ class $$FlashcardsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get head => $composableBuilder(
-      column: $table.head, builder: (column) => ColumnOrderings(column));
+    column: $table.head,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get tail => $composableBuilder(
-      column: $table.tail, builder: (column) => ColumnOrderings(column));
+    column: $table.tail,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$FlashcardsTableAnnotationComposer
@@ -10423,23 +12514,32 @@ class $$FlashcardsTableAnnotationComposer
       $composableBuilder(column: $table.tail, builder: (column) => column);
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 }
 
-class $$FlashcardsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $FlashcardsTable,
-    Flashcard,
-    $$FlashcardsTableFilterComposer,
-    $$FlashcardsTableOrderingComposer,
-    $$FlashcardsTableAnnotationComposer,
-    $$FlashcardsTableCreateCompanionBuilder,
-    $$FlashcardsTableUpdateCompanionBuilder,
-    (Flashcard, BaseReferences<_$DatabaseService, $FlashcardsTable, Flashcard>),
-    Flashcard,
-    PrefetchHooks Function()> {
+class $$FlashcardsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $FlashcardsTable,
+          Flashcard,
+          $$FlashcardsTableFilterComposer,
+          $$FlashcardsTableOrderingComposer,
+          $$FlashcardsTableAnnotationComposer,
+          $$FlashcardsTableCreateCompanionBuilder,
+          $$FlashcardsTableUpdateCompanionBuilder,
+          (
+            Flashcard,
+            BaseReferences<_$DatabaseService, $FlashcardsTable, Flashcard>,
+          ),
+          Flashcard,
+          PrefetchHooks Function()
+        > {
   $$FlashcardsTableTableManager(_$DatabaseService db, $FlashcardsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10448,61 +12548,69 @@ class $$FlashcardsTableTableManager extends RootTableManager<
               $$FlashcardsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$FlashcardsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> head = const Value.absent(),
-            Value<String> tail = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-          }) =>
-              FlashcardsCompanion(
-            id: id,
-            head: head,
-            tail: tail,
-            parentTermId: parentTermId,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String head,
-            required String tail,
-            required int parentTermId,
-          }) =>
-              FlashcardsCompanion.insert(
-            id: id,
-            head: head,
-            tail: tail,
-            parentTermId: parentTermId,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> head = const Value.absent(),
+                Value<String> tail = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+              }) => FlashcardsCompanion(
+                id: id,
+                head: head,
+                tail: tail,
+                parentTermId: parentTermId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String head,
+                required String tail,
+                required int parentTermId,
+              }) => FlashcardsCompanion.insert(
+                id: id,
+                head: head,
+                tail: tail,
+                parentTermId: parentTermId,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$FlashcardsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $FlashcardsTable,
-    Flashcard,
-    $$FlashcardsTableFilterComposer,
-    $$FlashcardsTableOrderingComposer,
-    $$FlashcardsTableAnnotationComposer,
-    $$FlashcardsTableCreateCompanionBuilder,
-    $$FlashcardsTableUpdateCompanionBuilder,
-    (Flashcard, BaseReferences<_$DatabaseService, $FlashcardsTable, Flashcard>),
-    Flashcard,
-    PrefetchHooks Function()>;
-typedef $$VoiceNotesTableCreateCompanionBuilder = VoiceNotesCompanion Function({
-  required String encryptionKey,
-  Value<int> parentTermId,
-  required String creation,
-  required String lastUpdated,
-});
-typedef $$VoiceNotesTableUpdateCompanionBuilder = VoiceNotesCompanion Function({
-  Value<String> encryptionKey,
-  Value<int> parentTermId,
-  Value<String> creation,
-  Value<String> lastUpdated,
-});
+typedef $$FlashcardsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $FlashcardsTable,
+      Flashcard,
+      $$FlashcardsTableFilterComposer,
+      $$FlashcardsTableOrderingComposer,
+      $$FlashcardsTableAnnotationComposer,
+      $$FlashcardsTableCreateCompanionBuilder,
+      $$FlashcardsTableUpdateCompanionBuilder,
+      (
+        Flashcard,
+        BaseReferences<_$DatabaseService, $FlashcardsTable, Flashcard>,
+      ),
+      Flashcard,
+      PrefetchHooks Function()
+    >;
+typedef $$VoiceNotesTableCreateCompanionBuilder =
+    VoiceNotesCompanion Function({
+      required String encryptionKey,
+      Value<int> parentTermId,
+      required String creation,
+      required String lastUpdated,
+    });
+typedef $$VoiceNotesTableUpdateCompanionBuilder =
+    VoiceNotesCompanion Function({
+      Value<String> encryptionKey,
+      Value<int> parentTermId,
+      Value<String> creation,
+      Value<String> lastUpdated,
+    });
 
 class $$VoiceNotesTableFilterComposer
     extends Composer<_$DatabaseService, $VoiceNotesTable> {
@@ -10514,16 +12622,24 @@ class $$VoiceNotesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => ColumnFilters(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnFilters(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$VoiceNotesTableOrderingComposer
@@ -10536,18 +12652,24 @@ class $$VoiceNotesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnOrderings(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$VoiceNotesTableAnnotationComposer
@@ -10560,32 +12682,45 @@ class $$VoiceNotesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => column);
+    column: $table.encryptionKey,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => column);
+    column: $table.lastUpdated,
+    builder: (column) => column,
+  );
 }
 
-class $$VoiceNotesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $VoiceNotesTable,
-    VoiceNote,
-    $$VoiceNotesTableFilterComposer,
-    $$VoiceNotesTableOrderingComposer,
-    $$VoiceNotesTableAnnotationComposer,
-    $$VoiceNotesTableCreateCompanionBuilder,
-    $$VoiceNotesTableUpdateCompanionBuilder,
-    (VoiceNote, BaseReferences<_$DatabaseService, $VoiceNotesTable, VoiceNote>),
-    VoiceNote,
-    PrefetchHooks Function()> {
+class $$VoiceNotesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $VoiceNotesTable,
+          VoiceNote,
+          $$VoiceNotesTableFilterComposer,
+          $$VoiceNotesTableOrderingComposer,
+          $$VoiceNotesTableAnnotationComposer,
+          $$VoiceNotesTableCreateCompanionBuilder,
+          $$VoiceNotesTableUpdateCompanionBuilder,
+          (
+            VoiceNote,
+            BaseReferences<_$DatabaseService, $VoiceNotesTable, VoiceNote>,
+          ),
+          VoiceNote,
+          PrefetchHooks Function()
+        > {
   $$VoiceNotesTableTableManager(_$DatabaseService db, $VoiceNotesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10594,61 +12729,69 @@ class $$VoiceNotesTableTableManager extends RootTableManager<
               $$VoiceNotesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$VoiceNotesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> encryptionKey = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<String> lastUpdated = const Value.absent(),
-          }) =>
-              VoiceNotesCompanion(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
-          createCompanionCallback: ({
-            required String encryptionKey,
-            Value<int> parentTermId = const Value.absent(),
-            required String creation,
-            required String lastUpdated,
-          }) =>
-              VoiceNotesCompanion.insert(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> encryptionKey = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<String> lastUpdated = const Value.absent(),
+              }) => VoiceNotesCompanion(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
+          createCompanionCallback:
+              ({
+                required String encryptionKey,
+                Value<int> parentTermId = const Value.absent(),
+                required String creation,
+                required String lastUpdated,
+              }) => VoiceNotesCompanion.insert(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$VoiceNotesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $VoiceNotesTable,
-    VoiceNote,
-    $$VoiceNotesTableFilterComposer,
-    $$VoiceNotesTableOrderingComposer,
-    $$VoiceNotesTableAnnotationComposer,
-    $$VoiceNotesTableCreateCompanionBuilder,
-    $$VoiceNotesTableUpdateCompanionBuilder,
-    (VoiceNote, BaseReferences<_$DatabaseService, $VoiceNotesTable, VoiceNote>),
-    VoiceNote,
-    PrefetchHooks Function()>;
-typedef $$VideoFilesTableCreateCompanionBuilder = VideoFilesCompanion Function({
-  required String encryptionKey,
-  Value<int> parentTermId,
-  required String creation,
-  required String lastUpdated,
-});
-typedef $$VideoFilesTableUpdateCompanionBuilder = VideoFilesCompanion Function({
-  Value<String> encryptionKey,
-  Value<int> parentTermId,
-  Value<String> creation,
-  Value<String> lastUpdated,
-});
+typedef $$VoiceNotesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $VoiceNotesTable,
+      VoiceNote,
+      $$VoiceNotesTableFilterComposer,
+      $$VoiceNotesTableOrderingComposer,
+      $$VoiceNotesTableAnnotationComposer,
+      $$VoiceNotesTableCreateCompanionBuilder,
+      $$VoiceNotesTableUpdateCompanionBuilder,
+      (
+        VoiceNote,
+        BaseReferences<_$DatabaseService, $VoiceNotesTable, VoiceNote>,
+      ),
+      VoiceNote,
+      PrefetchHooks Function()
+    >;
+typedef $$VideoFilesTableCreateCompanionBuilder =
+    VideoFilesCompanion Function({
+      required String encryptionKey,
+      Value<int> parentTermId,
+      required String creation,
+      required String lastUpdated,
+    });
+typedef $$VideoFilesTableUpdateCompanionBuilder =
+    VideoFilesCompanion Function({
+      Value<String> encryptionKey,
+      Value<int> parentTermId,
+      Value<String> creation,
+      Value<String> lastUpdated,
+    });
 
 class $$VideoFilesTableFilterComposer
     extends Composer<_$DatabaseService, $VideoFilesTable> {
@@ -10660,16 +12803,24 @@ class $$VideoFilesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => ColumnFilters(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnFilters(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$VideoFilesTableOrderingComposer
@@ -10682,18 +12833,24 @@ class $$VideoFilesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.encryptionKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => ColumnOrderings(column));
+    column: $table.lastUpdated,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$VideoFilesTableAnnotationComposer
@@ -10706,32 +12863,45 @@ class $$VideoFilesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<String> get encryptionKey => $composableBuilder(
-      column: $table.encryptionKey, builder: (column) => column);
+    column: $table.encryptionKey,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 
   GeneratedColumn<String> get lastUpdated => $composableBuilder(
-      column: $table.lastUpdated, builder: (column) => column);
+    column: $table.lastUpdated,
+    builder: (column) => column,
+  );
 }
 
-class $$VideoFilesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $VideoFilesTable,
-    VideoFile,
-    $$VideoFilesTableFilterComposer,
-    $$VideoFilesTableOrderingComposer,
-    $$VideoFilesTableAnnotationComposer,
-    $$VideoFilesTableCreateCompanionBuilder,
-    $$VideoFilesTableUpdateCompanionBuilder,
-    (VideoFile, BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>),
-    VideoFile,
-    PrefetchHooks Function()> {
+class $$VideoFilesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $VideoFilesTable,
+          VideoFile,
+          $$VideoFilesTableFilterComposer,
+          $$VideoFilesTableOrderingComposer,
+          $$VideoFilesTableAnnotationComposer,
+          $$VideoFilesTableCreateCompanionBuilder,
+          $$VideoFilesTableUpdateCompanionBuilder,
+          (
+            VideoFile,
+            BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>,
+          ),
+          VideoFile,
+          PrefetchHooks Function()
+        > {
   $$VideoFilesTableTableManager(_$DatabaseService db, $VideoFilesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10740,61 +12910,67 @@ class $$VideoFilesTableTableManager extends RootTableManager<
               $$VideoFilesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$VideoFilesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> encryptionKey = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<String> lastUpdated = const Value.absent(),
-          }) =>
-              VideoFilesCompanion(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
-          createCompanionCallback: ({
-            required String encryptionKey,
-            Value<int> parentTermId = const Value.absent(),
-            required String creation,
-            required String lastUpdated,
-          }) =>
-              VideoFilesCompanion.insert(
-            encryptionKey: encryptionKey,
-            parentTermId: parentTermId,
-            creation: creation,
-            lastUpdated: lastUpdated,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> encryptionKey = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<String> lastUpdated = const Value.absent(),
+              }) => VideoFilesCompanion(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
+          createCompanionCallback:
+              ({
+                required String encryptionKey,
+                Value<int> parentTermId = const Value.absent(),
+                required String creation,
+                required String lastUpdated,
+              }) => VideoFilesCompanion.insert(
+                encryptionKey: encryptionKey,
+                parentTermId: parentTermId,
+                creation: creation,
+                lastUpdated: lastUpdated,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$VideoFilesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $VideoFilesTable,
-    VideoFile,
-    $$VideoFilesTableFilterComposer,
-    $$VideoFilesTableOrderingComposer,
-    $$VideoFilesTableAnnotationComposer,
-    $$VideoFilesTableCreateCompanionBuilder,
-    $$VideoFilesTableUpdateCompanionBuilder,
-    (VideoFile, BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>),
-    VideoFile,
-    PrefetchHooks Function()>;
-typedef $$RelatedTermsTableCreateCompanionBuilder = RelatedTermsCompanion
-    Function({
-  required int anotherTermId,
-  required int termId,
-  Value<int> rowid,
-});
-typedef $$RelatedTermsTableUpdateCompanionBuilder = RelatedTermsCompanion
-    Function({
-  Value<int> anotherTermId,
-  Value<int> termId,
-  Value<int> rowid,
-});
+typedef $$VideoFilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $VideoFilesTable,
+      VideoFile,
+      $$VideoFilesTableFilterComposer,
+      $$VideoFilesTableOrderingComposer,
+      $$VideoFilesTableAnnotationComposer,
+      $$VideoFilesTableCreateCompanionBuilder,
+      $$VideoFilesTableUpdateCompanionBuilder,
+      (
+        VideoFile,
+        BaseReferences<_$DatabaseService, $VideoFilesTable, VideoFile>,
+      ),
+      VideoFile,
+      PrefetchHooks Function()
+    >;
+typedef $$RelatedTermsTableCreateCompanionBuilder =
+    RelatedTermsCompanion Function({
+      required int anotherTermId,
+      required int termId,
+      Value<int> rowid,
+    });
+typedef $$RelatedTermsTableUpdateCompanionBuilder =
+    RelatedTermsCompanion Function({
+      Value<int> anotherTermId,
+      Value<int> termId,
+      Value<int> rowid,
+    });
 
 class $$RelatedTermsTableFilterComposer
     extends Composer<_$DatabaseService, $RelatedTermsTable> {
@@ -10806,10 +12982,14 @@ class $$RelatedTermsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get anotherTermId => $composableBuilder(
-      column: $table.anotherTermId, builder: (column) => ColumnFilters(column));
+    column: $table.anotherTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$RelatedTermsTableOrderingComposer
@@ -10822,11 +13002,14 @@ class $$RelatedTermsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get anotherTermId => $composableBuilder(
-      column: $table.anotherTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.anotherTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$RelatedTermsTableAnnotationComposer
@@ -10839,30 +13022,37 @@ class $$RelatedTermsTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get anotherTermId => $composableBuilder(
-      column: $table.anotherTermId, builder: (column) => column);
+    column: $table.anotherTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get termId =>
       $composableBuilder(column: $table.termId, builder: (column) => column);
 }
 
-class $$RelatedTermsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $RelatedTermsTable,
-    RelatedTerm,
-    $$RelatedTermsTableFilterComposer,
-    $$RelatedTermsTableOrderingComposer,
-    $$RelatedTermsTableAnnotationComposer,
-    $$RelatedTermsTableCreateCompanionBuilder,
-    $$RelatedTermsTableUpdateCompanionBuilder,
-    (
-      RelatedTerm,
-      BaseReferences<_$DatabaseService, $RelatedTermsTable, RelatedTerm>
-    ),
-    RelatedTerm,
-    PrefetchHooks Function()> {
+class $$RelatedTermsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $RelatedTermsTable,
+          RelatedTerm,
+          $$RelatedTermsTableFilterComposer,
+          $$RelatedTermsTableOrderingComposer,
+          $$RelatedTermsTableAnnotationComposer,
+          $$RelatedTermsTableCreateCompanionBuilder,
+          $$RelatedTermsTableUpdateCompanionBuilder,
+          (
+            RelatedTerm,
+            BaseReferences<_$DatabaseService, $RelatedTermsTable, RelatedTerm>,
+          ),
+          RelatedTerm,
+          PrefetchHooks Function()
+        > {
   $$RelatedTermsTableTableManager(
-      _$DatabaseService db, $RelatedTermsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $RelatedTermsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -10871,60 +13061,63 @@ class $$RelatedTermsTableTableManager extends RootTableManager<
               $$RelatedTermsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$RelatedTermsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> anotherTermId = const Value.absent(),
-            Value<int> termId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              RelatedTermsCompanion(
-            anotherTermId: anotherTermId,
-            termId: termId,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int anotherTermId,
-            required int termId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              RelatedTermsCompanion.insert(
-            anotherTermId: anotherTermId,
-            termId: termId,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> anotherTermId = const Value.absent(),
+                Value<int> termId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RelatedTermsCompanion(
+                anotherTermId: anotherTermId,
+                termId: termId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int anotherTermId,
+                required int termId,
+                Value<int> rowid = const Value.absent(),
+              }) => RelatedTermsCompanion.insert(
+                anotherTermId: anotherTermId,
+                termId: termId,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$RelatedTermsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $RelatedTermsTable,
-    RelatedTerm,
-    $$RelatedTermsTableFilterComposer,
-    $$RelatedTermsTableOrderingComposer,
-    $$RelatedTermsTableAnnotationComposer,
-    $$RelatedTermsTableCreateCompanionBuilder,
-    $$RelatedTermsTableUpdateCompanionBuilder,
-    (
+typedef $$RelatedTermsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $RelatedTermsTable,
       RelatedTerm,
-      BaseReferences<_$DatabaseService, $RelatedTermsTable, RelatedTerm>
-    ),
-    RelatedTerm,
-    PrefetchHooks Function()>;
-typedef $$QuestionsLinkedToTagsTableCreateCompanionBuilder
-    = QuestionsLinkedToTagsCompanion Function({
-  required int questionId,
-  required int tagId,
-  Value<int> rowid,
-});
-typedef $$QuestionsLinkedToTagsTableUpdateCompanionBuilder
-    = QuestionsLinkedToTagsCompanion Function({
-  Value<int> questionId,
-  Value<int> tagId,
-  Value<int> rowid,
-});
+      $$RelatedTermsTableFilterComposer,
+      $$RelatedTermsTableOrderingComposer,
+      $$RelatedTermsTableAnnotationComposer,
+      $$RelatedTermsTableCreateCompanionBuilder,
+      $$RelatedTermsTableUpdateCompanionBuilder,
+      (
+        RelatedTerm,
+        BaseReferences<_$DatabaseService, $RelatedTermsTable, RelatedTerm>,
+      ),
+      RelatedTerm,
+      PrefetchHooks Function()
+    >;
+typedef $$QuestionsLinkedToTagsTableCreateCompanionBuilder =
+    QuestionsLinkedToTagsCompanion Function({
+      required int questionId,
+      required int tagId,
+      Value<int> rowid,
+    });
+typedef $$QuestionsLinkedToTagsTableUpdateCompanionBuilder =
+    QuestionsLinkedToTagsCompanion Function({
+      Value<int> questionId,
+      Value<int> tagId,
+      Value<int> rowid,
+    });
 
 class $$QuestionsLinkedToTagsTableFilterComposer
     extends Composer<_$DatabaseService, $QuestionsLinkedToTagsTable> {
@@ -10936,10 +13129,14 @@ class $$QuestionsLinkedToTagsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => ColumnFilters(column));
+    column: $table.questionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get tagId => $composableBuilder(
-      column: $table.tagId, builder: (column) => ColumnFilters(column));
+    column: $table.tagId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$QuestionsLinkedToTagsTableOrderingComposer
@@ -10952,10 +13149,14 @@ class $$QuestionsLinkedToTagsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => ColumnOrderings(column));
+    column: $table.questionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get tagId => $composableBuilder(
-      column: $table.tagId, builder: (column) => ColumnOrderings(column));
+    column: $table.tagId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$QuestionsLinkedToTagsTableAnnotationComposer
@@ -10968,102 +13169,123 @@ class $$QuestionsLinkedToTagsTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get questionId => $composableBuilder(
-      column: $table.questionId, builder: (column) => column);
+    column: $table.questionId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get tagId =>
       $composableBuilder(column: $table.tagId, builder: (column) => column);
 }
 
-class $$QuestionsLinkedToTagsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $QuestionsLinkedToTagsTable,
-    QuestionsLinkedToTag,
-    $$QuestionsLinkedToTagsTableFilterComposer,
-    $$QuestionsLinkedToTagsTableOrderingComposer,
-    $$QuestionsLinkedToTagsTableAnnotationComposer,
-    $$QuestionsLinkedToTagsTableCreateCompanionBuilder,
-    $$QuestionsLinkedToTagsTableUpdateCompanionBuilder,
-    (
-      QuestionsLinkedToTag,
-      BaseReferences<_$DatabaseService, $QuestionsLinkedToTagsTable,
-          QuestionsLinkedToTag>
-    ),
-    QuestionsLinkedToTag,
-    PrefetchHooks Function()> {
+class $$QuestionsLinkedToTagsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $QuestionsLinkedToTagsTable,
+          QuestionsLinkedToTag,
+          $$QuestionsLinkedToTagsTableFilterComposer,
+          $$QuestionsLinkedToTagsTableOrderingComposer,
+          $$QuestionsLinkedToTagsTableAnnotationComposer,
+          $$QuestionsLinkedToTagsTableCreateCompanionBuilder,
+          $$QuestionsLinkedToTagsTableUpdateCompanionBuilder,
+          (
+            QuestionsLinkedToTag,
+            BaseReferences<
+              _$DatabaseService,
+              $QuestionsLinkedToTagsTable,
+              QuestionsLinkedToTag
+            >,
+          ),
+          QuestionsLinkedToTag,
+          PrefetchHooks Function()
+        > {
   $$QuestionsLinkedToTagsTableTableManager(
-      _$DatabaseService db, $QuestionsLinkedToTagsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $QuestionsLinkedToTagsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
               $$QuestionsLinkedToTagsTableFilterComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createOrderingComposer: () =>
               $$QuestionsLinkedToTagsTableOrderingComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
               $$QuestionsLinkedToTagsTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> questionId = const Value.absent(),
-            Value<int> tagId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionsLinkedToTagsCompanion(
-            questionId: questionId,
-            tagId: tagId,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int questionId,
-            required int tagId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              QuestionsLinkedToTagsCompanion.insert(
-            questionId: questionId,
-            tagId: tagId,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> questionId = const Value.absent(),
+                Value<int> tagId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionsLinkedToTagsCompanion(
+                questionId: questionId,
+                tagId: tagId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int questionId,
+                required int tagId,
+                Value<int> rowid = const Value.absent(),
+              }) => QuestionsLinkedToTagsCompanion.insert(
+                questionId: questionId,
+                tagId: tagId,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$QuestionsLinkedToTagsTableProcessedTableManager
-    = ProcessedTableManager<
-        _$DatabaseService,
-        $QuestionsLinkedToTagsTable,
+typedef $$QuestionsLinkedToTagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $QuestionsLinkedToTagsTable,
+      QuestionsLinkedToTag,
+      $$QuestionsLinkedToTagsTableFilterComposer,
+      $$QuestionsLinkedToTagsTableOrderingComposer,
+      $$QuestionsLinkedToTagsTableAnnotationComposer,
+      $$QuestionsLinkedToTagsTableCreateCompanionBuilder,
+      $$QuestionsLinkedToTagsTableUpdateCompanionBuilder,
+      (
         QuestionsLinkedToTag,
-        $$QuestionsLinkedToTagsTableFilterComposer,
-        $$QuestionsLinkedToTagsTableOrderingComposer,
-        $$QuestionsLinkedToTagsTableAnnotationComposer,
-        $$QuestionsLinkedToTagsTableCreateCompanionBuilder,
-        $$QuestionsLinkedToTagsTableUpdateCompanionBuilder,
-        (
-          QuestionsLinkedToTag,
-          BaseReferences<_$DatabaseService, $QuestionsLinkedToTagsTable,
-              QuestionsLinkedToTag>
-        ),
-        QuestionsLinkedToTag,
-        PrefetchHooks Function()>;
-typedef $$TermsParentsTableCreateCompanionBuilder = TermsParentsCompanion
-    Function({
-  required int termId,
-  required int parentTermId,
-  required int rootTermId,
-  required String creation,
-  Value<int> rowid,
-});
-typedef $$TermsParentsTableUpdateCompanionBuilder = TermsParentsCompanion
-    Function({
-  Value<int> termId,
-  Value<int> parentTermId,
-  Value<int> rootTermId,
-  Value<String> creation,
-  Value<int> rowid,
-});
+        BaseReferences<
+          _$DatabaseService,
+          $QuestionsLinkedToTagsTable,
+          QuestionsLinkedToTag
+        >,
+      ),
+      QuestionsLinkedToTag,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsParentsTableCreateCompanionBuilder =
+    TermsParentsCompanion Function({
+      required int termId,
+      required int parentTermId,
+      required int rootTermId,
+      required String creation,
+      Value<int> rowid,
+    });
+typedef $$TermsParentsTableUpdateCompanionBuilder =
+    TermsParentsCompanion Function({
+      Value<int> termId,
+      Value<int> parentTermId,
+      Value<int> rootTermId,
+      Value<String> creation,
+      Value<int> rowid,
+    });
 
 class $$TermsParentsTableFilterComposer
     extends Composer<_$DatabaseService, $TermsParentsTable> {
@@ -11075,16 +13297,24 @@ class $$TermsParentsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => ColumnFilters(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get rootTermId => $composableBuilder(
-      column: $table.rootTermId, builder: (column) => ColumnFilters(column));
+    column: $table.rootTermId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnFilters(column));
+    column: $table.creation,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsParentsTableOrderingComposer
@@ -11097,17 +13327,24 @@ class $$TermsParentsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get rootTermId => $composableBuilder(
-      column: $table.rootTermId, builder: (column) => ColumnOrderings(column));
+    column: $table.rootTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get creation => $composableBuilder(
-      column: $table.creation, builder: (column) => ColumnOrderings(column));
+    column: $table.creation,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsParentsTableAnnotationComposer
@@ -11123,33 +13360,42 @@ class $$TermsParentsTableAnnotationComposer
       $composableBuilder(column: $table.termId, builder: (column) => column);
 
   GeneratedColumn<int> get parentTermId => $composableBuilder(
-      column: $table.parentTermId, builder: (column) => column);
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get rootTermId => $composableBuilder(
-      column: $table.rootTermId, builder: (column) => column);
+    column: $table.rootTermId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
 }
 
-class $$TermsParentsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermsParentsTable,
-    TermsParent,
-    $$TermsParentsTableFilterComposer,
-    $$TermsParentsTableOrderingComposer,
-    $$TermsParentsTableAnnotationComposer,
-    $$TermsParentsTableCreateCompanionBuilder,
-    $$TermsParentsTableUpdateCompanionBuilder,
-    (
-      TermsParent,
-      BaseReferences<_$DatabaseService, $TermsParentsTable, TermsParent>
-    ),
-    TermsParent,
-    PrefetchHooks Function()> {
+class $$TermsParentsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsParentsTable,
+          TermsParent,
+          $$TermsParentsTableFilterComposer,
+          $$TermsParentsTableOrderingComposer,
+          $$TermsParentsTableAnnotationComposer,
+          $$TermsParentsTableCreateCompanionBuilder,
+          $$TermsParentsTableUpdateCompanionBuilder,
+          (
+            TermsParent,
+            BaseReferences<_$DatabaseService, $TermsParentsTable, TermsParent>,
+          ),
+          TermsParent,
+          PrefetchHooks Function()
+        > {
   $$TermsParentsTableTableManager(
-      _$DatabaseService db, $TermsParentsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermsParentsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11158,66 +13404,71 @@ class $$TermsParentsTableTableManager extends RootTableManager<
               $$TermsParentsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermsParentsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-            Value<int> parentTermId = const Value.absent(),
-            Value<int> rootTermId = const Value.absent(),
-            Value<String> creation = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsParentsCompanion(
-            termId: termId,
-            parentTermId: parentTermId,
-            rootTermId: rootTermId,
-            creation: creation,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int termId,
-            required int parentTermId,
-            required int rootTermId,
-            required String creation,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsParentsCompanion.insert(
-            termId: termId,
-            parentTermId: parentTermId,
-            rootTermId: rootTermId,
-            creation: creation,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> termId = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+                Value<int> rootTermId = const Value.absent(),
+                Value<String> creation = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermsParentsCompanion(
+                termId: termId,
+                parentTermId: parentTermId,
+                rootTermId: rootTermId,
+                creation: creation,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int termId,
+                required int parentTermId,
+                required int rootTermId,
+                required String creation,
+                Value<int> rowid = const Value.absent(),
+              }) => TermsParentsCompanion.insert(
+                termId: termId,
+                parentTermId: parentTermId,
+                rootTermId: rootTermId,
+                creation: creation,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsParentsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermsParentsTable,
-    TermsParent,
-    $$TermsParentsTableFilterComposer,
-    $$TermsParentsTableOrderingComposer,
-    $$TermsParentsTableAnnotationComposer,
-    $$TermsParentsTableCreateCompanionBuilder,
-    $$TermsParentsTableUpdateCompanionBuilder,
-    (
+typedef $$TermsParentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsParentsTable,
       TermsParent,
-      BaseReferences<_$DatabaseService, $TermsParentsTable, TermsParent>
-    ),
-    TermsParent,
-    PrefetchHooks Function()>;
-typedef $$TermTagsTableCreateCompanionBuilder = TermTagsCompanion Function({
-  Value<int> id,
-  required String name,
-  Value<int> ordering,
-});
-typedef $$TermTagsTableUpdateCompanionBuilder = TermTagsCompanion Function({
-  Value<int> id,
-  Value<String> name,
-  Value<int> ordering,
-});
+      $$TermsParentsTableFilterComposer,
+      $$TermsParentsTableOrderingComposer,
+      $$TermsParentsTableAnnotationComposer,
+      $$TermsParentsTableCreateCompanionBuilder,
+      $$TermsParentsTableUpdateCompanionBuilder,
+      (
+        TermsParent,
+        BaseReferences<_$DatabaseService, $TermsParentsTable, TermsParent>,
+      ),
+      TermsParent,
+      PrefetchHooks Function()
+    >;
+typedef $$TermTagsTableCreateCompanionBuilder =
+    TermTagsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<int> ordering,
+    });
+typedef $$TermTagsTableUpdateCompanionBuilder =
+    TermTagsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<int> ordering,
+    });
 
 class $$TermTagsTableFilterComposer
     extends Composer<_$DatabaseService, $TermTagsTable> {
@@ -11229,13 +13480,19 @@ class $$TermTagsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get ordering => $composableBuilder(
-      column: $table.ordering, builder: (column) => ColumnFilters(column));
+    column: $table.ordering,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermTagsTableOrderingComposer
@@ -11248,13 +13505,19 @@ class $$TermTagsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get ordering => $composableBuilder(
-      column: $table.ordering, builder: (column) => ColumnOrderings(column));
+    column: $table.ordering,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermTagsTableAnnotationComposer
@@ -11276,20 +13539,24 @@ class $$TermTagsTableAnnotationComposer
       $composableBuilder(column: $table.ordering, builder: (column) => column);
 }
 
-class $$TermTagsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermTagsTable,
-    TermTag,
-    $$TermTagsTableFilterComposer,
-    $$TermTagsTableOrderingComposer,
-    $$TermTagsTableAnnotationComposer,
-    $$TermTagsTableCreateCompanionBuilder,
-    $$TermTagsTableUpdateCompanionBuilder,
-    (TermTag, BaseReferences<_$DatabaseService, $TermTagsTable, TermTag>),
-    TermTag,
-    PrefetchHooks Function()> {
+class $$TermTagsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermTagsTable,
+          TermTag,
+          $$TermTagsTableFilterComposer,
+          $$TermTagsTableOrderingComposer,
+          $$TermTagsTableAnnotationComposer,
+          $$TermTagsTableCreateCompanionBuilder,
+          $$TermTagsTableUpdateCompanionBuilder,
+          (TermTag, BaseReferences<_$DatabaseService, $TermTagsTable, TermTag>),
+          TermTag,
+          PrefetchHooks Function()
+        > {
   $$TermTagsTableTableManager(_$DatabaseService db, $TermTagsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11298,57 +13565,56 @@ class $$TermTagsTableTableManager extends RootTableManager<
               $$TermTagsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermTagsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<int> ordering = const Value.absent(),
-          }) =>
-              TermTagsCompanion(
-            id: id,
-            name: name,
-            ordering: ordering,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String name,
-            Value<int> ordering = const Value.absent(),
-          }) =>
-              TermTagsCompanion.insert(
-            id: id,
-            name: name,
-            ordering: ordering,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> ordering = const Value.absent(),
+              }) => TermTagsCompanion(id: id, name: name, ordering: ordering),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<int> ordering = const Value.absent(),
+              }) => TermTagsCompanion.insert(
+                id: id,
+                name: name,
+                ordering: ordering,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermTagsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermTagsTable,
-    TermTag,
-    $$TermTagsTableFilterComposer,
-    $$TermTagsTableOrderingComposer,
-    $$TermTagsTableAnnotationComposer,
-    $$TermTagsTableCreateCompanionBuilder,
-    $$TermTagsTableUpdateCompanionBuilder,
-    (TermTag, BaseReferences<_$DatabaseService, $TermTagsTable, TermTag>),
-    TermTag,
-    PrefetchHooks Function()>;
-typedef $$TermsLinkedToTagsTableCreateCompanionBuilder
-    = TermsLinkedToTagsCompanion Function({
-  required int termId,
-  required int tagId,
-  Value<int> rowid,
-});
-typedef $$TermsLinkedToTagsTableUpdateCompanionBuilder
-    = TermsLinkedToTagsCompanion Function({
-  Value<int> termId,
-  Value<int> tagId,
-  Value<int> rowid,
-});
+typedef $$TermTagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermTagsTable,
+      TermTag,
+      $$TermTagsTableFilterComposer,
+      $$TermTagsTableOrderingComposer,
+      $$TermTagsTableAnnotationComposer,
+      $$TermTagsTableCreateCompanionBuilder,
+      $$TermTagsTableUpdateCompanionBuilder,
+      (TermTag, BaseReferences<_$DatabaseService, $TermTagsTable, TermTag>),
+      TermTag,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsLinkedToTagsTableCreateCompanionBuilder =
+    TermsLinkedToTagsCompanion Function({
+      required int termId,
+      required int tagId,
+      Value<int> rowid,
+    });
+typedef $$TermsLinkedToTagsTableUpdateCompanionBuilder =
+    TermsLinkedToTagsCompanion Function({
+      Value<int> termId,
+      Value<int> tagId,
+      Value<int> rowid,
+    });
 
 class $$TermsLinkedToTagsTableFilterComposer
     extends Composer<_$DatabaseService, $TermsLinkedToTagsTable> {
@@ -11360,10 +13626,14 @@ class $$TermsLinkedToTagsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get tagId => $composableBuilder(
-      column: $table.tagId, builder: (column) => ColumnFilters(column));
+    column: $table.tagId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsLinkedToTagsTableOrderingComposer
@@ -11376,10 +13646,14 @@ class $$TermsLinkedToTagsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get tagId => $composableBuilder(
-      column: $table.tagId, builder: (column) => ColumnOrderings(column));
+    column: $table.tagId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsLinkedToTagsTableAnnotationComposer
@@ -11398,25 +13672,33 @@ class $$TermsLinkedToTagsTableAnnotationComposer
       $composableBuilder(column: $table.tagId, builder: (column) => column);
 }
 
-class $$TermsLinkedToTagsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermsLinkedToTagsTable,
-    TermsLinkedToTag,
-    $$TermsLinkedToTagsTableFilterComposer,
-    $$TermsLinkedToTagsTableOrderingComposer,
-    $$TermsLinkedToTagsTableAnnotationComposer,
-    $$TermsLinkedToTagsTableCreateCompanionBuilder,
-    $$TermsLinkedToTagsTableUpdateCompanionBuilder,
-    (
-      TermsLinkedToTag,
-      BaseReferences<_$DatabaseService, $TermsLinkedToTagsTable,
-          TermsLinkedToTag>
-    ),
-    TermsLinkedToTag,
-    PrefetchHooks Function()> {
+class $$TermsLinkedToTagsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsLinkedToTagsTable,
+          TermsLinkedToTag,
+          $$TermsLinkedToTagsTableFilterComposer,
+          $$TermsLinkedToTagsTableOrderingComposer,
+          $$TermsLinkedToTagsTableAnnotationComposer,
+          $$TermsLinkedToTagsTableCreateCompanionBuilder,
+          $$TermsLinkedToTagsTableUpdateCompanionBuilder,
+          (
+            TermsLinkedToTag,
+            BaseReferences<
+              _$DatabaseService,
+              $TermsLinkedToTagsTable,
+              TermsLinkedToTag
+            >,
+          ),
+          TermsLinkedToTag,
+          PrefetchHooks Function()
+        > {
   $$TermsLinkedToTagsTableTableManager(
-      _$DatabaseService db, $TermsLinkedToTagsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermsLinkedToTagsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11425,58 +13707,62 @@ class $$TermsLinkedToTagsTableTableManager extends RootTableManager<
               $$TermsLinkedToTagsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermsLinkedToTagsTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-            Value<int> tagId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLinkedToTagsCompanion(
-            termId: termId,
-            tagId: tagId,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int termId,
-            required int tagId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLinkedToTagsCompanion.insert(
-            termId: termId,
-            tagId: tagId,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> termId = const Value.absent(),
+                Value<int> tagId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLinkedToTagsCompanion(
+                termId: termId,
+                tagId: tagId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int termId,
+                required int tagId,
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLinkedToTagsCompanion.insert(
+                termId: termId,
+                tagId: tagId,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsLinkedToTagsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermsLinkedToTagsTable,
-    TermsLinkedToTag,
-    $$TermsLinkedToTagsTableFilterComposer,
-    $$TermsLinkedToTagsTableOrderingComposer,
-    $$TermsLinkedToTagsTableAnnotationComposer,
-    $$TermsLinkedToTagsTableCreateCompanionBuilder,
-    $$TermsLinkedToTagsTableUpdateCompanionBuilder,
-    (
+typedef $$TermsLinkedToTagsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsLinkedToTagsTable,
       TermsLinkedToTag,
-      BaseReferences<_$DatabaseService, $TermsLinkedToTagsTable,
-          TermsLinkedToTag>
-    ),
-    TermsLinkedToTag,
-    PrefetchHooks Function()>;
-typedef $$TermLabelsTableCreateCompanionBuilder = TermLabelsCompanion Function({
-  Value<int> id,
-  required String name,
-});
-typedef $$TermLabelsTableUpdateCompanionBuilder = TermLabelsCompanion Function({
-  Value<int> id,
-  Value<String> name,
-});
+      $$TermsLinkedToTagsTableFilterComposer,
+      $$TermsLinkedToTagsTableOrderingComposer,
+      $$TermsLinkedToTagsTableAnnotationComposer,
+      $$TermsLinkedToTagsTableCreateCompanionBuilder,
+      $$TermsLinkedToTagsTableUpdateCompanionBuilder,
+      (
+        TermsLinkedToTag,
+        BaseReferences<
+          _$DatabaseService,
+          $TermsLinkedToTagsTable,
+          TermsLinkedToTag
+        >,
+      ),
+      TermsLinkedToTag,
+      PrefetchHooks Function()
+    >;
+typedef $$TermLabelsTableCreateCompanionBuilder =
+    TermLabelsCompanion Function({Value<int> id, required String name});
+typedef $$TermLabelsTableUpdateCompanionBuilder =
+    TermLabelsCompanion Function({Value<int> id, Value<String> name});
 
 class $$TermLabelsTableFilterComposer
     extends Composer<_$DatabaseService, $TermLabelsTable> {
@@ -11488,10 +13774,14 @@ class $$TermLabelsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermLabelsTableOrderingComposer
@@ -11504,10 +13794,14 @@ class $$TermLabelsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermLabelsTableAnnotationComposer
@@ -11526,20 +13820,27 @@ class $$TermLabelsTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 }
 
-class $$TermLabelsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermLabelsTable,
-    TermLabel,
-    $$TermLabelsTableFilterComposer,
-    $$TermLabelsTableOrderingComposer,
-    $$TermLabelsTableAnnotationComposer,
-    $$TermLabelsTableCreateCompanionBuilder,
-    $$TermLabelsTableUpdateCompanionBuilder,
-    (TermLabel, BaseReferences<_$DatabaseService, $TermLabelsTable, TermLabel>),
-    TermLabel,
-    PrefetchHooks Function()> {
+class $$TermLabelsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermLabelsTable,
+          TermLabel,
+          $$TermLabelsTableFilterComposer,
+          $$TermLabelsTableOrderingComposer,
+          $$TermLabelsTableAnnotationComposer,
+          $$TermLabelsTableCreateCompanionBuilder,
+          $$TermLabelsTableUpdateCompanionBuilder,
+          (
+            TermLabel,
+            BaseReferences<_$DatabaseService, $TermLabelsTable, TermLabel>,
+          ),
+          TermLabel,
+          PrefetchHooks Function()
+        > {
   $$TermLabelsTableTableManager(_$DatabaseService db, $TermLabelsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11548,53 +13849,51 @@ class $$TermLabelsTableTableManager extends RootTableManager<
               $$TermLabelsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermLabelsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-          }) =>
-              TermLabelsCompanion(
-            id: id,
-            name: name,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String name,
-          }) =>
-              TermLabelsCompanion.insert(
-            id: id,
-            name: name,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+              }) => TermLabelsCompanion(id: id, name: name),
+          createCompanionCallback:
+              ({Value<int> id = const Value.absent(), required String name}) =>
+                  TermLabelsCompanion.insert(id: id, name: name),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermLabelsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermLabelsTable,
-    TermLabel,
-    $$TermLabelsTableFilterComposer,
-    $$TermLabelsTableOrderingComposer,
-    $$TermLabelsTableAnnotationComposer,
-    $$TermLabelsTableCreateCompanionBuilder,
-    $$TermLabelsTableUpdateCompanionBuilder,
-    (TermLabel, BaseReferences<_$DatabaseService, $TermLabelsTable, TermLabel>),
-    TermLabel,
-    PrefetchHooks Function()>;
-typedef $$TermsLinkedToLabelsTableCreateCompanionBuilder
-    = TermsLinkedToLabelsCompanion Function({
-  required int termId,
-  required int labelId,
-  Value<int> rowid,
-});
-typedef $$TermsLinkedToLabelsTableUpdateCompanionBuilder
-    = TermsLinkedToLabelsCompanion Function({
-  Value<int> termId,
-  Value<int> labelId,
-  Value<int> rowid,
-});
+typedef $$TermLabelsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermLabelsTable,
+      TermLabel,
+      $$TermLabelsTableFilterComposer,
+      $$TermLabelsTableOrderingComposer,
+      $$TermLabelsTableAnnotationComposer,
+      $$TermLabelsTableCreateCompanionBuilder,
+      $$TermLabelsTableUpdateCompanionBuilder,
+      (
+        TermLabel,
+        BaseReferences<_$DatabaseService, $TermLabelsTable, TermLabel>,
+      ),
+      TermLabel,
+      PrefetchHooks Function()
+    >;
+typedef $$TermsLinkedToLabelsTableCreateCompanionBuilder =
+    TermsLinkedToLabelsCompanion Function({
+      required int termId,
+      required int labelId,
+      Value<int> rowid,
+    });
+typedef $$TermsLinkedToLabelsTableUpdateCompanionBuilder =
+    TermsLinkedToLabelsCompanion Function({
+      Value<int> termId,
+      Value<int> labelId,
+      Value<int> rowid,
+    });
 
 class $$TermsLinkedToLabelsTableFilterComposer
     extends Composer<_$DatabaseService, $TermsLinkedToLabelsTable> {
@@ -11606,10 +13905,14 @@ class $$TermsLinkedToLabelsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get labelId => $composableBuilder(
-      column: $table.labelId, builder: (column) => ColumnFilters(column));
+    column: $table.labelId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermsLinkedToLabelsTableOrderingComposer
@@ -11622,10 +13925,14 @@ class $$TermsLinkedToLabelsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get labelId => $composableBuilder(
-      column: $table.labelId, builder: (column) => ColumnOrderings(column));
+    column: $table.labelId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermsLinkedToLabelsTableAnnotationComposer
@@ -11644,92 +13951,110 @@ class $$TermsLinkedToLabelsTableAnnotationComposer
       $composableBuilder(column: $table.labelId, builder: (column) => column);
 }
 
-class $$TermsLinkedToLabelsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermsLinkedToLabelsTable,
-    TermsLinkedToLabel,
-    $$TermsLinkedToLabelsTableFilterComposer,
-    $$TermsLinkedToLabelsTableOrderingComposer,
-    $$TermsLinkedToLabelsTableAnnotationComposer,
-    $$TermsLinkedToLabelsTableCreateCompanionBuilder,
-    $$TermsLinkedToLabelsTableUpdateCompanionBuilder,
-    (
-      TermsLinkedToLabel,
-      BaseReferences<_$DatabaseService, $TermsLinkedToLabelsTable,
-          TermsLinkedToLabel>
-    ),
-    TermsLinkedToLabel,
-    PrefetchHooks Function()> {
+class $$TermsLinkedToLabelsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsLinkedToLabelsTable,
+          TermsLinkedToLabel,
+          $$TermsLinkedToLabelsTableFilterComposer,
+          $$TermsLinkedToLabelsTableOrderingComposer,
+          $$TermsLinkedToLabelsTableAnnotationComposer,
+          $$TermsLinkedToLabelsTableCreateCompanionBuilder,
+          $$TermsLinkedToLabelsTableUpdateCompanionBuilder,
+          (
+            TermsLinkedToLabel,
+            BaseReferences<
+              _$DatabaseService,
+              $TermsLinkedToLabelsTable,
+              TermsLinkedToLabel
+            >,
+          ),
+          TermsLinkedToLabel,
+          PrefetchHooks Function()
+        > {
   $$TermsLinkedToLabelsTableTableManager(
-      _$DatabaseService db, $TermsLinkedToLabelsTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermsLinkedToLabelsTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
               $$TermsLinkedToLabelsTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
               $$TermsLinkedToLabelsTableOrderingComposer(
-                  $db: db, $table: table),
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer: () =>
               $$TermsLinkedToLabelsTableAnnotationComposer(
-                  $db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-            Value<int> labelId = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLinkedToLabelsCompanion(
-            termId: termId,
-            labelId: labelId,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int termId,
-            required int labelId,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermsLinkedToLabelsCompanion.insert(
-            termId: termId,
-            labelId: labelId,
-            rowid: rowid,
-          ),
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> termId = const Value.absent(),
+                Value<int> labelId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLinkedToLabelsCompanion(
+                termId: termId,
+                labelId: labelId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int termId,
+                required int labelId,
+                Value<int> rowid = const Value.absent(),
+              }) => TermsLinkedToLabelsCompanion.insert(
+                termId: termId,
+                labelId: labelId,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermsLinkedToLabelsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermsLinkedToLabelsTable,
-    TermsLinkedToLabel,
-    $$TermsLinkedToLabelsTableFilterComposer,
-    $$TermsLinkedToLabelsTableOrderingComposer,
-    $$TermsLinkedToLabelsTableAnnotationComposer,
-    $$TermsLinkedToLabelsTableCreateCompanionBuilder,
-    $$TermsLinkedToLabelsTableUpdateCompanionBuilder,
-    (
+typedef $$TermsLinkedToLabelsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsLinkedToLabelsTable,
       TermsLinkedToLabel,
-      BaseReferences<_$DatabaseService, $TermsLinkedToLabelsTable,
-          TermsLinkedToLabel>
-    ),
-    TermsLinkedToLabel,
-    PrefetchHooks Function()>;
-typedef $$TermPropertiesTableCreateCompanionBuilder = TermPropertiesCompanion
-    Function({
-  required int termId,
-  required String name,
-  required String value,
-  Value<int> rowid,
-});
-typedef $$TermPropertiesTableUpdateCompanionBuilder = TermPropertiesCompanion
-    Function({
-  Value<int> termId,
-  Value<String> name,
-  Value<String> value,
-  Value<int> rowid,
-});
+      $$TermsLinkedToLabelsTableFilterComposer,
+      $$TermsLinkedToLabelsTableOrderingComposer,
+      $$TermsLinkedToLabelsTableAnnotationComposer,
+      $$TermsLinkedToLabelsTableCreateCompanionBuilder,
+      $$TermsLinkedToLabelsTableUpdateCompanionBuilder,
+      (
+        TermsLinkedToLabel,
+        BaseReferences<
+          _$DatabaseService,
+          $TermsLinkedToLabelsTable,
+          TermsLinkedToLabel
+        >,
+      ),
+      TermsLinkedToLabel,
+      PrefetchHooks Function()
+    >;
+typedef $$TermPropertiesTableCreateCompanionBuilder =
+    TermPropertiesCompanion Function({
+      required int termId,
+      required String name,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$TermPropertiesTableUpdateCompanionBuilder =
+    TermPropertiesCompanion Function({
+      Value<int> termId,
+      Value<String> name,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
 class $$TermPropertiesTableFilterComposer
     extends Composer<_$DatabaseService, $TermPropertiesTable> {
@@ -11741,13 +14066,19 @@ class $$TermPropertiesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnFilters(column));
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TermPropertiesTableOrderingComposer
@@ -11760,13 +14091,19 @@ class $$TermPropertiesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get termId => $composableBuilder(
-      column: $table.termId, builder: (column) => ColumnOrderings(column));
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TermPropertiesTableAnnotationComposer
@@ -11788,24 +14125,33 @@ class $$TermPropertiesTableAnnotationComposer
       $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
-class $$TermPropertiesTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $TermPropertiesTable,
-    TermProperty,
-    $$TermPropertiesTableFilterComposer,
-    $$TermPropertiesTableOrderingComposer,
-    $$TermPropertiesTableAnnotationComposer,
-    $$TermPropertiesTableCreateCompanionBuilder,
-    $$TermPropertiesTableUpdateCompanionBuilder,
-    (
-      TermProperty,
-      BaseReferences<_$DatabaseService, $TermPropertiesTable, TermProperty>
-    ),
-    TermProperty,
-    PrefetchHooks Function()> {
+class $$TermPropertiesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermPropertiesTable,
+          TermProperty,
+          $$TermPropertiesTableFilterComposer,
+          $$TermPropertiesTableOrderingComposer,
+          $$TermPropertiesTableAnnotationComposer,
+          $$TermPropertiesTableCreateCompanionBuilder,
+          $$TermPropertiesTableUpdateCompanionBuilder,
+          (
+            TermProperty,
+            BaseReferences<
+              _$DatabaseService,
+              $TermPropertiesTable,
+              TermProperty
+            >,
+          ),
+          TermProperty,
+          PrefetchHooks Function()
+        > {
   $$TermPropertiesTableTableManager(
-      _$DatabaseService db, $TermPropertiesTable table)
-      : super(TableManagerState(
+    _$DatabaseService db,
+    $TermPropertiesTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11814,62 +14160,67 @@ class $$TermPropertiesTableTableManager extends RootTableManager<
               $$TermPropertiesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TermPropertiesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> termId = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermPropertiesCompanion(
-            termId: termId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int termId,
-            required String name,
-            required String value,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TermPropertiesCompanion.insert(
-            termId: termId,
-            name: name,
-            value: value,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> termId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TermPropertiesCompanion(
+                termId: termId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int termId,
+                required String name,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => TermPropertiesCompanion.insert(
+                termId: termId,
+                name: name,
+                value: value,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TermPropertiesTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $TermPropertiesTable,
-    TermProperty,
-    $$TermPropertiesTableFilterComposer,
-    $$TermPropertiesTableOrderingComposer,
-    $$TermPropertiesTableAnnotationComposer,
-    $$TermPropertiesTableCreateCompanionBuilder,
-    $$TermPropertiesTableUpdateCompanionBuilder,
-    (
+typedef $$TermPropertiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermPropertiesTable,
       TermProperty,
-      BaseReferences<_$DatabaseService, $TermPropertiesTable, TermProperty>
-    ),
-    TermProperty,
-    PrefetchHooks Function()>;
-typedef $$ConfigsTableCreateCompanionBuilder = ConfigsCompanion Function({
-  required String title,
-  required String value,
-  Value<int> rowid,
-});
-typedef $$ConfigsTableUpdateCompanionBuilder = ConfigsCompanion Function({
-  Value<String> title,
-  Value<String> value,
-  Value<int> rowid,
-});
+      $$TermPropertiesTableFilterComposer,
+      $$TermPropertiesTableOrderingComposer,
+      $$TermPropertiesTableAnnotationComposer,
+      $$TermPropertiesTableCreateCompanionBuilder,
+      $$TermPropertiesTableUpdateCompanionBuilder,
+      (
+        TermProperty,
+        BaseReferences<_$DatabaseService, $TermPropertiesTable, TermProperty>,
+      ),
+      TermProperty,
+      PrefetchHooks Function()
+    >;
+typedef $$ConfigsTableCreateCompanionBuilder =
+    ConfigsCompanion Function({
+      required String title,
+      required String value,
+      Value<int> rowid,
+    });
+typedef $$ConfigsTableUpdateCompanionBuilder =
+    ConfigsCompanion Function({
+      Value<String> title,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
 class $$ConfigsTableFilterComposer
     extends Composer<_$DatabaseService, $ConfigsTable> {
@@ -11881,10 +14232,14 @@ class $$ConfigsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnFilters(column));
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$ConfigsTableOrderingComposer
@@ -11897,10 +14252,14 @@ class $$ConfigsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get value => $composableBuilder(
-      column: $table.value, builder: (column) => ColumnOrderings(column));
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ConfigsTableAnnotationComposer
@@ -11919,20 +14278,24 @@ class $$ConfigsTableAnnotationComposer
       $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
-class $$ConfigsTableTableManager extends RootTableManager<
-    _$DatabaseService,
-    $ConfigsTable,
-    Config,
-    $$ConfigsTableFilterComposer,
-    $$ConfigsTableOrderingComposer,
-    $$ConfigsTableAnnotationComposer,
-    $$ConfigsTableCreateCompanionBuilder,
-    $$ConfigsTableUpdateCompanionBuilder,
-    (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
-    Config,
-    PrefetchHooks Function()> {
+class $$ConfigsTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $ConfigsTable,
+          Config,
+          $$ConfigsTableFilterComposer,
+          $$ConfigsTableOrderingComposer,
+          $$ConfigsTableAnnotationComposer,
+          $$ConfigsTableCreateCompanionBuilder,
+          $$ConfigsTableUpdateCompanionBuilder,
+          (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
+          Config,
+          PrefetchHooks Function()
+        > {
   $$ConfigsTableTableManager(_$DatabaseService db, $ConfigsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -11941,45 +14304,234 @@ class $$ConfigsTableTableManager extends RootTableManager<
               $$ConfigsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$ConfigsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> title = const Value.absent(),
-            Value<String> value = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              ConfigsCompanion(
-            title: title,
-            value: value,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String title,
-            required String value,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              ConfigsCompanion.insert(
-            title: title,
-            value: value,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> title = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ConfigsCompanion(title: title, value: value, rowid: rowid),
+          createCompanionCallback:
+              ({
+                required String title,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => ConfigsCompanion.insert(
+                title: title,
+                value: value,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$ConfigsTableProcessedTableManager = ProcessedTableManager<
-    _$DatabaseService,
-    $ConfigsTable,
-    Config,
-    $$ConfigsTableFilterComposer,
-    $$ConfigsTableOrderingComposer,
-    $$ConfigsTableAnnotationComposer,
-    $$ConfigsTableCreateCompanionBuilder,
-    $$ConfigsTableUpdateCompanionBuilder,
-    (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
-    Config,
-    PrefetchHooks Function()>;
+typedef $$ConfigsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $ConfigsTable,
+      Config,
+      $$ConfigsTableFilterComposer,
+      $$ConfigsTableOrderingComposer,
+      $$ConfigsTableAnnotationComposer,
+      $$ConfigsTableCreateCompanionBuilder,
+      $$ConfigsTableUpdateCompanionBuilder,
+      (Config, BaseReferences<_$DatabaseService, $ConfigsTable, Config>),
+      Config,
+      PrefetchHooks Function()
+    >;
+typedef $$ImagesTableCreateCompanionBuilder =
+    ImagesCompanion Function({
+      Value<int> id,
+      required String url,
+      required String title,
+      required String info,
+      required int parentTermId,
+    });
+typedef $$ImagesTableUpdateCompanionBuilder =
+    ImagesCompanion Function({
+      Value<int> id,
+      Value<String> url,
+      Value<String> title,
+      Value<String> info,
+      Value<int> parentTermId,
+    });
+
+class $$ImagesTableFilterComposer
+    extends Composer<_$DatabaseService, $ImagesTable> {
+  $$ImagesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get url => $composableBuilder(
+    column: $table.url,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get info => $composableBuilder(
+    column: $table.info,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get parentTermId => $composableBuilder(
+    column: $table.parentTermId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ImagesTableOrderingComposer
+    extends Composer<_$DatabaseService, $ImagesTable> {
+  $$ImagesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get url => $composableBuilder(
+    column: $table.url,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get info => $composableBuilder(
+    column: $table.info,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get parentTermId => $composableBuilder(
+    column: $table.parentTermId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ImagesTableAnnotationComposer
+    extends Composer<_$DatabaseService, $ImagesTable> {
+  $$ImagesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get url =>
+      $composableBuilder(column: $table.url, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get info =>
+      $composableBuilder(column: $table.info, builder: (column) => column);
+
+  GeneratedColumn<int> get parentTermId => $composableBuilder(
+    column: $table.parentTermId,
+    builder: (column) => column,
+  );
+}
+
+class $$ImagesTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $ImagesTable,
+          Image,
+          $$ImagesTableFilterComposer,
+          $$ImagesTableOrderingComposer,
+          $$ImagesTableAnnotationComposer,
+          $$ImagesTableCreateCompanionBuilder,
+          $$ImagesTableUpdateCompanionBuilder,
+          (Image, BaseReferences<_$DatabaseService, $ImagesTable, Image>),
+          Image,
+          PrefetchHooks Function()
+        > {
+  $$ImagesTableTableManager(_$DatabaseService db, $ImagesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ImagesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ImagesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ImagesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> url = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> info = const Value.absent(),
+                Value<int> parentTermId = const Value.absent(),
+              }) => ImagesCompanion(
+                id: id,
+                url: url,
+                title: title,
+                info: info,
+                parentTermId: parentTermId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String url,
+                required String title,
+                required String info,
+                required int parentTermId,
+              }) => ImagesCompanion.insert(
+                id: id,
+                url: url,
+                title: title,
+                info: info,
+                parentTermId: parentTermId,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ImagesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $ImagesTable,
+      Image,
+      $$ImagesTableFilterComposer,
+      $$ImagesTableOrderingComposer,
+      $$ImagesTableAnnotationComposer,
+      $$ImagesTableCreateCompanionBuilder,
+      $$ImagesTableUpdateCompanionBuilder,
+      (Image, BaseReferences<_$DatabaseService, $ImagesTable, Image>),
+      Image,
+      PrefetchHooks Function()
+    >;
 
 class $DatabaseServiceManager {
   final _$DatabaseService _db;
@@ -12015,9 +14567,11 @@ class $DatabaseServiceManager {
   $$HttpRequestsTableTableManager get httpRequests =>
       $$HttpRequestsTableTableManager(_db, _db.httpRequests);
   $$TermsWithQuestionsFilteringEnabledTableTableManager
-      get termsWithQuestionsFilteringEnabled =>
-          $$TermsWithQuestionsFilteringEnabledTableTableManager(
-              _db, _db.termsWithQuestionsFilteringEnabled);
+  get termsWithQuestionsFilteringEnabled =>
+      $$TermsWithQuestionsFilteringEnabledTableTableManager(
+        _db,
+        _db.termsWithQuestionsFilteringEnabled,
+      );
   $$FlashcardsTableTableManager get flashcards =>
       $$FlashcardsTableTableManager(_db, _db.flashcards);
   $$VoiceNotesTableTableManager get voiceNotes =>
@@ -12042,4 +14596,6 @@ class $DatabaseServiceManager {
       $$TermPropertiesTableTableManager(_db, _db.termProperties);
   $$ConfigsTableTableManager get configs =>
       $$ConfigsTableTableManager(_db, _db.configs);
+  $$ImagesTableTableManager get images =>
+      $$ImagesTableTableManager(_db, _db.images);
 }

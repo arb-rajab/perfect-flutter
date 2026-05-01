@@ -53,6 +53,7 @@ class _TermWidgetState extends State<TermWidget> {
       TermType.youtubeVideos,
       TermType.flashcards,
       TermType.voiceNotes,
+      TermType.images,
       TermType.videoFile
     ].contains(termData.term.type)) {
       return const UnsupportedContentWidget();

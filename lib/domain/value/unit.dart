@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'unit.freezed.dart';
 
 @freezed
-class Unit with _$Unit {
+abstract class Unit with _$Unit {
   const Unit._(); // Add private constructor for custom methods
 
   const factory Unit(

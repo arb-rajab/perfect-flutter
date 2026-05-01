@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'product_type_id.freezed.dart';
 
 @freezed
-class ProductTypeId with _$ProductTypeId {
+abstract class ProductTypeId with _$ProductTypeId {
   @Assert("value>=0")
   const factory ProductTypeId(int value) = _ProductTypeId;
 }

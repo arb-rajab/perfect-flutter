@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'type.freezed.dart';
 
 @freezed
-class Type with _$Type {
+abstract class Type with _$Type {
   @Assert("value>0")
   const factory Type(int value) = _Type;
 }

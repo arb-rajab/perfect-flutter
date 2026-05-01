@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
+import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/related_term_service.dart';
@@ -22,7 +23,7 @@ import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/term_widget.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
 
@@ -771,6 +772,197 @@ void main() {
       });
     });
 
+group('images term type', () {
+      testWidgets(
+        'delete icon is not rendered for images term type that is not downloaded',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'delete icon is rendered for images term type that is downloaded',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'title',
+              info: 'info',
+              parentTermId: 3,
+            ),
+          ]);
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets('delete icon tap shows a confirmation dialogue', (
+        widgetTester,
+      ) async {
+        await createTermData(type: TermType.images);
+        ImageService imageService = Get.find();
+        await imageService.addImages([
+          const Image(
+            id: 1000,
+            url: 'url',
+            title: 'title',
+            info: 'info',
+            parentTermId: 3,
+          ),
+        ]);
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the delete icon
+        await widgetTester.tap(find.byIcon(Icons.delete));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(ConfirmDialogue), findsOneWidget);
+      });
+
+      testWidgets(
+        'delete icon tap shows a confirmation dialogue, then tapping cancel dismisses the dialogue',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'title',
+              info: 'info',
+              parentTermId: 3,
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the delete icon
+          await widgetTester.tap(find.byIcon(Icons.delete));
+          await widgetTester.pumpAndSettle();
+
+          // tap cancel buuton
+          await widgetTester.tap(find.text(StringConstant.cancel));
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(ConfirmDialogue), findsNothing);
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'delete icon tap shows a confirmation dialogue, then tapping ok dismisses the dialogue and deletes data',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'title',
+              info: 'info',
+              parentTermId: 3,
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the delete icon
+          await widgetTester.tap(find.byIcon(Icons.delete));
+          await widgetTester.pumpAndSettle();
+
+          // tap ok buuton
+          await widgetTester.tap(find.text(StringConstant.ok));
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(ConfirmDialogue), findsNothing);
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget,
+          );
+        },
+      );
+    });
+
     group('voice notes term type', () {
       testWidgets(
           'delete icon is not rendered for voice notes term type that is not downloaded',
@@ -1113,6 +1305,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images": [],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -1266,6 +1459,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images": [],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -1541,6 +1735,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images": [],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -1694,6 +1889,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images": [],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -1806,6 +2002,7 @@ void main() {
               r'''
 {
     "questions": [],
+    "images":[],
         "flashcards": [
             {
                 "id": 20,
@@ -1922,6 +2119,7 @@ void main() {
           server.reply(200, r'''
 {
     "questions": [],
+    "images":[],
         "flashcards": [
             {
                 "id": 20,
@@ -1965,6 +2163,236 @@ void main() {
             findsNothing);
         expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
             findsOneWidget);
+      });
+    });
+
+group('images term type tests', () {
+      testWidgets('download icon is rendered for images term type', (
+        widgetTester,
+      ) async {
+        await createTermData(type: TermType.images);
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        expect(
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('download icon tapping shows a loading', (
+        widgetTester,
+      ) async {
+        await createTermData(type: TermType.images);
+        dioAdapter.onGet(
+          ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          (server) {
+            server.reply(200, r'''
+{
+    "questions": [],
+    "flashcards":[],
+        "images": [
+            {
+                "id": 20,
+                "title": "تجريب",
+                "info": "🟢 نصائح لاجتياز الامتحان: ركز على الفقرات الأساسية بدلاً من حفظ كل شيء. الخرائط والدورات السابقة تدلك على المسار الأمثل.",
+                "parentTermId": 67,
+                "url:"url"
+                "creation": "2024-10-12 04:50:39",
+                "onUpdate": "2024-10-12 04:50:22",
+                "deleted_at": null,
+                "deleted_by": null
+            }
+        ],
+            "answers": [],
+            "images":[],
+                "media": [],
+                    "questionsLinkedToTags": [],
+                        "questionTags": [],
+                            "result": "success",
+                                "message": ""
+  }
+''', delay: const Duration(seconds: 1));
+          },
+        );
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pump();
+
+        expect(
+          widgetWithTextAndWidget(
+            TermWidget,
+            'name',
+            CircularProgressIndicator,
+          ),
+          findsOneWidget,
+        );
+        await widgetTester.pumpAndSettle();
+      });
+
+      testWidgets(
+        'download icon tapping shows no connection when there is no connection',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          mockNoConnection(
+            route: ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          );
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          // tap download icon
+          await widgetTester.tap(find.byIcon(Icons.cloud_download));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.noConnection),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'download icon tapping shows a message when a message is recieved',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          mockMessageRecieved(
+            route: ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          );
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          // tap download icon
+          await widgetTester.tap(find.byIcon(Icons.cloud_download));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            find.widgetWithText(OKDialogue, 'a message recieved'),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets('download icon tapping downloads data', (widgetTester) async {
+        await createTermData(type: TermType.images);
+
+        dioAdapter.onGet(
+          ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          (server) {
+            server.reply(200, r'''
+{
+    "questions": [],
+    "flashcards": [],
+        "images": [
+            {
+                "id": 20,
+                "url":"url",
+                "title": "تجريب",
+                "info": "🟢 نصائح لاجتياز الامتحان: ركز على الفقرات الأساسية بدلاً من حفظ كل شيء. الخرائط والدورات السابقة تدلك على المسار الأمثل.",
+                "parentTermId": 67,
+                "creation": "2024-10-12 04:50:39",
+                "onUpdate": "2024-10-12 04:50:22",
+                "deleted_at": null,
+                "deleted_by": null
+            }
+        ],
+            "answers": [],
+                "media": [],
+                    "questionsLinkedToTags": [],
+                        "questionTags": [],
+                            "result": "success",
+                                "message": ""
+  }
+''');
+          },
+        );
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byIcon(Icons.cloud_download));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(OKDialogue), findsNothing);
+        expect(
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.cloud_download),
+          findsNothing,
+        );
+        expect(
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.delete),
+          findsOneWidget,
+        );
       });
     });
 
@@ -2458,6 +2886,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images":[],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -2660,6 +3089,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images":[],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -3100,6 +3530,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images":[],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -3302,6 +3733,7 @@ void main() {
         "ordering": 120
     }],
     "flashcards": [],
+    "images":[],
     "answers": [{
         "id": 10466304,
         "uuid": "1e1de905de436dd1b4e2445968d5bcfa",
@@ -3627,6 +4059,331 @@ void main() {
         expect(find.byType(OKDialogue), findsNothing);
         expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
             findsNothing);
+      });
+    });
+
+group('images term type tests', () {
+      testWidgets(
+        'icon is not rendered for images term type that is not downloaded',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'icon is rendered for images term type that is downloaded but does not need update',
+        (widgetTester) async {
+          await createTermData(type: TermType.images);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'head',
+              info: 'tail',
+              parentTermId: 3,
+            ),
+          ]);
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets(
+        'icon is rendered for images term type that is downloaded and needs update',
+        (widgetTester) async {
+          await createTermData(type: TermType.images, needsUpdate: 1);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'head',
+              info: 'tail',
+              parentTermId: 3,
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets('icon tapping shows a loading', (widgetTester) async {
+        await createTermData(type: TermType.images, needsUpdate: 1);
+        ImageService imageService = Get.find();
+        await imageService.addImages([
+          const Image(
+            id: 1000,
+            url: 'url',
+            title: 'head',
+            info: 'tail',
+            parentTermId: 3,
+          ),
+        ]);
+        dioAdapter.onGet(
+          ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          (server) {
+            server.reply(200, r'''
+{
+    "questions": [],
+    "flashcards":[],
+        "images": [
+            {
+                "id": 20,
+                "url":"url",
+                "title": "تجريب",
+                "info": "🟢 نصائح لاجتياز الامتحان: ركز على الفقرات الأساسية بدلاً من حفظ كل شيء. الخرائط والدورات السابقة تدلك على المسار الأمثل.",
+                "parentTermId": 67,
+                "creation": "2024-10-12 04:50:39",
+                "onUpdate": "2024-10-12 04:50:22",
+                "deleted_at": null,
+                "deleted_by": null
+            }
+        ],
+            "answers": [],
+                "media": [],
+                    "questionsLinkedToTags": [],
+                        "questionTags": [],
+                            "result": "success",
+                                "message": ""
+  }
+''');
+          },
+        );
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pump();
+
+        expect(
+          widgetWithTextAndWidget(
+            TermWidget,
+            'name',
+            CircularProgressIndicator,
+          ),
+          findsOneWidget,
+        );
+        await widgetTester.pumpAndSettle();
+      });
+
+      testWidgets(
+        'icon tapping shows no connection when there is no connection',
+        (widgetTester) async {
+          await createTermData(type: TermType.images, needsUpdate: 1);
+          ImageService imageService = Get.find();
+          await imageService.addImages([
+            const Image(
+              id: 1000,
+              url: 'url',
+              title: 'head',
+              info: 'tail',
+              parentTermId: 3,
+            ),
+          ]);
+          mockNoConnection(
+            route: ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          );
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          // tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          // tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          // tap download icon
+          await widgetTester.tap(find.byKey(const Key('refresh')));
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.noConnection),
+            findsOneWidget,
+          );
+          expect(
+            widgetWithTextAndKey(TermWidget, 'name', const Key('refresh')),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets('icon tapping shows a message when a message is recieved', (
+        widgetTester,
+      ) async {
+        await createTermData(type: TermType.images, needsUpdate: 1);
+        ImageService imageService = Get.find();
+        await imageService.addImages([
+          const Image(
+            id: 1000,
+            url: 'url',
+            title: 'head',
+            info: 'tail',
+            parentTermId: 3,
+          ),
+        ]);
+        mockMessageRecieved(
+          route: ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+        );
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pumpAndSettle();
+
+        expect(
+          find.widgetWithText(OKDialogue, 'a message recieved'),
+          findsOneWidget,
+        );
+        expect(
+          widgetWithTextAndKey(TermWidget, 'name', const Key('refresh')),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('refresh icon tapping downloads data', (widgetTester) async {
+        await createTermData(type: TermType.images, needsUpdate: 1);
+        ImageService imageService = Get.find();
+        await imageService.addImages([
+          const Image(
+            id: 1000,
+            url: 'url',
+            title: 'head',
+            info: 'tail',
+            parentTermId: 3,
+          ),
+        ]);
+
+        dioAdapter.onGet(
+          ApiConstant.getTermContent.replaceFirst('(TERM_ID)', '3'),
+          (server) {
+            server.reply(200, r'''
+{
+    "questions": [],
+    "flashcards":[],
+        "images": [
+            {
+                "id": 20,
+                "url":"url",
+                "title": "تجريب",
+                "info": "🟢 نصائح لاجتياز الامتحان: ركز على الفقرات الأساسية بدلاً من حفظ كل شيء. الخرائط والدورات السابقة تدلك على المسار الأمثل.",
+                "parentTermId": 67,
+                "creation": "2024-10-12 04:50:39",
+                "onUpdate": "2024-10-12 04:50:22",
+                "deleted_at": null,
+                "deleted_by": null
+            }
+        ],
+            "answers": [],
+                "media": [],
+                    "questionsLinkedToTags": [],
+                        "questionTags": [],
+                            "result": "success",
+                                "message": ""
+  }
+''');
+          },
+        );
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        // tap the parent term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+        await widgetTester.pumpAndSettle();
+
+        // tap the child term
+        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+        await widgetTester.pumpAndSettle();
+
+        // tap download icon
+        await widgetTester.tap(find.byKey(const Key('refresh')));
+        await widgetTester.pumpAndSettle();
+
+        expect(find.byType(OKDialogue), findsNothing);
+        expect(
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+          findsNothing,
+        );
       });
     });
 

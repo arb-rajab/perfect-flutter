@@ -26,6 +26,9 @@ class NumberOfChildrenWidget extends StatelessWidget {
       case TermType.flashcards:
         icon = const Icon(Icons.style);
         break;
+      case TermType.images:
+        icon = const Icon(Icons.image);
+        break;
       case TermType.voiceNotes:
         icon = const Icon(Icons.audiotrack);
         break;
@@ -38,21 +41,27 @@ class NumberOfChildrenWidget extends StatelessWidget {
 
     if ([
       TermType.flashcards,
+      TermType.images,
       TermType.questions,
       TermType.template,
-      TermType.term
+      TermType.term,
     ].contains(termData.term.type)) {
-      return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        icon,
-        const Text('x'),
-        if (termData.term.type == TermType.term)
-          AnimatedCounter(value: termData.numberOfSubTerms!.value!),
-        if (termData.term.type == TermType.questions ||
-            termData.term.type == TermType.template)
-          Text(termData.numberOfQuestions!.value!.toString()),
-        if (termData.term.type == TermType.flashcards)
-          Text(termData.numberOfFlashcards!.value!.toString())
-      ]);
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          icon,
+          const Text('x'),
+          if (termData.term.type == TermType.term)
+            AnimatedCounter(value: termData.numberOfSubTerms!.value!),
+          if (termData.term.type == TermType.questions ||
+              termData.term.type == TermType.template)
+            Text(termData.numberOfQuestions!.value!.toString()),
+          if (termData.term.type == TermType.flashcards)
+            Text(termData.numberOfFlashcards!.value!.toString()),
+          if (termData.term.type == TermType.images)
+            Text(termData.numberOfImages!.value!.toString()),
+        ],
+      );
     }
     return const SizedBox();
   }

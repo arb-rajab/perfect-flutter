@@ -8,8 +8,7 @@ part 'coupon_type.freezed.dart';
 part 'coupon_type.g.dart';
 
 @freezed
-@JsonSerializable()
-class CouponType with _$CouponType {
+abstract class CouponType with _$CouponType {
   factory CouponType(
       {@IdJsonConverter() required Id id,
       @LayerJsonConverter() required Layer layer,
@@ -17,9 +16,9 @@ class CouponType with _$CouponType {
       @NumberOfObjectsJsonConverter()
       required NumberOfObjects numberOfObjects}) = _CouponType;
 
-  static CouponType fromJson(Map<String, dynamic> json) =>
+  factory CouponType.fromJson(Map<String, dynamic> json) =>
       _$CouponTypeFromJson(json);
 
-  static Map<String, dynamic> toJson(CouponType instance) =>
-      _$CouponTypeToJson(instance);
+  // static Map<String, dynamic> toJson(CouponType instance) =>
+  //     _$CouponTypeToJson(instance);
 }

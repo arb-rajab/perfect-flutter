@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'number_of_sub_terms.freezed.dart';
 
 @freezed
-class NumberOfSubTerms with _$NumberOfSubTerms {
+abstract class NumberOfSubTerms with _$NumberOfSubTerms {
   @Assert("value==null||value>=0")
   const factory NumberOfSubTerms(int? value) = _NumberOfSubTerms;
 }

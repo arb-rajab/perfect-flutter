@@ -1,3 +1,4 @@
+import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/answer_service.dart';
@@ -26,6 +27,8 @@ class MockAnswerService extends Mock implements AnswerService {}
 
 class MockFlashcardService extends Mock implements FlashcardService {}
 
+class MockImageService extends Mock implements ImageService {}
+
 class MockQuestionMediaService extends Mock implements QuestionMediaService {}
 
 class MockQuestionTagService extends Mock implements QuestionTagService {}
@@ -43,137 +46,144 @@ Future<void> main() async {
 
   group('addTerms', () {
     test(
-        'should add visible terms, delete hidden/deleted terms, and override existing terms',
-        () async {
-      // Create test terms
-      final visibleTerm = TermData(
-        const Term(
+      'should add visible terms, delete hidden/deleted terms, and override existing terms',
+      () async {
+        // Create test terms
+        final visibleTerm = TermData(
+          const Term(
+            id: 1,
+            name: 'Visible Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 13:15:19',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          ),
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+          deletedAt: const DeletedAt(null),
+          visible: const Visible(1),
+        );
+
+        final deletedTerm = TermData(
+          const Term(
+            id: 2,
+            name: 'Deleted Term',
+            type: 1,
+            enabled: 0, // Marked as not enabled (deleted)
+            needsUpdate: 0,
+            creation: '2025-01-01 13:15:19',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          ),
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+          deletedAt: const DeletedAt('2025-08-09 12:15:19'),
+          visible: const Visible(1),
+        );
+
+        final hiddenTerm = TermData(
+          const Term(
+            id: 3,
+            name: 'Hidden Term',
+            type: 1,
+            enabled: 0, // Marked as not enabled (deleted)
+            needsUpdate: 0,
+            creation: '2025-01-01 13:15:19',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          ),
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+          deletedAt: const DeletedAt(null),
+          visible: const Visible(0),
+        );
+
+        // First, insert a term with the same ID as visibleTerm but different data
+        const existingTerm = Term(
           id: 1,
-          name: 'Visible Term',
+          name: 'Existing Old Term',
           type: 1,
           enabled: 1,
-          needsUpdate: 0,
-          creation: '2025-01-01 13:15:19',
-          ordering: 0,
-          free: 1,
-          uuid: '',
-          captureable: 0,
-          textCulumn: '',
-          outerNote: '',
-        ),
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-        deletedAt: const DeletedAt(null),
-        visible: const Visible(1),
-      );
+          needsUpdate: 1, // Different value
+          creation: '2024-01-01 10:00:00', // Different creation date
+          ordering: 5, // Different ordering
+          free: 0, // Different free status
+          uuid: 'old-uuid',
+          captureable: 1,
+          textCulumn: 'old-text',
+          outerNote: 'old-note',
+        );
 
-      final deletedTerm = TermData(
-        const Term(
-          id: 2,
-          name: 'Deleted Term',
-          type: 1,
-          enabled: 0, // Marked as not enabled (deleted)
-          needsUpdate: 0,
-          creation: '2025-01-01 13:15:19',
-          ordering: 0,
-          free: 1,
-          uuid: '',
-          captureable: 0,
-          textCulumn: '',
-          outerNote: '',
-        ),
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-        deletedAt: const DeletedAt('2025-08-09 12:15:19'),
-        visible: const Visible(1),
-      );
+        await databaseService.into(databaseService.terms).insert(existingTerm);
 
-      final hiddenTerm = TermData(
-        const Term(
-          id: 3,
-          name: 'Hidden Term',
-          type: 1,
-          enabled: 0, // Marked as not enabled (deleted)
-          needsUpdate: 0,
-          creation: '2025-01-01 13:15:19',
-          ordering: 0,
-          free: 1,
-          uuid: '',
-          captureable: 0,
-          textCulumn: '',
-          outerNote: '',
-        ),
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-        deletedAt: const DeletedAt(null),
-        visible: const Visible(0),
-      );
+        // Verify the existing term is there with old data
+        final termsBefore = await databaseService
+            .select(databaseService.terms)
+            .get();
+        expect(termsBefore.length, 1);
+        expect(termsBefore.first.id, 1);
+        expect(termsBefore.first.name, 'Existing Old Term');
+        expect(termsBefore.first.needsUpdate, 1);
+        expect(termsBefore.first.ordering, 5);
 
-      // First, insert a term with the same ID as visibleTerm but different data
-      const existingTerm = Term(
-        id: 1,
-        name: 'Existing Old Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 1, // Different value
-        creation: '2024-01-01 10:00:00', // Different creation date
-        ordering: 5, // Different ordering
-        free: 0, // Different free status
-        uuid: 'old-uuid',
-        captureable: 1,
-        textCulumn: 'old-text',
-        outerNote: 'old-note',
-      );
+        // Add terms - this should override the existing term with ID 1
+        await termService.addTerms([visibleTerm, deletedTerm, hiddenTerm]);
 
-      await databaseService.into(databaseService.terms).insert(existingTerm);
+        // Check that only the visible term exists (others were deleted/hidden)
+        final termsAfter = await databaseService
+            .select(databaseService.terms)
+            .get();
+        expect(termsAfter.length, 1);
+        expect(termsAfter.first.id, 1);
 
-      // Verify the existing term is there with old data
-      final termsBefore =
-          await databaseService.select(databaseService.terms).get();
-      expect(termsBefore.length, 1);
-      expect(termsBefore.first.id, 1);
-      expect(termsBefore.first.name, 'Existing Old Term');
-      expect(termsBefore.first.needsUpdate, 1);
-      expect(termsBefore.first.ordering, 5);
+        // Verify the term was overridden with new data
+        expect(termsAfter.first.name, 'Visible Term'); // Updated name
+        expect(termsAfter.first.needsUpdate, 0); // Updated needsUpdate
+        expect(termsAfter.first.ordering, 0); // Updated ordering
+        expect(termsAfter.first.free, 1); // Updated free status
+        expect(termsAfter.first.uuid, ''); // Updated uuid
+        expect(termsAfter.first.captureable, 0); // Updated captureable
+        expect(termsAfter.first.textCulumn, ''); // Updated textColumn
+        expect(termsAfter.first.outerNote, ''); // Updated outerNote
 
-      // Add terms - this should override the existing term with ID 1
-      await termService.addTerms([visibleTerm, deletedTerm, hiddenTerm]);
-
-      // Check that only the visible term exists (others were deleted/hidden)
-      final termsAfter =
-          await databaseService.select(databaseService.terms).get();
-      expect(termsAfter.length, 1);
-      expect(termsAfter.first.id, 1);
-
-      // Verify the term was overridden with new data
-      expect(termsAfter.first.name, 'Visible Term'); // Updated name
-      expect(termsAfter.first.needsUpdate, 0); // Updated needsUpdate
-      expect(termsAfter.first.ordering, 0); // Updated ordering
-      expect(termsAfter.first.free, 1); // Updated free status
-      expect(termsAfter.first.uuid, ''); // Updated uuid
-      expect(termsAfter.first.captureable, 0); // Updated captureable
-      expect(termsAfter.first.textCulumn, ''); // Updated textColumn
-      expect(termsAfter.first.outerNote, ''); // Updated outerNote
-
-      // Check term trees were created for visible term
-      final termTrees =
-          await databaseService.select(databaseService.termTrees).get();
-      expect(termTrees.length, 1);
-      expect(termTrees.first.termId, 1);
-      expect(termTrees.first.parentTermId, 1);
-    });
+        // Check term trees were created for visible term
+        final termTrees = await databaseService
+            .select(databaseService.termTrees)
+            .get();
+        expect(termTrees.length, 1);
+        expect(termTrees.first.termId, 1);
+        expect(termTrees.first.parentTermId, 1);
+      },
+    );
   });
 
   group('setTermsNeedUpdate', () {
@@ -246,8 +256,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(term4);
 
       // Verify initial state
-      final termsBefore =
-          await databaseService.select(databaseService.terms).get();
+      final termsBefore = await databaseService
+          .select(databaseService.terms)
+          .get();
       expect(termsBefore.length, 4);
       expect(termsBefore.firstWhere((t) => t.id == 100).needsUpdate, 0);
       expect(termsBefore.firstWhere((t) => t.id == 101).needsUpdate, 0);
@@ -255,18 +266,24 @@ Future<void> main() async {
       expect(termsBefore.firstWhere((t) => t.id == 103).needsUpdate, 0);
 
       // Call setTermsNeedUpdate with specific IDs
-      await termService
-          .setTermsNeedUpdate([const Id(100), const Id(101), const Id(102)]);
+      await termService.setTermsNeedUpdate([
+        const Id(100),
+        const Id(101),
+        const Id(102),
+      ]);
 
       // Verify the update
-      final termsAfter =
-          await databaseService.select(databaseService.terms).get();
+      final termsAfter = await databaseService
+          .select(databaseService.terms)
+          .get();
 
       // Terms 100, 101, 102 should have needsUpdate = 1
       expect(termsAfter.firstWhere((t) => t.id == 100).needsUpdate, 1);
       expect(termsAfter.firstWhere((t) => t.id == 101).needsUpdate, 1);
-      expect(termsAfter.firstWhere((t) => t.id == 102).needsUpdate,
-          1); // Already was 1
+      expect(
+        termsAfter.firstWhere((t) => t.id == 102).needsUpdate,
+        1,
+      ); // Already was 1
 
       // Term 103 should remain unchanged (not in the list)
       expect(termsAfter.firstWhere((t) => t.id == 103).needsUpdate, 0);
@@ -301,8 +318,9 @@ Future<void> main() async {
       await termService.setTermsNeedUpdate([]);
 
       // Verify the term remains unchanged
-      final termsAfter =
-          await databaseService.select(databaseService.terms).get();
+      final termsAfter = await databaseService
+          .select(databaseService.terms)
+          .get();
       expect(termsAfter.length, 1);
       expect(termsAfter.first.needsUpdate, 0);
       expect(termsAfter.first.name, 'Test Term');
@@ -328,12 +346,16 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(term);
 
       // Call setTermsNeedUpdate with mix of existing and non-existent IDs
-      await termService
-          .setTermsNeedUpdate([const Id(300), const Id(999), const Id(1000)]);
+      await termService.setTermsNeedUpdate([
+        const Id(300),
+        const Id(999),
+        const Id(1000),
+      ]);
 
       // Verify the existing term is updated, non-existent ones are ignored
-      final termsAfter =
-          await databaseService.select(databaseService.terms).get();
+      final termsAfter = await databaseService
+          .select(databaseService.terms)
+          .get();
       expect(termsAfter.length, 1);
       expect(termsAfter.first.needsUpdate, 1);
       expect(termsAfter.first.name, 'Existing Term');
@@ -358,7 +380,9 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -367,7 +391,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents to make it a first layer term
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -377,7 +403,9 @@ Future<void> main() async {
           );
 
       // Add questions to make numberOfQuestions > 0
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               parentTermId: term.id,
               uuid: 'test-uuid-1',
@@ -436,7 +464,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(parentTerm);
       await databaseService.into(databaseService.terms).insert(subTerm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(parentTerm.id),
               parentTermId: Value(parentTerm.id),
@@ -444,7 +474,9 @@ Future<void> main() async {
             ),
           );
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(subTerm.id),
               parentTermId: Value(parentTerm.id),
@@ -453,7 +485,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents for both terms
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(parentTerm.id),
               parentTermId: Value(parentTerm.id),
@@ -462,7 +496,9 @@ Future<void> main() async {
             ),
           );
 
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(subTerm.id),
               parentTermId: Value(parentTerm.id),
@@ -494,7 +530,9 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -503,7 +541,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -513,7 +553,9 @@ Future<void> main() async {
           );
 
       // Add flashcards to make numberOfFlashcards > 0
-      await databaseService.into(databaseService.flashcards).insert(
+      await databaseService
+          .into(databaseService.flashcards)
+          .insert(
             FlashcardsCompanion(
               parentTermId: Value(term.id),
               head: const Value('Front 1'),
@@ -525,6 +567,63 @@ Future<void> main() async {
       expect(result.length, 1);
       expect(result.first.term.name, 'Term with Flashcards');
       expect(result.first.numberOfFlashcards!.value, greaterThan(0));
+    });
+
+    test('should return enabled term with images > 0', () async {
+      const term = Term(
+        id: 30,
+        name: 'Term with Images',
+        type: 1,
+        enabled: 1,
+        needsUpdate: 0,
+        creation: '2025-01-01 10:00:00',
+        ordering: 0,
+        free: 1,
+        uuid: '',
+        captureable: 0,
+        textCulumn: '',
+        outerNote: '',
+      );
+
+      await databaseService.into(databaseService.terms).insert(term);
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
+            TermTreesCompanion(
+              termId: Value(term.id),
+              parentTermId: Value(term.id),
+              depth: const Value(0),
+            ),
+          );
+
+      // Add to termsParents
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
+            TermsParentsCompanion(
+              termId: Value(term.id),
+              parentTermId: Value(term.id),
+              rootTermId: Value(term.id),
+              creation: const Value('2025-01-01 10:00:00'),
+            ),
+          );
+
+      // Add images to make numberOfImages > 0
+      await databaseService
+          .into(databaseService.images)
+          .insert(
+            ImagesCompanion(
+              parentTermId: Value(term.id),
+              url: const Value('Url 1'),
+              title: const Value('Front 1'),
+              info: const Value('Back 1'),
+            ),
+          );
+
+      final result = await termService.getFirstLayerTerms();
+      expect(result.length, 1);
+      expect(result.first.term.name, 'Term with Images');
+      expect(result.first.numberOfImages!.value, greaterThan(0));
     });
 
     test('should return disabled term with no content', () async {
@@ -544,7 +643,9 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -553,7 +654,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(term.id),
               parentTermId: const Value(51),
@@ -562,7 +665,7 @@ Future<void> main() async {
             ),
           );
 
-      // No questions, subterms, or flashcards added
+      // No questions, subterms, images or flashcards added
 
       final result = await termService.getFirstLayerTerms();
       expect(result.length, 1);
@@ -570,6 +673,7 @@ Future<void> main() async {
       expect(result.first.numberOfQuestions!.value, 0);
       expect(result.first.numberOfSubTerms!.value, 0);
       expect(result.first.numberOfFlashcards!.value, 0);
+      expect(result.first.numberOfImages!.value, 0);
     });
 
     test('should NOT return enabled term with no content', () async {
@@ -589,7 +693,9 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -598,7 +704,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(term.id),
               parentTermId: const Value(1),
@@ -630,7 +738,9 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -639,7 +749,9 @@ Future<void> main() async {
           );
 
       // Add to termsParents
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(term.id),
               parentTermId: Value(term.id),
@@ -649,7 +761,9 @@ Future<void> main() async {
           );
 
       // Add one question
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               parentTermId: term.id,
               uuid: 'test-uuid-mixed',
@@ -669,11 +783,25 @@ Future<void> main() async {
           );
 
       // Add one flashcard
-      await databaseService.into(databaseService.flashcards).insert(
+      await databaseService
+          .into(databaseService.flashcards)
+          .insert(
             FlashcardsCompanion(
               parentTermId: Value(term.id),
               head: const Value('Mixed Front'),
               tail: const Value('Mixed Back'),
+            ),
+          );
+
+      // Add one image
+      await databaseService
+          .into(databaseService.images)
+          .insert(
+            ImagesCompanion(
+              parentTermId: Value(term.id),
+              url: const Value('url'),
+              title: const Value('Mixed Front'),
+              info: const Value('Mixed Back'),
             ),
           );
 
@@ -694,14 +822,18 @@ Future<void> main() async {
       );
 
       await databaseService.into(databaseService.terms).insert(subTerm);
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(subTerm.id),
               parentTermId: Value(term.id),
               depth: const Value(1),
             ),
           );
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(subTerm.id),
               parentTermId: Value(term.id),
@@ -715,6 +847,7 @@ Future<void> main() async {
       expect(result.first.term.name, 'Term with Mixed Content');
       expect(result.first.numberOfQuestions!.value, greaterThan(0));
       expect(result.first.numberOfFlashcards!.value, greaterThan(0));
+      expect(result.first.numberOfImages!.value, greaterThan(0));
       expect(result.first.numberOfSubTerms!.value, greaterThan(0));
     });
 
@@ -773,7 +906,9 @@ Future<void> main() async {
 
       // Add all to termTrees and termsParents
       for (final term in [term1, term2, term3]) {
-        await databaseService.into(databaseService.termTrees).insert(
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
               TermTreesCompanion(
                 termId: Value(term.id),
                 parentTermId: Value(term.id),
@@ -781,7 +916,9 @@ Future<void> main() async {
               ),
             );
 
-        await databaseService.into(databaseService.termsParents).insert(
+        await databaseService
+            .into(databaseService.termsParents)
+            .insert(
               TermsParentsCompanion(
                 termId: Value(term.id),
                 parentTermId: const Value(1),
@@ -792,7 +929,9 @@ Future<void> main() async {
       }
 
       // Add questions to term1 only
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               parentTermId: term1.id,
               uuid: 'test-uuid-80',
@@ -813,7 +952,9 @@ Future<void> main() async {
 
       final result = await termService.getFirstLayerTerms();
       expect(
-          result.length, 2); // term1 and term2 should appear, term3 should not
+        result.length,
+        2,
+      ); // term1 and term2 should appear, term3 should not
 
       final termNames = result.map((t) => t.term.name).toList();
       expect(termNames, contains('Term with Questions Only'));
@@ -858,7 +999,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(subTerm);
 
       // Create term tree relationship
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(subTerm.id),
               parentTermId: Value(parentTerm.id),
@@ -867,12 +1010,15 @@ Future<void> main() async {
           );
 
       // Create term tree parent
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParent(
-                termId: subTerm.id,
-                parentTermId: parentTerm.id,
-                rootTermId: parentTerm.id,
-                creation: '2025-08-09 14:44:34'),
+              termId: subTerm.id,
+              parentTermId: parentTerm.id,
+              rootTermId: parentTerm.id,
+              creation: '2025-08-09 14:44:34',
+            ),
           );
 
       final result = await termService.getSubTerms(parentTerm.id);
@@ -883,108 +1029,129 @@ Future<void> main() async {
 
   group('setTermUpdated', () {
     test(
-        'should set needsUpdate to 0 for a term and leave other terms unchanged',
-        () async {
-      // Create multiple test terms with different needsUpdate values
-      const termToUpdate = Term(
-        id: 200,
-        name: 'Term to Update',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 1, // Will be updated to 0
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+      'should set needsUpdate to 0 for a term and leave other terms unchanged',
+      () async {
+        // Create multiple test terms with different needsUpdate values
+        const termToUpdate = Term(
+          id: 200,
+          name: 'Term to Update',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 1, // Will be updated to 0
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const termUnchanged1 = Term(
-        id: 201,
-        name: 'Unchanged Term 1',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 1, // Should remain 1
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const termUnchanged1 = Term(
+          id: 201,
+          name: 'Unchanged Term 1',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 1, // Should remain 1
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const termUnchanged2 = Term(
-        id: 202,
-        name: 'Unchanged Term 2',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0, // Should remain 0
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const termUnchanged2 = Term(
+          id: 202,
+          name: 'Unchanged Term 2',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0, // Should remain 0
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Insert all terms
-      await databaseService.into(databaseService.terms).insert(termToUpdate);
-      await databaseService.into(databaseService.terms).insert(termUnchanged1);
-      await databaseService.into(databaseService.terms).insert(termUnchanged2);
+        // Insert all terms
+        await databaseService.into(databaseService.terms).insert(termToUpdate);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termUnchanged1);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termUnchanged2);
 
-      // Verify initial state
-      final termsBefore =
-          await databaseService.select(databaseService.terms).get();
-      expect(termsBefore.length, 3);
-      expect(termsBefore.firstWhere((t) => t.id == 200).needsUpdate, 1);
-      expect(termsBefore.firstWhere((t) => t.id == 201).needsUpdate, 1);
-      expect(termsBefore.firstWhere((t) => t.id == 202).needsUpdate, 0);
+        // Verify initial state
+        final termsBefore = await databaseService
+            .select(databaseService.terms)
+            .get();
+        expect(termsBefore.length, 3);
+        expect(termsBefore.firstWhere((t) => t.id == 200).needsUpdate, 1);
+        expect(termsBefore.firstWhere((t) => t.id == 201).needsUpdate, 1);
+        expect(termsBefore.firstWhere((t) => t.id == 202).needsUpdate, 0);
 
-      // Create TermData for the term to update
-      final termData = TermData(
-        termToUpdate,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        // Create TermData for the term to update
+        final termData = TermData(
+          termToUpdate,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      // Call setTermUpdated only on the specific term
-      await termService.setTermUpdated(termData);
+        // Call setTermUpdated only on the specific term
+        await termService.setTermUpdated(termData);
 
-      // Verify the update
-      final termsAfter =
-          await databaseService.select(databaseService.terms).get();
+        // Verify the update
+        final termsAfter = await databaseService
+            .select(databaseService.terms)
+            .get();
 
-      // Only the specified term should be updated
-      expect(
-          termsAfter.firstWhere((t) => t.id == 200).needsUpdate, 0); // Updated
-      expect(termsAfter.firstWhere((t) => t.id == 201).needsUpdate,
-          1); // Unchanged
-      expect(termsAfter.firstWhere((t) => t.id == 202).needsUpdate,
-          0); // Unchanged
+        // Only the specified term should be updated
+        expect(
+          termsAfter.firstWhere((t) => t.id == 200).needsUpdate,
+          0,
+        ); // Updated
+        expect(
+          termsAfter.firstWhere((t) => t.id == 201).needsUpdate,
+          1,
+        ); // Unchanged
+        expect(
+          termsAfter.firstWhere((t) => t.id == 202).needsUpdate,
+          0,
+        ); // Unchanged
 
-      // Verify all other fields remain unchanged for all terms
-      expect(termsAfter.firstWhere((t) => t.id == 200).name, 'Term to Update');
-      expect(
-          termsAfter.firstWhere((t) => t.id == 201).name, 'Unchanged Term 1');
-      expect(
-          termsAfter.firstWhere((t) => t.id == 202).name, 'Unchanged Term 2');
+        // Verify all other fields remain unchanged for all terms
+        expect(
+          termsAfter.firstWhere((t) => t.id == 200).name,
+          'Term to Update',
+        );
+        expect(
+          termsAfter.firstWhere((t) => t.id == 201).name,
+          'Unchanged Term 1',
+        );
+        expect(
+          termsAfter.firstWhere((t) => t.id == 202).name,
+          'Unchanged Term 2',
+        );
 
-      expect(termsAfter.firstWhere((t) => t.id == 200).enabled, 1);
-      expect(termsAfter.firstWhere((t) => t.id == 201).enabled, 1);
-      expect(termsAfter.firstWhere((t) => t.id == 202).enabled, 1);
+        expect(termsAfter.firstWhere((t) => t.id == 200).enabled, 1);
+        expect(termsAfter.firstWhere((t) => t.id == 201).enabled, 1);
+        expect(termsAfter.firstWhere((t) => t.id == 202).enabled, 1);
 
-      expect(termsAfter.firstWhere((t) => t.id == 200).ordering, 0);
-      expect(termsAfter.firstWhere((t) => t.id == 201).ordering, 0);
-      expect(termsAfter.firstWhere((t) => t.id == 202).ordering, 0);
-    });
+        expect(termsAfter.firstWhere((t) => t.id == 200).ordering, 0);
+        expect(termsAfter.firstWhere((t) => t.id == 201).ordering, 0);
+        expect(termsAfter.firstWhere((t) => t.id == 202).ordering, 0);
+      },
+    );
 
     test('should set needsUpdate to 0 for a term', () async {
       const term = Term(
@@ -1011,14 +1178,15 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
       await termService.setTermUpdated(termData);
 
-      final updatedTerm = await (databaseService.select(databaseService.terms)
-            ..where((tbl) => tbl.id.equals(term.id)))
-          .getSingle();
+      final updatedTerm = await (databaseService.select(
+        databaseService.terms,
+      )..where((tbl) => tbl.id.equals(term.id))).getSingle();
 
       expect(updatedTerm.needsUpdate, 0);
     });
@@ -1059,7 +1227,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(term);
       await databaseService.into(databaseService.terms).insert(templateTerm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(templateTerm.id),
               parentTermId: Value(term.id),
@@ -1074,6 +1244,7 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(1),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
@@ -1115,7 +1286,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(term);
       await databaseService.into(databaseService.terms).insert(templateTerm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(templateTerm.id),
               parentTermId: Value(term.id),
@@ -1131,6 +1304,7 @@ Future<void> main() async {
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
       );
 
       final result = await termService.termHasTemplate(termData);
@@ -1138,220 +1312,241 @@ Future<void> main() async {
     });
 
     test(
-        'should return false when the template term is not a subterm of the passed term',
-        () async {
-      const term = Term(
-        id: 300,
-        name: 'Parent Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+      'should return false when the template term is not a subterm of the passed term',
+      () async {
+        const term = Term(
+          id: 300,
+          name: 'Parent Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const templateTerm = Term(
-        id: 301,
-        name: 'Template Term',
-        type: TermType.template, // Template type
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const templateTerm = Term(
+          id: 301,
+          name: 'Template Term',
+          type: TermType.template, // Template type
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(term);
-      await databaseService.into(databaseService.terms).insert(templateTerm);
+        await databaseService.into(databaseService.terms).insert(term);
+        await databaseService.into(databaseService.terms).insert(templateTerm);
 
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(templateTerm.id),
-              parentTermId: const Value(12),
-              depth: const Value(1),
-            ),
-          );
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(templateTerm.id),
+                parentTermId: const Value(12),
+                depth: const Value(1),
+              ),
+            );
 
-      final termData = TermData(
-        term,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(1),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final termData = TermData(
+          term,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(1),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService.termHasTemplate(termData);
-      expect(result, false);
-    });
+        final result = await termService.termHasTemplate(termData);
+        expect(result, false);
+      },
+    );
   });
 
   group('getTermRelatedTerms', () {
-    test('should return terms related to the passed term in both directions',
-        () async {
-      // Create main term
-      const mainTerm = Term(
-        id: 100,
-        name: 'Main Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should return terms related to the passed term in both directions',
+      () async {
+        // Create main term
+        const mainTerm = Term(
+          id: 100,
+          name: 'Main Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Create related terms (both directions)
-      const relatedTerm1 = Term(
-        id: 101,
-        name: 'Related Term 1 (termId)',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        // Create related terms (both directions)
+        const relatedTerm1 = Term(
+          id: 101,
+          name: 'Related Term 1 (termId)',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const relatedTerm2 = Term(
-        id: 102,
-        name: 'Related Term 2 (anotherTermId)',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const relatedTerm2 = Term(
+          id: 102,
+          name: 'Related Term 2 (anotherTermId)',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Create unrelated term
-      const unrelatedTerm = Term(
-        id: 103,
-        name: 'Unrelated Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        // Create unrelated term
+        const unrelatedTerm = Term(
+          id: 103,
+          name: 'Unrelated Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Insert all terms
-      await databaseService.into(databaseService.terms).insert(mainTerm);
-      await databaseService.into(databaseService.terms).insert(relatedTerm1);
-      await databaseService.into(databaseService.terms).insert(relatedTerm2);
-      await databaseService.into(databaseService.terms).insert(unrelatedTerm);
+        // Insert all terms
+        await databaseService.into(databaseService.terms).insert(mainTerm);
+        await databaseService.into(databaseService.terms).insert(relatedTerm1);
+        await databaseService.into(databaseService.terms).insert(relatedTerm2);
+        await databaseService.into(databaseService.terms).insert(unrelatedTerm);
 
-      // Add to termTrees and termsParents for all terms
-      for (final term in [
-        mainTerm,
-        relatedTerm1,
-        relatedTerm2,
-        unrelatedTerm
-      ]) {
-        await databaseService.into(databaseService.termTrees).insert(
-              TermTreesCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                depth: const Value(0),
+        // Add to termTrees and termsParents for all terms
+        for (final term in [
+          mainTerm,
+          relatedTerm1,
+          relatedTerm2,
+          unrelatedTerm,
+        ]) {
+          await databaseService
+              .into(databaseService.termTrees)
+              .insert(
+                TermTreesCompanion(
+                  termId: Value(term.id),
+                  parentTermId: Value(term.id),
+                  depth: const Value(0),
+                ),
+              );
+
+          await databaseService
+              .into(databaseService.termsParents)
+              .insert(
+                TermsParentsCompanion(
+                  termId: Value(term.id),
+                  parentTermId: Value(term.id),
+                  rootTermId: Value(term.id),
+                  creation: const Value('2025-01-01 10:00:00'),
+                ),
+              );
+        }
+
+        // Create relationships in both directions:
+        // 1. mainTerm.id in termId, relatedTerm1.id in anotherTermId
+        await databaseService
+            .into(databaseService.relatedTerms)
+            .insert(
+              RelatedTermsCompanion(
+                termId: Value(mainTerm.id),
+                anotherTermId: Value(relatedTerm1.id),
               ),
             );
 
-        await databaseService.into(databaseService.termsParents).insert(
-              TermsParentsCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                rootTermId: Value(term.id),
-                creation: const Value('2025-01-01 10:00:00'),
+        // 2. relatedTerm2.id in termId, mainTerm.id in anotherTermId
+        await databaseService
+            .into(databaseService.relatedTerms)
+            .insert(
+              RelatedTermsCompanion(
+                termId: Value(relatedTerm2.id),
+                anotherTermId: Value(mainTerm.id),
               ),
             );
-      }
 
-      // Create relationships in both directions:
-      // 1. mainTerm.id in termId, relatedTerm1.id in anotherTermId
-      await databaseService.into(databaseService.relatedTerms).insert(
-            RelatedTermsCompanion(
-              termId: Value(mainTerm.id),
-              anotherTermId: Value(relatedTerm1.id),
-            ),
-          );
+        // Create an unrelated relationship
+        await databaseService
+            .into(databaseService.relatedTerms)
+            .insert(
+              RelatedTermsCompanion(
+                termId: Value(unrelatedTerm.id),
+                anotherTermId: const Value(
+                  999,
+                ), // Some other term not in our test
+              ),
+            );
 
-      // 2. relatedTerm2.id in termId, mainTerm.id in anotherTermId
-      await databaseService.into(databaseService.relatedTerms).insert(
-            RelatedTermsCompanion(
-              termId: Value(relatedTerm2.id),
-              anotherTermId: Value(mainTerm.id),
-            ),
-          );
+        // Create main term data
+        final mainTermData = TermData(
+          mainTerm,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(
+            2,
+          ), // Should have 2 related terms
+        );
 
-      // Create an unrelated relationship
-      await databaseService.into(databaseService.relatedTerms).insert(
-            RelatedTermsCompanion(
-              termId: Value(unrelatedTerm.id),
-              anotherTermId:
-                  const Value(999), // Some other term not in our test
-            ),
-          );
+        // Get related terms
+        final result = await termService.getTermRelatedTerms(mainTermData);
 
-      // Create main term data
-      final mainTermData = TermData(
-        mainTerm,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms:
-            const NumberOfSubTerms(2), // Should have 2 related terms
-      );
+        // Should return 2 related terms, excluding the unrelated term
+        expect(result.length, 2);
 
-      // Get related terms
-      final result = await termService.getTermRelatedTerms(mainTermData);
+        // Verify both related terms are returned
+        final relatedTermIds = result.map((t) => t.term.id).toList();
+        expect(relatedTermIds, contains(relatedTerm1.id));
+        expect(relatedTermIds, contains(relatedTerm2.id));
+        expect(relatedTermIds, isNot(contains(unrelatedTerm.id)));
+        expect(
+          relatedTermIds,
+          isNot(contains(mainTerm.id)),
+        ); // Should not return self
 
-      // Should return 2 related terms, excluding the unrelated term
-      expect(result.length, 2);
-
-      // Verify both related terms are returned
-      final relatedTermIds = result.map((t) => t.term.id).toList();
-      expect(relatedTermIds, contains(relatedTerm1.id));
-      expect(relatedTermIds, contains(relatedTerm2.id));
-      expect(relatedTermIds, isNot(contains(unrelatedTerm.id)));
-      expect(relatedTermIds,
-          isNot(contains(mainTerm.id))); // Should not return self
-
-      // Verify term names are correct
-      final relatedTermNames = result.map((t) => t.term.name).toList();
-      expect(relatedTermNames, contains('Related Term 1 (termId)'));
-      expect(relatedTermNames, contains('Related Term 2 (anotherTermId)'));
-      expect(relatedTermNames, isNot(contains('Unrelated Term')));
-      expect(relatedTermNames, isNot(contains('Main Term')));
-    });
+        // Verify term names are correct
+        final relatedTermNames = result.map((t) => t.term.name).toList();
+        expect(relatedTermNames, contains('Related Term 1 (termId)'));
+        expect(relatedTermNames, contains('Related Term 2 (anotherTermId)'));
+        expect(relatedTermNames, isNot(contains('Unrelated Term')));
+        expect(relatedTermNames, isNot(contains('Main Term')));
+      },
+    );
 
     test('should return empty list when no related terms exist', () async {
       // Create a term with no relationships
@@ -1372,7 +1567,9 @@ Future<void> main() async {
 
       await databaseService.into(databaseService.terms).insert(isolatedTerm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(isolatedTerm.id),
               parentTermId: Value(isolatedTerm.id),
@@ -1380,7 +1577,9 @@ Future<void> main() async {
             ),
           );
 
-      await databaseService.into(databaseService.termsParents).insert(
+      await databaseService
+          .into(databaseService.termsParents)
+          .insert(
             TermsParentsCompanion(
               termId: Value(isolatedTerm.id),
               parentTermId: Value(isolatedTerm.id),
@@ -1396,6 +1595,7 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
@@ -1456,7 +1656,9 @@ Future<void> main() async {
 
       // Add to termTrees and termsParents
       for (final term in [mainTerm, relatedTerm1, relatedTerm2]) {
-        await databaseService.into(databaseService.termTrees).insert(
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
               TermTreesCompanion(
                 termId: Value(term.id),
                 parentTermId: Value(term.id),
@@ -1464,7 +1666,9 @@ Future<void> main() async {
               ),
             );
 
-        await databaseService.into(databaseService.termsParents).insert(
+        await databaseService
+            .into(databaseService.termsParents)
+            .insert(
               TermsParentsCompanion(
                 termId: Value(term.id),
                 parentTermId: Value(term.id),
@@ -1476,20 +1680,26 @@ Future<void> main() async {
 
       // Create relationships in both directions of the relationship table:
       // 1. mainTerm.id on termId side, relatedTerm1.id on anotherTermId side
-      await databaseService.into(databaseService.relatedTerms).insert(
+      await databaseService
+          .into(databaseService.relatedTerms)
+          .insert(
             RelatedTermsCompanion(
               termId: Value(mainTerm.id), // mainTerm is on termId side
               anotherTermId: Value(
-                  relatedTerm1.id), // relatedTerm1 is on anotherTermId side
+                relatedTerm1.id,
+              ), // relatedTerm1 is on anotherTermId side
             ),
           );
 
       // 2. relatedTerm2.id on termId side, mainTerm.id on anotherTermId side
-      await databaseService.into(databaseService.relatedTerms).insert(
+      await databaseService
+          .into(databaseService.relatedTerms)
+          .insert(
             RelatedTermsCompanion(
               termId: Value(relatedTerm2.id), // relatedTerm2 is on termId side
-              anotherTermId:
-                  Value(mainTerm.id), // mainTerm is on anotherTermId side
+              anotherTermId: Value(
+                mainTerm.id,
+              ), // mainTerm is on anotherTermId side
             ),
           );
 
@@ -1500,8 +1710,10 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms:
-            const NumberOfSubTerms(2), // Should find 2 related terms
+        numberOfImages: const NumberOfSubTerms(0),
+        numberOfRelatedTerms: const NumberOfSubTerms(
+          2,
+        ), // Should find 2 related terms
       );
 
       final result = await termService.getTermRelatedTerms(mainTermData);
@@ -1513,9 +1725,13 @@ Future<void> main() async {
       final relatedTermIds = result.map((t) => t.term.id).toList();
       expect(relatedTermIds, contains(relatedTerm1.id)); // From termId side
       expect(
-          relatedTermIds, contains(relatedTerm2.id)); // From anotherTermId side
-      expect(relatedTermIds,
-          isNot(contains(mainTerm.id))); // Should not return self
+        relatedTermIds,
+        contains(relatedTerm2.id),
+      ); // From anotherTermId side
+      expect(
+        relatedTermIds,
+        isNot(contains(mainTerm.id)),
+      ); // Should not return self
 
       // Verify term names are correct
       final relatedTermNames = result.map((t) => t.term.name).toList();
@@ -1571,7 +1787,9 @@ Future<void> main() async {
 
       // Create a question associated with the term
       const questionUuid = 'test-question-uuid-123';
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               id: 1,
               titleTranslation: '',
@@ -1598,47 +1816,53 @@ Future<void> main() async {
       expect(result.name, term.name);
     });
 
-    test('should throw exception when no question exists with the UUID',
-        () async {
-      const nonExistentUuid = 'non-existent-uuid-456';
+    test(
+      'should throw exception when no question exists with the UUID',
+      () async {
+        const nonExistentUuid = 'non-existent-uuid-456';
 
-      // Should throw an exception when no question exists
-      expect(
-        () async => await termService.getTermByQuestionUuid(nonExistentUuid),
-        throwsA(isA<StateError>()), // Should throw some kind of exception
-      );
-    });
+        // Should throw an exception when no question exists
+        expect(
+          () async => await termService.getTermByQuestionUuid(nonExistentUuid),
+          throwsA(isA<StateError>()), // Should throw some kind of exception
+        );
+      },
+    );
 
-    test('should throw exception when question exists but term does not',
-        () async {
-      const questionUuid = 'orphaned-question-uuid-789';
+    test(
+      'should throw exception when question exists but term does not',
+      () async {
+        const questionUuid = 'orphaned-question-uuid-789';
 
-      // Create a question with a non-existent term ID
-      await databaseService.into(databaseService.questions).insert(
-            const Question(
-              id: 2,
-              parentTermId: 9999, // Non-existent term ID
-              uuid: questionUuid,
-              type: 1,
-              title: 'Orphaned Question',
-              titleTranslation: '',
-              creation: '2025-01-01 10:00:00',
-              labelId: 1,
-              note: '',
-              noteTranslation: '',
-              specialCharacter: SpecialCharacter.none,
-              edited: 1,
-              imageUrl: '',
-              editionDate: '',
-            ),
-          );
+        // Create a question with a non-existent term ID
+        await databaseService
+            .into(databaseService.questions)
+            .insert(
+              const Question(
+                id: 2,
+                parentTermId: 9999, // Non-existent term ID
+                uuid: questionUuid,
+                type: 1,
+                title: 'Orphaned Question',
+                titleTranslation: '',
+                creation: '2025-01-01 10:00:00',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 1,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      // Should throw an exception when term doesn't exist
-      expect(
-        () async => await termService.getTermByQuestionUuid(questionUuid),
-        throwsA(isA<StateError>()), // Should throw some kind of exception
-      );
-    });
+        // Should throw an exception when term doesn't exist
+        expect(
+          () async => await termService.getTermByQuestionUuid(questionUuid),
+          throwsA(isA<StateError>()), // Should throw some kind of exception
+        );
+      },
+    );
 
     test('should return correct term when multiple questions exist', () async {
       // Create multiple terms
@@ -1679,7 +1903,9 @@ Future<void> main() async {
       const targetUuid = 'target-question-uuid-abc';
       const otherUuid = 'other-question-uuid-def';
 
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               id: 3,
               titleTranslation: '',
@@ -1698,7 +1924,9 @@ Future<void> main() async {
             ),
           );
 
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               id: 4,
               titleTranslation: '',
@@ -1751,7 +1979,9 @@ Future<void> main() async {
 
       // Create a question with specific case UUID
       const questionUuid = 'Case-Sensitive-UUID-123';
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               id: 5,
               titleTranslation: '',
@@ -1785,307 +2015,360 @@ Future<void> main() async {
 
   group('deleteTermContent', () {
     test(
-        'should delete all content associated with a term including questionsLinkedToTags and questionMedias',
-        () async {
-      const term = Term(
-        id: 500,
-        name: 'Term to delete',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+      'should delete all content associated with a term including questionsLinkedToTags and questionMedias',
+      () async {
+        const term = Term(
+          id: 500,
+          name: 'Term to delete',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(term);
-      await databaseService
-          .into(databaseService.termTrees)
-          .insert(TermTree(termId: term.id, parentTermId: term.id, depth: 1));
+        await databaseService.into(databaseService.terms).insert(term);
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(TermTree(termId: term.id, parentTermId: term.id, depth: 1));
 
-      // Add some content
-      final question =
-          await databaseService.into(databaseService.questions).insert(
-                Question(
-                  id: 5,
-                  titleTranslation: '',
-                  parentTermId: term.id,
-                  uuid: 'questionUuid',
-                  type: 1,
-                  title: 'Case Test Question',
-                  creation: '2025-01-01 10:00:00',
-                  labelId: 1,
-                  note: '',
-                  noteTranslation: '',
-                  specialCharacter: SpecialCharacter.none,
-                  edited: 1,
-                  imageUrl: '',
-                  editionDate: '',
-                ),
-              );
+        // Add some content
+        final question = await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 5,
+                titleTranslation: '',
+                parentTermId: term.id,
+                uuid: 'questionUuid',
+                type: 1,
+                title: 'Case Test Question',
+                creation: '2025-01-01 10:00:00',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 1,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      final question2 =
-          await databaseService.into(databaseService.questions).insert(
-                Question(
-                  id: 6,
-                  titleTranslation: '',
-                  parentTermId: term.id,
-                  uuid: 'questionUuid2',
-                  type: 1,
-                  title: 'Second Question',
-                  creation: '2025-01-01 10:00:00',
-                  labelId: 1,
-                  note: '',
-                  noteTranslation: '',
-                  specialCharacter: SpecialCharacter.none,
-                  edited: 1,
-                  imageUrl: '',
-                  editionDate: '',
-                ),
-              );
+        final question2 = await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 6,
+                titleTranslation: '',
+                parentTermId: term.id,
+                uuid: 'questionUuid2',
+                type: 1,
+                title: 'Second Question',
+                creation: '2025-01-01 10:00:00',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 1,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      await databaseService.into(databaseService.answers).insert(
-            Answer(
-              id: 1,
-              parentQuestionId: question,
-              title: 'Test answer',
-              isCorrect: 1,
-              uuid: '',
-              titleTranslation: '',
-              specialCharacter: SpecialCharacter.none,
-              creation: '2025-01-01 10:00:00',
-              checkedCount: 0,
-            ),
-          );
+        await databaseService
+            .into(databaseService.answers)
+            .insert(
+              Answer(
+                id: 1,
+                parentQuestionId: question,
+                title: 'Test answer',
+                isCorrect: 1,
+                uuid: '',
+                titleTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                creation: '2025-01-01 10:00:00',
+                checkedCount: 0,
+              ),
+            );
 
-      await databaseService.into(databaseService.flashcards).insert(
-            Flashcard(
-              parentTermId: term.id,
-              head: 'Front',
-              tail: 'Back',
-              id: 1,
-            ),
-          );
+        await databaseService
+            .into(databaseService.flashcards)
+            .insert(
+              Flashcard(
+                parentTermId: term.id,
+                head: 'Front',
+                tail: 'Back',
+                id: 1,
+              ),
+            );
 
-      // Add questionsLinkedToTags
-      await databaseService.into(databaseService.questionsLinkedToTags).insert(
-            QuestionsLinkedToTag(
-              questionId: question,
-              tagId: 1,
-            ),
-          );
+        await databaseService
+            .into(databaseService.images)
+            .insert(
+              Image(
+                parentTermId: term.id,
+                url: 'Url',
+                title: 'Front',
+                info: 'Back',
+                id: 1,
+              ),
+            );
 
-      await databaseService.into(databaseService.questionsLinkedToTags).insert(
-            QuestionsLinkedToTag(
-              questionId: question2,
-              tagId: 2,
-            ),
-          );
+        // Add questionsLinkedToTags
+        await databaseService
+            .into(databaseService.questionsLinkedToTags)
+            .insert(QuestionsLinkedToTag(questionId: question, tagId: 1));
 
-      // Add questionMedias
-      await databaseService.into(databaseService.questionMedias).insert(
-            QuestionMedia(
-              id: 1,
-              parentQuestionId: question,
-              creation: '2025-01-01 13:14:15',
-              url: 'https://example.com/image1.jpg',
-            ),
-          );
+        await databaseService
+            .into(databaseService.questionsLinkedToTags)
+            .insert(QuestionsLinkedToTag(questionId: question2, tagId: 2));
 
-      await databaseService.into(databaseService.questionMedias).insert(
-            QuestionMedia(
-              id: 2,
-              parentQuestionId: question2,
-              creation: '2025-01-01 13:14:15',
-              url: 'https://example.com/audio1.mp3',
-            ),
-          );
+        // Add questionMedias
+        await databaseService
+            .into(databaseService.questionMedias)
+            .insert(
+              QuestionMedia(
+                id: 1,
+                parentQuestionId: question,
+                creation: '2025-01-01 13:14:15',
+                url: 'https://example.com/image1.jpg',
+              ),
+            );
 
-      // Verify content exists before deletion
-      final questionsBefore =
-          await databaseService.select(databaseService.questions).get();
-      final answersBefore =
-          await databaseService.select(databaseService.answers).get();
-      final flashcardsBefore =
-          await databaseService.select(databaseService.flashcards).get();
-      final questionsLinkedToTagsBefore = await databaseService
-          .select(databaseService.questionsLinkedToTags)
-          .get();
-      final questionMediasBefore =
-          await databaseService.select(databaseService.questionMedias).get();
+        await databaseService
+            .into(databaseService.questionMedias)
+            .insert(
+              QuestionMedia(
+                id: 2,
+                parentQuestionId: question2,
+                creation: '2025-01-01 13:14:15',
+                url: 'https://example.com/audio1.mp3',
+              ),
+            );
 
-      expect(questionsBefore.length, 2);
-      expect(answersBefore.length, 1);
-      expect(flashcardsBefore.length, 1);
-      expect(questionsLinkedToTagsBefore.length, 2);
-      expect(questionMediasBefore.length, 2);
+        // Verify content exists before deletion
+        final questionsBefore = await databaseService
+            .select(databaseService.questions)
+            .get();
+        final answersBefore = await databaseService
+            .select(databaseService.answers)
+            .get();
+        final flashcardsBefore = await databaseService
+            .select(databaseService.flashcards)
+            .get();
+        final imagesBefore = await databaseService
+            .select(databaseService.images)
+            .get();
+        final questionsLinkedToTagsBefore = await databaseService
+            .select(databaseService.questionsLinkedToTags)
+            .get();
+        final questionMediasBefore = await databaseService
+            .select(databaseService.questionMedias)
+            .get();
 
-      // Delete term content
-      await termService.deleteTermContent(term);
+        expect(questionsBefore.length, 2);
+        expect(answersBefore.length, 1);
+        expect(flashcardsBefore.length, 1);
+        expect(imagesBefore.length, 1);
+        expect(questionsLinkedToTagsBefore.length, 2);
+        expect(questionMediasBefore.length, 2);
 
-      // Verify ALL content was deleted
-      final questionsAfter =
-          await databaseService.select(databaseService.questions).get();
-      final answersAfter =
-          await databaseService.select(databaseService.answers).get();
-      final flashcardsAfter =
-          await databaseService.select(databaseService.flashcards).get();
-      final questionsLinkedToTagsAfter = await databaseService
-          .select(databaseService.questionsLinkedToTags)
-          .get();
-      final questionMediasAfter =
-          await databaseService.select(databaseService.questionMedias).get();
+        // Delete term content
+        await termService.deleteTermContent(term);
 
-      expect(questionsAfter, isEmpty);
-      expect(answersAfter, isEmpty);
-      expect(flashcardsAfter, isEmpty);
-      expect(questionsLinkedToTagsAfter, isEmpty);
-      expect(questionMediasAfter, isEmpty);
-    });
+        // Verify ALL content was deleted
+        final questionsAfter = await databaseService
+            .select(databaseService.questions)
+            .get();
+        final answersAfter = await databaseService
+            .select(databaseService.answers)
+            .get();
+        final flashcardsAfter = await databaseService
+            .select(databaseService.flashcards)
+            .get();
+        final imagesAfter = await databaseService
+            .select(databaseService.images)
+            .get();
+        final questionsLinkedToTagsAfter = await databaseService
+            .select(databaseService.questionsLinkedToTags)
+            .get();
+        final questionMediasAfter = await databaseService
+            .select(databaseService.questionMedias)
+            .get();
 
-    test('should only delete content for the specified term, not other terms',
-        () async {
-      const termToDelete = Term(
-        id: 600,
-        name: 'Term to delete',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        expect(questionsAfter, isEmpty);
+        expect(answersAfter, isEmpty);
+        expect(flashcardsAfter, isEmpty);
+        expect(imagesAfter, isEmpty);
+        expect(questionsLinkedToTagsAfter, isEmpty);
+        expect(questionMediasAfter, isEmpty);
+      },
+    );
 
-      const otherTerm = Term(
-        id: 601,
-        name: 'Other term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should only delete content for the specified term, not other terms',
+      () async {
+        const termToDelete = Term(
+          id: 600,
+          name: 'Term to delete',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(termToDelete);
-      await databaseService.into(databaseService.terms).insert(otherTerm);
-      await databaseService.into(databaseService.termTrees).insert(TermTree(
-          termId: termToDelete.id, parentTermId: termToDelete.id, depth: 0));
-      await databaseService.into(databaseService.termTrees).insert(
-          TermTree(termId: otherTerm.id, parentTermId: otherTerm.id, depth: 0));
+        const otherTerm = Term(
+          id: 601,
+          name: 'Other term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Add content to both terms
-      final questionToDelete =
-          await databaseService.into(databaseService.questions).insert(
-                Question(
-                  id: 10,
-                  titleTranslation: '',
-                  parentTermId: termToDelete.id,
-                  uuid: 'delete-question',
-                  type: 1,
-                  title: 'Question to delete',
-                  creation: '2025-01-01 10:00:00',
-                  labelId: 1,
-                  note: '',
-                  noteTranslation: '',
-                  specialCharacter: SpecialCharacter.none,
-                  edited: 1,
-                  imageUrl: '',
-                  editionDate: '',
-                ),
-              );
+        await databaseService.into(databaseService.terms).insert(termToDelete);
+        await databaseService.into(databaseService.terms).insert(otherTerm);
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTree(
+                termId: termToDelete.id,
+                parentTermId: termToDelete.id,
+                depth: 0,
+              ),
+            );
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTree(
+                termId: otherTerm.id,
+                parentTermId: otherTerm.id,
+                depth: 0,
+              ),
+            );
 
-      final questionToKeep =
-          await databaseService.into(databaseService.questions).insert(
-                Question(
-                  id: 11,
-                  titleTranslation: '',
-                  parentTermId: otherTerm.id,
-                  uuid: 'keep-question',
-                  type: 1,
-                  title: 'Question to keep',
-                  creation: '2025-01-01 10:00:00',
-                  labelId: 1,
-                  note: '',
-                  noteTranslation: '',
-                  specialCharacter: SpecialCharacter.none,
-                  edited: 1,
-                  imageUrl: '',
-                  editionDate: '',
-                ),
-              );
+        // Add content to both terms
+        final questionToDelete = await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 10,
+                titleTranslation: '',
+                parentTermId: termToDelete.id,
+                uuid: 'delete-question',
+                type: 1,
+                title: 'Question to delete',
+                creation: '2025-01-01 10:00:00',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 1,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      // Add questionsLinkedToTags for both terms
-      await databaseService.into(databaseService.questionsLinkedToTags).insert(
-            QuestionsLinkedToTag(
-              questionId: questionToDelete,
-              tagId: 1,
-            ),
-          );
+        final questionToKeep = await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 11,
+                titleTranslation: '',
+                parentTermId: otherTerm.id,
+                uuid: 'keep-question',
+                type: 1,
+                title: 'Question to keep',
+                creation: '2025-01-01 10:00:00',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 1,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      await databaseService.into(databaseService.questionsLinkedToTags).insert(
-            QuestionsLinkedToTag(
-              questionId: questionToKeep,
-              tagId: 1,
-            ),
-          );
+        // Add questionsLinkedToTags for both terms
+        await databaseService
+            .into(databaseService.questionsLinkedToTags)
+            .insert(
+              QuestionsLinkedToTag(questionId: questionToDelete, tagId: 1),
+            );
 
-      // Add questionMedias for both terms
-      await databaseService.into(databaseService.questionMedias).insert(
-            QuestionMedia(
-              id: 10,
-              parentQuestionId: questionToDelete,
-              creation: '2025-01-01 13:14:15',
-              url: 'https://example.com/delete.jpg',
-            ),
-          );
+        await databaseService
+            .into(databaseService.questionsLinkedToTags)
+            .insert(QuestionsLinkedToTag(questionId: questionToKeep, tagId: 1));
 
-      await databaseService.into(databaseService.questionMedias).insert(
-            QuestionMedia(
-              id: 11,
-              parentQuestionId: questionToKeep,
-              creation: '2025-01-01 13:14:15',
-              url: 'https://example.com/keep.jpg',
-            ),
-          );
+        // Add questionMedias for both terms
+        await databaseService
+            .into(databaseService.questionMedias)
+            .insert(
+              QuestionMedia(
+                id: 10,
+                parentQuestionId: questionToDelete,
+                creation: '2025-01-01 13:14:15',
+                url: 'https://example.com/delete.jpg',
+              ),
+            );
 
-      // Delete content only for termToDelete
-      await termService.deleteTermContent(termToDelete);
+        await databaseService
+            .into(databaseService.questionMedias)
+            .insert(
+              QuestionMedia(
+                id: 11,
+                parentQuestionId: questionToKeep,
+                creation: '2025-01-01 13:14:15',
+                url: 'https://example.com/keep.jpg',
+              ),
+            );
 
-      // Verify only content for termToDelete was deleted
-      final questionsAfter =
-          await databaseService.select(databaseService.questions).get();
-      final questionsLinkedToTagsAfter = await databaseService
-          .select(databaseService.questionsLinkedToTags)
-          .get();
-      final questionMediasAfter =
-          await databaseService.select(databaseService.questionMedias).get();
+        // Delete content only for termToDelete
+        await termService.deleteTermContent(termToDelete);
 
-      // Should still have the question from otherTerm
-      expect(questionsAfter.length, 1);
-      expect(questionsAfter.first.id, questionToKeep);
-      expect(questionsAfter.first.parentTermId, otherTerm.id);
+        // Verify only content for termToDelete was deleted
+        final questionsAfter = await databaseService
+            .select(databaseService.questions)
+            .get();
+        final questionsLinkedToTagsAfter = await databaseService
+            .select(databaseService.questionsLinkedToTags)
+            .get();
+        final questionMediasAfter = await databaseService
+            .select(databaseService.questionMedias)
+            .get();
 
-      // Should still have the questionsLinkedToTags from otherTerm
-      expect(questionsLinkedToTagsAfter.length, 1);
-      expect(questionsLinkedToTagsAfter.first.questionId, questionToKeep);
+        // Should still have the question from otherTerm
+        expect(questionsAfter.length, 1);
+        expect(questionsAfter.first.id, questionToKeep);
+        expect(questionsAfter.first.parentTermId, otherTerm.id);
 
-      // Should still have the questionMedias from otherTerm
-      expect(questionMediasAfter.length, 1);
-      expect(questionMediasAfter.first.parentQuestionId, questionToKeep);
-    });
+        // Should still have the questionsLinkedToTags from otherTerm
+        expect(questionsLinkedToTagsAfter.length, 1);
+        expect(questionsLinkedToTagsAfter.first.questionId, questionToKeep);
+
+        // Should still have the questionMedias from otherTerm
+        expect(questionMediasAfter.length, 1);
+        expect(questionMediasAfter.first.parentQuestionId, questionToKeep);
+      },
+    );
   });
 
   group('isUnExpired', () {
@@ -2114,6 +2397,7 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
@@ -2146,6 +2430,7 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
@@ -2154,133 +2439,153 @@ Future<void> main() async {
     });
 
     test(
-        'should return true for terms with active coupons (null activation date)',
-        () async {
-      const termWithCoupon = Term(
-        id: 1002,
-        name: 'Term with Coupon',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 0,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+      'should return true for terms with active coupons (null activation date)',
+      () async {
+        const termWithCoupon = Term(
+          id: 1002,
+          name: 'Term with Coupon',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 0,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(termWithCoupon);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termWithCoupon);
 
-      // Create a coupon with null activation date (always active)
-      const coupon = Coupon(
-        id: 1,
-        serial: 'Test Coupon',
-        activationDate: null, // Null activation date = always active
-        expirationDays: 30,
-        creation: '2025-01-01 10:00:00', type: 1, free: 0,
-      );
+        // Create a coupon with null activation date (always active)
+        const coupon = Coupon(
+          id: 1,
+          serial: 'Test Coupon',
+          activationDate: null, // Null activation date = always active
+          expirationDays: 30,
+          creation: '2025-01-01 10:00:00',
+          type: 1,
+          free: 0,
+        );
 
-      await databaseService.into(databaseService.coupons).insert(coupon);
+        await databaseService.into(databaseService.coupons).insert(coupon);
 
-      // Link term to coupon
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
-            CouponsLinkedToTerm(
-              termId: termWithCoupon.id,
-              couponId: coupon.id,
-            ),
-          );
+        // Link term to coupon
+        await databaseService
+            .into(databaseService.couponsLinkedToTerms)
+            .insert(
+              CouponsLinkedToTerm(
+                termId: termWithCoupon.id,
+                couponId: coupon.id,
+              ),
+            );
 
-      // Add to termTrees to satisfy the query
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(termWithCoupon.id),
-              parentTermId: Value(termWithCoupon.id),
-              depth: const Value(0),
-            ),
-          );
+        // Add to termTrees to satisfy the query
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(termWithCoupon.id),
+                parentTermId: Value(termWithCoupon.id),
+                depth: const Value(0),
+              ),
+            );
 
-      final termData = TermData(
-        termWithCoupon,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final termData = TermData(
+          termWithCoupon,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService.isUnExpired(termData);
-      expect(result, true);
-    });
+        final result = await termService.isUnExpired(termData);
+        expect(result, true);
+      },
+    );
 
-    test('should return true for terms with active coupons (not expired)',
-        () async {
-      const termWithActiveCoupon = Term(
-        id: 1003,
-        name: 'Term with Active Coupon',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 0,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should return true for terms with active coupons (not expired)',
+      () async {
+        const termWithActiveCoupon = Term(
+          id: 1003,
+          name: 'Term with Active Coupon',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 0,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService
-          .into(databaseService.terms)
-          .insert(termWithActiveCoupon);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termWithActiveCoupon);
 
-      // Create a coupon with activation date in the past but not expired
-      final activationDate = DateTime.now().subtract(const Duration(days: 10));
-      const expirationDays = 30; // Still has 20 days left
+        // Create a coupon with activation date in the past but not expired
+        final activationDate = DateTime.now().subtract(
+          const Duration(days: 10),
+        );
+        const expirationDays = 30; // Still has 20 days left
 
-      final coupon = Coupon(
+        final coupon = Coupon(
           id: 2,
           serial: 'Active Coupon',
           activationDate: activationDate.toIso8601String(),
           expirationDays: expirationDays,
           creation: '2025-01-01 10:00:00',
           free: 0,
-          type: 1);
+          type: 1,
+        );
 
-      await databaseService.into(databaseService.coupons).insert(coupon);
+        await databaseService.into(databaseService.coupons).insert(coupon);
 
-      // Link term to coupon
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
-            CouponsLinkedToTerm(
-              termId: termWithActiveCoupon.id,
-              couponId: coupon.id,
-            ),
-          );
+        // Link term to coupon
+        await databaseService
+            .into(databaseService.couponsLinkedToTerms)
+            .insert(
+              CouponsLinkedToTerm(
+                termId: termWithActiveCoupon.id,
+                couponId: coupon.id,
+              ),
+            );
 
-      // Add to termTrees to satisfy the query
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(termWithActiveCoupon.id),
-              parentTermId: Value(termWithActiveCoupon.id),
-              depth: const Value(0),
-            ),
-          );
+        // Add to termTrees to satisfy the query
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(termWithActiveCoupon.id),
+                parentTermId: Value(termWithActiveCoupon.id),
+                depth: const Value(0),
+              ),
+            );
 
-      final termData = TermData(
-        termWithActiveCoupon,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final termData = TermData(
+          termWithActiveCoupon,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService.isUnExpired(termData);
-      expect(result, true);
-    });
+        final result = await termService.isUnExpired(termData);
+        expect(result, true);
+      },
+    );
 
     test('should return false for terms with expired coupons', () async {
       const termWithExpiredCoupon = Term(
@@ -2307,18 +2612,21 @@ Future<void> main() async {
       const expirationDays = 30; // Expired 335 days ago
 
       final coupon = Coupon(
-          id: 3,
-          serial: 'Expired Coupon',
-          activationDate: activationDate.toIso8601String(),
-          expirationDays: expirationDays,
-          creation: '2025-01-01 10:00:00',
-          type: 0,
-          free: 0);
+        id: 3,
+        serial: 'Expired Coupon',
+        activationDate: activationDate.toIso8601String(),
+        expirationDays: expirationDays,
+        creation: '2025-01-01 10:00:00',
+        type: 0,
+        free: 0,
+      );
 
       await databaseService.into(databaseService.coupons).insert(coupon);
 
       // Link term to coupon
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
+      await databaseService
+          .into(databaseService.couponsLinkedToTerms)
+          .insert(
             CouponsLinkedToTerm(
               termId: termWithExpiredCoupon.id,
               couponId: coupon.id,
@@ -2326,7 +2634,9 @@ Future<void> main() async {
           );
 
       // Add to termTrees to satisfy the query
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(termWithExpiredCoupon.id),
               parentTermId: Value(termWithExpiredCoupon.id),
@@ -2341,6 +2651,7 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
@@ -2348,245 +2659,276 @@ Future<void> main() async {
       expect(result, false);
     });
 
-    test('should return false for terms with empty activation date strings',
-        () async {
-      const termWithInvalidCoupon = Term(
-        id: 1005,
-        name: 'Term with Invalid Coupon',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 0,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should return false for terms with empty activation date strings',
+      () async {
+        const termWithInvalidCoupon = Term(
+          id: 1005,
+          name: 'Term with Invalid Coupon',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 0,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService
-          .into(databaseService.terms)
-          .insert(termWithInvalidCoupon);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termWithInvalidCoupon);
 
-      // Create a coupon with empty activation date (should be treated as invalid)
-      const coupon = Coupon(
+        // Create a coupon with empty activation date (should be treated as invalid)
+        const coupon = Coupon(
           id: 4,
           serial: 'Invalid Coupon',
           activationDate: '', // Empty activation date
           expirationDays: 30,
           creation: '2025-01-01 10:00:00',
           free: 0,
-          type: 1);
+          type: 1,
+        );
 
-      await databaseService.into(databaseService.coupons).insert(coupon);
+        await databaseService.into(databaseService.coupons).insert(coupon);
 
-      // Link term to coupon
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
-            CouponsLinkedToTerm(
-              termId: termWithInvalidCoupon.id,
-              couponId: coupon.id,
-            ),
-          );
+        // Link term to coupon
+        await databaseService
+            .into(databaseService.couponsLinkedToTerms)
+            .insert(
+              CouponsLinkedToTerm(
+                termId: termWithInvalidCoupon.id,
+                couponId: coupon.id,
+              ),
+            );
 
-      // Add to termTrees to satisfy the query
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(termWithInvalidCoupon.id),
-              parentTermId: Value(termWithInvalidCoupon.id),
-              depth: const Value(0),
-            ),
-          );
+        // Add to termTrees to satisfy the query
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(termWithInvalidCoupon.id),
+                parentTermId: Value(termWithInvalidCoupon.id),
+                depth: const Value(0),
+              ),
+            );
 
-      final termData = TermData(
-        termWithInvalidCoupon,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final termData = TermData(
+          termWithInvalidCoupon,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService.isUnExpired(termData);
-      expect(result, false);
-    });
+        final result = await termService.isUnExpired(termData);
+        expect(result, false);
+      },
+    );
 
-    test('should handle multiple coupons and return true if any is valid',
-        () async {
-      const termWithMultipleCoupons = Term(
-        id: 1006,
-        name: 'Term with Multiple Coupons',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 0,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should handle multiple coupons and return true if any is valid',
+      () async {
+        const termWithMultipleCoupons = Term(
+          id: 1006,
+          name: 'Term with Multiple Coupons',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 0,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService
-          .into(databaseService.terms)
-          .insert(termWithMultipleCoupons);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(termWithMultipleCoupons);
 
-      // Create an expired coupon
-      final expiredActivationDate =
-          DateTime.now().subtract(const Duration(days: 365));
-      final expiredCoupon = Coupon(
+        // Create an expired coupon
+        final expiredActivationDate = DateTime.now().subtract(
+          const Duration(days: 365),
+        );
+        final expiredCoupon = Coupon(
           id: 5,
           serial: 'Expired Coupon',
           activationDate: expiredActivationDate.toIso8601String(),
           expirationDays: 30,
           creation: '2025-01-01 10:00:00',
           type: 1,
-          free: 0);
+          free: 0,
+        );
 
-      // Create a valid coupon (null activation date)
-      const validCoupon = Coupon(
+        // Create a valid coupon (null activation date)
+        const validCoupon = Coupon(
           id: 6,
           serial: 'Valid Coupon',
           activationDate: null,
           expirationDays: 30,
           creation: '2025-01-01 10:00:00',
           type: 1,
-          free: 0);
+          free: 0,
+        );
 
-      await databaseService.into(databaseService.coupons).insert(expiredCoupon);
-      await databaseService.into(databaseService.coupons).insert(validCoupon);
+        await databaseService
+            .into(databaseService.coupons)
+            .insert(expiredCoupon);
+        await databaseService.into(databaseService.coupons).insert(validCoupon);
 
-      // Link term to both coupons
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
-            CouponsLinkedToTerm(
-              termId: termWithMultipleCoupons.id,
-              couponId: expiredCoupon.id,
-            ),
-          );
-      await databaseService.into(databaseService.couponsLinkedToTerms).insert(
-            CouponsLinkedToTerm(
-              termId: termWithMultipleCoupons.id,
-              couponId: validCoupon.id,
-            ),
-          );
+        // Link term to both coupons
+        await databaseService
+            .into(databaseService.couponsLinkedToTerms)
+            .insert(
+              CouponsLinkedToTerm(
+                termId: termWithMultipleCoupons.id,
+                couponId: expiredCoupon.id,
+              ),
+            );
+        await databaseService
+            .into(databaseService.couponsLinkedToTerms)
+            .insert(
+              CouponsLinkedToTerm(
+                termId: termWithMultipleCoupons.id,
+                couponId: validCoupon.id,
+              ),
+            );
 
-      // Add to termTrees to satisfy the query
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(termWithMultipleCoupons.id),
-              parentTermId: Value(termWithMultipleCoupons.id),
-              depth: const Value(0),
-            ),
-          );
+        // Add to termTrees to satisfy the query
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(termWithMultipleCoupons.id),
+                parentTermId: Value(termWithMultipleCoupons.id),
+                depth: const Value(0),
+              ),
+            );
 
-      final termData = TermData(
-        termWithMultipleCoupons,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(0),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final termData = TermData(
+          termWithMultipleCoupons,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(0),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService.isUnExpired(termData);
-      expect(
-          result, true); // Should be true because at least one coupon is valid
-    });
+        final result = await termService.isUnExpired(termData);
+        expect(
+          result,
+          true,
+        ); // Should be true because at least one coupon is valid
+      },
+    );
   });
 
   group('getTermUndownloadedTermsWithQuestionsCount', () {
     test(
-        'should return count of undownloaded subterms with questions for enabled terms',
-        () async {
-      const parentTerm = Term(
-        id: 1100,
-        name: 'Parent Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+      'should return count of undownloaded subterms with questions for enabled terms',
+      () async {
+        const parentTerm = Term(
+          id: 1100,
+          name: 'Parent Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      // Create subterms that match the criteria
-      const undownloadedTerm1 = Term(
-        id: 1101,
-        name: 'Undownloaded Term 1',
-        type: 1, // Type 1 (included)
-        enabled: 1,
-        needsUpdate: 1, // Needs update
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        // Create subterms that match the criteria
+        const undownloadedTerm1 = Term(
+          id: 1101,
+          name: 'Undownloaded Term 1',
+          type: 1, // Type 1 (included)
+          enabled: 1,
+          needsUpdate: 1, // Needs update
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const undownloadedTerm2 = Term(
-        id: 1102,
-        name: 'Undownloaded Term 2',
-        type: 3, // Type 3 (included)
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const undownloadedTerm2 = Term(
+          id: 1102,
+          name: 'Undownloaded Term 2',
+          type: 3, // Type 3 (included)
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(parentTerm);
-      await databaseService
-          .into(databaseService.terms)
-          .insert(undownloadedTerm1);
-      await databaseService
-          .into(databaseService.terms)
-          .insert(undownloadedTerm2);
+        await databaseService.into(databaseService.terms).insert(parentTerm);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(undownloadedTerm1);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(undownloadedTerm2);
 
-      // Create term tree relationships
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(undownloadedTerm1.id),
-              parentTermId: Value(parentTerm.id),
-              depth: const Value(1),
-            ),
-          );
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(undownloadedTerm2.id),
-              parentTermId: Value(parentTerm.id),
-              depth: const Value(1),
-            ),
-          );
+        // Create term tree relationships
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(undownloadedTerm1.id),
+                parentTermId: Value(parentTerm.id),
+                depth: const Value(1),
+              ),
+            );
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(undownloadedTerm2.id),
+                parentTermId: Value(parentTerm.id),
+                depth: const Value(1),
+              ),
+            );
 
-      // Term 1102 has no questions (count = 0), so it should be included
+        // Term 1102 has no questions (count = 0), so it should be included
 
-      final parentTermData = TermData(
-        parentTerm,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(2),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final parentTermData = TermData(
+          parentTerm,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(2),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
-      expect(result.length, 2); // Both subterms should be counted
-    });
+        final result = await termService.getTermUndownloadedTermsWithQuestions(
+          parentTermData,
+        );
+        expect(result.length, 2); // Both subterms should be counted
+      },
+    );
 
     test('should exclude terms that are not subterms of the parent', () async {
       const parentTerm = Term(
@@ -2631,11 +2973,13 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(0),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      final result = await termService.getTermUndownloadedTermsWithQuestions(
+        parentTermData,
+      );
       expect(result.length, 0); // Unrelated term should not be counted
     });
 
@@ -2673,7 +3017,9 @@ Future<void> main() async {
       await databaseService.into(databaseService.terms).insert(parentTerm);
       await databaseService.into(databaseService.terms).insert(disabledSubterm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(disabledSubterm.id),
               parentTermId: Value(parentTerm.id),
@@ -2688,11 +3034,13 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(1),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      final result = await termService.getTermUndownloadedTermsWithQuestions(
+        parentTermData,
+      );
       expect(result.length, 0); // Disabled term should not be counted
     });
 
@@ -2732,7 +3080,9 @@ Future<void> main() async {
           .into(databaseService.terms)
           .insert(wrongTypeSubterm);
 
-      await databaseService.into(databaseService.termTrees).insert(
+      await databaseService
+          .into(databaseService.termTrees)
+          .insert(
             TermTreesCompanion(
               termId: Value(wrongTypeSubterm.id),
               parentTermId: Value(parentTerm.id),
@@ -2747,173 +3097,197 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(1),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      final result = await termService.getTermUndownloadedTermsWithQuestions(
+        parentTermData,
+      );
       expect(result.length, 0); // Wrong type term should not be counted
     });
 
-    test('should exclude terms that are up-to-date and have questions',
-        () async {
-      const parentTerm = Term(
-        id: 1500,
-        name: 'Parent Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should exclude terms that are up-to-date and have questions',
+      () async {
+        const parentTerm = Term(
+          id: 1500,
+          name: 'Parent Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const upToDateSubterm = Term(
-        id: 1501,
-        name: 'Up-to-date Subterm',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0, // Up-to-date
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const upToDateSubterm = Term(
+          id: 1501,
+          name: 'Up-to-date Subterm',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0, // Up-to-date
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(parentTerm);
-      await databaseService.into(databaseService.terms).insert(upToDateSubterm);
+        await databaseService.into(databaseService.terms).insert(parentTerm);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(upToDateSubterm);
 
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(upToDateSubterm.id),
-              parentTermId: Value(parentTerm.id),
-              depth: const Value(1),
-            ),
-          );
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(upToDateSubterm.id),
+                parentTermId: Value(parentTerm.id),
+                depth: const Value(1),
+              ),
+            );
 
-      // Add questions to the subterm (so it doesn't have 0 questions)
-      await databaseService.into(databaseService.questions).insert(
-            Question(
-              id: 3,
-              parentTermId: upToDateSubterm.id,
-              uuid: 'test-uuid-1501',
-              type: 1,
-              title: 'Test Question',
-              creation: '2025-07-08 14:56:33',
-              titleTranslation: '',
-              labelId: 1,
-              note: '',
-              noteTranslation: '',
-              specialCharacter: SpecialCharacter.none,
-              edited: 0,
-              imageUrl: '',
-              editionDate: '',
-            ),
-          );
+        // Add questions to the subterm (so it doesn't have 0 questions)
+        await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 3,
+                parentTermId: upToDateSubterm.id,
+                uuid: 'test-uuid-1501',
+                type: 1,
+                title: 'Test Question',
+                creation: '2025-07-08 14:56:33',
+                titleTranslation: '',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 0,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      final parentTermData = TermData(
-        parentTerm,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(1),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final parentTermData = TermData(
+          parentTerm,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(1),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
-      expect(result.length,
-          0); // Up-to-date term with questions should not be counted
-    });
+        final result = await termService.getTermUndownloadedTermsWithQuestions(
+          parentTermData,
+        );
+        expect(
+          result.length,
+          0,
+        ); // Up-to-date term with questions should not be counted
+      },
+    );
 
-    test('should include terms that need update even if they have questions',
-        () async {
-      const parentTerm = Term(
-        id: 1600,
-        name: 'Parent Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+    test(
+      'should include terms that need update even if they have questions',
+      () async {
+        const parentTerm = Term(
+          id: 1600,
+          name: 'Parent Term',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 0,
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      const needsUpdateSubterm = Term(
-        id: 1601,
-        name: 'Needs Update Subterm',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 1, // Needs update
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
+        const needsUpdateSubterm = Term(
+          id: 1601,
+          name: 'Needs Update Subterm',
+          type: 1,
+          enabled: 1,
+          needsUpdate: 1, // Needs update
+          creation: '2025-01-01 10:00:00',
+          ordering: 0,
+          free: 1,
+          uuid: '',
+          captureable: 0,
+          textCulumn: '',
+          outerNote: '',
+        );
 
-      await databaseService.into(databaseService.terms).insert(parentTerm);
-      await databaseService
-          .into(databaseService.terms)
-          .insert(needsUpdateSubterm);
+        await databaseService.into(databaseService.terms).insert(parentTerm);
+        await databaseService
+            .into(databaseService.terms)
+            .insert(needsUpdateSubterm);
 
-      await databaseService.into(databaseService.termTrees).insert(
-            TermTreesCompanion(
-              termId: Value(needsUpdateSubterm.id),
-              parentTermId: Value(parentTerm.id),
-              depth: const Value(1),
-            ),
-          );
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
+              TermTreesCompanion(
+                termId: Value(needsUpdateSubterm.id),
+                parentTermId: Value(parentTerm.id),
+                depth: const Value(1),
+              ),
+            );
 
-      // Add questions to the subterm (but it still needs update)
-      await databaseService.into(databaseService.questions).insert(
-            Question(
-              id: 2,
-              parentTermId: needsUpdateSubterm.id,
-              uuid: 'test-uuid-1601',
-              type: 1,
-              title: 'Test Question',
-              creation: '2025-07-08 14:56:33',
-              titleTranslation: '',
-              labelId: 1,
-              note: '',
-              noteTranslation: '',
-              specialCharacter: SpecialCharacter.none,
-              edited: 0,
-              imageUrl: '',
-              editionDate: '',
-            ),
-          );
+        // Add questions to the subterm (but it still needs update)
+        await databaseService
+            .into(databaseService.questions)
+            .insert(
+              Question(
+                id: 2,
+                parentTermId: needsUpdateSubterm.id,
+                uuid: 'test-uuid-1601',
+                type: 1,
+                title: 'Test Question',
+                creation: '2025-07-08 14:56:33',
+                titleTranslation: '',
+                labelId: 1,
+                note: '',
+                noteTranslation: '',
+                specialCharacter: SpecialCharacter.none,
+                edited: 0,
+                imageUrl: '',
+                editionDate: '',
+              ),
+            );
 
-      final parentTermData = TermData(
-        parentTerm,
-        tagId: null,
-        labelId: null,
-        numberOfSubTerms: const NumberOfSubTerms(1),
-        numberOfQuestions: const NumberOfSubTerms(0),
-        numberOfFlashcards: const NumberOfSubTerms(0),
-        numberOfRelatedTerms: const NumberOfSubTerms(0),
-      );
+        final parentTermData = TermData(
+          parentTerm,
+          tagId: null,
+          labelId: null,
+          numberOfSubTerms: const NumberOfSubTerms(1),
+          numberOfQuestions: const NumberOfSubTerms(0),
+          numberOfFlashcards: const NumberOfSubTerms(0),
+          numberOfImages: const NumberOfSubTerms(0),
+          numberOfRelatedTerms: const NumberOfSubTerms(0),
+        );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
-      expect(result.length,
-          1); // Term that needs update should be counted even with questions
-    });
+        final result = await termService.getTermUndownloadedTermsWithQuestions(
+          parentTermData,
+        );
+        expect(
+          result.length,
+          1,
+        ); // Term that needs update should be counted even with questions
+      },
+    );
 
     test('should handle mixed scenarios with multiple subterms', () async {
       const parentTerm = Term(
@@ -3003,7 +3377,9 @@ Future<void> main() async {
 
       // Create term tree relationships
       for (final subterm in [subterm1, subterm2, subterm3, subterm4]) {
-        await databaseService.into(databaseService.termTrees).insert(
+        await databaseService
+            .into(databaseService.termTrees)
+            .insert(
               TermTreesCompanion(
                 termId: Value(subterm.id),
                 parentTermId: Value(parentTerm.id),
@@ -3013,7 +3389,9 @@ Future<void> main() async {
       }
 
       // Add questions to subterm3 (up-to-date term)
-      await databaseService.into(databaseService.questions).insert(
+      await databaseService
+          .into(databaseService.questions)
+          .insert(
             Question(
               id: 1,
               parentTermId: subterm3.id,
@@ -3039,11 +3417,13 @@ Future<void> main() async {
         numberOfSubTerms: const NumberOfSubTerms(4),
         numberOfQuestions: const NumberOfSubTerms(0),
         numberOfFlashcards: const NumberOfSubTerms(0),
+        numberOfImages: const NumberOfSubTerms(0),
         numberOfRelatedTerms: const NumberOfSubTerms(0),
       );
 
-      final result = await termService
-          .getTermUndownloadedTermsWithQuestions(parentTermData);
+      final result = await termService.getTermUndownloadedTermsWithQuestions(
+        parentTermData,
+      );
       expect(result.length, 2); // Only subterm1 and subterm2 should be counted
     });
   });
@@ -3052,6 +3432,7 @@ Future<void> main() async {
     late MockQuestionService mockQuestionService;
     late MockAnswerService mockAnswerService;
     late MockFlashcardService mockFlashcardService;
+    late MockImageService mockImageService;
     late MockQuestionMediaService mockQuestionMediaService;
     late MockQuestionTagService mockQuestionTagService;
     late MockQuestionLinkedToTagService mockQuestionLinkedToTagService;
@@ -3060,6 +3441,7 @@ Future<void> main() async {
       mockQuestionService = MockQuestionService();
       mockAnswerService = MockAnswerService();
       mockFlashcardService = MockFlashcardService();
+      mockImageService = MockImageService();
       mockQuestionMediaService = MockQuestionMediaService();
       mockQuestionTagService = MockQuestionTagService();
       mockQuestionLinkedToTagService = MockQuestionLinkedToTagService();
@@ -3068,6 +3450,7 @@ Future<void> main() async {
       Get.delete<QuestionService>();
       Get.delete<AnswerService>();
       Get.delete<FlashcardService>();
+      Get.delete<ImageService>();
       Get.delete<QuestionMediaService>();
       Get.delete<QuestionTagService>();
       Get.delete<QuestionLinkedToTagService>();
@@ -3075,6 +3458,7 @@ Future<void> main() async {
       Get.put<QuestionService>(mockQuestionService);
       Get.put<AnswerService>(mockAnswerService);
       Get.put<FlashcardService>(mockFlashcardService);
+      Get.put<ImageService>(mockImageService);
       Get.put<QuestionMediaService>(mockQuestionMediaService);
       Get.put<QuestionTagService>(mockQuestionTagService);
       Get.put<QuestionLinkedToTagService>(mockQuestionLinkedToTagService);
@@ -3098,8 +3482,8 @@ Future<void> main() async {
             'specialCharacter': 1,
             'edited': 1,
             'imageUrl': '',
-            'editionDate': '2024-01-01 10:00:00'
-          }
+            'editionDate': '2024-01-01 10:00:00',
+          },
         ],
         'answers': [
           {
@@ -3111,16 +3495,14 @@ Future<void> main() async {
             'uuid': 'uuid',
             'specialCharacter': 1,
             'creation': '2025-01-04 13:15:17',
-            'checkedCount': 10
-          }
+            'checkedCount': 10,
+          },
         ],
         'flashcards': [
-          {
-            'id': 1,
-            'parentTermId': 100,
-            'head': 'Front 1',
-            'tail': 'Back 1',
-          }
+          {'id': 1, 'parentTermId': 100, 'head': 'Front 1', 'tail': 'Back 1'},
+        ],
+        'images': [
+          {'id': 1, 'parentTermId': 100, 'title': 'Front 1', 'info': 'Back 1','url':'Url'},
         ],
         'media': [
           {
@@ -3128,8 +3510,8 @@ Future<void> main() async {
             'parentQuestionId': 1,
             'type': 1,
             'url': 'https://example.com/image1.jpg',
-            'creation': '2025-08-14 15:19:45'
-          }
+            'creation': '2025-08-14 15:19:45',
+          },
         ],
         'questionTags': [
           {
@@ -3137,85 +3519,92 @@ Future<void> main() async {
             'name': 'Tag 1',
             'parentTagId': 1,
             'creation': '2025-08-14 15:19:45',
-            'hasInformation': 0
-          }
+            'hasInformation': 0,
+          },
         ],
         'questionsLinkedToTags': [
-          {
-            'id': 1,
-            'questionId': 1,
-            'tagId': 1,
-          }
+          {'id': 1, 'questionId': 1, 'tagId': 1},
         ],
       };
 
       // Setup mock responses
-      when(() => mockQuestionService.addQuestions(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockQuestionService.addQuestions(any()),
+      ).thenAnswer((_) async {});
       when(() => mockAnswerService.addAnswers(any())).thenAnswer((_) async {});
-      when(() => mockFlashcardService.addFlashcards(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionMediaService.addQuestionMedias(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionTagService.addQuestionTags(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockFlashcardService.addFlashcards(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockImageService.addImages(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionMediaService.addQuestionMedias(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionTagService.addQuestionTags(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()),
+      ).thenAnswer((_) async {});
 
       // Execute
       await termService.storeTermContent(body);
 
-      // Verify all service methods were called with correct data
-      // verify(() => mockQuestionService.addQuestions(any())).called(1);
-      // verify(() => mockAnswerService.addAnswers(any())).called(1);
-      // verify(() => mockFlashcardService.addFlashcards(any())).called(1);
-      // verify(() => mockQuestionMediaService.addQuestionMedias(any())).called(1);
-      // verify(() => mockQuestionTagService.addQuestionTags(any())).called(1);
-      // verify(() =>
-      //         mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()))
-      //     .called(1);
-
       // Verify the exact data passed to each service
-      final questionCapture =
-          verify(() => mockQuestionService.addQuestions(captureAny())).captured;
+      final questionCapture = verify(
+        () => mockQuestionService.addQuestions(captureAny()),
+      ).captured;
       final questions = questionCapture.first as List<Question>;
       expect(questions.length, 1);
       expect(questions.first.id, 1);
       expect(questions.first.uuid, 'question-uuid-1');
 
-      final answerCapture =
-          verify(() => mockAnswerService.addAnswers(captureAny())).captured;
+      final answerCapture = verify(
+        () => mockAnswerService.addAnswers(captureAny()),
+      ).captured;
       final answers = answerCapture.first as List<Answer>;
       expect(answers.length, 1);
       expect(answers.first.id, 1);
       expect(answers.first.title, 'Answer 1');
 
-      final flashcardCapture =
-          verify(() => mockFlashcardService.addFlashcards(captureAny()))
-              .captured;
+      final flashcardCapture = verify(
+        () => mockFlashcardService.addFlashcards(captureAny()),
+      ).captured;
       final flashcards = flashcardCapture.first as List<Flashcard>;
       expect(flashcards.length, 1);
       expect(flashcards.first.id, 1);
       expect(flashcards.first.head, 'Front 1');
 
-      final mediaCapture =
-          verify(() => mockQuestionMediaService.addQuestionMedias(captureAny()))
-              .captured;
+      final imageCapture = verify(
+        () => mockImageService.addImages(captureAny()),
+      ).captured;
+      final images = imageCapture.first as List<Image>;
+      expect(images.length, 1);
+      expect(images.first.id, 1);
+      expect(images.first.title, 'Front 1');
+
+      final mediaCapture = verify(
+        () => mockQuestionMediaService.addQuestionMedias(captureAny()),
+      ).captured;
       final medias = mediaCapture.first as List<QuestionMedia>;
       expect(medias.length, 1);
       expect(medias.first.id, 1);
       expect(medias.first.url, 'https://example.com/image1.jpg');
 
-      final tagCapture =
-          verify(() => mockQuestionTagService.addQuestionTags(captureAny()))
-              .captured;
+      final tagCapture = verify(
+        () => mockQuestionTagService.addQuestionTags(captureAny()),
+      ).captured;
       final tags = tagCapture.first as List<QuestionTag>;
       expect(tags.length, 1);
       expect(tags.first.id, 1);
       expect(tags.first.name, 'Tag 1');
 
-      final linkedTagCapture = verify(() => mockQuestionLinkedToTagService
-          .addQuestionsLinkdeToTags(captureAny())).captured;
+      final linkedTagCapture = verify(
+        () => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(
+          captureAny(),
+        ),
+      ).captured;
       final linkedTags = linkedTagCapture.first as List<QuestionsLinkedToTag>;
       expect(linkedTags.length, 1);
       expect(linkedTags.first.questionId, 1);
@@ -3228,23 +3617,32 @@ Future<void> main() async {
         'questions': [],
         'answers': [],
         'flashcards': [],
+        'images':[],
         'media': [],
         'questionTags': [],
         'questionsLinkedToTags': [],
       };
 
       // Setup mock responses
-      when(() => mockQuestionService.addQuestions(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockQuestionService.addQuestions(any()),
+      ).thenAnswer((_) async {});
       when(() => mockAnswerService.addAnswers(any())).thenAnswer((_) async {});
-      when(() => mockFlashcardService.addFlashcards(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionMediaService.addQuestionMedias(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionTagService.addQuestionTags(any()))
-          .thenAnswer((_) async {});
-      when(() => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockFlashcardService.addFlashcards(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockImageService.addImages(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionMediaService.addQuestionMedias(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionTagService.addQuestionTags(any()),
+      ).thenAnswer((_) async {});
+      when(
+        () => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()),
+      ).thenAnswer((_) async {});
 
       // Execute
       await termService.storeTermContent(body);
@@ -3253,375 +3651,24 @@ Future<void> main() async {
       verify(() => mockQuestionService.addQuestions(any())).called(1);
       verify(() => mockAnswerService.addAnswers(any())).called(1);
       verify(() => mockFlashcardService.addFlashcards(any())).called(1);
+      verify(() => mockImageService.addImages(any())).called(1);
       verify(() => mockQuestionMediaService.addQuestionMedias(any())).called(1);
       verify(() => mockQuestionTagService.addQuestionTags(any())).called(1);
-      verify(() =>
-              mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()))
-          .called(1);
+      verify(
+        () => mockQuestionLinkedToTagService.addQuestionsLinkdeToTags(any()),
+      ).called(1);
     });
   });
   group(
-      'getRecentTerms, getNewTerms, getUnstudiedTerms,getFavoriteTerms, getUpdateableTerms',
-      () {
-    test(
+    'getRecentTerms, getNewTerms, getUnstudiedTerms,getFavoriteTerms, getUpdateableTerms',
+    () {
+      test(
         'should return appropriate term lists based on criteria and exclude non-matching terms',
         () async {
-      // Create terms for different categories
-      const recentTerm = Term(
-        id: 700,
-        name: 'Recent Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const newTerm = Term(
-        id: 701,
-        name: 'New Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const updateableTerm = Term(
-        id: 702,
-        name: 'Updateable Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 1, // Needs update
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const unstudiedTerm = Term(
-        id: 703,
-        name: 'Unstudied Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const oldTermWithAccess = Term(
-        id: 704,
-        name: 'Old Term with Access',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const disabledTerm = Term(
-        id: 705,
-        name: 'Disabled Term',
-        type: 1,
-        enabled: 0, // Disabled
-        needsUpdate: 1,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const studiedTerm = Term(
-        id: 706,
-        name: 'Studied Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const upToDateTerm = Term(
-        id: 707,
-        name: 'Up-to-date Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0, // No update needed
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const favoriteTerm = Term(
-        id: 708,
-        name: 'Favorite Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      const unfavoriteTerm = Term(
-        id: 709,
-        name: 'unFavorite Term',
-        type: 1,
-        enabled: 1,
-        needsUpdate: 0,
-        creation: '2025-01-01 10:00:00',
-        ordering: 0,
-        free: 1,
-        uuid: '',
-        captureable: 0,
-        textCulumn: '',
-        outerNote: '',
-      );
-
-      // Insert all terms
-      await databaseService.into(databaseService.terms).insert(recentTerm);
-      await databaseService.into(databaseService.terms).insert(newTerm);
-      await databaseService.into(databaseService.terms).insert(updateableTerm);
-      await databaseService.into(databaseService.terms).insert(unstudiedTerm);
-      await databaseService
-          .into(databaseService.terms)
-          .insert(oldTermWithAccess);
-      await databaseService.into(databaseService.terms).insert(disabledTerm);
-      await databaseService.into(databaseService.terms).insert(studiedTerm);
-      await databaseService.into(databaseService.terms).insert(upToDateTerm);
-      await databaseService.into(databaseService.terms).insert(favoriteTerm);
-      await databaseService.into(databaseService.terms).insert(unfavoriteTerm);
-
-      // Add to termTrees and termsParents for all terms
-      for (final term in [
-        recentTerm,
-        newTerm,
-        updateableTerm,
-        unstudiedTerm,
-        oldTermWithAccess,
-        disabledTerm,
-        studiedTerm,
-        upToDateTerm,
-        favoriteTerm,
-        unfavoriteTerm
-      ]) {
-        await databaseService.into(databaseService.termTrees).insert(
-              TermTreesCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                depth: const Value(0),
-              ),
-            );
-
-        await databaseService.into(databaseService.termsParents).insert(
-              TermsParentsCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                rootTermId: Value(term.id),
-                creation: const Value('2025-01-01 10:00:00'),
-              ),
-            );
-      }
-
-      // Add recent access for recent term (very recent)
-      await databaseService.into(databaseService.termsLastAccesses).insert(
-            TermsLastAccess(
-              parentTermId: recentTerm.id,
-              lastAccess: DateTime.now().millisecondsSinceEpoch,
-              childId: 1,
-            ),
-          );
-
-      // Add old access for oldTermWithAccess (should not appear in recent)
-      await databaseService.into(databaseService.termsLastAccesses).insert(
-            TermsLastAccess(
-              parentTermId: oldTermWithAccess.id,
-              lastAccess:
-                  DateTime(2020, 1, 1).millisecondsSinceEpoch, // Very old
-              childId: 2,
-            ),
-          );
-
-      // Mark studiedTerm as studied
-      await databaseService.into(databaseService.termProperties).insert(
-            TermProperty(
-              termId: studiedTerm.id,
-              name: 'studied',
-              value: 'true',
-            ),
-          );
-
-      // Mark favoriteTerm as favorite
-      await databaseService.into(databaseService.termProperties).insert(
-            TermProperty(
-              termId: favoriteTerm.id,
-              name: 'favorite',
-              value: 'true',
-            ),
-          );
-
-      // Test getRecentTerms - should only return terms with recent access
-      final recentTerms = await termService.getRecentTerms();
-      expect(recentTerms.any((t) => t.term.id == recentTerm.id),
-          true); // Should appear
-      expect(recentTerms.any((t) => t.term.id == oldTermWithAccess.id),
-          true); // Should appear
-      expect(recentTerms.any((t) => t.term.id == newTerm.id),
-          false); // Should NOT appear (no access)
-
-      // Test getNewTerms - should only return terms with NO access record
-      final newTerms = await termService.getNewTerms();
-      expect(newTerms.any((t) => t.term.id == newTerm.id),
-          true); // Should appear (no access)
-      expect(newTerms.any((t) => t.term.id == recentTerm.id),
-          false); // Should NOT appear (has access)
-      expect(newTerms.any((t) => t.term.id == oldTermWithAccess.id),
-          false); // Should NOT appear (has access)
-
-      // Test getUnstudiedTerms - should only return terms NOT marked as studied
-      final unstudiedTerms = await termService.getUnstudiedTerms();
-      expect(unstudiedTerms.any((t) => t.term.id == unstudiedTerm.id),
-          true); // Should appear (not studied)
-      expect(unstudiedTerms.any((t) => t.term.id == studiedTerm.id),
-          false); // Should NOT appear (studied)
-      expect(unstudiedTerms.any((t) => t.term.id == recentTerm.id),
-          true); // Should appear (not studied)
-
-      // Test favoriteTerms - should only return terms that are favorite
-      final favoriteTerms = await termService.getFavoriteTerms();
-      expect(favoriteTerms.any((t) => t.term.id == favoriteTerm.id),
-          true); // Should appear (not favorite)
-      expect(favoriteTerms.any((t) => t.term.id == unfavoriteTerm.id),
-          false); // Should NOT appear (favorite)
-
-      // Test getUpdateableTerms - should only return enabled terms with needsUpdate=1
-      final updateableTerms = await termService.getUpdateableTerms();
-      expect(updateableTerms.any((t) => t.term.id == updateableTerm.id),
-          true); // Should appear (needs update)
-      expect(updateableTerms.any((t) => t.term.id == disabledTerm.id),
-          false); // Should NOT appear (disabled)
-      expect(updateableTerms.any((t) => t.term.id == upToDateTerm.id),
-          false); // Should NOT appear (no update needed)
-      expect(updateableTerms.any((t) => t.term.id == recentTerm.id),
-          false); // Should NOT appear (no update needed)
-
-      // Verify counts are reasonable
-      expect(recentTerms.length, 2);
-      expect(
-          newTerms.length,
-          greaterThanOrEqualTo(
-              6)); // All terms except recentTerm and oldTermWithAccess
-      expect(unstudiedTerms.length,
-          greaterThanOrEqualTo(7)); // All terms except studiedTerm
-      expect(favoriteTerms.length, 1); // only favorite
-      expect(updateableTerms.length, 1); // Only updateableTerm
-
-      // Test getRecentTerms with limit and offset together
-      final recentTermsAll = await termService.getRecentTerms();
-      final recentTermsPage1 =
-          await termService.getRecentTerms(limit: 1, offset: 0);
-      final recentTermsPage2 =
-          await termService.getRecentTerms(limit: 1, offset: 1);
-
-      expect(recentTermsAll.length, 2);
-      expect(recentTermsPage1.length, 1); // First page should have 1 item
-      expect(recentTermsPage2.length,
-          1); // Second page should be empty (only 1 item total)
-
-      // Test getNewTerms with limit and offset together
-      final newTermsAll = await termService.getNewTerms();
-      final newTermsPage1 = await termService.getNewTerms(limit: 2, offset: 0);
-      final newTermsPage2 = await termService.getNewTerms(limit: 2, offset: 2);
-      final newTermsPage3 = await termService.getNewTerms(limit: 2, offset: 4);
-
-      expect(newTermsAll.length, greaterThanOrEqualTo(6));
-      expect(newTermsPage1.length, 2); // First page: items 0-1
-      expect(newTermsPage2.length, 2); // Second page: items 2-3
-      expect(newTermsPage3.length,
-          lessThanOrEqualTo(2)); // Third page: remaining items
-
-      // Test getUnstudiedTerms with limit and offset together
-      final unstudiedTermsAll = await termService.getUnstudiedTerms();
-      final unstudiedTermsPage1 =
-          await termService.getUnstudiedTerms(limit: 3, offset: 0);
-      final unstudiedTermsPage2 =
-          await termService.getUnstudiedTerms(limit: 3, offset: 3);
-
-      expect(unstudiedTermsAll.length, greaterThanOrEqualTo(7));
-      expect(unstudiedTermsPage1.length, 3); // First page: items 0-2
-      expect(unstudiedTermsPage2.length, 3); // Second page: items 3-5
-
-      // Test getFavoriteTerms with limit and offset together
-      final favoriteTermsAll = await termService.getFavoriteTerms();
-      final favoriteTermsPage1 =
-          await termService.getFavoriteTerms(limit: 3, offset: 0);
-      final favoriteTermsPage2 =
-          await termService.getFavoriteTerms(limit: 3, offset: 3);
-
-      expect(favoriteTermsAll.length, 1);
-      expect(favoriteTermsPage1.length, 1); // First page
-      expect(favoriteTermsPage2.length, 0); // Second page
-
-      // Test getUpdateableTerms with limit and offset together
-      final updateableTermsAll = await termService.getUpdateableTerms();
-      final updateableTermsPage1 =
-          await termService.getUpdateableTerms(limit: 1, offset: 0);
-      final updateableTermsPage2 =
-          await termService.getUpdateableTerms(limit: 1, offset: 1);
-
-      expect(updateableTermsAll.length, 1);
-      expect(updateableTermsPage1.length, 1); // First page should have 1 item
-      expect(updateableTermsPage2.length, 0); // Second page should be empty
-    });
-
-    test(
-        'should handle limit and offset parameters correctly together with multiple items',
-        () async {
-      // Create multiple new terms (no access records) for testing pagination
-      final newTerms = [
-        for (int i = 800; i < 810; i++)
-          Term(
-            id: i,
-            name: 'New Term $i',
+          // Create terms for different categories
+          const recentTerm = Term(
+            id: 700,
+            name: 'Recent Term',
             type: 1,
             enabled: 1,
             needsUpdate: 0,
@@ -3632,142 +3679,624 @@ Future<void> main() async {
             captureable: 0,
             textCulumn: '',
             outerNote: '',
-          )
-      ];
+          );
 
-      // Insert all new terms
-      for (final term in newTerms) {
-        await databaseService.into(databaseService.terms).insert(term);
-        await databaseService.into(databaseService.termTrees).insert(
-              TermTreesCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                depth: const Value(0),
-              ),
-            );
-        await databaseService.into(databaseService.termsParents).insert(
-              TermsParentsCompanion(
-                termId: Value(term.id),
-                parentTermId: Value(term.id),
-                rootTermId: Value(term.id),
-                creation: const Value('2025-01-01 10:00:00'),
-              ),
-            );
-      }
+          const newTerm = Term(
+            id: 701,
+            name: 'New Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      // Test getNewTerms with various limit and offset combinations together
-      final allNewTerms = await termService.getNewTerms();
-      expect(allNewTerms.length, greaterThanOrEqualTo(10));
+          const updateableTerm = Term(
+            id: 702,
+            name: 'Updateable Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 1, // Needs update
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      // Test pagination with limit and offset together
-      final page1 = await termService.getNewTerms(limit: 4, offset: 0);
-      final page2 = await termService.getNewTerms(limit: 4, offset: 4);
-      final page3 = await termService.getNewTerms(limit: 4, offset: 8);
+          const unstudiedTerm = Term(
+            id: 703,
+            name: 'Unstudied Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      expect(page1.length, 4);
-      expect(page2.length, 4);
-      expect(page3.length, 2); // Only 2 items left
+          const oldTermWithAccess = Term(
+            id: 704,
+            name: 'Old Term with Access',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      // Verify pages don't overlap
-      final page1Ids = page1.map((t) => t.term.id).toSet();
-      final page2Ids = page2.map((t) => t.term.id).toSet();
-      final page3Ids = page3.map((t) => t.term.id).toSet();
+          const disabledTerm = Term(
+            id: 705,
+            name: 'Disabled Term',
+            type: 1,
+            enabled: 0, // Disabled
+            needsUpdate: 1,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      expect(page1Ids.intersection(page2Ids).isEmpty, true);
-      expect(page1Ids.intersection(page3Ids).isEmpty, true);
-      expect(page2Ids.intersection(page3Ids).isEmpty, true);
+          const studiedTerm = Term(
+            id: 706,
+            name: 'Studied Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-      // Verify all items are covered across pages
-      final allPaginatedIds = {...page1Ids, ...page2Ids, ...page3Ids};
-      final allDirectIds = allNewTerms.map((t) => t.term.id).toSet();
-      expect(allPaginatedIds, allDirectIds);
-    });
+          const upToDateTerm = Term(
+            id: 707,
+            name: 'Up-to-date Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0, // No update needed
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
 
-    test('should handle edge cases for limit and offset parameters together',
+          const favoriteTerm = Term(
+            id: 708,
+            name: 'Favorite Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
+
+          const unfavoriteTerm = Term(
+            id: 709,
+            name: 'unFavorite Term',
+            type: 1,
+            enabled: 1,
+            needsUpdate: 0,
+            creation: '2025-01-01 10:00:00',
+            ordering: 0,
+            free: 1,
+            uuid: '',
+            captureable: 0,
+            textCulumn: '',
+            outerNote: '',
+          );
+
+          // Insert all terms
+          await databaseService.into(databaseService.terms).insert(recentTerm);
+          await databaseService.into(databaseService.terms).insert(newTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(updateableTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(unstudiedTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(oldTermWithAccess);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(disabledTerm);
+          await databaseService.into(databaseService.terms).insert(studiedTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(upToDateTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(favoriteTerm);
+          await databaseService
+              .into(databaseService.terms)
+              .insert(unfavoriteTerm);
+
+          // Add to termTrees and termsParents for all terms
+          for (final term in [
+            recentTerm,
+            newTerm,
+            updateableTerm,
+            unstudiedTerm,
+            oldTermWithAccess,
+            disabledTerm,
+            studiedTerm,
+            upToDateTerm,
+            favoriteTerm,
+            unfavoriteTerm,
+          ]) {
+            await databaseService
+                .into(databaseService.termTrees)
+                .insert(
+                  TermTreesCompanion(
+                    termId: Value(term.id),
+                    parentTermId: Value(term.id),
+                    depth: const Value(0),
+                  ),
+                );
+
+            await databaseService
+                .into(databaseService.termsParents)
+                .insert(
+                  TermsParentsCompanion(
+                    termId: Value(term.id),
+                    parentTermId: Value(term.id),
+                    rootTermId: Value(term.id),
+                    creation: const Value('2025-01-01 10:00:00'),
+                  ),
+                );
+          }
+
+          // Add recent access for recent term (very recent)
+          await databaseService
+              .into(databaseService.termsLastAccesses)
+              .insert(
+                TermsLastAccess(
+                  parentTermId: recentTerm.id,
+                  lastAccess: DateTime.now().millisecondsSinceEpoch,
+                  childId: 1,
+                ),
+              );
+
+          // Add old access for oldTermWithAccess (should not appear in recent)
+          await databaseService
+              .into(databaseService.termsLastAccesses)
+              .insert(
+                TermsLastAccess(
+                  parentTermId: oldTermWithAccess.id,
+                  lastAccess: DateTime(
+                    2020,
+                    1,
+                    1,
+                  ).millisecondsSinceEpoch, // Very old
+                  childId: 2,
+                ),
+              );
+
+          // Mark studiedTerm as studied
+          await databaseService
+              .into(databaseService.termProperties)
+              .insert(
+                TermProperty(
+                  termId: studiedTerm.id,
+                  name: 'studied',
+                  value: 'true',
+                ),
+              );
+
+          // Mark favoriteTerm as favorite
+          await databaseService
+              .into(databaseService.termProperties)
+              .insert(
+                TermProperty(
+                  termId: favoriteTerm.id,
+                  name: 'favorite',
+                  value: 'true',
+                ),
+              );
+
+          // Test getRecentTerms - should only return terms with recent access
+          final recentTerms = await termService.getRecentTerms();
+          expect(
+            recentTerms.any((t) => t.term.id == recentTerm.id),
+            true,
+          ); // Should appear
+          expect(
+            recentTerms.any((t) => t.term.id == oldTermWithAccess.id),
+            true,
+          ); // Should appear
+          expect(
+            recentTerms.any((t) => t.term.id == newTerm.id),
+            false,
+          ); // Should NOT appear (no access)
+
+          // Test getNewTerms - should only return terms with NO access record
+          final newTerms = await termService.getNewTerms();
+          expect(
+            newTerms.any((t) => t.term.id == newTerm.id),
+            true,
+          ); // Should appear (no access)
+          expect(
+            newTerms.any((t) => t.term.id == recentTerm.id),
+            false,
+          ); // Should NOT appear (has access)
+          expect(
+            newTerms.any((t) => t.term.id == oldTermWithAccess.id),
+            false,
+          ); // Should NOT appear (has access)
+
+          // Test getUnstudiedTerms - should only return terms NOT marked as studied
+          final unstudiedTerms = await termService.getUnstudiedTerms();
+          expect(
+            unstudiedTerms.any((t) => t.term.id == unstudiedTerm.id),
+            true,
+          ); // Should appear (not studied)
+          expect(
+            unstudiedTerms.any((t) => t.term.id == studiedTerm.id),
+            false,
+          ); // Should NOT appear (studied)
+          expect(
+            unstudiedTerms.any((t) => t.term.id == recentTerm.id),
+            true,
+          ); // Should appear (not studied)
+
+          // Test favoriteTerms - should only return terms that are favorite
+          final favoriteTerms = await termService.getFavoriteTerms();
+          expect(
+            favoriteTerms.any((t) => t.term.id == favoriteTerm.id),
+            true,
+          ); // Should appear (not favorite)
+          expect(
+            favoriteTerms.any((t) => t.term.id == unfavoriteTerm.id),
+            false,
+          ); // Should NOT appear (favorite)
+
+          // Test getUpdateableTerms - should only return enabled terms with needsUpdate=1
+          final updateableTerms = await termService.getUpdateableTerms();
+          expect(
+            updateableTerms.any((t) => t.term.id == updateableTerm.id),
+            true,
+          ); // Should appear (needs update)
+          expect(
+            updateableTerms.any((t) => t.term.id == disabledTerm.id),
+            false,
+          ); // Should NOT appear (disabled)
+          expect(
+            updateableTerms.any((t) => t.term.id == upToDateTerm.id),
+            false,
+          ); // Should NOT appear (no update needed)
+          expect(
+            updateableTerms.any((t) => t.term.id == recentTerm.id),
+            false,
+          ); // Should NOT appear (no update needed)
+
+          // Verify counts are reasonable
+          expect(recentTerms.length, 2);
+          expect(
+            newTerms.length,
+            greaterThanOrEqualTo(6),
+          ); // All terms except recentTerm and oldTermWithAccess
+          expect(
+            unstudiedTerms.length,
+            greaterThanOrEqualTo(7),
+          ); // All terms except studiedTerm
+          expect(favoriteTerms.length, 1); // only favorite
+          expect(updateableTerms.length, 1); // Only updateableTerm
+
+          // Test getRecentTerms with limit and offset together
+          final recentTermsAll = await termService.getRecentTerms();
+          final recentTermsPage1 = await termService.getRecentTerms(
+            limit: 1,
+            offset: 0,
+          );
+          final recentTermsPage2 = await termService.getRecentTerms(
+            limit: 1,
+            offset: 1,
+          );
+
+          expect(recentTermsAll.length, 2);
+          expect(recentTermsPage1.length, 1); // First page should have 1 item
+          expect(
+            recentTermsPage2.length,
+            1,
+          ); // Second page should be empty (only 1 item total)
+
+          // Test getNewTerms with limit and offset together
+          final newTermsAll = await termService.getNewTerms();
+          final newTermsPage1 = await termService.getNewTerms(
+            limit: 2,
+            offset: 0,
+          );
+          final newTermsPage2 = await termService.getNewTerms(
+            limit: 2,
+            offset: 2,
+          );
+          final newTermsPage3 = await termService.getNewTerms(
+            limit: 2,
+            offset: 4,
+          );
+
+          expect(newTermsAll.length, greaterThanOrEqualTo(6));
+          expect(newTermsPage1.length, 2); // First page: items 0-1
+          expect(newTermsPage2.length, 2); // Second page: items 2-3
+          expect(
+            newTermsPage3.length,
+            lessThanOrEqualTo(2),
+          ); // Third page: remaining items
+
+          // Test getUnstudiedTerms with limit and offset together
+          final unstudiedTermsAll = await termService.getUnstudiedTerms();
+          final unstudiedTermsPage1 = await termService.getUnstudiedTerms(
+            limit: 3,
+            offset: 0,
+          );
+          final unstudiedTermsPage2 = await termService.getUnstudiedTerms(
+            limit: 3,
+            offset: 3,
+          );
+
+          expect(unstudiedTermsAll.length, greaterThanOrEqualTo(7));
+          expect(unstudiedTermsPage1.length, 3); // First page: items 0-2
+          expect(unstudiedTermsPage2.length, 3); // Second page: items 3-5
+
+          // Test getFavoriteTerms with limit and offset together
+          final favoriteTermsAll = await termService.getFavoriteTerms();
+          final favoriteTermsPage1 = await termService.getFavoriteTerms(
+            limit: 3,
+            offset: 0,
+          );
+          final favoriteTermsPage2 = await termService.getFavoriteTerms(
+            limit: 3,
+            offset: 3,
+          );
+
+          expect(favoriteTermsAll.length, 1);
+          expect(favoriteTermsPage1.length, 1); // First page
+          expect(favoriteTermsPage2.length, 0); // Second page
+
+          // Test getUpdateableTerms with limit and offset together
+          final updateableTermsAll = await termService.getUpdateableTerms();
+          final updateableTermsPage1 = await termService.getUpdateableTerms(
+            limit: 1,
+            offset: 0,
+          );
+          final updateableTermsPage2 = await termService.getUpdateableTerms(
+            limit: 1,
+            offset: 1,
+          );
+
+          expect(updateableTermsAll.length, 1);
+          expect(
+            updateableTermsPage1.length,
+            1,
+          ); // First page should have 1 item
+          expect(updateableTermsPage2.length, 0); // Second page should be empty
+        },
+      );
+
+      test(
+        'should handle limit and offset parameters correctly together with multiple items',
         () async {
-      // Get all new terms for reference
-      final allNewTerms = await termService.getNewTerms();
+          // Create multiple new terms (no access records) for testing pagination
+          final newTerms = [
+            for (int i = 800; i < 810; i++)
+              Term(
+                id: i,
+                name: 'New Term $i',
+                type: 1,
+                enabled: 1,
+                needsUpdate: 0,
+                creation: '2025-01-01 10:00:00',
+                ordering: 0,
+                free: 1,
+                uuid: '',
+                captureable: 0,
+                textCulumn: '',
+                outerNote: '',
+              ),
+          ];
 
-      // Test limit = 0 with offset
-      final zeroLimit = await termService.getNewTerms(limit: 0, offset: 0);
-      expect(zeroLimit.isEmpty, true);
+          // Insert all new terms
+          for (final term in newTerms) {
+            await databaseService.into(databaseService.terms).insert(term);
+            await databaseService
+                .into(databaseService.termTrees)
+                .insert(
+                  TermTreesCompanion(
+                    termId: Value(term.id),
+                    parentTermId: Value(term.id),
+                    depth: const Value(0),
+                  ),
+                );
+            await databaseService
+                .into(databaseService.termsParents)
+                .insert(
+                  TermsParentsCompanion(
+                    termId: Value(term.id),
+                    parentTermId: Value(term.id),
+                    rootTermId: Value(term.id),
+                    creation: const Value('2025-01-01 10:00:00'),
+                  ),
+                );
+          }
 
-      final zeroLimitWithOffset =
-          await termService.getNewTerms(limit: 0, offset: 5);
-      expect(zeroLimitWithOffset.isEmpty, true);
+          // Test getNewTerms with various limit and offset combinations together
+          final allNewTerms = await termService.getNewTerms();
+          expect(allNewTerms.length, greaterThanOrEqualTo(10));
 
-      // Test offset beyond total count with limit
-      final largeOffset = await termService.getNewTerms(limit: 5, offset: 1000);
-      expect(largeOffset.isEmpty, true);
+          // Test pagination with limit and offset together
+          final page1 = await termService.getNewTerms(limit: 4, offset: 0);
+          final page2 = await termService.getNewTerms(limit: 4, offset: 4);
+          final page3 = await termService.getNewTerms(limit: 4, offset: 8);
 
-      // Test very large limit with offset
-      final largeLimitWithOffset =
-          await termService.getNewTerms(limit: 1000, offset: 5);
-      expect(largeLimitWithOffset.length, lessThanOrEqualTo(1000));
-      if (allNewTerms.length > 5) {
-        expect(largeLimitWithOffset.length,
-            allNewTerms.length - 5); // Should be total - offset
-      }
-    });
+          expect(page1.length, 4);
+          expect(page2.length, 4);
+          expect(page3.length, 2); // Only 2 items left
 
-    test(
+          // Verify pages don't overlap
+          final page1Ids = page1.map((t) => t.term.id).toSet();
+          final page2Ids = page2.map((t) => t.term.id).toSet();
+          final page3Ids = page3.map((t) => t.term.id).toSet();
+
+          expect(page1Ids.intersection(page2Ids).isEmpty, true);
+          expect(page1Ids.intersection(page3Ids).isEmpty, true);
+          expect(page2Ids.intersection(page3Ids).isEmpty, true);
+
+          // Verify all items are covered across pages
+          final allPaginatedIds = {...page1Ids, ...page2Ids, ...page3Ids};
+          final allDirectIds = allNewTerms.map((t) => t.term.id).toSet();
+          expect(allPaginatedIds, allDirectIds);
+        },
+      );
+
+      test(
+        'should handle edge cases for limit and offset parameters together',
+        () async {
+          // Get all new terms for reference
+          final allNewTerms = await termService.getNewTerms();
+
+          // Test limit = 0 with offset
+          final zeroLimit = await termService.getNewTerms(limit: 0, offset: 0);
+          expect(zeroLimit.isEmpty, true);
+
+          final zeroLimitWithOffset = await termService.getNewTerms(
+            limit: 0,
+            offset: 5,
+          );
+          expect(zeroLimitWithOffset.isEmpty, true);
+
+          // Test offset beyond total count with limit
+          final largeOffset = await termService.getNewTerms(
+            limit: 5,
+            offset: 1000,
+          );
+          expect(largeOffset.isEmpty, true);
+
+          // Test very large limit with offset
+          final largeLimitWithOffset = await termService.getNewTerms(
+            limit: 1000,
+            offset: 5,
+          );
+          expect(largeLimitWithOffset.length, lessThanOrEqualTo(1000));
+          if (allNewTerms.length > 5) {
+            expect(
+              largeLimitWithOffset.length,
+              allNewTerms.length - 5,
+            ); // Should be total - offset
+          }
+        },
+      );
+
+      test(
         'should apply consistent pagination behavior across all four functions',
         () async {
-      // Test all four functions with the same pagination pattern
-      const pageSize = 2;
-      const pageNumber = 1;
-      const offset = pageNumber * pageSize;
+          // Test all four functions with the same pagination pattern
+          const pageSize = 2;
+          const pageNumber = 1;
+          const offset = pageNumber * pageSize;
 
-      final recentTermsPage =
-          await termService.getRecentTerms(limit: pageSize, offset: offset);
-      final newTermsPage =
-          await termService.getNewTerms(limit: pageSize, offset: offset);
-      final unstudiedTermsPage =
-          await termService.getUnstudiedTerms(limit: pageSize, offset: offset);
-      final favoriteTermsPage =
-          await termService.getFavoriteTerms(limit: pageSize, offset: offset);
-      final updateableTermsPage =
-          await termService.getUpdateableTerms(limit: pageSize, offset: offset);
+          final recentTermsPage = await termService.getRecentTerms(
+            limit: pageSize,
+            offset: offset,
+          );
+          final newTermsPage = await termService.getNewTerms(
+            limit: pageSize,
+            offset: offset,
+          );
+          final unstudiedTermsPage = await termService.getUnstudiedTerms(
+            limit: pageSize,
+            offset: offset,
+          );
+          final favoriteTermsPage = await termService.getFavoriteTerms(
+            limit: pageSize,
+            offset: offset,
+          );
+          final updateableTermsPage = await termService.getUpdateableTerms(
+            limit: pageSize,
+            offset: offset,
+          );
 
-      // All should respect the pagination parameters
-      expect(recentTermsPage.length, lessThanOrEqualTo(pageSize));
-      expect(newTermsPage.length, lessThanOrEqualTo(pageSize));
-      expect(unstudiedTermsPage.length, lessThanOrEqualTo(pageSize));
-      expect(favoriteTermsPage.length, lessThanOrEqualTo(pageSize));
-      expect(updateableTermsPage.length, lessThanOrEqualTo(pageSize));
+          // All should respect the pagination parameters
+          expect(recentTermsPage.length, lessThanOrEqualTo(pageSize));
+          expect(newTermsPage.length, lessThanOrEqualTo(pageSize));
+          expect(unstudiedTermsPage.length, lessThanOrEqualTo(pageSize));
+          expect(favoriteTermsPage.length, lessThanOrEqualTo(pageSize));
+          expect(updateableTermsPage.length, lessThanOrEqualTo(pageSize));
 
-      // Verify pagination works by comparing different pages
-      final newTermsFirstPage =
-          await termService.getNewTerms(limit: pageSize, offset: 0);
-      final newTermsSecondPage =
-          await termService.getNewTerms(limit: pageSize, offset: pageSize);
+          // Verify pagination works by comparing different pages
+          final newTermsFirstPage = await termService.getNewTerms(
+            limit: pageSize,
+            offset: 0,
+          );
+          final newTermsSecondPage = await termService.getNewTerms(
+            limit: pageSize,
+            offset: pageSize,
+          );
 
-      if (newTermsFirstPage.isNotEmpty && newTermsSecondPage.isNotEmpty) {
-        // Pages should not contain the same items
-        final firstPageIds = newTermsFirstPage.map((t) => t.term.id).toSet();
-        final secondPageIds = newTermsSecondPage.map((t) => t.term.id).toSet();
-        expect(firstPageIds.intersection(secondPageIds).isEmpty, true);
-      }
-    });
+          if (newTermsFirstPage.isNotEmpty && newTermsSecondPage.isNotEmpty) {
+            // Pages should not contain the same items
+            final firstPageIds = newTermsFirstPage
+                .map((t) => t.term.id)
+                .toSet();
+            final secondPageIds = newTermsSecondPage
+                .map((t) => t.term.id)
+                .toSet();
+            expect(firstPageIds.intersection(secondPageIds).isEmpty, true);
+          }
+        },
+      );
 
-    test('should maintain ordering when using limit and offset together',
+      test(
+        'should maintain ordering when using limit and offset together',
         () async {
-      // Test that pagination maintains the expected order
-      final allNewTerms = await termService.getNewTerms();
+          // Test that pagination maintains the expected order
+          final allNewTerms = await termService.getNewTerms();
 
-      // Get first page
-      final page1 = await termService.getNewTerms(limit: 3, offset: 0);
-      // Get second page
-      final page2 = await termService.getNewTerms(limit: 3, offset: 3);
+          // Get first page
+          final page1 = await termService.getNewTerms(limit: 3, offset: 0);
+          // Get second page
+          final page2 = await termService.getNewTerms(limit: 3, offset: 3);
 
-      // The combined pages should match the full list in order
-      final combinedPage = [...page1, ...page2];
+          // The combined pages should match the full list in order
+          final combinedPage = [...page1, ...page2];
 
-      for (int i = 0; i < combinedPage.length; i++) {
-        if (i < allNewTerms.length) {
-          expect(combinedPage[i].term.id, allNewTerms[i].term.id);
-        }
-      }
-    });
-  });
+          for (int i = 0; i < combinedPage.length; i++) {
+            if (i < allNewTerms.length) {
+              expect(combinedPage[i].term.id, allNewTerms[i].term.id);
+            }
+          }
+        },
+      );
+    },
+  );
 }
