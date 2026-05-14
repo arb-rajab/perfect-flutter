@@ -9,8 +9,9 @@ Future initData() async {
   await databaseService.into(databaseService.voiceNotes).insert(const VoiceNote(
       encryptionKey: '',
       parentTermId: 1,
-      creation: '2024-01-01 11:12:13',
-      lastUpdated: '2024-01-01 11:12:13'));
+          creation: '2024-01-01 11:12:13',
+        ),
+      );
   Get.put(VoiceNoteScreenArgument(
       term: TermData(const Term(
           id: 1,

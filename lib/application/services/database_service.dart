@@ -47,42 +47,44 @@ import 'package:get/instance_manager.dart';
 
 part 'database_service.g.dart'; // the generated code will be there
 
-@DriftDatabase(tables: [
-  Coupons,
-  Terms,
-  Answers,
-  Questions,
-  QuestionTags,
-  QuestionMedias,
-  FcmTopics,
-  AnswerProperties,
-  CouponsLinkedToTerms,
-  TermTrees,
-  Ebooks,
-  TermsLastAccesses,
-  QuestionTagProperties,
-  QuestionProperties,
-  HttpRequests,
-  TermsWithQuestionsFilteringEnabled,
-  Flashcards,
-  VoiceNotes,
-  VideoFiles,
-  RelatedTerms,
-  QuestionsLinkedToTags,
-  TermsParents,
-  TermTags,
-  TermsLinkedToTags,
-  TermLabels,
-  TermsLinkedToLabels,
-  TermProperties,
-  Configs,
-  Images
-])
+@DriftDatabase(
+  tables: [
+    Coupons,
+    Terms,
+    Answers,
+    Questions,
+    QuestionTags,
+    QuestionMedias,
+    FcmTopics,
+    AnswerProperties,
+    CouponsLinkedToTerms,
+    TermTrees,
+    Ebooks,
+    TermsLastAccesses,
+    QuestionTagProperties,
+    QuestionProperties,
+    HttpRequests,
+    TermsWithQuestionsFilteringEnabled,
+    Flashcards,
+    VoiceNotes,
+    VideoFiles,
+    RelatedTerms,
+    QuestionsLinkedToTags,
+    TermsParents,
+    TermTags,
+    TermsLinkedToTags,
+    TermLabels,
+    TermsLinkedToLabels,
+    TermProperties,
+    Configs,
+    Images,
+  ],
+)
 class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
   @override
-  int get schemaVersion => 42;
+  int get schemaVersion => 43;
 
   @override
   MigrationStrategy get migration {
@@ -91,7 +93,8 @@ class DatabaseService extends _$DatabaseService {
         List<String> migrationStatements = [];
         if (from < 2) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `ebooks` (`url` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, PRIMARY KEY(`parentTermId`))');
+            'CREATE TABLE IF NOT EXISTS `ebooks` (`url` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, PRIMARY KEY(`parentTermId`))',
+          );
         }
         if (from < 3) {
           migrationStatements.addAll([
@@ -100,82 +103,96 @@ class DatabaseService extends _$DatabaseService {
             'drop table ebooks',
             'CREATE TABLE IF NOT EXISTS `ebooks` (`encryptionKey` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, PRIMARY KEY(`parentTermId`))',
             'insert into `ebooks` (parentTermId,creation) select parentTermId,creation from ebooksBackUp',
-            'drop table ebooksBackUp'
+            'drop table ebooksBackUp',
           ]);
         }
         if (from < 4) {
           migrationStatements.addAll([
             'ALTER TABLE `terms` ADD `enabled` INT NOT NULL DEFAULT 1 ',
-            'ALTER TABLE `coupons` ADD `free` INTEGER NOT NULL DEFAULT 1'
+            'ALTER TABLE `coupons` ADD `free` INTEGER NOT NULL DEFAULT 1',
           ]);
         }
         if (from < 5) {
           migrationStatements.add(
-              'alter table `ebooks` add `downloadSize` Int not null default 0');
+            'alter table `ebooks` add `downloadSize` Int not null default 0',
+          );
         }
         if (from < 6) {
-          migrationStatements
-              .add('alter table `terms` add `ordering` Int not null default 0');
+          migrationStatements.add(
+            'alter table `terms` add `ordering` Int not null default 0',
+          );
         }
         if (from < 7) {
           migrationStatements.add(
-              'alter table `terms` add `needsUpdate` INTEGER NOT NULL DEFAULT 0');
+            'alter table `terms` add `needsUpdate` INTEGER NOT NULL DEFAULT 0',
+          );
         }
         if (from < 8) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `questionTagProperties` (`questionTagId` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT, PRIMARY KEY(`questionTagId`, `name`))');
+            'CREATE TABLE IF NOT EXISTS `questionTagProperties` (`questionTagId` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT, PRIMARY KEY(`questionTagId`, `name`))',
+          );
         }
         if (from < 9) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `questionProperties` (`questionId` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT, PRIMARY KEY(`questionId`, `name`))');
+            'CREATE TABLE IF NOT EXISTS `questionProperties` (`questionId` INTEGER NOT NULL, `name` TEXT NOT NULL, `value` TEXT, PRIMARY KEY(`questionId`, `name`))',
+          );
         }
         if (from < 10) {
           migrationStatements.addAll([
             'alter table `questions` add `edited` INTEGER not null default 0',
-            'alter table `questions` add `editionDate` text '
+            'alter table `questions` add `editionDate` text ',
           ]);
         }
         if (from < 11) {
           migrationStatements.add(
-              'alter table `terms` add `captureable` INTEGER not null default 1');
+            'alter table `terms` add `captureable` INTEGER not null default 1',
+          );
         }
         if (from < 12) {
           migrationStatements.add(
-              'alter table `questionTags` add `parentTagId` INTEGER NOT NULL DEFAULT 0');
+            'alter table `questionTags` add `parentTagId` INTEGER NOT NULL DEFAULT 0',
+          );
         }
         if (from < 13) {
           migrationStatements.add(
-              'ALTER TABLE `answers` ADD `checkedCount` INTEGER  not null DEFAULT 0');
+            'ALTER TABLE `answers` ADD `checkedCount` INTEGER  not null DEFAULT 0',
+          );
         }
         if (from < 14) {
           migrationStatements.add(
-              'ALTER TABLE `answers` ADD `userChecked` INTEGER not null DEFAULT 0');
+            'ALTER TABLE `answers` ADD `userChecked` INTEGER not null DEFAULT 0',
+          );
         }
         if (from < 15) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `HttpRequests` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT, `map` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `HttpRequests` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT, `map` TEXT)',
+          );
         }
         if (from < 16) {
           migrationStatements.add(
-              'create index parentQuestionIdIndex on answers (parentQuestionId)');
+            'create index parentQuestionIdIndex on answers (parentQuestionId)',
+          );
         }
         if (from < 17) {
           migrationStatements.addAll([
             'create index questionMediasIndex1 on questionMedias (parentQuestionId)',
-            'create index questionTagsIndex1 on questionTags (parentQuestionId)'
+            'create index questionTagsIndex1 on questionTags (parentQuestionId)',
           ]);
         }
         if (from < 18) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `termsWithQuestionsFilteringEnabled` (`termId` INTEGER NOT NULL, PRIMARY KEY(`termId`))');
+            'CREATE TABLE IF NOT EXISTS `termsWithQuestionsFilteringEnabled` (`termId` INTEGER NOT NULL, PRIMARY KEY(`termId`))',
+          );
         }
         if (from < 19) {
-          migrationStatements
-              .add('ALTER TABLE `questionTags` ADD `information` TEXT');
+          migrationStatements.add(
+            'ALTER TABLE `questionTags` ADD `information` TEXT',
+          );
         }
         if (from < 20) {
           migrationStatements.add(
-              'CREATE TABLE IF NOT EXISTS `flashcards` (`id` INTEGER NOT NULL, `head` TEXT, `tail` TEXT, `parentTermId` INTEGER NOT NULL, PRIMARY KEY(`id`))');
+            'CREATE TABLE IF NOT EXISTS `flashcards` (`id` INTEGER NOT NULL, `head` TEXT, `tail` TEXT, `parentTermId` INTEGER NOT NULL, PRIMARY KEY(`id`))',
+          );
         }
         if (from < 21) {
           migrationStatements.add('ALTER TABLE `terms` ADD `text` TEXT');
@@ -184,13 +201,13 @@ class DatabaseService extends _$DatabaseService {
           migrationStatements.addAll([
             "alter table `answers` add `titleTranslation` TEXT DEFAULT ''",
             "alter table `questions` add `titleTranslation` TEXT DEFAULT ''",
-            "alter table `questions` add `noteTranslation` TEXT DEFAULT ''"
+            "alter table `questions` add `noteTranslation` TEXT DEFAULT ''",
           ]);
         }
         if (from < 23) {
           migrationStatements.addAll([
             'alter table `coupons` add `activationDate` TEXT',
-            'alter table `coupons` add `expirationDays` INTEGER NOT NULL default -1'
+            'alter table `coupons` add `expirationDays` INTEGER NOT NULL default -1',
           ]);
         }
         if (from < 24) {
@@ -200,12 +217,13 @@ class DatabaseService extends _$DatabaseService {
             'drop table ebooks',
             'CREATE TABLE IF NOT EXISTS `ebooks` (`encryptionKey` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, PRIMARY KEY(`parentTermId`))',
             'insert into `ebooks` (parentTermId,creation,encryptionKey) select parentTermId,creation,encryptionKey from ebooksBackUp ',
-            'drop table ebooksBackUp'
+            'drop table ebooksBackUp',
           ]);
         }
         if (from < 25) {
-          migrationStatements
-              .add('alter table `terms` add `free` INTEGER NOT NULL default 1');
+          migrationStatements.add(
+            'alter table `terms` add `free` INTEGER NOT NULL default 1',
+          );
         }
         if (from < 26) {
           migrationStatements.addAll([
@@ -218,12 +236,13 @@ class DatabaseService extends _$DatabaseService {
             'insert into terms select * from termsBackup',
             'drop table termsBackup',
             'COMMIT',
-            'PRAGMA foreign_keys=on'
+            'PRAGMA foreign_keys=on',
           ]);
         }
         if (from < 27) {
           migrationStatements.add(
-              "insert into answerProperties (answerId,name,value) select id,'userChecked','true' from answers where userChecked=1");
+            "insert into answerProperties (answerId,name,value) select id,'userChecked','true' from answers where userChecked=1",
+          );
         }
         if (from < 28) {
           migrationStatements.addAll([
@@ -236,12 +255,13 @@ class DatabaseService extends _$DatabaseService {
             "insert into answers select * from answersBackup",
             "drop table answersBackup",
             "COMMIT",
-            "PRAGMA foreign_keys=on"
+            "PRAGMA foreign_keys=on",
           ]);
         }
         if (from < 29) {
           migrationStatements.add(
-              'create index parentQuestionIdIndex on answers (parentQuestionId)');
+            'create index parentQuestionIdIndex on answers (parentQuestionId)',
+          );
         }
         if (from < 30) {
           migrationStatements.addAll([
@@ -249,12 +269,13 @@ class DatabaseService extends _$DatabaseService {
             "CREATE INDEX IF NOT EXISTS `qIndex1` ON `questions` (`parentTermId`)",
             "CREATE INDEX IF NOT EXISTS `qpIndex1` ON `questionProperties` (`questionId`)",
             "CREATE INDEX IF NOT EXISTS `questionTagsIndex2` ON `questionTags` (`parentTagId`)",
-            "CREATE INDEX IF NOT EXISTS `qtpIndex1` ON `questionTagProperties` (`questionTagId`)"
+            "CREATE INDEX IF NOT EXISTS `qtpIndex1` ON `questionTagProperties` (`questionTagId`)",
           ]);
         }
         if (from < 31) {
           migrationStatements.add(
-              "CREATE TABLE IF NOT EXISTS `voiceNotes` (`encryptionKey` BLOB, `parentTermId` INTEGER NOT NULL, `creation` TEXT, `lastUpdated` TEXT, `needsUpdate` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`parentTermId`))");
+            "CREATE TABLE IF NOT EXISTS `voiceNotes` (`encryptionKey` BLOB, `parentTermId` INTEGER NOT NULL, `creation` TEXT, `lastUpdated` TEXT, `needsUpdate` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`parentTermId`))",
+          );
         }
         if (from < 32) {
           migrationStatements.addAll([
@@ -263,7 +284,7 @@ class DatabaseService extends _$DatabaseService {
             "drop table ebooks",
             "CREATE TABLE IF NOT EXISTS `ebooks` (`encryptionKey` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, `lastUpdated` TEXT, `needsUpdate` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`parentTermId`))",
             "insert into `ebooks` (parentTermId,creation,encryptionKey,lastUpdated,needsUpdate) select parentTermId,creation,encryptionKey,lastUpdated,needsUpdate from ebooksBackUp ",
-            "drop table ebooksBackUp"
+            "drop table ebooksBackUp",
           ]);
         }
         if (from < 33) {
@@ -276,7 +297,7 @@ class DatabaseService extends _$DatabaseService {
             "insert into questionTags (id,name,parentQuestionId,parentTagId,hasInformation,creation)  select id,name,parentQuestionId,parentTagId,hasInformation,creation from questionTagsBackup",
             "drop table questionTagsBackup",
             "CREATE INDEX IF NOT EXISTS `questionTagsIndex2` ON `questionTags` (`parentTagId`)",
-            "create index questionTagsIndex1 on questionTags (parentQuestionId)"
+            "create index questionTagsIndex1 on questionTags (parentQuestionId)",
           ]);
         }
         if (from < 34) {
@@ -291,7 +312,7 @@ class DatabaseService extends _$DatabaseService {
             "CREATE TABLE IF NOT EXISTS `questionTags` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `parentTagId` INTEGER NOT NULL DEFAULT 0, `hasInformation` INTEGER NOT NULL DEFAULT 0, `creation` TEXT, PRIMARY KEY(`id`))",
             "insert or ignore into questionTags (id,name,parentTagId,hasInformation,creation)  select id,name,parentTagId,hasInformation,creation from questionTagsBackup",
             "drop table questionTagsBackup",
-            "CREATE INDEX IF NOT EXISTS `questionTagsIndex1` ON `questionTags` (`parentTagId`)"
+            "CREATE INDEX IF NOT EXISTS `questionTagsIndex1` ON `questionTags` (`parentTagId`)",
           ]);
         }
         if (from < 35) {
@@ -302,12 +323,13 @@ class DatabaseService extends _$DatabaseService {
             "CREATE TABLE IF NOT EXISTS `questions` (`id` INTEGER NOT NULL, `uuid` TEXT, `title` TEXT, `titleTranslation` TEXT DEFAULT '', `labelId` INTEGER NOT NULL, `note` TEXT, `noteTranslation` TEXT DEFAULT '', `parentTermId` INTEGER NOT NULL, `specialCharacter` INTEGER NOT NULL, `type` INTEGER NOT NULL, `edited` INTEGER NOT NULL DEFAULT 0, `imageUrl` TEXT DEFAULT '', `creation` TEXT, `editionDate` TEXT, PRIMARY KEY(`id`))",
             "CREATE INDEX IF NOT EXISTS `qIndex1` ON `questions` (`parentTermId`)",
             "insert into questions select * from questionsBackup",
-            "drop table questionsBackup"
+            "drop table questionsBackup",
           ]);
         }
         if (from < 36) {
           migrationStatements.add(
-              "CREATE TABLE IF NOT EXISTS `relatedTerms` (`anotherTermId` INTEGER NOT NULL, `termId` INTEGER NOT NULL, PRIMARY KEY(`anotherTermId`, `termId`))");
+            "CREATE TABLE IF NOT EXISTS `relatedTerms` (`anotherTermId` INTEGER NOT NULL, `termId` INTEGER NOT NULL, PRIMARY KEY(`anotherTermId`, `termId`))",
+          );
         }
         if (from < 37) {
           migrationStatements.addAll([
@@ -356,12 +378,15 @@ class DatabaseService extends _$DatabaseService {
 
           await m.createTable(termProperties);
 
-          await m.database.executor
-              .runCustom('ALTER TABLE voiceNotes RENAME TO temp_table');
           await m.database.executor.runCustom(
-              'CREATE TABLE IF NOT EXISTS `voiceNotes` (`encryptionKey` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, `lastUpdated` TEXT, PRIMARY KEY(`parentTermId`))');
+            'ALTER TABLE voiceNotes RENAME TO temp_table',
+          );
           await m.database.executor.runCustom(
-              "insert into voiceNotes (encryptionKey,parentTermId,creation,lastUpdated) select CAST(encryptionKey as TEXT),parentTermId,creation,lastUpdated from temp_table");
+            'CREATE TABLE IF NOT EXISTS `voiceNotes` (`encryptionKey` TEXT, `parentTermId` INTEGER NOT NULL, `creation` TEXT, `lastUpdated` TEXT, PRIMARY KEY(`parentTermId`))',
+          );
+          await m.database.executor.runCustom(
+            "insert into voiceNotes (encryptionKey,parentTermId,creation,lastUpdated) select CAST(encryptionKey as TEXT),parentTermId,creation,lastUpdated from temp_table",
+          );
           await m.database.executor.runCustom("DROP TABLE temp_table");
         }
         if (from < 39) {
@@ -372,6 +397,11 @@ class DatabaseService extends _$DatabaseService {
         }
         if (from < 41) await m.createTable(videoFiles);
         if (from < 42) await m.createTable(images);
+        if (from < 43) {
+          await m.dropColumn(ebooks, 'lastUpdated');
+          await m.dropColumn(voiceNotes, 'lastUpdated');
+          await m.dropColumn(videoFiles, 'lastUpdated');
+        }
       },
     );
   }
@@ -389,87 +419,103 @@ class DatabaseService extends _$DatabaseService {
     CouponLinkedToTermService couponLinkedToTermService = Get.find();
     await termService.addTerms([
       TermData(
-          const Term(
-              name: 'parent',
-              enabled: 1,
-              id: 1,
-              uuid: 'a',
-              type: 0,
-              creation: '2022-01-01 11:11:11',
-              free: 1,
-              ordering: 1,
-              needsUpdate: 0,
-              captureable: 1,
-              textCulumn: '',
-              outerNote: 'outer note'),
-          deletedAt: const DeletedAt(null),
-          visible: const Visible(1)),
+        const Term(
+          name: 'parent',
+          enabled: 1,
+          id: 1,
+          uuid: 'a',
+          type: 0,
+          creation: '2022-01-01 11:11:11',
+          free: 1,
+          ordering: 1,
+          needsUpdate: 0,
+          captureable: 1,
+          textCulumn: '',
+          outerNote: 'outer note',
+        ),
+        deletedAt: const DeletedAt(null),
+        visible: const Visible(1),
+      ),
       TermData(
-          const Term(
-              name: 'child',
-              enabled: 1,
-              id: 2,
-              uuid: 'a',
-              type: 0,
-              creation: '2022-01-01 11:11:11',
-              free: 1,
-              ordering: 1,
-              needsUpdate: 0,
-              captureable: 1,
-              textCulumn: '',
-              outerNote: ''),
-          deletedAt: const DeletedAt(null),
-          visible: const Visible(1)),
+        const Term(
+          name: 'child',
+          enabled: 1,
+          id: 2,
+          uuid: 'a',
+          type: 0,
+          creation: '2022-01-01 11:11:11',
+          free: 1,
+          ordering: 1,
+          needsUpdate: 0,
+          captureable: 1,
+          textCulumn: '',
+          outerNote: '',
+        ),
+        deletedAt: const DeletedAt(null),
+        visible: const Visible(1),
+      ),
       TermData(
-          const Term(
-              name: 'grand child',
-              enabled: 1,
-              id: 3,
-              uuid: 'a',
-              type: 0,
-              creation: '2022-01-01 11:11:11',
-              free: 1,
-              ordering: 1,
-              needsUpdate: 0,
-              captureable: 1,
-              textCulumn: '',
-              outerNote: ''),
-          deletedAt: const DeletedAt(null),
-          visible: const Visible(1))
+        const Term(
+          name: 'grand child',
+          enabled: 1,
+          id: 3,
+          uuid: 'a',
+          type: 0,
+          creation: '2022-01-01 11:11:11',
+          free: 1,
+          ordering: 1,
+          needsUpdate: 0,
+          captureable: 1,
+          textCulumn: '',
+          outerNote: '',
+        ),
+        deletedAt: const DeletedAt(null),
+        visible: const Visible(1),
+      ),
     ]);
     await termsParentService.addTermsParents([
       TermsParentData(
-          const TermsParent(
-              termId: 1,
-              parentTermId: -1,
-              rootTermId: -1,
-              creation: '2024-01-01 13:13:13'),
-          deletedAt: const DeletedAt(null)),
+        const TermsParent(
+          termId: 1,
+          parentTermId: -1,
+          rootTermId: -1,
+          creation: '2024-01-01 13:13:13',
+        ),
+        deletedAt: const DeletedAt(null),
+      ),
       TermsParentData(
-          const TermsParent(
-              termId: 2,
-              parentTermId: 1,
-              rootTermId: -1,
-              creation: '2024-01-01 13:13:13'),
-          deletedAt: const DeletedAt(null)),
+        const TermsParent(
+          termId: 2,
+          parentTermId: 1,
+          rootTermId: -1,
+          creation: '2024-01-01 13:13:13',
+        ),
+        deletedAt: const DeletedAt(null),
+      ),
       TermsParentData(
-          const TermsParent(
-              termId: 3,
-              parentTermId: 2,
-              rootTermId: -1,
-              creation: '2024-01-01 13:13:13'),
-          deletedAt: const DeletedAt(null))
+        const TermsParent(
+          termId: 3,
+          parentTermId: 2,
+          rootTermId: -1,
+          creation: '2024-01-01 13:13:13',
+        ),
+        deletedAt: const DeletedAt(null),
+      ),
     ]);
-    await couponService.addCoupon(const Coupon(
+    await couponService.addCoupon(
+      const Coupon(
         id: 1,
         serial: 'serial',
         type: 1,
         free: 0,
         creation: '2023-01-01 11:12:13',
         activationDate: '2024-01-01 11:12:13',
-        expirationDays: 100));
+        expirationDays: 100,
+      ),
+    );
     await couponLinkedToTermService.addCouponLinkedToTerm(
-        const CouponsLinkedToTerm(couponId: 1, termId: 1));
+      const CouponsLinkedToTerm(couponId: 1, termId: 1),
+    );
   }
 
   Future seedQuestionsTagsData() async {
@@ -479,68 +525,78 @@ class DatabaseService extends _$DatabaseService {
     QuestionService questionService = Get.find();
     QuestionLinkedToTagService questionLinkedToTagService = Get.find();
     await tagService.addTermTags([
-      TermTagData(const TermTag(id: 1, name: 'tag name', ordering: 1),
-          deletedAt: const DeletedAt(null))
+      TermTagData(
+        const TermTag(id: 1, name: 'tag name', ordering: 1),
+        deletedAt: const DeletedAt(null),
+      ),
     ]);
     await termLinkedToTagService.addTermsLinkedToTags([
-      TermLinkedToTagData(const TermsLinkedToTag(tagId: 1, termId: 2),
-          deletedAt: const DeletedAt(null))
+      TermLinkedToTagData(
+        const TermsLinkedToTag(tagId: 1, termId: 2),
+        deletedAt: const DeletedAt(null),
+      ),
     ]);
     await questionTagService.addQuestionTags([
       const QuestionTag(
-          id: 1,
-          name: 'parent tag',
-          parentTagId: 0,
-          hasInformation: 0,
-          creation: '2022-01-01 11:11:11'),
+        id: 1,
+        name: 'parent tag',
+        parentTagId: 0,
+        hasInformation: 0,
+        creation: '2022-01-01 11:11:11',
+      ),
       const QuestionTag(
-          id: 2,
-          name: 'child tag',
-          parentTagId: 1,
-          hasInformation: 0,
-          creation: '2022-01-01 11:11:11'),
+        id: 2,
+        name: 'child tag',
+        parentTagId: 1,
+        hasInformation: 0,
+        creation: '2022-01-01 11:11:11',
+      ),
       const QuestionTag(
-          id: 3,
-          name: 'grand child tag',
-          parentTagId: 2,
-          hasInformation: 0,
-          creation: '2022-01-01 11:11:11'),
+        id: 3,
+        name: 'grand child tag',
+        parentTagId: 2,
+        hasInformation: 0,
+        creation: '2022-01-01 11:11:11',
+      ),
       const QuestionTag(
-          id: 4,
-          name: 'parent tag 2',
-          parentTagId: 0,
-          hasInformation: 1,
-          creation: '2022-01-01 11:11:11'),
+        id: 4,
+        name: 'parent tag 2',
+        parentTagId: 0,
+        hasInformation: 1,
+        creation: '2022-01-01 11:11:11',
+      ),
       const QuestionTag(
-          id: 5,
-          name: 'child tag 2',
-          parentTagId: 1,
-          hasInformation: 1,
-          creation: '2022-01-01 11:11:11'),
+        id: 5,
+        name: 'child tag 2',
+        parentTagId: 1,
+        hasInformation: 1,
+        creation: '2022-01-01 11:11:11',
+      ),
     ]);
     await questionService.addQuestions([
       const Question(
-          id: 1,
-          uuid: 'random uuid',
-          title: 'question title',
-          titleTranslation: 'question title translation',
-          labelId: 1,
-          note: '',
-          noteTranslation: '',
-          parentTermId: 2,
-          specialCharacter: 1,
-          type: 1,
-          edited: 0,
-          imageUrl: '',
-          creation: '2022-01-01 10:10:10',
-          editionDate: '')
+        id: 1,
+        uuid: 'random uuid',
+        title: 'question title',
+        titleTranslation: 'question title translation',
+        labelId: 1,
+        note: '',
+        noteTranslation: '',
+        parentTermId: 2,
+        specialCharacter: 1,
+        type: 1,
+        edited: 0,
+        imageUrl: '',
+        creation: '2022-01-01 10:10:10',
+        editionDate: '',
+      ),
     ]);
     await questionLinkedToTagService.addQuestionsLinkdeToTags([
       const QuestionsLinkedToTag(questionId: 1, tagId: 1),
       const QuestionsLinkedToTag(questionId: 1, tagId: 2),
       const QuestionsLinkedToTag(questionId: 1, tagId: 3),
       const QuestionsLinkedToTag(questionId: 1, tagId: 4),
-      const QuestionsLinkedToTag(questionId: 1, tagId: 5)
+      const QuestionsLinkedToTag(questionId: 1, tagId: 5),
     ]);
   }
 }

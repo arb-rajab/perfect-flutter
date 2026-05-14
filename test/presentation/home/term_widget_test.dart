@@ -59,9 +59,38 @@ Future main() async {
     TermService termService = Get.find();
     await termService.addTerms([
       TermData(
-          const Term(
+        const Term(
+          name: 'parent',
+          //change this parameter to -
+          enabled: 0,
+          id: 1,
+          uuid: 'a',
+          type: 0,
+          creation: '2022-01-01 11:11:11',
+          free: 1,
+          ordering: 1,
+          needsUpdate: 0,
+          captureable: 1,
+          textCulumn: '',
+          outerNote: 'outer note',
+        ),
+        deletedAt: const DeletedAt(null),
+        visible: const Visible(1),
+      ),
+    ]);
+  }
+
+  group('tapping term widget tests', () {
+    group('disabled terms tests', () {
+      testWidgets('tapping disabled terms shows a message', (
+        widgetTester,
+      ) async {
+        TermService termService = Get.find();
+        await databaseService.seedTermsData();
+        await termService.addTerms([
+          TermData(
+            const Term(
               name: 'parent',
-              //change this parameter to -
               enabled: 0,
               id: 1,
               uuid: 'a',
@@ -72,75 +101,58 @@ Future main() async {
               needsUpdate: 0,
               captureable: 1,
               textCulumn: '',
-              outerNote: 'outer note'),
-          deletedAt: const DeletedAt(null),
-          visible: const Visible(1))
-    ]);
-  }
-
-  group('tapping term widget tests', () {
-    group('disabled terms tests', () {
-      testWidgets('tapping disabled terms shows a message',
-          (widgetTester) async {
-        TermService termService = Get.find();
-        await databaseService.seedTermsData();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'parent',
-                  enabled: 0,
-                  id: 1,
-                  uuid: 'a',
-                  type: 0,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         // tap the parent term
         await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
         await widgetTester.pumpAndSettle();
 
-        expect(find.widgetWithText(OKDialogue, StringConstant.contentLocked),
-            findsOneWidget);
+        expect(
+          find.widgetWithText(OKDialogue, StringConstant.contentLocked),
+          findsOneWidget,
+        );
         expect(find.widgetWithText(TermWidget, 'child'), findsNothing);
       });
 
-      testWidgets('tapping disabled terms shows a message with telegram link',
-          (widgetTester) async {
+      testWidgets('tapping disabled terms shows a message with telegram link', (
+        widgetTester,
+      ) async {
         TermService termService = Get.find();
         await databaseService.seedTermsData();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'parent',
-                  enabled: 0,
-                  id: 1,
-                  uuid: 'a',
-                  type: 0,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
+            const Term(
+              name: 'parent',
+              enabled: 0,
+              id: 1,
+              uuid: 'a',
+              type: 0,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         // tap the parent term
@@ -156,12 +168,14 @@ Future main() async {
       });
     });
 
-    testWidgets('new term banner is not shown when term is accessed',
-        (widgetTester) async {
+    testWidgets('new term banner is not shown when term is accessed', (
+      widgetTester,
+    ) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       // tap the parent term
@@ -178,8 +192,9 @@ Future main() async {
     testWidgets('tapping a term, shows child terms', (widgetTester) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(find.widgetWithText(TermWidget, 'child'), findsNothing);
@@ -193,129 +208,149 @@ Future main() async {
 
     group('tapping questions term', () {
       testWidgets(
-          'tapping questions term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping questions term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 1,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 1,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsNothing);
-        expect(
+          expect(find.byType(QuestionsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
-      });
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
 
       testWidgets(
-          'tapping questions term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping questions term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 1,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 1,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsNothing);
-        expect(
+          expect(find.byType(QuestionsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
       testWidgets(
-          'tapping questions term that is downloaded, shows questions screen',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        QuestionService questionService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping questions term that is downloaded, shows questions screen',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          QuestionService questionService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 1,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 1,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        await questionService.addQuestions([
-          const Question(
+              visible: const Visible(1),
+            ),
+          ]);
+          await questionService.addQuestions([
+            const Question(
               id: 1000,
               uuid: 'uuid',
               title: 'title',
@@ -329,159 +364,187 @@ Future main() async {
               edited: 1,
               imageUrl: '',
               creation: '2023-01-14 11:14:17',
-              editionDate: '')
-        ]);
+              editionDate: '',
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsOneWidget);
-        expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
-        expect(
+          expect(find.byType(QuestionsScreen), findsOneWidget);
+          expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsNothing);
-      });
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsNothing,
+          );
+        },
+      );
     });
 
     group('tapping template term', () {
       testWidgets(
-          'tapping template term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping template term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 3,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 3,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsNothing);
-        expect(
+          expect(find.byType(QuestionsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
-      });
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
 
       testWidgets(
-          'tapping template term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping template term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 3,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 3,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsNothing);
-        expect(
+          expect(find.byType(QuestionsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
       testWidgets(
-          'tapping template term that is downloaded, shows questions screen',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        QuestionService questionService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping template term that is downloaded, shows questions screen',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          QuestionService questionService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 3,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 3,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        await questionService.addQuestions([
-          const Question(
+              visible: const Visible(1),
+            ),
+          ]);
+          await questionService.addQuestions([
+            const Question(
               id: 1000,
               uuid: 'uuid',
               title: 'title',
@@ -495,61 +558,192 @@ Future main() async {
               edited: 1,
               imageUrl: '',
               creation: '2023-01-14 11:14:17',
-              editionDate: '')
-        ]);
+              editionDate: '',
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(QuestionsScreen), findsOneWidget);
-        expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
-        expect(
+          expect(find.byType(QuestionsScreen), findsOneWidget);
+          expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsNothing);
-      });
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsNothing,
+          );
+        },
+      );
     });
 
     group('tapping ebook term', () {
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
+        'tapping term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 2,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(EbookScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets(
+        'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: 2,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(EbookScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
+
+      testWidgets('tapping expired term, shows a message', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 2,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              // changed this variable to 2
+              type: 2,
+              creation: '2022-01-01 11:11:11',
+              // changed this variable to 0
+              free: 0,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -566,197 +760,114 @@ Future main() async {
 
         expect(find.byType(EbookScreen), findsNothing);
         expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsOneWidget,
+        );
       });
 
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping expired term, shows a message, then tapping ok, dismisses the message',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: 2,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                // changed this variable to 2
+                type: 2,
+                creation: '2022-01-01 11:11:11',
+                // changed this variable to 0
+                free: 0,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
+          PathService pathService = Get.find();
+          pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(EbookScreen), findsNothing);
-        expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          expect(find.byType(EbookScreen), findsNothing);
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
-      testWidgets('tapping expired term, shows a message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 2
-                  type: 2,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(EbookScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-      });
-
-      testWidgets(
-          'tapping expired term, shows a message, then tapping ok, dismisses the message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 2
-                  type: 2,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(EbookScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
-
-      testWidgets('tapping unexpired term, opens ebook screen',
-          (widgetTester) async {
+      testWidgets('tapping unexpired term, opens ebook screen', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         EbookService ebookService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 2
-                  type: 2,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              // changed this variable to 2
+              type: 2,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
-        await ebookService.addEbook(EbookData(const Ebook(
-            encryptionKey: 'encryptionKey',
-            parentTermId: 3,
-            creation: '2022-01-01 11:12:13',
-            lastUpdated: '2024-01-01 11:12:13')));
+        await ebookService.addEbook(
+          EbookData(
+            const Ebook(
+              encryptionKey: 'encryptionKey',
+              parentTermId: 3,
+              creation: '2022-01-01 11:12:13',
+            ),
+          ),
+        );
         PathService pathService = Get.find();
         pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -772,39 +883,45 @@ Future main() async {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(EbookScreen), findsOneWidget);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsNothing);
+        expect(
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsNothing,
+        );
       });
     });
 
     group('tapping youtube videos term', () {
-      testWidgets('tapping expired term, shows a message',
-          (widgetTester) async {
+      testWidgets('tapping expired term, shows a message', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              // changed this variable to 4
+              type: 4,
+              creation: '2022-01-01 11:11:11',
+              // changed this variable to 0
+              free: 0,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -820,89 +937,104 @@ Future main() async {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(YoutubeVideoScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
+        expect(
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsOneWidget,
+        );
       });
 
       testWidgets(
-          'tapping expired term, shows a message, then tapping ok, dismisses the message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping expired term, shows a message, then tapping ok, dismisses the message',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                // changed this variable to 4
+                type: 4,
+                creation: '2022-01-01 11:11:11',
+                // changed this variable to 0
+                free: 0,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(YoutubeVideoScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
+          expect(find.byType(YoutubeVideoScreen), findsNothing);
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
-      testWidgets('tapping unexpired term, shows a loading widget',
-          (widgetTester) async {
+      testWidgets('tapping unexpired term, shows a loading widget', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         mockNoConnection(
-            route: ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'));
+          route: ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
+        );
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              // changed this variable to 4
+              type: 4,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -924,135 +1056,162 @@ Future main() async {
       });
 
       testWidgets(
-          'tapping unexpired term, shows no connection message when there is no connection',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        mockNoConnection(
-            route: ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'));
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping unexpired term, shows no connection message when there is no connection',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          mockNoConnection(
+            route: ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
+          );
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                // changed this variable to 4
+                type: 4,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.widgetWithText(OKDialogue, StringConstant.noConnection),
-            findsOneWidget);
-      });
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.noConnection),
+            findsOneWidget,
+          );
+        },
+      );
 
       testWidgets(
-          'tapping unexpired term, shows a message when a message is recieved',
-          (widgetTester) async {
+        'tapping unexpired term, shows a message when a message is recieved',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          dioAdapter.onGet(
+            ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
+            (server) {
+              server.reply(
+                200,
+                r'''{"result":"failed","message":"a message recieved"}''',
+              );
+            },
+          );
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                // changed this variable to 4
+                type: 4,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            find.widgetWithText(OKDialogue, 'a message recieved'),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets('tapping unexpired term, shows youtube video screen', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
-        dioAdapter
-            .onGet(ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
-                (server) {
-          server.reply(
-              200, r'''{"result":"failed","message":"a message recieved"}''');
-        });
+        dioAdapter.onGet(
+          ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
+          (server) {
+            server.reply(
+              200,
+              r'''{"youtubeVideo":{"parentTermId":14,"videoId":"ybVkn2e4GmY","creation":"2023-03-06 20:30:34","onUpdate":"2023-11-03 18:38:08"},"result":"success","message":""}''',
+            );
+          },
+        );
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              // changed this variable to 4
+              type: 4,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.widgetWithText(OKDialogue, 'a message recieved'),
-            findsOneWidget);
-      });
-
-      testWidgets('tapping unexpired term, shows youtube video screen',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        dioAdapter
-            .onGet(ApiConstant.getYoutubeVideo.replaceFirst('(TERM_ID)', '3'),
-                (server) {
-          server.reply(200,
-              r'''{"youtubeVideo":{"parentTermId":14,"videoId":"ybVkn2e4GmY","creation":"2023-03-06 20:30:34","onUpdate":"2023-11-03 18:38:08"},"result":"success","message":""}''');
-        });
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  // changed this variable to 4
-                  type: 4,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1074,125 +1233,146 @@ Future main() async {
 
     group('tapping flashcards term', () {
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.flashcards,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.flashcards,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(FlashcardsScreen), findsNothing);
-        expect(
+          expect(find.byType(FlashcardsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
-      });
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
 
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.flashcards,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.flashcards,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(FlashcardsScreen), findsNothing);
-        expect(
+          expect(find.byType(FlashcardsScreen), findsNothing);
+          expect(
             find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
-      testWidgets('tapping term that is downloaded, shows flashcards screen',
-          (widgetTester) async {
+      testWidgets('tapping term that is downloaded, shows flashcards screen', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         FlashcardService flashcardService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.flashcards,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.flashcards,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
         await flashcardService.addFlashcards([
           const Flashcard(
@@ -1200,11 +1380,12 @@ Future main() async {
             head: 'head',
             tail: 'tail',
             parentTermId: 3,
-          )
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1222,13 +1403,16 @@ Future main() async {
         expect(find.byType(FlashcardsScreen), findsOneWidget);
         expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
         expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsNothing);
+          find.widgetWithText(
+            OKDialogue,
+            StringConstant.youHaveToDownloadFirst,
+          ),
+          findsNothing,
+        );
       });
     });
 
-group('tapping images term', () {
+    group('tapping images term', () {
       testWidgets(
         'tapping term that is not downloaded, shows a download term dialogue',
         (widgetTester) async {
@@ -1396,9 +1580,9 @@ group('tapping images term', () {
 
         //tap the grand child term
         await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+        await widgetTester.pump(const Duration(seconds: 2));
 
-        expect(find.byType(ImageService), findsOneWidget);
+        expect(find.byType(ImagesScreen), findsOneWidget);
         expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);
         expect(
           find.widgetWithText(
@@ -1412,31 +1596,153 @@ group('tapping images term', () {
 
     group('tapping voice note term', () {
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
+        'tapping term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.voiceNotes,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(VoiceNoteScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets(
+        'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.voiceNotes,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(VoiceNoteScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
+
+      testWidgets('tapping expired term, shows a message', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.voiceNotes,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.voiceNotes,
+              creation: '2022-01-01 11:11:11',
+              // changed this variable to 0
+              free: 0,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1453,194 +1759,112 @@ group('tapping images term', () {
 
         expect(find.byType(VoiceNoteScreen), findsNothing);
         expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsOneWidget,
+        );
       });
 
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping expired term, shows a message, then tapping ok, dismisses the message',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.voiceNotes,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.voiceNotes,
+                creation: '2022-01-01 11:11:11',
+                // changed this variable to 0
+                free: 0,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
+          PathService pathService = Get.find();
+          pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(VoiceNoteScreen), findsNothing);
-        expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          expect(find.byType(VoiceNoteScreen), findsNothing);
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
-      testWidgets('tapping expired term, shows a message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.voiceNotes,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(VoiceNoteScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-      });
-
-      testWidgets(
-          'tapping expired term, shows a message, then tapping ok, dismisses the message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.voiceNotes,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(VoiceNoteScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
-
-      testWidgets('tapping unexpired term, opens voice notes screen',
-          (widgetTester) async {
+      testWidgets('tapping unexpired term, opens voice notes screen', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         VoiceNoteService voiceNoteService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.voiceNotes,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.voiceNotes,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
-        await voiceNoteService.addVoiceNote(VoiceNoteData(const VoiceNote(
-            encryptionKey: '',
-            parentTermId: 3,
-            creation: '2022-01-01 11:12:13',
-            lastUpdated: '2024-01-01 11:12:13')));
+        await voiceNoteService.addVoiceNote(
+          VoiceNoteData(
+            const VoiceNote(
+              encryptionKey: '',
+              parentTermId: 3,
+              creation: '2022-01-01 11:12:13',
+            ),
+          ),
+        );
         PathService pathService = Get.find();
         pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1657,38 +1881,162 @@ group('tapping images term', () {
 
         expect(find.byType(VoiceNoteScreen), findsOneWidget);
         expect(find.text('grand child'), findsOneWidget);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsNothing);
+        expect(
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsNothing,
+        );
       });
     });
 
     group('tapping video file term', () {
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue',
-          (widgetTester) async {
+        'tapping term that is not downloaded, shows a download term dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.videoFile,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(VideoFileScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+        },
+      );
+
+      testWidgets(
+        'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.videoFile,
+                creation: '2022-01-01 11:11:11',
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
+
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(find.byType(VideoFileScreen), findsNothing);
+          expect(
+            find.widgetWithText(
+              OKDialogue,
+              StringConstant.youHaveToDownloadFirst,
+            ),
+            findsOneWidget,
+          );
+
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
+
+      testWidgets('tapping expired term, shows a message', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.videoFile,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.videoFile,
+              creation: '2022-01-01 11:11:11',
+              // changed this variable to 0
+              free: 0,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
+        PathService pathService = Get.find();
+        pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1705,194 +2053,112 @@ group('tapping images term', () {
 
         expect(find.byType(VideoFileScreen), findsNothing);
         expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsOneWidget,
+        );
       });
 
       testWidgets(
-          'tapping term that is not downloaded, shows a download term dialogue, then tapping ok dismisses the dialogue',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'tapping expired term, shows a message, then tapping ok, dismisses the message',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.videoFile,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
+                name: 'grand child',
+                enabled: 1,
+                id: 3,
+                uuid: 'a',
+                type: TermType.videoFile,
+                creation: '2022-01-01 11:11:11',
+                // changed this variable to 0
+                free: 0,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: '',
+                outerNote: '',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
+              visible: const Visible(1),
+            ),
+          ]);
+          PathService pathService = Get.find();
+          pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
+          //tap the parent term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
+          //tap the child term
+          await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+          await widgetTester.pumpAndSettle();
 
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
+          //tap the grand child term
+          await widgetTester.tap(
+            find.widgetWithText(TermWidget, 'grand child'),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(find.byType(VideoFileScreen), findsNothing);
-        expect(
-            find.widgetWithText(
-                OKDialogue, StringConstant.youHaveToDownloadFirst),
-            findsOneWidget);
+          expect(find.byType(VideoFileScreen), findsNothing);
+          expect(
+            find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+            findsOneWidget,
+          );
 
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
+          await widgetTester.tap(find.byKey(const Key('ok')));
+          await widgetTester.pumpAndSettle();
+          expect(find.byType(OKDialogue), findsNothing);
+        },
+      );
 
-      testWidgets('tapping expired term, shows a message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.videoFile,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(VideoFileScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-      });
-
-      testWidgets(
-          'tapping expired term, shows a message, then tapping ok, dismisses the message',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.videoFile,
-                  creation: '2022-01-01 11:11:11',
-                  // changed this variable to 0
-                  free: 0,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        PathService pathService = Get.find();
-        pathService.testFileInSupport = true;
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        //tap the parent term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
-        await widgetTester.pumpAndSettle();
-
-        //tap the grand child term
-        await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pumpAndSettle();
-
-        expect(find.byType(VideoFileScreen), findsNothing);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsOneWidget);
-
-        await widgetTester.tap(find.byKey(const Key('ok')));
-        await widgetTester.pumpAndSettle();
-        expect(find.byType(OKDialogue), findsNothing);
-      });
-
-      testWidgets('tapping unexpired term, opens video file screen',
-          (widgetTester) async {
+      testWidgets('tapping unexpired term, opens video file screen', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         VideoFileService videoFileService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  name: 'grand child',
-                  enabled: 1,
-                  id: 3,
-                  uuid: 'a',
-                  type: TermType.videoFile,
-                  creation: '2022-01-01 11:11:11',
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: '',
-                  outerNote: ''),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              name: 'grand child',
+              enabled: 1,
+              id: 3,
+              uuid: 'a',
+              type: TermType.videoFile,
+              creation: '2022-01-01 11:11:11',
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: '',
+              outerNote: '',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
-        await videoFileService.addVideoFile(VideoFileData(const VideoFile(
-            encryptionKey: '',
-            parentTermId: 3,
-            creation: '2022-01-01 11:12:13',
-            lastUpdated: '2024-01-01 11:12:13')));
+        await videoFileService.addVideoFile(
+          VideoFileData(
+            const VideoFile(
+              encryptionKey: '',
+              parentTermId: 3,
+              creation: '2022-01-01 11:12:13',
+            ),
+          ),
+        );
         PathService pathService = Get.find();
         pathService.testFileInSupport = true;
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         //tap the parent term
@@ -1909,12 +2175,13 @@ group('tapping images term', () {
 
         // expect(find.byType(VideoFileScreen), findsOneWidget);
         expect(find.text('grand child'), findsOneWidget);
-        expect(find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
-            findsNothing);
+        expect(
+          find.widgetWithText(OKDialogue, StringConstant.termIsExpired),
+          findsNothing,
+        );
         //pump a container so that the timer is flushed and does not cause a pending timer exception after the test is done
         await widgetTester.pumpWidget(Container());
         await widgetTester.pumpAndSettle();
-
       });
     });
   });
@@ -1923,8 +2190,9 @@ group('tapping images term', () {
     testWidgets('term leadign widget is rendered', (widgetTester) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(find.byType(TermLeadingWidget), findsAny);
@@ -1933,8 +2201,9 @@ group('tapping images term', () {
     testWidgets('term name is rendered', (widgetTester) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(find.widgetWithText(TermWidget, 'parent'), findsOneWidget);
@@ -1943,451 +2212,564 @@ group('tapping images term', () {
     testWidgets('term outer note is rendered', (widgetTester) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(find.widgetWithText(TermWidget, 'outer note'), findsOneWidget);
     });
 
-    testWidgets('next arrow icon is rendered for enabled terms',
-        (widgetTester) async {
+    testWidgets('next arrow icon is rendered for enabled terms', (
+      widgetTester,
+    ) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-      await widgetTester.pumpAndSettle();
-
-      expect(widgetWithTextAndIcon(TermWidget, 'parent', Icons.navigate_next),
-          findsOneWidget);
-    });
-
-    testWidgets('lock icon is rendered for disabled terms',
-        (widgetTester) async {
-      await databaseService.seedTermsData();
-      await seedDisabledTerm();
-
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-      await widgetTester.pumpAndSettle();
-
-      expect(widgetWithTextAndIcon(TermWidget, 'parent', Icons.lock),
-          findsOneWidget);
-    });
-
-    testWidgets('number of children widget is rendered for enabled terms',
-        (widgetTester) async {
-      await databaseService.seedTermsData();
-
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(
-          widgetWithTextAndWidget(TermWidget, 'parent', NumberOfChildrenWidget),
-          findsOneWidget);
+        widgetWithTextAndIcon(TermWidget, 'parent', Icons.navigate_next),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('number of children widget is not rendered for disabled terms',
-        (widgetTester) async {
+    testWidgets('lock icon is rendered for disabled terms', (
+      widgetTester,
+    ) async {
       await databaseService.seedTermsData();
       await seedDisabledTerm();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(
-          widgetWithTextAndWidget(TermWidget, 'parent', NumberOfChildrenWidget),
-          findsNothing);
+        widgetWithTextAndIcon(TermWidget, 'parent', Icons.lock),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('actions widget is rendered for enabled terms',
-        (widgetTester) async {
+    testWidgets('number of children widget is rendered for enabled terms', (
+      widgetTester,
+    ) async {
       await databaseService.seedTermsData();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
-      expect(widgetWithTextAndWidget(TermWidget, 'parent', ActionsWidget),
-          findsOneWidget);
+      expect(
+        widgetWithTextAndWidget(TermWidget, 'parent', NumberOfChildrenWidget),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('actions widget is not rendered for disabled terms',
-        (widgetTester) async {
+    testWidgets(
+      'number of children widget is not rendered for disabled terms',
+      (widgetTester) async {
+        await databaseService.seedTermsData();
+        await seedDisabledTerm();
+
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
+        await widgetTester.pumpAndSettle();
+
+        expect(
+          widgetWithTextAndWidget(TermWidget, 'parent', NumberOfChildrenWidget),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets('actions widget is rendered for enabled terms', (
+      widgetTester,
+    ) async {
+      await databaseService.seedTermsData();
+
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
+      await widgetTester.pumpAndSettle();
+
+      expect(
+        widgetWithTextAndWidget(TermWidget, 'parent', ActionsWidget),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('actions widget is not rendered for disabled terms', (
+      widgetTester,
+    ) async {
       await databaseService.seedTermsData();
       await seedDisabledTerm();
 
-      await widgetTester
-          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpWidget(
+        const MyApp(defaultRoute: HomeScreen.route),
+      );
       await widgetTester.pumpAndSettle();
 
-      expect(widgetWithTextAndWidget(TermWidget, 'parent', ActionsWidget),
-          findsNothing);
+      expect(
+        widgetWithTextAndWidget(TermWidget, 'parent', ActionsWidget),
+        findsNothing,
+      );
     });
 
     group('term label tests', () {
       testWidgets(
-          'term label is not rendered if there is no label for the term',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
+        'term label is not rendered if there is no label for the term',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
-            findsNothing);
-      });
+          expect(
+            widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
+            findsNothing,
+          );
+        },
+      );
 
-      testWidgets('term label is rendered if there is a label for the term',
-          (widgetTester) async {
+      testWidgets('term label is rendered if there is a label for the term', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermLabelService termLabelService = Get.find();
         TermLinkedToLabelService termLinkedToLabelService = Get.find();
         await termLabelService.addTermLabels([
-          TermLabelData(const TermLabel(id: 1, name: 'label'),
-              deletedAt: const DeletedAt(null))
+          TermLabelData(
+            const TermLabel(id: 1, name: 'label'),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
         await termLinkedToLabelService.addTermsLinkedToLabels([
-          TermLinkedToLabelData(const TermsLinkedToLabel(termId: 1, labelId: 1),
-              deletedAt: const DeletedAt(null))
+          TermLinkedToLabelData(
+            const TermsLinkedToLabel(termId: 1, labelId: 1),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
-            findsOneWidget);
+        expect(
+          widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
+          findsOneWidget,
+        );
         expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
       });
 
       testWidgets(
-          'term label is rendered with text "others" if there is a label for the term and another term with no label',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        TermsParentService termsParentService = Get.find();
-        await termService.addTerms([
-          TermData(
+        'term label is rendered with text "others" if there is a label for the term and another term with no label',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          TermsParentService termsParentService = Get.find();
+          await termService.addTerms([
+            TermData(
               const Term(
-                  id: 1000,
-                  uuid: 'uuid',
-                  name: 'parent 2',
-                  type: TermType.term,
-                  creation: '2024-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
+                id: 1000,
+                uuid: 'uuid',
+                name: 'parent 2',
+                type: TermType.term,
+                creation: '2024-01-01 11:13:17',
+                enabled: 1,
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: 'textCulumn',
+                outerNote: 'outerNote',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
-          TermData(
+              visible: const Visible(1),
+            ),
+            TermData(
               const Term(
-                  id: 1001,
-                  uuid: 'uuid',
-                  name: 'child 2',
-                  type: TermType.term,
-                  creation: '2024-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
+                id: 1001,
+                uuid: 'uuid',
+                name: 'child 2',
+                type: TermType.term,
+                creation: '2024-01-01 11:13:17',
+                enabled: 1,
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: 'textCulumn',
+                outerNote: 'outerNote',
+              ),
               deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        await termsParentService.addTermsParents([
-          TermsParentData(
+              visible: const Visible(1),
+            ),
+          ]);
+          await termsParentService.addTermsParents([
+            TermsParentData(
               const TermsParent(
-                  termId: 1000,
-                  parentTermId: -1,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null)),
-          TermsParentData(
+                termId: 1000,
+                parentTermId: -1,
+                rootTermId: -1,
+                creation: '2024-01-01 11:12:13',
+              ),
+              deletedAt: const DeletedAt(null),
+            ),
+            TermsParentData(
               const TermsParent(
-                  termId: 1001,
-                  parentTermId: 1000,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null))
-        ]);
-        TermLabelService termLabelService = Get.find();
-        TermLinkedToLabelService termLinkedToLabelService = Get.find();
-        await termLabelService.addTermLabels([
-          TermLabelData(const TermLabel(id: 1, name: 'label'),
-              deletedAt: const DeletedAt(null))
-        ]);
-        await termLinkedToLabelService.addTermsLinkedToLabels([
-          TermLinkedToLabelData(const TermsLinkedToLabel(termId: 1, labelId: 1),
-              deletedAt: const DeletedAt(null))
-        ]);
+                termId: 1001,
+                parentTermId: 1000,
+                rootTermId: -1,
+                creation: '2024-01-01 11:12:13',
+              ),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+          TermLabelService termLabelService = Get.find();
+          TermLinkedToLabelService termLinkedToLabelService = Get.find();
+          await termLabelService.addTermLabels([
+            TermLabelData(
+              const TermLabel(id: 1, name: 'label'),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+          await termLinkedToLabelService.addTermsLinkedToLabels([
+            TermLinkedToLabelData(
+              const TermsLinkedToLabel(termId: 1, labelId: 1),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
-            findsOneWidget);
-        expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
+          expect(
+            widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
+            findsOneWidget,
+          );
+          expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
-            findsOneWidget);
-        expect(find.widgetWithText(LabelWidget, StringConstant.others),
-            findsOneWidget);
-      });
+          expect(
+            widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
+            findsOneWidget,
+          );
+          expect(
+            find.widgetWithText(LabelWidget, StringConstant.others),
+            findsOneWidget,
+          );
+        },
+      );
 
       testWidgets(
-          'term label is not rendered twice if there are more than one term with the same label',
-          (widgetTester) async {
+        'term label is not rendered twice if there are more than one term with the same label',
+        (widgetTester) async {
+          await databaseService.seedTermsData();
+          TermService termService = Get.find();
+          TermsParentService termsParentService = Get.find();
+          await termService.addTerms([
+            TermData(
+              const Term(
+                id: 1000,
+                uuid: 'uuid',
+                name: 'parent 2',
+                type: TermType.term,
+                creation: '2010-01-01 11:13:17',
+                enabled: 1,
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: 'textCulumn',
+                outerNote: 'outerNote',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+            TermData(
+              const Term(
+                id: 1001,
+                uuid: 'uuid',
+                name: 'child 2',
+                type: TermType.term,
+                creation: '2024-01-01 11:13:17',
+                enabled: 1,
+                free: 1,
+                ordering: 1,
+                needsUpdate: 0,
+                captureable: 1,
+                textCulumn: 'textCulumn',
+                outerNote: 'outerNote',
+              ),
+              deletedAt: const DeletedAt(null),
+              visible: const Visible(1),
+            ),
+          ]);
+          await termsParentService.addTermsParents([
+            TermsParentData(
+              const TermsParent(
+                termId: 1000,
+                parentTermId: -1,
+                rootTermId: -1,
+                creation: '2024-01-01 11:12:13',
+              ),
+              deletedAt: const DeletedAt(null),
+            ),
+            TermsParentData(
+              const TermsParent(
+                termId: 1001,
+                parentTermId: 1000,
+                rootTermId: -1,
+                creation: '2024-01-01 11:12:13',
+              ),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+          TermLabelService termLabelService = Get.find();
+          TermLinkedToLabelService termLinkedToLabelService = Get.find();
+          await termLabelService.addTermLabels([
+            TermLabelData(
+              const TermLabel(id: 1, name: 'label'),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+          await termLinkedToLabelService.addTermsLinkedToLabels([
+            TermLinkedToLabelData(
+              const TermsLinkedToLabel(termId: 1, labelId: 1),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+          await termLinkedToLabelService.addTermsLinkedToLabels([
+            TermLinkedToLabelData(
+              const TermsLinkedToLabel(termId: 1000, labelId: 1),
+              deletedAt: const DeletedAt(null),
+            ),
+          ]);
+
+          await widgetTester.pumpWidget(
+            const MyApp(defaultRoute: HomeScreen.route),
+          );
+          await widgetTester.pumpAndSettle();
+
+          expect(
+            widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
+            findsOneWidget,
+          );
+          expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
+
+          expect(
+            widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
+            findsNothing,
+          );
+        },
+      );
+
+      testWidgets('two different term labels are rendered', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermService termService = Get.find();
         TermsParentService termsParentService = Get.find();
         await termService.addTerms([
           TermData(
-              const Term(
-                  id: 1000,
-                  uuid: 'uuid',
-                  name: 'parent 2',
-                  type: TermType.term,
-                  creation: '2010-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
+            const Term(
+              id: 1000,
+              uuid: 'uuid',
+              name: 'parent 2',
+              type: TermType.term,
+              creation: '2010-01-01 11:13:17',
+              enabled: 1,
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: 'textCulumn',
+              outerNote: 'outerNote',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
           TermData(
-              const Term(
-                  id: 1001,
-                  uuid: 'uuid',
-                  name: 'child 2',
-                  type: TermType.term,
-                  creation: '2024-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
+            const Term(
+              id: 1001,
+              uuid: 'uuid',
+              name: 'child 2',
+              type: TermType.term,
+              creation: '2024-01-01 11:13:17',
+              enabled: 1,
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: 'textCulumn',
+              outerNote: 'outerNote',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
+          TermData(
+            const Term(
+              id: 1002,
+              uuid: 'uuid',
+              name: 'parent 3',
+              type: TermType.term,
+              creation: '2018-01-01 11:13:17',
+              enabled: 1,
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: 'textCulumn',
+              outerNote: 'outerNote',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
+          TermData(
+            const Term(
+              id: 1003,
+              uuid: 'uuid',
+              name: 'child 3',
+              type: TermType.term,
+              creation: '2024-01-01 11:13:17',
+              enabled: 1,
+              free: 1,
+              ordering: 1,
+              needsUpdate: 0,
+              captureable: 1,
+              textCulumn: 'textCulumn',
+              outerNote: 'outerNote',
+            ),
+            deletedAt: const DeletedAt(null),
+            visible: const Visible(1),
+          ),
         ]);
         await termsParentService.addTermsParents([
           TermsParentData(
-              const TermsParent(
-                  termId: 1000,
-                  parentTermId: -1,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null)),
+            const TermsParent(
+              termId: 1000,
+              parentTermId: -1,
+              rootTermId: -1,
+              creation: '2024-01-01 11:12:13',
+            ),
+            deletedAt: const DeletedAt(null),
+          ),
           TermsParentData(
-              const TermsParent(
-                  termId: 1001,
-                  parentTermId: 1000,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null))
+            const TermsParent(
+              termId: 1001,
+              parentTermId: 1000,
+              rootTermId: -1,
+              creation: '2024-01-01 11:12:13',
+            ),
+            deletedAt: const DeletedAt(null),
+          ),
+          TermsParentData(
+            const TermsParent(
+              termId: 1002,
+              parentTermId: -1,
+              rootTermId: -1,
+              creation: '2024-01-01 11:12:13',
+            ),
+            deletedAt: const DeletedAt(null),
+          ),
+          TermsParentData(
+            const TermsParent(
+              termId: 1003,
+              parentTermId: 1002,
+              rootTermId: -1,
+              creation: '2024-01-01 11:12:13',
+            ),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
         TermLabelService termLabelService = Get.find();
         TermLinkedToLabelService termLinkedToLabelService = Get.find();
         await termLabelService.addTermLabels([
-          TermLabelData(const TermLabel(id: 1, name: 'label'),
-              deletedAt: const DeletedAt(null))
-        ]);
-        await termLinkedToLabelService.addTermsLinkedToLabels([
-          TermLinkedToLabelData(const TermsLinkedToLabel(termId: 1, labelId: 1),
-              deletedAt: const DeletedAt(null))
-        ]);
-        await termLinkedToLabelService.addTermsLinkedToLabels([
-          TermLinkedToLabelData(
-              const TermsLinkedToLabel(termId: 1000, labelId: 1),
-              deletedAt: const DeletedAt(null))
-        ]);
-
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
-        await widgetTester.pumpAndSettle();
-
-        expect(widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
-            findsOneWidget);
-        expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
-
-        expect(widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
-            findsNothing);
-      });
-
-      testWidgets('two different term labels are rendered',
-          (widgetTester) async {
-        await databaseService.seedTermsData();
-        TermService termService = Get.find();
-        TermsParentService termsParentService = Get.find();
-        await termService.addTerms([
-          TermData(
-              const Term(
-                  id: 1000,
-                  uuid: 'uuid',
-                  name: 'parent 2',
-                  type: TermType.term,
-                  creation: '2010-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
-          TermData(
-              const Term(
-                  id: 1001,
-                  uuid: 'uuid',
-                  name: 'child 2',
-                  type: TermType.term,
-                  creation: '2024-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
-          TermData(
-              const Term(
-                  id: 1002,
-                  uuid: 'uuid',
-                  name: 'parent 3',
-                  type: TermType.term,
-                  creation: '2018-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1)),
-          TermData(
-              const Term(
-                  id: 1003,
-                  uuid: 'uuid',
-                  name: 'child 3',
-                  type: TermType.term,
-                  creation: '2024-01-01 11:13:17',
-                  enabled: 1,
-                  free: 1,
-                  ordering: 1,
-                  needsUpdate: 0,
-                  captureable: 1,
-                  textCulumn: 'textCulumn',
-                  outerNote: 'outerNote'),
-              deletedAt: const DeletedAt(null),
-              visible: const Visible(1))
-        ]);
-        await termsParentService.addTermsParents([
-          TermsParentData(
-              const TermsParent(
-                  termId: 1000,
-                  parentTermId: -1,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null)),
-          TermsParentData(
-              const TermsParent(
-                  termId: 1001,
-                  parentTermId: 1000,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null)),
-          TermsParentData(
-              const TermsParent(
-                  termId: 1002,
-                  parentTermId: -1,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null)),
-          TermsParentData(
-              const TermsParent(
-                  termId: 1003,
-                  parentTermId: 1002,
-                  rootTermId: -1,
-                  creation: '2024-01-01 11:12:13'),
-              deletedAt: const DeletedAt(null))
-        ]);
-        TermLabelService termLabelService = Get.find();
-        TermLinkedToLabelService termLinkedToLabelService = Get.find();
-        await termLabelService.addTermLabels([
-          TermLabelData(const TermLabel(id: 1, name: 'label'),
-              deletedAt: const DeletedAt(null))
+          TermLabelData(
+            const TermLabel(id: 1, name: 'label'),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
         await termLabelService.addTermLabels([
-          TermLabelData(const TermLabel(id: 2, name: 'label 2'),
-              deletedAt: const DeletedAt(null))
+          TermLabelData(
+            const TermLabel(id: 2, name: 'label 2'),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
         await termLinkedToLabelService.addTermsLinkedToLabels([
-          TermLinkedToLabelData(const TermsLinkedToLabel(termId: 1, labelId: 1),
-              deletedAt: const DeletedAt(null)),
           TermLinkedToLabelData(
-              const TermsLinkedToLabel(termId: 1000, labelId: 1),
-              deletedAt: const DeletedAt(null)),
+            const TermsLinkedToLabel(termId: 1, labelId: 1),
+            deletedAt: const DeletedAt(null),
+          ),
           TermLinkedToLabelData(
-              const TermsLinkedToLabel(termId: 1002, labelId: 2),
-              deletedAt: const DeletedAt(null))
+            const TermsLinkedToLabel(termId: 1000, labelId: 1),
+            deletedAt: const DeletedAt(null),
+          ),
+          TermLinkedToLabelData(
+            const TermsLinkedToLabel(termId: 1002, labelId: 2),
+            deletedAt: const DeletedAt(null),
+          ),
         ]);
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
-            findsOneWidget);
+        expect(
+          widgetWithTextAndWidget(TermWidget, 'parent', LabelWidget),
+          findsOneWidget,
+        );
         expect(find.widgetWithText(LabelWidget, 'label'), findsOneWidget);
 
-        expect(widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
-            findsNothing);
-        expect(widgetWithTextAndWidget(TermWidget, 'parent 3', LabelWidget),
-            findsOneWidget);
+        expect(
+          widgetWithTextAndWidget(TermWidget, 'parent 2', LabelWidget),
+          findsNothing,
+        );
+        expect(
+          widgetWithTextAndWidget(TermWidget, 'parent 3', LabelWidget),
+          findsOneWidget,
+        );
         expect(find.widgetWithText(LabelWidget, 'label 2'), findsOneWidget);
       });
     });
 
     group('new label tests', () {
-      testWidgets('new term banner is shown when term is not accessed',
-          (widgetTester) async {
+      testWidgets('new term banner is shown when term is not accessed', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         expect(find.widgetWithText(Banner, 'parent'), findsOneWidget);
       });
 
-      testWidgets('new term banner is not shown when term is accessed',
-          (widgetTester) async {
+      testWidgets('new term banner is not shown when term is accessed', (
+        widgetTester,
+      ) async {
         await databaseService.seedTermsData();
         TermLastAccessService termLastAccessService = Get.find();
         await termLastAccessService.addTermLastAccessed(
-            const Id(1), const Id(1).value!);
+          const Id(1),
+          const Id(1).value!,
+        );
 
-        await widgetTester
-            .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+        await widgetTester.pumpWidget(
+          const MyApp(defaultRoute: HomeScreen.route),
+        );
         await widgetTester.pumpAndSettle();
 
         // tap the parent term
@@ -2399,21 +2781,27 @@ group('tapping images term', () {
     });
 
     testWidgets('unsupported content widget', (widgetTester) async {
-      await widgetTester
-          .pumpWidget(const MyApp(child: UnsupportedContentWidget()));
+      await widgetTester.pumpWidget(
+        const MyApp(child: UnsupportedContentWidget()),
+      );
       await widgetTester.pumpAndSettle();
       expect(find.text(StringConstant.unsupportedContent), findsOneWidget);
-      expect(find.text(StringConstant.unsupportedContentExplanation),
-          findsOneWidget);
+      expect(
+        find.text(StringConstant.unsupportedContentExplanation),
+        findsOneWidget,
+      );
     });
 
     testWidgets('unsupported content web widget', (widgetTester) async {
-      await widgetTester
-          .pumpWidget(const MyApp(child: UnsupportedContentWebWidget()));
+      await widgetTester.pumpWidget(
+        const MyApp(child: UnsupportedContentWebWidget()),
+      );
       await widgetTester.pumpAndSettle();
       expect(find.text(StringConstant.unsupportedContent), findsOneWidget);
-      expect(find.text(StringConstant.unsupportedContentWebExplanation),
-          findsOneWidget);
+      expect(
+        find.text(StringConstant.unsupportedContentWebExplanation),
+        findsOneWidget,
+      );
     });
   });
 }

@@ -6,7 +6,13 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ScanQrScreenController {
   final State<StatefulWidget> state;
-  ScanQrScreenController(this.state);
+  ScanQrScreenController(this.state) {
+    mobileScannerController.addListener(() {
+      if (mobileScannerController.value.isRunning) {
+        setScannerStarted();
+      }
+    });
+  }
   MobileScannerController mobileScannerController = MobileScannerController();
 
   bool started = false;
@@ -24,8 +30,15 @@ class ScanQrScreenController {
 
   void onDetect(BarcodeCapture capture) {
     if (barcode != null) return;
-    final List<Barcode> barcodes = capture.barcodes;
-    barcode = barcodes.first.rawValue!;
+  
+    final String? scanned = capture.barcodes
+        .where((b) => b.rawValue != null)
+        .firstOrNull
+        ?.rawValue;
+
+    if (scanned == null) return;
+
+    barcode = scanned;
     if (MainController.testing) {
       poped = true;
     } else {
@@ -41,25 +54,7 @@ class ScanQrScreenController {
     }
   }
 
-  void toggleTorch() {
-    if (MainController.testing) {
-      mobileScannerController.torchState.value =
-          mobileScannerController.torchState.value == TorchState.on
-              ? TorchState.off
-              : TorchState.on;
-    } else {
-      mobileScannerController.toggleTorch();
-    }
-  }
+  void toggleTorch() => mobileScannerController.toggleTorch();
 
-  void switchCamera() {
-    if (MainController.testing) {
-      mobileScannerController.cameraFacingState.value =
-          mobileScannerController.cameraFacingState.value == CameraFacing.back
-              ? CameraFacing.front
-              : CameraFacing.back;
-    } else {
-      mobileScannerController.switchCamera();
-    }
-  }
+  void switchCamera() => mobileScannerController.switchCamera();
 }

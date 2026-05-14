@@ -57,3 +57,5 @@ DatabaseConnection connectOnWeb() {
     return result.resolvedExecutor;
   }));
 }
+
+Future<void> exportDatabaseFile() async {}

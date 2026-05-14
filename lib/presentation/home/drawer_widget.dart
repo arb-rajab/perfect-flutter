@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beta/application/services/answer_property_service.dart';
+import 'package:beta/application/services/database/shared.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/question_tag_property_service.dart';
@@ -33,19 +34,93 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(children: const [
-        NoBackgroundLogo(),
-        CouponsTile(),
-        ImportBackupTile(),
-        ExportBackupTile(),
-        // _ScanPrintedQRTile(),
-        Divider(),
-        ContactUsTile(),
-        FrequestQuestionsTile(),
-        Divider(),
-        WhatsNewTile()
-      ]),
+      child: ListView(
+        children: const [
+          NoBackgroundLogo(),
+          CouponsTile(),
+          ImportBackupTile(),
+          ExportBackupTile(),
+          // _ScanPrintedQRTile(),
+          Divider(),
+          ContactUsTile(),
+          FrequestQuestionsTile(),
+          Divider(),
+          WhatsNewTile(),
+          DecryptDatabase(),
+        ],
+      ),
     );
+  }
+}
+
+class DecryptDatabase extends StatelessWidget {
+  const DecryptDatabase({super.key});
+
+  Future<void> pickAndDecrypt() async {
+    const typeGroup = XTypeGroup(label: 'database', extensions: ['db']);
+
+    final file = await openFile(acceptedTypeGroups: [typeGroup]);
+    if (file == null) return; // user cancelled
+
+    await decryptAndExportDatabase(file.path);
+  }
+
+  Future<void> decryptAndExportDatabase(String encryptedDbPath) async {
+    final tempDir = await getTemporaryDirectory();
+    final decryptedPath = p.join(
+      tempDir.path,
+      'decrypted_${DateTime.now().millisecondsSinceEpoch}.db',
+    );
+
+    final encrypted = sqlite3.open(encryptedDbPath);
+    final plain = sqlite3.open(decryptedPath);
+
+    try {
+      encrypted.execute("pragma cipher = 'sqlcipher'");
+      encrypted.execute('pragma legacy = 4');
+      encrypted.execute("PRAGMA key = 'Redmi Note 8edu.perfect';");
+
+      // Verify
+      final result = encrypted.select('SELECT count(*) FROM sqlite_master');
+      print('Opened successfully — ${result.first.values.first} tables found');
+
+      // Copy tables
+      final tables = encrypted.select(
+        "SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+      );
+      for (final table in tables) {
+        final tableName = table['name'] as String;
+        final createSql = table['sql'] as String;
+        plain.execute(createSql);
+
+        final rows = encrypted.select('SELECT * FROM "$tableName"');
+        for (final row in rows) {
+          final columns = row.keys.join(', ');
+          final placeholders = row.keys.map((_) => '?').join(', ');
+          plain.execute(
+            'INSERT INTO "$tableName" ($columns) VALUES ($placeholders)',
+            row.values.toList(),
+          );
+        }
+        print('Copied: $tableName (${rows.length} rows)');
+      }
+    } finally {
+      encrypted.close();
+      plain.close();
+    }
+
+    await Share.shareXFiles([
+      XFile(decryptedPath, mimeType: 'application/octet-stream'),
+    ], subject: 'Decrypted database');
+
+    if (File(decryptedPath).existsSync()) {
+      await File(decryptedPath).delete();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(onPressed: pickAndDecrypt, child: const Text('decrypt'));
   }
 }
 
@@ -71,19 +146,18 @@ class ImportBackupTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-        leading: const Icon(
-          Icons.settings_backup_restore,
-        ),
+        leading: const Icon(Icons.settings_backup_restore),
         title: Text(StringConstant.importBackup.tr()),
         onTap: () async {
           // FilePickerResult? result = await FilePicker.platform
           //     .pickFiles(allowMultiple: false, withData: true);
-//               const XTypeGroup typeGroup = XTypeGroup(
-//   label: 'images',
-//   extensions: <String>['jpg', 'png'],
-// );
-          final XFile? result =
-              await openFile(/*acceptedTypeGroups: <XTypeGroup>[typeGroup]*/);
+          //               const XTypeGroup typeGroup = XTypeGroup(
+          //   label: 'images',
+          //   extensions: <String>['jpg', 'png'],
+          // );
+          final XFile? result = await openFile(
+            /*acceptedTypeGroups: <XTypeGroup>[typeGroup]*/
+          );
           // if no file is picked
           if (result == null) return;
           Uint8List? fileBytes = await result.readAsBytes();
@@ -102,10 +176,12 @@ class ImportBackupTile extends StatelessWidget {
             'questionProperties',
             'questionTagProperties',
             'termsLastAccess',
-            'termProperties'
+            'termProperties',
           ];
           int totalLength = propertyKeys.fold(
-              0, (sum, key) => sum + ((data[key] as List?)?.length ?? 0));
+            0,
+            (sum, key) => sum + ((data[key] as List?)?.length ?? 0),
+          );
 
           final importSteps = [
             {
@@ -142,9 +218,13 @@ class ImportBackupTile extends StatelessWidget {
               if (context.mounted) {
                 final percent = (finished * 100 / totalLength).toString();
                 context.showInfoBar(
-                    content: Text(StringConstant.restored
-                        .tr()
-                        .replaceFirst('(PERCENT)', percent)));
+                  content: Text(
+                    StringConstant.restored.tr().replaceFirst(
+                      '(PERCENT)',
+                      percent,
+                    ),
+                  ),
+                );
               }
             }
           }
@@ -162,57 +242,62 @@ class ExportBackupTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-        leading: const Icon(
-          Icons.sd_storage, /*color: primaryColorDark*/
-        ),
+        leading: const Icon(Icons.sd_storage /*color: primaryColorDark*/),
         title: Text(StringConstant.exportBackup.tr()),
         onTap: () async {
-          AnswerPropertyService answerPropertyService = Get.find();
-          QuestionPropertyService questionPropertyService = Get.find();
-          QuestionTagPropertyService questionTagPropertyService = Get.find();
-          TermLastAccessService termLastAccessService = Get.find();
-          TermPropertyService termPropertyService = Get.find();
+          try {
+            AnswerPropertyService answerPropertyService = Get.find();
+            QuestionPropertyService questionPropertyService = Get.find();
+            QuestionTagPropertyService questionTagPropertyService = Get.find();
+            TermLastAccessService termLastAccessService = Get.find();
+            TermPropertyService termPropertyService = Get.find();
 
-          Map<String, dynamic> data = {};
+            Map<String, dynamic> data = {};
 
-          List<AnswerProperty> answerProperties =
-              await answerPropertyService.getAllAnswerProperties();
-          List<QuestionTagProperty> questionTagProperties =
-              await questionTagPropertyService.getAllQuestionTagProperties();
-          List<QuestionProperty> questionProperties =
-              await questionPropertyService.getAllQuestionProperties();
-          List<TermsLastAccess> termsLastAccesses =
-              await termLastAccessService.getAllTermLastAccesses();
-          List<TermProperty> termProperties =
-              await termPropertyService.getAllTermProperties();
+            List<AnswerProperty> answerProperties = await answerPropertyService
+                .getAllAnswerProperties();
+            List<QuestionTagProperty> questionTagProperties =
+                await questionTagPropertyService.getAllQuestionTagProperties();
+            List<QuestionProperty> questionProperties =
+                await questionPropertyService.getAllQuestionProperties();
+            List<TermsLastAccess> termsLastAccesses =
+                await termLastAccessService.getAllTermLastAccesses();
+            List<TermProperty> termProperties = await termPropertyService
+                .getAllTermProperties();
 
-          data['answerProperties'] = answerProperties;
-          data['questionProperties'] = questionProperties;
-          data['questionTagProperties'] = questionTagProperties;
-          data['termsLastAccess'] = termsLastAccesses;
-          data['termProperties'] = termProperties;
+            data['answerProperties'] = answerProperties;
+            data['questionProperties'] = questionProperties;
+            data['questionTagProperties'] = questionTagProperties;
+            data['termsLastAccess'] = termsLastAccesses;
+            data['termProperties'] = termProperties;
 
-          Uint8List contentBytes =
-              Uint8List.fromList(utf8.encode(jsonEncode(data)));
-          String fileName = 'database backup';
-          Future saver;
-          if (kIsWeb) {
-            // Use FileSaver to save the file
-            saver = FileSaver.instance.saveFile(
-              name: fileName, // Name of the file
-              bytes: contentBytes, // File content in bytes
-              mimeType: MimeType.text, // MIME type
+            Uint8List contentBytes = Uint8List.fromList(
+              utf8.encode(jsonEncode(data)),
             );
-          } else {
-            saver = FileSaver.instance.saveAs(
+            String fileName = 'database backup';
+            Future saver;
+            if (kIsWeb) {
+              // Use FileSaver to save the file
+              saver = FileSaver.instance.saveFile(
                 name: fileName, // Name of the file
                 bytes: contentBytes, // File content in bytes
                 mimeType: MimeType.text, // MIME type
-                ext: '.txt');
+              );
+            } else {
+              saver = FileSaver.instance.saveAs(
+                name: fileName, // Name of the file
+                bytes: contentBytes, // File content in bytes
+                mimeType: MimeType.text, // MIME type
+                ext: '.txt',
+              );
+            }
+            saver.then((value) {
+              if (context.mounted) showSuccessDialogue(context);
+            });
+          } catch (e) {
+            await exportDatabaseFile();
+            return;
           }
-          saver.then((value) {
-            if (context.mounted) showSuccessDialogue(context);
-          });
         },
       ),
     );
@@ -225,11 +310,13 @@ class _ScanPrintedQRTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-          leading: const Icon(PrintedQrScannerScreen.icon),
-          title: Hero(
-              tag: PrintedQrScannerScreen.title,
-              child: Text(PrintedQrScannerScreen.title)),
-          onTap: () => context.push(PrintedQrScannerScreen.route)),
+        leading: const Icon(PrintedQrScannerScreen.icon),
+        title: Hero(
+          tag: PrintedQrScannerScreen.title,
+          child: Text(PrintedQrScannerScreen.title),
+        ),
+        onTap: () => context.push(PrintedQrScannerScreen.route),
+      ),
     );
   }
 }
@@ -241,10 +328,13 @@ class ContactUsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-          leading: const Icon(ContactUsScreen.icon),
-          title: Hero(
-              tag: ContactUsScreen.title, child: Text(ContactUsScreen.title)),
-          onTap: () => context.push(ContactUsScreen.route)),
+        leading: const Icon(ContactUsScreen.icon),
+        title: Hero(
+          tag: ContactUsScreen.title,
+          child: Text(ContactUsScreen.title),
+        ),
+        onTap: () => context.push(ContactUsScreen.route),
+      ),
     );
   }
 }
@@ -256,11 +346,13 @@ class FrequestQuestionsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-          leading: const Icon(FrequentQuestionsScreen.icon),
-          title: Hero(
-              tag: FrequentQuestionsScreen.title,
-              child: Text(FrequentQuestionsScreen.title)),
-          onTap: () => context.push(FrequentQuestionsScreen.route)),
+        leading: const Icon(FrequentQuestionsScreen.icon),
+        title: Hero(
+          tag: FrequentQuestionsScreen.title,
+          child: Text(FrequentQuestionsScreen.title),
+        ),
+        onTap: () => context.push(FrequentQuestionsScreen.route),
+      ),
     );
   }
 }
@@ -272,10 +364,13 @@ class WhatsNewTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return OpacityAnimation(
       child: ListTile(
-          leading: const Icon(Icons.refresh),
-          title: Text(StringConstant.whatsNew.tr()),
-          onTap: () => showDialog(
-              context: context, builder: (_) => const WhatsNewDialogue())),
+        leading: const Icon(Icons.refresh),
+        title: Text(StringConstant.whatsNew.tr()),
+        onTap: () => showDialog(
+          context: context,
+          builder: (_) => const WhatsNewDialogue(),
+        ),
+      ),
     );
   }
 }
@@ -286,15 +381,20 @@ class WhatsNewDialogue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(StringConstant.whatsNewInVersion.tr().replaceFirst(
-          '(VERSION)', Get.find<PackageRepository>().getVersionName())),
+      title: Text(
+        StringConstant.whatsNewInVersion.tr().replaceFirst(
+          '(VERSION)',
+          Get.find<PackageRepository>().getVersionName(),
+        ),
+      ),
       content: SingleChildScrollView(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [...newFeatures.map((feature) => Text('* $feature'))]),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [...newFeatures.map((feature) => Text('* $feature'))],
+        ),
       ),
       actions: [
-        TextButton(onPressed: context.pop, child: Text(StringConstant.ok.tr()))
+        TextButton(onPressed: context.pop, child: Text(StringConstant.ok.tr())),
       ],
     );
   }

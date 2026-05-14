@@ -29,17 +29,21 @@ class FlashIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: controller.toggleTorch,
-        icon: ValueListenableBuilder(
-            valueListenable: controller.mobileScannerController.torchState,
-            builder: (context, state, child) {
-              switch (state) {
-                case TorchState.off:
-                  return const Icon(flashOff);
-                case TorchState.on:
-                  return const Icon(flashOn);
-              }
-            }));
+      onPressed: controller.toggleTorch,
+      icon: ValueListenableBuilder(
+        valueListenable: controller.mobileScannerController,
+        builder: (context, state, child) {
+          switch (state.torchState) {
+            case TorchState.off:
+            case TorchState.unavailable:
+              return const Icon(flashOff);
+            case TorchState.on:
+            case TorchState.auto:
+              return const Icon(flashOn);
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -50,16 +54,18 @@ class CameraIcon extends StatelessWidget {
   final ScanQrScreenController controller = Get.find();
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return IconButton(
       onPressed: controller.switchCamera,
       icon: ValueListenableBuilder(
-        valueListenable: controller.mobileScannerController.cameraFacingState,
+        valueListenable: controller.mobileScannerController,
         builder: (context, state, child) {
-          switch (state) {
+          switch (state.cameraDirection) {
             case CameraFacing.front:
               return const Icon(cameraFrontIcon);
             case CameraFacing.back:
+            case CameraFacing.external:
+            case CameraFacing.unknown:
               return const Icon(cameraRearIcon);
           }
         },

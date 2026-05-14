@@ -15,7 +15,6 @@ class QrScannerWidget extends StatelessWidget {
       // fit: BoxFit.contain,
       controller: controller.mobileScannerController,
       onDetect: controller.onDetect,
-      onScannerStarted: (_) => controller.setScannerStarted(),
     );
   }
 }

@@ -27,9 +27,11 @@ Future main() async {
     await widgetTester.pumpAndSettle();
     ScanQrScreenController scanQrScreenController = Get.find();
     scanQrScreenController.barcode = 'random barcode';
-    scanQrScreenController.onDetect(BarcodeCapture(barcodes: [
-      const Barcode(rawValue: 'barcode 1'),
-      const Barcode(rawValue: 'barcode 2')
+      scanQrScreenController.onDetect(
+        const BarcodeCapture(
+          barcodes: [
+            Barcode(rawValue: 'barcode 1'),
+            Barcode(rawValue: 'barcode 2')
     ]));
     expect(scanQrScreenController.barcode, 'random barcode');
     expect(find.byType(ScanQrScreen), findsOneWidget);
@@ -42,7 +44,8 @@ Future main() async {
     await widgetTester.pumpAndSettle();
     ScanQrScreenController scanQrScreenController = Get.find();
     scanQrScreenController.onDetect(
-        BarcodeCapture(barcodes: [const Barcode(rawValue: 'random barcode')]));
+      const BarcodeCapture(barcodes: [Barcode(rawValue: 'random barcode')]),
+    );
     await widgetTester.pumpAndSettle();
     expect(scanQrScreenController.poped, true);
   });

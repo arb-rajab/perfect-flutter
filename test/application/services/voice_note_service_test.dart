@@ -18,13 +18,11 @@ void main() {
     int parentTermId = 1,
     String encryptionKey = 'key',
     String creation = '2023-01-01T00:00:00Z',
-    String lastUpdated = '2023-01-01T00:00:00Z',
   }) {
     final voiceNote = VoiceNote(
       encryptionKey: encryptionKey,
       parentTermId: parentTermId,
       creation: creation,
-      lastUpdated: lastUpdated,
     );
     return VoiceNoteData(voiceNote);
   }

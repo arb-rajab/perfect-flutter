@@ -20,14 +20,17 @@ import 'package:go_router/go_router.dart';
 Future<void> main() async {
   await MainController.initServices();
   final config = ClarityConfig(projectId: clarityProjectId);
-  runApp(ClarityWidget(
-    clarityConfig: config,
-    app: EasyLocalization(
+  runApp(
+    ClarityWidget(
+      clarityConfig: config,
+      app: EasyLocalization(
         supportedLocales: supportedLocals,
         path: 'assets/translations',
         fallbackLocale: supportedLocals[0],
-        child: const MyApp()),
-  ));
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 // Register the RouteObserver as a navigation observer.

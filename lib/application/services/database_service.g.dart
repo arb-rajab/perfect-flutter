@@ -4185,24 +4185,8 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
   @override
-  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-    'lastUpdated',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    encryptionKey,
-    parentTermId,
-    creation,
-    lastUpdated,
-  ];
+  List<GeneratedColumn> get $columns => [encryptionKey, parentTermId, creation];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4243,17 +4227,6 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
-    if (data.containsKey('lastUpdated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['lastUpdated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
-    }
     return context;
   }
 
@@ -4275,10 +4248,6 @@ class $EbooksTable extends Ebooks with TableInfo<$EbooksTable, Ebook> {
         DriftSqlType.string,
         data['${effectivePrefix}creation'],
       )!,
-      lastUpdated: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}lastUpdated'],
-      )!,
     );
   }
 
@@ -4292,12 +4261,10 @@ class Ebook extends DataClass implements Insertable<Ebook> {
   final String encryptionKey;
   final int parentTermId;
   final String creation;
-  final String lastUpdated;
   const Ebook({
     required this.encryptionKey,
     required this.parentTermId,
     required this.creation,
-    required this.lastUpdated,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4305,7 +4272,6 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
     map['creation'] = Variable<String>(creation);
-    map['lastUpdated'] = Variable<String>(lastUpdated);
     return map;
   }
 
@@ -4314,7 +4280,6 @@ class Ebook extends DataClass implements Insertable<Ebook> {
       encryptionKey: Value(encryptionKey),
       parentTermId: Value(parentTermId),
       creation: Value(creation),
-      lastUpdated: Value(lastUpdated),
     );
   }
 
@@ -4327,7 +4292,6 @@ class Ebook extends DataClass implements Insertable<Ebook> {
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       creation: serializer.fromJson<String>(json['creation']),
-      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
     );
   }
   @override
@@ -4337,7 +4301,6 @@ class Ebook extends DataClass implements Insertable<Ebook> {
       'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
       'creation': serializer.toJson<String>(creation),
-      'lastUpdated': serializer.toJson<String>(lastUpdated),
     };
   }
 
@@ -4345,12 +4308,10 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     String? encryptionKey,
     int? parentTermId,
     String? creation,
-    String? lastUpdated,
   }) => Ebook(
     encryptionKey: encryptionKey ?? this.encryptionKey,
     parentTermId: parentTermId ?? this.parentTermId,
     creation: creation ?? this.creation,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
   );
   Ebook copyWithCompanion(EbooksCompanion data) {
     return Ebook(
@@ -4361,9 +4322,6 @@ class Ebook extends DataClass implements Insertable<Ebook> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated: data.lastUpdated.present
-          ? data.lastUpdated.value
-          : this.lastUpdated,
     );
   }
 
@@ -4372,55 +4330,46 @@ class Ebook extends DataClass implements Insertable<Ebook> {
     return (StringBuffer('Ebook(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(encryptionKey, parentTermId, creation, lastUpdated);
+  int get hashCode => Object.hash(encryptionKey, parentTermId, creation);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Ebook &&
           other.encryptionKey == this.encryptionKey &&
           other.parentTermId == this.parentTermId &&
-          other.creation == this.creation &&
-          other.lastUpdated == this.lastUpdated);
+          other.creation == this.creation);
 }
 
 class EbooksCompanion extends UpdateCompanion<Ebook> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
   final Value<String> creation;
-  final Value<String> lastUpdated;
   const EbooksCompanion({
     this.encryptionKey = const Value.absent(),
     this.parentTermId = const Value.absent(),
     this.creation = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
   });
   EbooksCompanion.insert({
     required String encryptionKey,
     this.parentTermId = const Value.absent(),
     required String creation,
-    required String lastUpdated,
   }) : encryptionKey = Value(encryptionKey),
-       creation = Value(creation),
-       lastUpdated = Value(lastUpdated);
+       creation = Value(creation);
   static Insertable<Ebook> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
     Expression<String>? creation,
-    Expression<String>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (encryptionKey != null) 'encryptionKey': encryptionKey,
       if (parentTermId != null) 'parentTermId': parentTermId,
       if (creation != null) 'creation': creation,
-      if (lastUpdated != null) 'lastUpdated': lastUpdated,
     });
   }
 
@@ -4428,13 +4377,11 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
     Value<String>? encryptionKey,
     Value<int>? parentTermId,
     Value<String>? creation,
-    Value<String>? lastUpdated,
   }) {
     return EbooksCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
       creation: creation ?? this.creation,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
 
@@ -4450,9 +4397,6 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
     if (creation.present) {
       map['creation'] = Variable<String>(creation.value);
     }
-    if (lastUpdated.present) {
-      map['lastUpdated'] = Variable<String>(lastUpdated.value);
-    }
     return map;
   }
 
@@ -4461,8 +4405,7 @@ class EbooksCompanion extends UpdateCompanion<Ebook> {
     return (StringBuffer('EbooksCompanion(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
@@ -6021,24 +5964,8 @@ class $VoiceNotesTable extends VoiceNotes
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
   @override
-  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-    'lastUpdated',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    encryptionKey,
-    parentTermId,
-    creation,
-    lastUpdated,
-  ];
+  List<GeneratedColumn> get $columns => [encryptionKey, parentTermId, creation];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6079,17 +6006,6 @@ class $VoiceNotesTable extends VoiceNotes
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
-    if (data.containsKey('lastUpdated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['lastUpdated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
-    }
     return context;
   }
 
@@ -6111,10 +6027,6 @@ class $VoiceNotesTable extends VoiceNotes
         DriftSqlType.string,
         data['${effectivePrefix}creation'],
       )!,
-      lastUpdated: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}lastUpdated'],
-      )!,
     );
   }
 
@@ -6128,12 +6040,10 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
   final String encryptionKey;
   final int parentTermId;
   final String creation;
-  final String lastUpdated;
   const VoiceNote({
     required this.encryptionKey,
     required this.parentTermId,
     required this.creation,
-    required this.lastUpdated,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6141,7 +6051,6 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
     map['creation'] = Variable<String>(creation);
-    map['lastUpdated'] = Variable<String>(lastUpdated);
     return map;
   }
 
@@ -6150,7 +6059,6 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
       encryptionKey: Value(encryptionKey),
       parentTermId: Value(parentTermId),
       creation: Value(creation),
-      lastUpdated: Value(lastUpdated),
     );
   }
 
@@ -6163,7 +6071,6 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       creation: serializer.fromJson<String>(json['creation']),
-      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
     );
   }
   @override
@@ -6173,7 +6080,6 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
       'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
       'creation': serializer.toJson<String>(creation),
-      'lastUpdated': serializer.toJson<String>(lastUpdated),
     };
   }
 
@@ -6181,12 +6087,10 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     String? encryptionKey,
     int? parentTermId,
     String? creation,
-    String? lastUpdated,
   }) => VoiceNote(
     encryptionKey: encryptionKey ?? this.encryptionKey,
     parentTermId: parentTermId ?? this.parentTermId,
     creation: creation ?? this.creation,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
   );
   VoiceNote copyWithCompanion(VoiceNotesCompanion data) {
     return VoiceNote(
@@ -6197,9 +6101,6 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated: data.lastUpdated.present
-          ? data.lastUpdated.value
-          : this.lastUpdated,
     );
   }
 
@@ -6208,55 +6109,46 @@ class VoiceNote extends DataClass implements Insertable<VoiceNote> {
     return (StringBuffer('VoiceNote(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(encryptionKey, parentTermId, creation, lastUpdated);
+  int get hashCode => Object.hash(encryptionKey, parentTermId, creation);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is VoiceNote &&
           other.encryptionKey == this.encryptionKey &&
           other.parentTermId == this.parentTermId &&
-          other.creation == this.creation &&
-          other.lastUpdated == this.lastUpdated);
+          other.creation == this.creation);
 }
 
 class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
   final Value<String> creation;
-  final Value<String> lastUpdated;
   const VoiceNotesCompanion({
     this.encryptionKey = const Value.absent(),
     this.parentTermId = const Value.absent(),
     this.creation = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
   });
   VoiceNotesCompanion.insert({
     required String encryptionKey,
     this.parentTermId = const Value.absent(),
     required String creation,
-    required String lastUpdated,
   }) : encryptionKey = Value(encryptionKey),
-       creation = Value(creation),
-       lastUpdated = Value(lastUpdated);
+       creation = Value(creation);
   static Insertable<VoiceNote> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
     Expression<String>? creation,
-    Expression<String>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (encryptionKey != null) 'encryptionKey': encryptionKey,
       if (parentTermId != null) 'parentTermId': parentTermId,
       if (creation != null) 'creation': creation,
-      if (lastUpdated != null) 'lastUpdated': lastUpdated,
     });
   }
 
@@ -6264,13 +6156,11 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     Value<String>? encryptionKey,
     Value<int>? parentTermId,
     Value<String>? creation,
-    Value<String>? lastUpdated,
   }) {
     return VoiceNotesCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
       creation: creation ?? this.creation,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
 
@@ -6286,9 +6176,6 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     if (creation.present) {
       map['creation'] = Variable<String>(creation.value);
     }
-    if (lastUpdated.present) {
-      map['lastUpdated'] = Variable<String>(lastUpdated.value);
-    }
     return map;
   }
 
@@ -6297,8 +6184,7 @@ class VoiceNotesCompanion extends UpdateCompanion<VoiceNote> {
     return (StringBuffer('VoiceNotesCompanion(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
@@ -6343,24 +6229,8 @@ class $VideoFilesTable extends VideoFiles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
   @override
-  late final GeneratedColumn<String> lastUpdated = GeneratedColumn<String>(
-    'lastUpdated',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    encryptionKey,
-    parentTermId,
-    creation,
-    lastUpdated,
-  ];
+  List<GeneratedColumn> get $columns => [encryptionKey, parentTermId, creation];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6401,17 +6271,6 @@ class $VideoFilesTable extends VideoFiles
     } else if (isInserting) {
       context.missing(_creationMeta);
     }
-    if (data.containsKey('lastUpdated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['lastUpdated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
-    }
     return context;
   }
 
@@ -6433,10 +6292,6 @@ class $VideoFilesTable extends VideoFiles
         DriftSqlType.string,
         data['${effectivePrefix}creation'],
       )!,
-      lastUpdated: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}lastUpdated'],
-      )!,
     );
   }
 
@@ -6450,12 +6305,10 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
   final String encryptionKey;
   final int parentTermId;
   final String creation;
-  final String lastUpdated;
   const VideoFile({
     required this.encryptionKey,
     required this.parentTermId,
     required this.creation,
-    required this.lastUpdated,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6463,7 +6316,6 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
     map['encryptionKey'] = Variable<String>(encryptionKey);
     map['parentTermId'] = Variable<int>(parentTermId);
     map['creation'] = Variable<String>(creation);
-    map['lastUpdated'] = Variable<String>(lastUpdated);
     return map;
   }
 
@@ -6472,7 +6324,6 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
       encryptionKey: Value(encryptionKey),
       parentTermId: Value(parentTermId),
       creation: Value(creation),
-      lastUpdated: Value(lastUpdated),
     );
   }
 
@@ -6485,7 +6336,6 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
       encryptionKey: serializer.fromJson<String>(json['encryptionKey']),
       parentTermId: serializer.fromJson<int>(json['parentTermId']),
       creation: serializer.fromJson<String>(json['creation']),
-      lastUpdated: serializer.fromJson<String>(json['lastUpdated']),
     );
   }
   @override
@@ -6495,7 +6345,6 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
       'encryptionKey': serializer.toJson<String>(encryptionKey),
       'parentTermId': serializer.toJson<int>(parentTermId),
       'creation': serializer.toJson<String>(creation),
-      'lastUpdated': serializer.toJson<String>(lastUpdated),
     };
   }
 
@@ -6503,12 +6352,10 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
     String? encryptionKey,
     int? parentTermId,
     String? creation,
-    String? lastUpdated,
   }) => VideoFile(
     encryptionKey: encryptionKey ?? this.encryptionKey,
     parentTermId: parentTermId ?? this.parentTermId,
     creation: creation ?? this.creation,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
   );
   VideoFile copyWithCompanion(VideoFilesCompanion data) {
     return VideoFile(
@@ -6519,9 +6366,6 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
           ? data.parentTermId.value
           : this.parentTermId,
       creation: data.creation.present ? data.creation.value : this.creation,
-      lastUpdated: data.lastUpdated.present
-          ? data.lastUpdated.value
-          : this.lastUpdated,
     );
   }
 
@@ -6530,55 +6374,46 @@ class VideoFile extends DataClass implements Insertable<VideoFile> {
     return (StringBuffer('VideoFile(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(encryptionKey, parentTermId, creation, lastUpdated);
+  int get hashCode => Object.hash(encryptionKey, parentTermId, creation);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is VideoFile &&
           other.encryptionKey == this.encryptionKey &&
           other.parentTermId == this.parentTermId &&
-          other.creation == this.creation &&
-          other.lastUpdated == this.lastUpdated);
+          other.creation == this.creation);
 }
 
 class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
   final Value<String> encryptionKey;
   final Value<int> parentTermId;
   final Value<String> creation;
-  final Value<String> lastUpdated;
   const VideoFilesCompanion({
     this.encryptionKey = const Value.absent(),
     this.parentTermId = const Value.absent(),
     this.creation = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
   });
   VideoFilesCompanion.insert({
     required String encryptionKey,
     this.parentTermId = const Value.absent(),
     required String creation,
-    required String lastUpdated,
   }) : encryptionKey = Value(encryptionKey),
-       creation = Value(creation),
-       lastUpdated = Value(lastUpdated);
+       creation = Value(creation);
   static Insertable<VideoFile> custom({
     Expression<String>? encryptionKey,
     Expression<int>? parentTermId,
     Expression<String>? creation,
-    Expression<String>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (encryptionKey != null) 'encryptionKey': encryptionKey,
       if (parentTermId != null) 'parentTermId': parentTermId,
       if (creation != null) 'creation': creation,
-      if (lastUpdated != null) 'lastUpdated': lastUpdated,
     });
   }
 
@@ -6586,13 +6421,11 @@ class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
     Value<String>? encryptionKey,
     Value<int>? parentTermId,
     Value<String>? creation,
-    Value<String>? lastUpdated,
   }) {
     return VideoFilesCompanion(
       encryptionKey: encryptionKey ?? this.encryptionKey,
       parentTermId: parentTermId ?? this.parentTermId,
       creation: creation ?? this.creation,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
 
@@ -6608,9 +6441,6 @@ class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
     if (creation.present) {
       map['creation'] = Variable<String>(creation.value);
     }
-    if (lastUpdated.present) {
-      map['lastUpdated'] = Variable<String>(lastUpdated.value);
-    }
     return map;
   }
 
@@ -6619,8 +6449,7 @@ class VideoFilesCompanion extends UpdateCompanion<VideoFile> {
     return (StringBuffer('VideoFilesCompanion(')
           ..write('encryptionKey: $encryptionKey, ')
           ..write('parentTermId: $parentTermId, ')
-          ..write('creation: $creation, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('creation: $creation')
           ..write(')'))
         .toString();
   }
@@ -11429,14 +11258,12 @@ typedef $$EbooksTableCreateCompanionBuilder =
       required String encryptionKey,
       Value<int> parentTermId,
       required String creation,
-      required String lastUpdated,
     });
 typedef $$EbooksTableUpdateCompanionBuilder =
     EbooksCompanion Function({
       Value<String> encryptionKey,
       Value<int> parentTermId,
       Value<String> creation,
-      Value<String> lastUpdated,
     });
 
 class $$EbooksTableFilterComposer
@@ -11460,11 +11287,6 @@ class $$EbooksTableFilterComposer
 
   ColumnFilters<String> get creation => $composableBuilder(
     column: $table.creation,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -11492,11 +11314,6 @@ class $$EbooksTableOrderingComposer
     column: $table.creation,
     builder: (column) => ColumnOrderings(column),
   );
-
-  ColumnOrderings<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => ColumnOrderings(column),
-  );
 }
 
 class $$EbooksTableAnnotationComposer
@@ -11520,11 +11337,6 @@ class $$EbooksTableAnnotationComposer
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
-
-  GeneratedColumn<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
 }
 
 class $$EbooksTableTableManager
@@ -11558,24 +11370,20 @@ class $$EbooksTableTableManager
                 Value<String> encryptionKey = const Value.absent(),
                 Value<int> parentTermId = const Value.absent(),
                 Value<String> creation = const Value.absent(),
-                Value<String> lastUpdated = const Value.absent(),
               }) => EbooksCompanion(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           createCompanionCallback:
               ({
                 required String encryptionKey,
                 Value<int> parentTermId = const Value.absent(),
                 required String creation,
-                required String lastUpdated,
               }) => EbooksCompanion.insert(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -12602,14 +12410,12 @@ typedef $$VoiceNotesTableCreateCompanionBuilder =
       required String encryptionKey,
       Value<int> parentTermId,
       required String creation,
-      required String lastUpdated,
     });
 typedef $$VoiceNotesTableUpdateCompanionBuilder =
     VoiceNotesCompanion Function({
       Value<String> encryptionKey,
       Value<int> parentTermId,
       Value<String> creation,
-      Value<String> lastUpdated,
     });
 
 class $$VoiceNotesTableFilterComposer
@@ -12633,11 +12439,6 @@ class $$VoiceNotesTableFilterComposer
 
   ColumnFilters<String> get creation => $composableBuilder(
     column: $table.creation,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -12665,11 +12466,6 @@ class $$VoiceNotesTableOrderingComposer
     column: $table.creation,
     builder: (column) => ColumnOrderings(column),
   );
-
-  ColumnOrderings<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => ColumnOrderings(column),
-  );
 }
 
 class $$VoiceNotesTableAnnotationComposer
@@ -12693,11 +12489,6 @@ class $$VoiceNotesTableAnnotationComposer
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
-
-  GeneratedColumn<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
 }
 
 class $$VoiceNotesTableTableManager
@@ -12734,24 +12525,20 @@ class $$VoiceNotesTableTableManager
                 Value<String> encryptionKey = const Value.absent(),
                 Value<int> parentTermId = const Value.absent(),
                 Value<String> creation = const Value.absent(),
-                Value<String> lastUpdated = const Value.absent(),
               }) => VoiceNotesCompanion(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           createCompanionCallback:
               ({
                 required String encryptionKey,
                 Value<int> parentTermId = const Value.absent(),
                 required String creation,
-                required String lastUpdated,
               }) => VoiceNotesCompanion.insert(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -12783,14 +12570,12 @@ typedef $$VideoFilesTableCreateCompanionBuilder =
       required String encryptionKey,
       Value<int> parentTermId,
       required String creation,
-      required String lastUpdated,
     });
 typedef $$VideoFilesTableUpdateCompanionBuilder =
     VideoFilesCompanion Function({
       Value<String> encryptionKey,
       Value<int> parentTermId,
       Value<String> creation,
-      Value<String> lastUpdated,
     });
 
 class $$VideoFilesTableFilterComposer
@@ -12814,11 +12599,6 @@ class $$VideoFilesTableFilterComposer
 
   ColumnFilters<String> get creation => $composableBuilder(
     column: $table.creation,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -12846,11 +12626,6 @@ class $$VideoFilesTableOrderingComposer
     column: $table.creation,
     builder: (column) => ColumnOrderings(column),
   );
-
-  ColumnOrderings<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => ColumnOrderings(column),
-  );
 }
 
 class $$VideoFilesTableAnnotationComposer
@@ -12874,11 +12649,6 @@ class $$VideoFilesTableAnnotationComposer
 
   GeneratedColumn<String> get creation =>
       $composableBuilder(column: $table.creation, builder: (column) => column);
-
-  GeneratedColumn<String> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
 }
 
 class $$VideoFilesTableTableManager
@@ -12915,24 +12685,20 @@ class $$VideoFilesTableTableManager
                 Value<String> encryptionKey = const Value.absent(),
                 Value<int> parentTermId = const Value.absent(),
                 Value<String> creation = const Value.absent(),
-                Value<String> lastUpdated = const Value.absent(),
               }) => VideoFilesCompanion(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           createCompanionCallback:
               ({
                 required String encryptionKey,
                 Value<int> parentTermId = const Value.absent(),
                 required String creation,
-                required String lastUpdated,
               }) => VideoFilesCompanion.insert(
                 encryptionKey: encryptionKey,
                 parentTermId: parentTermId,
                 creation: creation,
-                lastUpdated: lastUpdated,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
