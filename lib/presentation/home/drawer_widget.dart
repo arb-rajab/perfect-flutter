@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/database/shared.dart';
@@ -27,6 +28,10 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -46,75 +51,108 @@ class DrawerWidget extends StatelessWidget {
           FrequestQuestionsTile(),
           Divider(),
           WhatsNewTile(),
-          DecryptDatabase(),
+          // DecryptDatabase(),
         ],
       ),
     );
   }
 }
 
-class DecryptDatabase extends StatelessWidget {
+class DecryptDatabase extends StatefulWidget {
   const DecryptDatabase({super.key});
 
-  Future<void> pickAndDecrypt() async {
-    const typeGroup = XTypeGroup(label: 'database', extensions: ['db']);
+  @override
+  State<DecryptDatabase> createState() => _DecryptDatabaseState();
+}
 
-    final file = await openFile(acceptedTypeGroups: [typeGroup]);
-    if (file == null) return; // user cancelled
+class _DecryptDatabaseState extends State<DecryptDatabase> {
+  final TextEditingController _modelController = TextEditingController();
 
-    await decryptAndExportDatabase(file.path);
+  @override
+  void dispose() {
+    _modelController.dispose();
+    super.dispose();
   }
 
-  Future<void> decryptAndExportDatabase(String encryptedDbPath) async {
-    final tempDir = await getTemporaryDirectory();
-    final decryptedPath = p.join(
-      tempDir.path,
-      'decrypted_${DateTime.now().millisecondsSinceEpoch}.db',
+  Future<void> pickAndDecrypt() async {
+    final model = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Enter device model'),
+        content: TextField(
+          controller: _modelController,
+          decoration: const InputDecoration(hintText: 'e.g. Redmi Note 8'),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context, _modelController.text.trim()),
+            child: const Text('Decrypt'),
+          ),
+        ],
+      ),
     );
 
+    if (model == null || model.isEmpty) return;
+
+    const typeGroup = XTypeGroup(label: 'database', extensions: ['db']);
+    final file = await openFile(acceptedTypeGroups: [typeGroup]);
+    if (file == null) return;
+
+    await decryptAndExportDatabase(file.path, model);
+  }
+
+  Future<void> decryptAndExportDatabase(
+    String encryptedDbPath,
+    String model,
+  ) async {
+    final tempDir = await getTemporaryDirectory();
+    final jsonPath = p.join(
+      tempDir.path,
+      'database_backup_${DateTime.now().millisecondsSinceEpoch}.json',
+    );
+
+    final key = '${model}edu.perfect';
     final encrypted = sqlite3.open(encryptedDbPath);
-    final plain = sqlite3.open(decryptedPath);
 
     try {
       encrypted.execute("pragma cipher = 'sqlcipher'");
       encrypted.execute('pragma legacy = 4');
-      encrypted.execute("PRAGMA key = 'Redmi Note 8edu.perfect';");
+      encrypted.execute("PRAGMA key = '$key';");
 
-      // Verify
       final result = encrypted.select('SELECT count(*) FROM sqlite_master');
       print('Opened successfully — ${result.first.values.first} tables found');
 
-      // Copy tables
-      final tables = encrypted.select(
-        "SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
-      );
-      for (final table in tables) {
-        final tableName = table['name'] as String;
-        final createSql = table['sql'] as String;
-        plain.execute(createSql);
-
+      List<Map<String, dynamic>> readTable(String tableName) {
         final rows = encrypted.select('SELECT * FROM "$tableName"');
-        for (final row in rows) {
-          final columns = row.keys.join(', ');
-          final placeholders = row.keys.map((_) => '?').join(', ');
-          plain.execute(
-            'INSERT INTO "$tableName" ($columns) VALUES ($placeholders)',
-            row.values.toList(),
-          );
-        }
-        print('Copied: $tableName (${rows.length} rows)');
+        return rows.map((row) => Map<String, dynamic>.from(row)).toList();
+      }
+
+      final data = {
+        'answerProperties': readTable('answerProperties'),
+        'questionProperties': readTable('questionProperties'),
+        'questionTagProperties': readTable('questionTagProperties'),
+        'termsLastAccess': readTable('termsLastAccess'),
+        'termProperties': readTable('termProperties'),
+      };
+
+      final jsonBytes = Uint8List.fromList(utf8.encode(jsonEncode(data)));
+      await File(jsonPath).writeAsBytes(jsonBytes, flush: true);
+
+      await Share.shareXFiles([
+        XFile(jsonPath, mimeType: 'application/json'),
+      ], subject: 'Database backup');
+
+      if (File(jsonPath).existsSync()) {
+        await File(jsonPath).delete();
       }
     } finally {
       encrypted.close();
-      plain.close();
-    }
-
-    await Share.shareXFiles([
-      XFile(decryptedPath, mimeType: 'application/octet-stream'),
-    ], subject: 'Decrypted database');
-
-    if (File(decryptedPath).existsSync()) {
-      await File(decryptedPath).delete();
     }
   }
 
