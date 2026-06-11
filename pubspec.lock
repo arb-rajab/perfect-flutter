@@ -217,6 +217,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  catcher_2:
+    dependency: "direct main"
+    description:
+      name: catcher_2
+      sha256: ac9dd03230fa4058d14d46450335ca3c40564f734d793e52f81053f3cbf95009
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.9"
   characters:
     dependency: transitive
     description:
@@ -803,6 +811,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_mailer:
+    dependency: transitive
+    description:
+      name: flutter_mailer
+      sha256: e1c0b4425e3cc789f8dd914fd08b5da660c3ac46c8ebf3e7db183d39775a8fa6
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -877,6 +893,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: transitive
+    description:
+      name: fluttertoast
+      sha256: "7903c9d5339173497bfecbc23bc4212f5a87e0edfac2e1693fb74465ea67da7e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
   freezed:
     dependency: "direct dev"
     description:
@@ -1149,6 +1173,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  mailer:
+    dependency: transitive
+    description:
+      name: mailer
+      sha256: "7b8691b080809ea1b2fa2f1b0d49c7c089fb328bd23e68aa5818b9cf5f4b420d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.1.0"
   markdown:
     dependency: transitive
     description:
@@ -1485,6 +1517,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  punycoder:
+    dependency: transitive
+    description:
+      name: punycoder
+      sha256: aed79c05986a18782caa9bad649a4a786e840e1baaf6a2e1aa3a25d143d28e6e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   quiver:
     dependency: transitive
     description:
@@ -1541,6 +1581,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.8"
+  sentry:
+    dependency: transitive
+    description:
+      name: sentry
+      sha256: "3284d220618d9344ce8a0765519129744a4cc658309496f052680909d74f7c51"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.21.0"
   share_plus:
     dependency: "direct main"
     description:
@@ -1906,6 +1954,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  universal_io:
+    dependency: transitive
+    description:
+      name: universal_io
+      sha256: f63cbc48103236abf48e345e07a03ce5757ea86285ed313a6a032596ed9301e2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+  unorm_dart:
+    dependency: transitive
+    description:
+      name: unorm_dart
+      sha256: "0c69186b03ca6addab0774bcc0f4f17b88d4ce78d9d4d8f0619e30a99ead58e7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   upgrader:
     dependency: "direct main"
     description:
@@ -2163,5 +2227,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.10.0 <4.0.0"
-  flutter: ">=3.38.0"
+  dart: ">=3.11.0 <4.0.0"
+  flutter: ">=3.41.0"

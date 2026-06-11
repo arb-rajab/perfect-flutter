@@ -9,6 +9,7 @@ import 'package:beta/constants/route_constant.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
+import 'package:catcher_2/catcher_2.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
@@ -20,6 +21,32 @@ import 'package:go_router/go_router.dart';
 Future<void> main() async {
   await MainController.initServices();
   final config = ClarityConfig(projectId: clarityProjectId);
+
+  Catcher2Options debugOptions = Catcher2Options(DialogReportMode(), [
+    ConsoleHandler(),
+  ]);
+
+  /// Release configuration. Same as above, but once user accepts dialog, user will be prompted to send email with crash to support.
+  Catcher2Options releaseOptions = Catcher2Options(DialogReportMode(), [
+    EmailManualHandler(["support@email.com"]),
+  ]);
+
+  /// STEP 2. Pass your root widget (MyApp) along with Catcher 2 configuration:
+  // Catcher2(
+  //   rootWidget: ClarityWidget(
+  //     clarityConfig: config,
+  //     app: EasyLocalization(
+  //       supportedLocales: supportedLocals,
+  //       path: 'assets/translations',
+  //       fallbackLocale: supportedLocals[0],
+  //       child: const MyApp(),
+  //     ),
+  //   ),
+  //   debugConfig: debugOptions,
+  //   releaseConfig: releaseOptions,
+  //   navigatorKey: navigatorKey,
+  // );
+
   runApp(
     ClarityWidget(
       clarityConfig: config,

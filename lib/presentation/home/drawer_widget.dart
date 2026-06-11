@@ -125,8 +125,7 @@ class _DecryptDatabaseState extends State<DecryptDatabase> {
       encrypted.execute('pragma legacy = 4');
       encrypted.execute("PRAGMA key = '$key';");
 
-      final result = encrypted.select('SELECT count(*) FROM sqlite_master');
-      print('Opened successfully — ${result.first.values.first} tables found');
+      encrypted.select('SELECT count(*) FROM sqlite_master');
 
       List<Map<String, dynamic>> readTable(String tableName) {
         final rows = encrypted.select('SELECT * FROM "$tableName"');

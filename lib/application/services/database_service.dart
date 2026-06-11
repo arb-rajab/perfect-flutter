@@ -398,12 +398,34 @@ class DatabaseService extends _$DatabaseService {
         if (from < 41) await m.createTable(videoFiles);
         if (from < 42) await m.createTable(images);
         if (from < 43) {
-          await m.dropColumn(ebooks, 'lastUpdated');
-          await m.dropColumn(voiceNotes, 'lastUpdated');
-          await m.dropColumn(videoFiles, 'lastUpdated');
+          await dropColumnIfExists(m, videoFiles, 'lastUpdated');
+          await dropColumnIfExists(m, ebooks, 'lastUpdated');
+          await dropColumnIfExists(m, voiceNotes, 'lastUpdated');
         }
       },
     );
+  }
+
+  Future<bool> columnExists(
+    Migrator m,
+    String tableName,
+    String columnName,
+  ) async {
+    final rows = await m.database
+        .customSelect('PRAGMA table_info("$tableName")')
+        .get();
+
+    return rows.any((row) => row.data['name'] == columnName);
+  }
+
+  Future<void> dropColumnIfExists(
+    Migrator m,
+    TableInfo table,
+    String columnName,
+  ) async {
+    if (await columnExists(m, table.actualTableName, columnName)) {
+      await m.dropColumn(table, columnName);
+    }
   }
 
   Future deleteAllTables() async {
