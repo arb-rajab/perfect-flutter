@@ -51,9 +51,163 @@ class _HomeScreenState extends State<HomeScreen> {
     homeScreenController = Get.put(HomeScreenController(this));
   }
 
+  void _openEducationalMenu() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => _buildEducationalMenuSheet(context),
+    );
+  }
+
+  Widget _buildEducationalMenuSheet(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.menu_book, size: 28),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      StringConstant.educationalContent.tr(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            _buildMenuTile(
+              Icons.article,
+              StringConstant.browseTerms.tr(),
+              0,
+              browseTermsKey,
+            ),
+            _buildMenuTile(
+              Icons.history,
+              StringConstant.recentTerms.tr(),
+              1,
+              recentTermsKey,
+            ),
+            _buildMenuTile(
+              Icons.fiber_new,
+              StringConstant.newTerms.tr(),
+              2,
+              newTermsKey,
+            ),
+            _buildMenuTile(
+              Icons.fact_check_outlined,
+              StringConstant.unstudied.tr(),
+              3,
+              unstudiedTermsKey,
+            ),
+            _buildMenuTile(
+              Icons.star,
+              StringConstant.favorite.tr(),
+              4,
+              favoriteTermsKey,
+            ),
+            _buildMenuTile(
+              Icons.update,
+              StringConstant.updateable.tr(),
+              5,
+              updateableTermsKey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuTile(IconData icon, String text, int index, GlobalKey key) {
+    final isSelected = homeScreenController.educationalIndex == index;
+
+    return ListTile(
+      key: key,
+      leading: Icon(
+        icon,
+        color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+      ),
+      title: Text(
+        text,
+        style: TextStyle(
+          color: isSelected ? Theme.of(context).primaryColor : null,
+          fontWeight: isSelected ? FontWeight.bold : null,
+        ),
+      ),
+      selected: isSelected,
+      onTap: () {
+        setState(() {
+          homeScreenController.educationalIndex = index;
+        });
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  String _getSelectedTabTitle() {
+    switch (homeScreenController.educationalIndex) {
+      case 0:
+        return StringConstant.browseTerms.tr();
+      case 1:
+        return StringConstant.recentTerms.tr();
+      case 2:
+        return StringConstant.newTerms.tr();
+      case 3:
+        return StringConstant.unstudied.tr();
+      case 4:
+        return StringConstant.favorite.tr();
+      case 5:
+        return StringConstant.updateable.tr();
+      default:
+        return StringConstant.browseTerms.tr();
+    }
+  }
+
+  Widget _educationalContent(int index) {
+    switch (index) {
+      case 0:
+        return const BrowseTermsTab();
+      case 1:
+        return const RecentTermsTab();
+      case 2:
+        return const NewTermsTab();
+      case 3:
+        return const UnstudiedTermsTab();
+      case 4:
+        return const FavoriteTermsTab();
+      case 5:
+        return const UpdateableTermsTab();
+      default:
+        return const BrowseTermsTab();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
+      title: homeScreenController.selectedBottomNavigationIndex == 0
+          ? InkWell(
+              onTap: _openEducationalMenu,
+              child: Row(
+                children: [
+                  const Icon(Icons.arrow_downward),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      _getSelectedTabTitle(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : null,
       targets: [
         CustomTargetFocus(
             identify: TutorialConstant.addCoupon,
@@ -73,8 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TargetContent(
                   builder: (context, controller) {
                     return RectangleWidget(
-                        child:
-                            Text(StringConstant.browseTermsExplanation.tr()));
+                  child: Text(StringConstant.browseTermsExplanation.tr()),
+                );
                   },
                   align: ContentAlign.bottom)
             ]),
@@ -85,8 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TargetContent(
                   builder: (context, controller) {
                     return RectangleWidget(
-                        child:
-                            Text(StringConstant.recentTermsExplanation.tr()));
+                  child: Text(StringConstant.recentTermsExplanation.tr()),
+                );
                   },
                   align: ContentAlign.bottom)
             ]),
@@ -108,8 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TargetContent(
                   builder: (context, controller) {
                     return RectangleWidget(
-                        child: Text(
-                            StringConstant.unstudiedTermsExplanation.tr()));
+                  child: Text(StringConstant.unstudiedTermsExplanation.tr()),
+                );
                   },
                   align: ContentAlign.bottom)
             ]),
@@ -120,8 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TargetContent(
                   builder: (context, controller) {
                     return RectangleWidget(
-                        child:
-                            Text(StringConstant.favoriteTermsExplanation.tr()));
+                  child: Text(StringConstant.favoriteTermsExplanation.tr()),
+                );
                   },
                   align: ContentAlign.bottom),
             ]),
@@ -132,8 +286,8 @@ class _HomeScreenState extends State<HomeScreen> {
               TargetContent(
                   builder: (context, controller) {
                     return RectangleWidget(
-                        child: Text(
-                            StringConstant.updateableTermsExplanation.tr()));
+                  child: Text(StringConstant.updateableTermsExplanation.tr()),
+                );
                   },
                   align: ContentAlign.bottom)
             ])
@@ -164,49 +318,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   tooltip: EnterCouponScreen.title,
                   heroTag: EnterCouponScreen.title,
                   onPressed: () async {
-                    await context.push(EnterCouponScreen.route);
-                    // Get.find<TermsListingController>().fetch!();
+                await context.push(EnterCouponScreen.route);
                     TermsListingController browseTermsTabController =
                         Get.find();
                     browseTermsTabController.init();
                   },
                   icon: const Icon(EnterCouponScreen.icon),
                   label: Text(EnterCouponScreen.title))
-              : null,
-      tabs: homeScreenController.selectedBottomNavigationIndex == 0
-          ? [
-              Tab(
-                key: browseTermsKey,
-                icon: const Icon(Icons.article),
-                text: StringConstant.browseTerms.tr(),
-              ),
-              Tab(
-                key: recentTermsKey,
-                icon: const Icon(Icons.history),
-                text: StringConstant.recentTerms.tr(),
-              ),
-              Tab(
-                key: newTermsKey,
-                icon: const Icon(Icons.fiber_new),
-                text: StringConstant.newTerms.tr(),
-              ),
-              Tab(
-                key: unstudiedTermsKey,
-                icon: const Icon(Icons.fact_check_outlined),
-                text: StringConstant.unstudied.tr(),
-              ),
-              Tab(
-                key: favoriteTermsKey,
-                icon: const Icon(Icons.star),
-                text: StringConstant.favorite.tr(),
-              ),
-              Tab(
-                key: updateableTermsKey,
-                icon: const Icon(Icons.update),
-                text: StringConstant.updateable.tr(),
-              ),
-            ]
-          : [],
+          : null,
       bottomNavigationBar: hasStore || hasNews
           ? BottomNavigationBar(
               items: <BottomNavigationBarItem>[
@@ -240,14 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       child: homeScreenController.selectedBottomNavigationIndex == 0
           ? UpgradeAlert(
-              child: const TabBarView(children: [
-                BrowseTermsTab(),
-                RecentTermsTab(),
-                NewTermsTab(),
-                UnstudiedTermsTab(),
-                FavoriteTermsTab(),
-                UpdateableTermsTab()
-              ]),
+              child: _educationalContent(homeScreenController.educationalIndex),
             )
           : homeScreenController.selectedBottomNavigationIndex == 1 && hasStore
               ? const StoreTab()

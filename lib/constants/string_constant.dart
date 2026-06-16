@@ -178,6 +178,7 @@ class StringConstant {
       '$_terms.shows-terms-download-progress';
   static const downloadingTerms = '$_terms.downloading-terms';
   static const downloadComplete = '$_terms.download-complete';
+  static const favoriteQuestions = '$_terms.favorite-questions';
 
   static const _questions = 'questions';
   static const showFavoriteOnly = '$_questions.show-favorite-only';

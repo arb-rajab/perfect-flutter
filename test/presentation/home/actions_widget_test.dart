@@ -3890,6 +3890,7 @@ group('images term type tests', () {
           server.reply(200, r'''
 {
     "questions": [],
+    "images":[],
         "flashcards": [
             {
                 "id": 20,
@@ -4013,6 +4014,7 @@ group('images term type tests', () {
           server.reply(200, r'''
 {
     "questions": [],
+    "images":[],
         "flashcards": [
             {
                 "id": 20,

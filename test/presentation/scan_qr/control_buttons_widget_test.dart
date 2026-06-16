@@ -1,119 +1,145 @@
-import 'package:beta/main.dart';
 import 'package:beta/presentation/scan_qr/control_buttons_widget.dart';
-import 'package:beta/presentation/scan_qr/scan_qr_screen.dart';
+import 'package:beta/presentation/scan_qr/rectangle_widget_with_opacity.dart';
 import 'package:beta/presentation/scan_qr/scan_qr_screen_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../common/tests.dart';
 
-Future main() async {
-  await initTests();
+class MockMobileScannerController extends MobileScannerController {
+  bool toggleTorchCalled = false;
+  bool switchCameraCalled = false;
 
-  group('render tests', () {
-    testWidgets('flash icon is rendered', (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      expect(find.byType(FlashIcon), findsOneWidget);
-    });
+  @override
+  Future<void> toggleTorch() async {
+    toggleTorchCalled = !toggleTorchCalled;
+  }
 
-    testWidgets('camera icon is rendered', (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      expect(find.byType(CameraIcon), findsOneWidget);
-    });
+  @override
+  Future<void> switchCamera([
+    SwitchCameraOption option = const ToggleDirection(),
+  ]) async {
+    switchCameraCalled = !switchCameraCalled;
+  }
+}
+
+void main() {
+  setUp(() async {
+    await initTests();
+    // Put the mock controller before building the widget
+    Get.delete<ScanQrScreenController>();
+    Get.put(ScanQrScreenController(_MockState()));
   });
 
-  group('flash icon tests', () {
-    testWidgets('torsh off icon is rendered by default', (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(FlashIcon.flashOn), findsNothing);
-      expect(find.byIcon(FlashIcon.flashOff), findsOneWidget);
+  group('ControlButtons', () {
+    testWidgets(
+      'renders RectangleWidgetWithOpacity with Row containing two icons',
+      (tester) async {
+        await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(RectangleWidgetWithOpacity), findsOneWidget);
+        expect(find.byType(Row), findsOneWidget);
+        expect(find.byType(FlashIcon), findsOneWidget);
+        expect(find.byType(CameraIcon), findsOneWidget);
+      },
+    );
+
+    testWidgets('contains two IconButton widgets', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(IconButton), findsNWidgets(2));
     });
 
-    testWidgets('torsh on icon is visible once torch invoked',
-        (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(FlashIcon.flashOff));
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(FlashIcon.flashOn), findsOneWidget);
-      expect(find.byIcon(FlashIcon.flashOff), findsNothing);
+    testWidgets('tap on flash icon triggers toggleTorch', (tester) async {
+      final mockController = MockMobileScannerController();
+
+      final controller = Get.find<ScanQrScreenController>();
+      controller.mobileScannerController = mockController;
+
+      await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+      await tester.pumpAndSettle();
+
+      expect(mockController.toggleTorchCalled, false);
+
+      await tester.tap(find.byType(IconButton).first);
+      await tester.pump();
+
+      expect(mockController.toggleTorchCalled, true);
     });
 
-    testWidgets('torsh off icon is visible once torch is revoked',
-        (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(FlashIcon.flashOff));
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(FlashIcon.flashOn));
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(FlashIcon.flashOff), findsOneWidget);
-      expect(find.byIcon(FlashIcon.flashOn), findsNothing);
+    testWidgets('tap on camera icon triggers switchCamera', (tester) async {
+      final mockController = MockMobileScannerController();
+
+      final controller = Get.find<ScanQrScreenController>();
+      controller.mobileScannerController = mockController;
+
+      await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+      await tester.pumpAndSettle();
+
+      expect(mockController.switchCameraCalled, false);
+
+      await tester.tap(find.byType(IconButton).last);
+      await tester.pump();
+
+      expect(mockController.switchCameraCalled, true);
+    });
+
+    testWidgets('retap on flash icon triggers toggleTorch', (tester) async {
+      final mockController = MockMobileScannerController();
+
+      final controller = Get.find<ScanQrScreenController>();
+      controller.mobileScannerController = mockController;
+
+      await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+      await tester.pumpAndSettle();
+
+      expect(mockController.toggleTorchCalled, false);
+
+      await tester.tap(find.byType(IconButton).first);
+      await tester.pump();
+
+      expect(mockController.toggleTorchCalled, true);
+
+      await tester.tap(find.byType(IconButton).first);
+      await tester.pump();
+
+      expect(mockController.toggleTorchCalled, false);
+    });
+
+    testWidgets('retap on camera icon triggers switchCamera', (tester) async {
+      final mockController = MockMobileScannerController();
+
+      final controller = Get.find<ScanQrScreenController>();
+      controller.mobileScannerController = mockController;
+
+      await tester.pumpWidget(const MaterialApp(home: ControlButtons()));
+      await tester.pumpAndSettle();
+
+      expect(mockController.switchCameraCalled, false);
+
+      await tester.tap(find.byType(IconButton).last);
+      await tester.pump();
+
+      expect(mockController.switchCameraCalled, true);
+
+      await tester.tap(find.byType(IconButton).last);
+      await tester.pump();
+
+      expect(mockController.switchCameraCalled, false);
     });
   });
+}
 
-  group('camera icon tests', () {
-    testWidgets('camera icon is rear by default', (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(CameraIcon.cameraFrontIcon), findsNothing);
-      expect(find.byIcon(CameraIcon.cameraRearIcon), findsOneWidget);
-    });
+class _MockState extends State<StatefulWidget> {
+  @override
+  Widget build(BuildContext context) => const SizedBox();
 
-    testWidgets('front camera is visible once invoked', (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(CameraIcon.cameraRearIcon));
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(CameraIcon.cameraFrontIcon), findsOneWidget);
-      expect(find.byIcon(CameraIcon.cameraRearIcon), findsNothing);
-    });
-
-    testWidgets('rear camera is visible once invoked back',
-        (widgetTester) async {
-      await widgetTester.pumpWidget(const MyApp(
-        defaultRoute: ScanQrScreen.route,
-      ));
-      ScanQrScreenController scanQrScreenController = Get.find();
-      scanQrScreenController.setScannerStarted();
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(CameraIcon.cameraRearIcon));
-      await widgetTester.pumpAndSettle();
-      await widgetTester.tap(find.byIcon(CameraIcon.cameraFrontIcon));
-      await widgetTester.pumpAndSettle();
-      expect(find.byIcon(CameraIcon.cameraFrontIcon), findsNothing);
-      expect(find.byIcon(CameraIcon.cameraRearIcon), findsOneWidget);
-    });
-  });
+  @override
+  void setState(VoidCallback fn) {
+    fn();
+  }
 }

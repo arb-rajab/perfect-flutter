@@ -43,6 +43,7 @@ class HomeScreenController {
   // static const int storeBottomNavigationIndex = 1;
   // static const int newsBottomNavigationIndex = 2;
   int selectedBottomNavigationIndex = 0;
+  int educationalIndex = 0;
   bool newNews = false;
   FirebaseRepository firebaseRepository = Get.find();
   bool loading = false;

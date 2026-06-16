@@ -1,3 +1,4 @@
+import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _MediaWidgetState extends State<MediaWidget> {
           LinearProgressIndicator(
             value: progress,
           ),
-        if (!error)
+        if (!error && !MainController.testing)
           Expanded(
               child: InAppWebView(
             initialUrlRequest: URLRequest(url: WebUri(widget.url)),

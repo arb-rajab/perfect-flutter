@@ -130,7 +130,7 @@
     },
 
     "favorite": {
-        "favorite": "المفضلة",
+        "favorite": "الأقسام المفضلة",
         "explanation":"الأقسام الدراسية التي تم تعيينها كمفضلة من قبلك"
     },
 
@@ -169,7 +169,8 @@
         "downloads":"التنزيلات",
         "shows-terms-download-progress":"عرض التنزيلات الخاصة بالأقسام الدراسية",
         "downloading-terms":"يتم تنزيل الأقسام الدراسية",
-        "download-complete":"انتهى تحميل الأقسام الدراسية"
+        "download-complete":"انتهى تحميل الأقسام الدراسية",
+        "favorite-questions":"الأسئلة المفضلة"
     },
     "questions": {
         "show-favorite-only": "المفضلة فقط",

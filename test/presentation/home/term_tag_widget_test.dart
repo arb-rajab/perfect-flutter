@@ -646,7 +646,10 @@ Future main() async {
 
       expect(
           widgetWithTextAndIcon(
-              TermTagWidget, StringConstant.favorite, Icons.star),
+          TermTagWidget,
+          StringConstant.favoriteQuestions,
+          Icons.star,
+        ),
           findsOneWidget);
     });
 
@@ -701,12 +704,18 @@ Future main() async {
 
       // tap the search button
       await widgetTester.tap(widgetWithTextAndIcon(
-          TermTagWidget, StringConstant.favorite, Icons.star));
+          TermTagWidget,
+          StringConstant.favoriteQuestions,
+          Icons.star,
+        ),
+      );
       await widgetTester.pumpAndSettle();
 
       expect(find.byType(QuestionsScreen), findsOneWidget);
       expect(
-          find.widgetWithText(AppBar, StringConstant.favorite), findsOneWidget);
+        find.widgetWithText(AppBar, StringConstant.favoriteQuestions),
+        findsOneWidget,
+      );
       expect(find.widgetWithText(QuestionTitle, 'favorite question'),
           findsOneWidget);
       expect(find.widgetWithText(QuestionTitle, 'not favorite question'),

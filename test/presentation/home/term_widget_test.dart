@@ -1580,7 +1580,8 @@ Future main() async {
 
         //tap the grand child term
         await widgetTester.tap(find.widgetWithText(TermWidget, 'grand child'));
-        await widgetTester.pump(const Duration(seconds: 2));
+        await widgetTester.pump();
+        await widgetTester.pump(const Duration(seconds: 1));
 
         expect(find.byType(ImagesScreen), findsOneWidget);
         expect(find.widgetWithText(AppBar, 'grand child'), findsOneWidget);

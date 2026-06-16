@@ -8,11 +8,11 @@ import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
+import 'package:beta/presentation/home/square_icon_with_text_widget.dart';
 import 'package:beta/presentation/home/term_tag_listing_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
-import 'package:beta/presentation/widgets/widget_wrapper_with_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -52,7 +52,7 @@ class TermTagWidget extends StatelessWidget {
             iconData = Icons.search;
             break;
           case TermTagButton.favorite:
-            text = StringConstant.favorite.tr();
+            text = StringConstant.favoriteQuestions.tr();
             iconData = Icons.star;
             break;
           case TermTagButton.edited:
@@ -78,7 +78,7 @@ class TermTagWidget extends StatelessWidget {
         }
       }
     }
-    return InkWell(
+    return SquareIconWithTextWidget(
       onTap: () async {
         if (index < termsController.termsTags.length) {
           TermTag termTag = termsController.termsTags[index];
@@ -134,7 +134,9 @@ class TermTagWidget extends StatelessWidget {
                 source: QuestionScreenSource.favorite,
                 sourceId: Id(termData.term.id),
                 resourceTermId: Id(termData.term.id),
-                title: t.Title(StringConstant.favorite.tr())));
+                title: t.Title(StringConstant.favoriteQuestions.tr()),
+              ),
+            );
             context.push(QuestionsScreen.route);
             return;
           case TermTagButton.edited:
@@ -191,13 +193,8 @@ class TermTagWidget extends StatelessWidget {
             return;
         }
       },
-      child: WidgetWrapperWithBorder(
-          child: Center(
-        child: Column(children: [
-          Icon(iconData, color: Theme.of(context).primaryColor),
-          Text(text, style: Theme.of(context).textTheme.titleMedium)
-        ]),
-      )),
+      iconData: iconData,
+      text: text,
     );
   }
 }
