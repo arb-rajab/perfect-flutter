@@ -60,6 +60,7 @@ class QuestionsController {
   Term? term;
   bool questionsFilteringEnabled = false;
   Timer? timer;
+  Timer? _searchDebounceTimer;
   Set<AnswerData> checkedAnswers = HashSet();
   late QuestionData firstVisibleQuestions;
   String? search;
@@ -496,6 +497,7 @@ class QuestionsController {
   }
 
   void dispose() {
+    _searchDebounceTimer?.cancel();
     _updateLastAccess();
     screenshotRepository.allowScreenshot();
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
@@ -570,15 +572,19 @@ class QuestionsController {
     if (text == null) return;
     search = text;
     if (questionsScreenArgument!.source == QuestionScreenSource.search) {
+      _searchDebounceTimer?.cancel();
       if (text.isEmpty) {
         state.setState(() {
           questions = [];
         });
         return;
       }
-      query =
-          '$preQuery(q.title like "%$text%" or q.id in (select parentQuestionId from answers where title like "%$text%")) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument!.sourceId!.value} and depth>0) order by q.id asc ';
-      _configureQuestions();
+      _searchDebounceTimer = Timer(const Duration(milliseconds: 400), () {
+        String escapedText = text.replaceAll("'", "''");
+        query =
+            "$preQuery(q.title like '%$escapedText%' or q.id in (select parentQuestionId from answers where title like '%$escapedText%')) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument!.sourceId!.value} and depth>0) order by q.id asc ";
+        _configureQuestions();
+      });
       return;
     }
     questionFilters.remove(searchFilter);
