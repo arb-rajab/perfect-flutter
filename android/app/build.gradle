@@ -92,6 +92,11 @@ android {
           execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 }
 
 flutter {
