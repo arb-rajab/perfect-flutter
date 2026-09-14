@@ -88,6 +88,7 @@ class _TermWidgetState extends State<TermWidget> {
                         favorite: termWidgetController.isFavorite,
                         downloadProgress: termWidgetController.downloadProgress,
                         downloading: termWidgetController.downloading,
+                        homeworkEnabled: termWidgetController.homeworkEnabled,
                       )
                     ]),
               ],

@@ -60,6 +60,5 @@ Future<void> exportDatabaseFile() async {
 
   await Share.shareXFiles([
     XFile(exportFile.path, mimeType: 'application/octet-stream'),
-  ], subject: 'QuizDatabase export',
-  );
+  ], subject: 'QuizDatabase export');
 }

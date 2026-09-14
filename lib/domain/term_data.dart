@@ -148,4 +148,24 @@ class TermType {
 
   static bool hasContent(TermData termData) =>
       [questions, template, flashcards, images].contains(termData.term.type);
+
+  /// Term types eligible for homework uploads - mirrors
+  /// TermHelper::HOMEWORK_ELIGIBLE_TYPES on the Laravel side.
+  ///
+  /// IMPORTANT: when a new term type is added here, do NOT silently include
+  /// or exclude it from this list. Ask whether the new type should support
+  /// homework before adding it to (or leaving it out of) this array.
+  static const List<int> homeworkEligibleTypes = [
+    ebook,
+    youtubeVideos,
+    voiceNotes,
+    videoFile
+  ];
+
+  /// Pure type check only - whether this term's *admin-side* toggle can even
+  /// be enabled is a separate, per-term check (see
+  /// TermsWithHomeworkEnabledService.isTermWithHomeworkEnabled), since that
+  /// flag is delivered as a bulk list, not a field on TermData.
+  static bool isHomeworkEligibleType(TermData termData) =>
+      homeworkEligibleTypes.contains(termData.term.type);
 }

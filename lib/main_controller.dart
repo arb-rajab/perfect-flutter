@@ -29,7 +29,9 @@ import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
+import 'package:beta/application/services/terms_with_homework_enabled_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
+import 'package:beta/application/services/homework_service.dart';
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/application/services/tutorial_service.dart';
 import 'package:beta/application/services/user_service.dart';
@@ -93,6 +95,8 @@ class MainController {
     Get.put(RelatedTermService(databaseService: databaseService));
     Get.put(TermsWithQuestionsFilteringEnabledService(
         databaseService: databaseService));
+    Get.put(TermsWithHomeworkEnabledService(databaseService: databaseService));
+    Get.put(HomeworkService());
     Get.put(TermsParentService(databaseService: databaseService));
     Get.put(TermLinkedToTagService(databaseService: databaseService));
     Get.put(TermTagService(databaseService: databaseService));

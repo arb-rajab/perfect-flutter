@@ -23,6 +23,7 @@ import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/home/browse_terms_tab_controller.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/home/term_widget.dart';
+import 'package:beta/presentation/homework/homework_screen.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
@@ -5280,6 +5281,110 @@ group('images term type tests', () {
       await widgetTester.pumpAndSettle();
 
       expect(find.widgetWithText(TermWidget, 'grand child 2'), findsOneWidget);
+    });
+  });
+
+  group('homework icon tests', () {
+    Future mockEmptySubmissions() async {
+      dioAdapter.onGet(
+          ApiConstant.homework.replaceFirst('(TERM_ID)', '3'),
+          (server) => server.reply(
+              200, r'''{"submissions":[],"result":"success","message":""}'''));
+    }
+
+    testWidgets(
+        'homework icon is not rendered for a homework-ineligible term type even when the term is enabled',
+        (widgetTester) async {
+      await createTermData(type: TermType.questions);
+      await databaseService
+          .into(databaseService.termsWithHomeworkEnabled)
+          .insert(const TermsWithHomeworkEnabledData(termId: 3));
+
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+
+      // tap the parent term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+      await widgetTester.pumpAndSettle();
+
+      // tap the child term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+      await widgetTester.pumpAndSettle();
+
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.assignment),
+          findsNothing);
+    });
+
+    testWidgets(
+        'homework icon is not rendered for an eligible term type that is not enabled',
+        (widgetTester) async {
+      await createTermData(type: TermType.ebook);
+
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+
+      // tap the parent term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+      await widgetTester.pumpAndSettle();
+
+      // tap the child term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+      await widgetTester.pumpAndSettle();
+
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.assignment),
+          findsNothing);
+    });
+
+    testWidgets(
+        'homework icon is rendered for an eligible term type that is enabled',
+        (widgetTester) async {
+      await createTermData(type: TermType.ebook);
+      await databaseService
+          .into(databaseService.termsWithHomeworkEnabled)
+          .insert(const TermsWithHomeworkEnabledData(termId: 3));
+
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+
+      // tap the parent term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+      await widgetTester.pumpAndSettle();
+
+      // tap the child term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+      await widgetTester.pumpAndSettle();
+
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.assignment),
+          findsOneWidget);
+    });
+
+    testWidgets('tapping the homework icon opens the homework screen',
+        (widgetTester) async {
+      await createTermData(type: TermType.ebook);
+      await databaseService
+          .into(databaseService.termsWithHomeworkEnabled)
+          .insert(const TermsWithHomeworkEnabledData(termId: 3));
+      await mockEmptySubmissions();
+
+      await widgetTester
+          .pumpWidget(const MyApp(defaultRoute: HomeScreen.route));
+      await widgetTester.pumpAndSettle();
+
+      // tap the parent term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'parent'));
+      await widgetTester.pumpAndSettle();
+
+      // tap the child term
+      await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
+      await widgetTester.pumpAndSettle();
+
+      await widgetTester.tap(find.byIcon(Icons.assignment));
+      await widgetTester.pumpAndSettle();
+
+      expect(find.byType(HomeworkScreen), findsOneWidget);
     });
   });
 }
