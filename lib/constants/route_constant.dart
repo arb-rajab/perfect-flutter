@@ -10,6 +10,7 @@ import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/images/images_screen.dart';
 import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/home_screen.dart';
+import 'package:beta/presentation/homework/homework_screen.dart';
 import 'package:beta/presentation/news/news_screen.dart';
 import 'package:beta/presentation/notifications/notifications_screen.dart';
 import 'package:beta/presentation/printed_qr_scanner/printed_qr_scanner_screen.dart';
@@ -106,6 +107,9 @@ GoRouter router(defaultRoute) => GoRouter(
       GoRoute(
           path: VideoFileScreen.route,
           builder: (context, state) => const VideoFileScreen()),
+      GoRoute(
+          path: HomeworkScreen.route,
+          builder: (context, state) => const HomeworkScreen()),
       GoRoute(
           path: ProductScreen.route,
           builder: (context, state) => ProductScreen(

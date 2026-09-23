@@ -6,6 +6,7 @@ import 'package:beta/application/services/flashcard_service.dart';
 import 'package:beta/infrastructure/screenshot/shared.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
@@ -185,6 +186,80 @@ Future main() async {
       await tester.pumpAndSettle();
       await tester.tap(find.textContaining(StringConstant.previous));
       await tester.pumpAndSettle();
+      expect(find.text('1/2'), findsOneWidget);
+      expect(find.text('Front 1'), findsOneWidget);
+    });
+
+    testWidgets('shows a search field when the search icon is tapped',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          defaultRoute: FlashcardsScreen.route,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(TextFormField), findsNothing);
+
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pumpAndSettle();
+      expect(find.byType(TextFormField), findsOneWidget);
+    });
+
+    testWidgets('filters flashcards by a matching search term',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          defaultRoute: FlashcardsScreen.route,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextFormField), '2');
+      await tester.pumpAndSettle();
+
+      expect(find.text('1/1'), findsOneWidget);
+      expect(find.text('Front 2'), findsOneWidget);
+      expect(find.text('Front 1'), findsNothing);
+    });
+
+    testWidgets('shows the empty state when the search has no matches',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          defaultRoute: FlashcardsScreen.route,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextFormField), 'no such card');
+      await tester.pumpAndSettle();
+
+      expect(find.text('0/0'), findsOneWidget);
+      expect(find.textContaining(StringConstant.listEmpty), findsOneWidget);
+    });
+
+    testWidgets('clearing the search restores every flashcard',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MyApp(
+          defaultRoute: FlashcardsScreen.route,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextFormField), '2');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TextFormField), findsNothing);
       expect(find.text('1/2'), findsOneWidget);
       expect(find.text('Front 1'), findsOneWidget);
     });

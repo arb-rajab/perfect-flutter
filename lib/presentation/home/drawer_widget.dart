@@ -143,9 +143,9 @@ class _DecryptDatabaseState extends State<DecryptDatabase> {
       final jsonBytes = Uint8List.fromList(utf8.encode(jsonEncode(data)));
       await File(jsonPath).writeAsBytes(jsonBytes, flush: true);
 
-      await Share.shareXFiles([
+      await SharePlus.instance.share(ShareParams(files:[
         XFile(jsonPath, mimeType: 'application/json'),
-      ], subject: 'Database backup');
+      ], subject: 'Database backup'));
 
       if (File(jsonPath).existsSync()) {
         await File(jsonPath).delete();
@@ -325,7 +325,7 @@ class ExportBackupTile extends StatelessWidget {
                 name: fileName, // Name of the file
                 bytes: contentBytes, // File content in bytes
                 mimeType: MimeType.text, // MIME type
-                ext: '.txt',
+                fileExtension: '.txt',
               );
             }
             saver.then((value) {

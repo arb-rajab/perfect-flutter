@@ -8878,6 +8878,161 @@ class ImagesCompanion extends UpdateCompanion<Image> {
   }
 }
 
+class $TermsWithHomeworkEnabledTable extends TermsWithHomeworkEnabled
+    with
+        TableInfo<
+          $TermsWithHomeworkEnabledTable,
+          TermsWithHomeworkEnabledData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TermsWithHomeworkEnabledTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _termIdMeta = const VerificationMeta('termId');
+  @override
+  late final GeneratedColumn<int> termId = GeneratedColumn<int>(
+    'term_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [termId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'termsWithHomeworkEnabled';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TermsWithHomeworkEnabledData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('term_id')) {
+      context.handle(
+        _termIdMeta,
+        termId.isAcceptableOrUnknown(data['term_id']!, _termIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {termId};
+  @override
+  TermsWithHomeworkEnabledData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TermsWithHomeworkEnabledData(
+      termId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}term_id'],
+      )!,
+    );
+  }
+
+  @override
+  $TermsWithHomeworkEnabledTable createAlias(String alias) {
+    return $TermsWithHomeworkEnabledTable(attachedDatabase, alias);
+  }
+}
+
+class TermsWithHomeworkEnabledData extends DataClass
+    implements Insertable<TermsWithHomeworkEnabledData> {
+  final int termId;
+  const TermsWithHomeworkEnabledData({required this.termId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['term_id'] = Variable<int>(termId);
+    return map;
+  }
+
+  TermsWithHomeworkEnabledCompanion toCompanion(bool nullToAbsent) {
+    return TermsWithHomeworkEnabledCompanion(termId: Value(termId));
+  }
+
+  factory TermsWithHomeworkEnabledData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TermsWithHomeworkEnabledData(
+      termId: serializer.fromJson<int>(json['termId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{'termId': serializer.toJson<int>(termId)};
+  }
+
+  TermsWithHomeworkEnabledData copyWith({int? termId}) =>
+      TermsWithHomeworkEnabledData(termId: termId ?? this.termId);
+  TermsWithHomeworkEnabledData copyWithCompanion(
+    TermsWithHomeworkEnabledCompanion data,
+  ) {
+    return TermsWithHomeworkEnabledData(
+      termId: data.termId.present ? data.termId.value : this.termId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsWithHomeworkEnabledData(')
+          ..write('termId: $termId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => termId.hashCode;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TermsWithHomeworkEnabledData && other.termId == this.termId);
+}
+
+class TermsWithHomeworkEnabledCompanion
+    extends UpdateCompanion<TermsWithHomeworkEnabledData> {
+  final Value<int> termId;
+  const TermsWithHomeworkEnabledCompanion({this.termId = const Value.absent()});
+  TermsWithHomeworkEnabledCompanion.insert({
+    this.termId = const Value.absent(),
+  });
+  static Insertable<TermsWithHomeworkEnabledData> custom({
+    Expression<int>? termId,
+  }) {
+    return RawValuesInsertable({if (termId != null) 'term_id': termId});
+  }
+
+  TermsWithHomeworkEnabledCompanion copyWith({Value<int>? termId}) {
+    return TermsWithHomeworkEnabledCompanion(termId: termId ?? this.termId);
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (termId.present) {
+      map['term_id'] = Variable<int>(termId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TermsWithHomeworkEnabledCompanion(')
+          ..write('termId: $termId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseService extends GeneratedDatabase {
   _$DatabaseService(QueryExecutor e) : super(e);
   $DatabaseServiceManager get managers => $DatabaseServiceManager(this);
@@ -8922,6 +9077,8 @@ abstract class _$DatabaseService extends GeneratedDatabase {
   late final $TermPropertiesTable termProperties = $TermPropertiesTable(this);
   late final $ConfigsTable configs = $ConfigsTable(this);
   late final $ImagesTable images = $ImagesTable(this);
+  late final $TermsWithHomeworkEnabledTable termsWithHomeworkEnabled =
+      $TermsWithHomeworkEnabledTable(this);
   late final Index parentQuestionIdIndex = Index(
     'parentQuestionIdIndex',
     'CREATE INDEX parentQuestionIdIndex ON answers (parentQuestionId)',
@@ -9012,6 +9169,7 @@ abstract class _$DatabaseService extends GeneratedDatabase {
     termProperties,
     configs,
     images,
+    termsWithHomeworkEnabled,
     parentQuestionIdIndex,
     qIndex1,
     questionTagsIndex1,
@@ -14298,6 +14456,133 @@ typedef $$ImagesTableProcessedTableManager =
       Image,
       PrefetchHooks Function()
     >;
+typedef $$TermsWithHomeworkEnabledTableCreateCompanionBuilder =
+    TermsWithHomeworkEnabledCompanion Function({Value<int> termId});
+typedef $$TermsWithHomeworkEnabledTableUpdateCompanionBuilder =
+    TermsWithHomeworkEnabledCompanion Function({Value<int> termId});
+
+class $$TermsWithHomeworkEnabledTableFilterComposer
+    extends Composer<_$DatabaseService, $TermsWithHomeworkEnabledTable> {
+  $$TermsWithHomeworkEnabledTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get termId => $composableBuilder(
+    column: $table.termId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TermsWithHomeworkEnabledTableOrderingComposer
+    extends Composer<_$DatabaseService, $TermsWithHomeworkEnabledTable> {
+  $$TermsWithHomeworkEnabledTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get termId => $composableBuilder(
+    column: $table.termId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TermsWithHomeworkEnabledTableAnnotationComposer
+    extends Composer<_$DatabaseService, $TermsWithHomeworkEnabledTable> {
+  $$TermsWithHomeworkEnabledTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get termId =>
+      $composableBuilder(column: $table.termId, builder: (column) => column);
+}
+
+class $$TermsWithHomeworkEnabledTableTableManager
+    extends
+        RootTableManager<
+          _$DatabaseService,
+          $TermsWithHomeworkEnabledTable,
+          TermsWithHomeworkEnabledData,
+          $$TermsWithHomeworkEnabledTableFilterComposer,
+          $$TermsWithHomeworkEnabledTableOrderingComposer,
+          $$TermsWithHomeworkEnabledTableAnnotationComposer,
+          $$TermsWithHomeworkEnabledTableCreateCompanionBuilder,
+          $$TermsWithHomeworkEnabledTableUpdateCompanionBuilder,
+          (
+            TermsWithHomeworkEnabledData,
+            BaseReferences<
+              _$DatabaseService,
+              $TermsWithHomeworkEnabledTable,
+              TermsWithHomeworkEnabledData
+            >,
+          ),
+          TermsWithHomeworkEnabledData,
+          PrefetchHooks Function()
+        > {
+  $$TermsWithHomeworkEnabledTableTableManager(
+    _$DatabaseService db,
+    $TermsWithHomeworkEnabledTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TermsWithHomeworkEnabledTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$TermsWithHomeworkEnabledTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$TermsWithHomeworkEnabledTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({Value<int> termId = const Value.absent()}) =>
+                  TermsWithHomeworkEnabledCompanion(termId: termId),
+          createCompanionCallback:
+              ({Value<int> termId = const Value.absent()}) =>
+                  TermsWithHomeworkEnabledCompanion.insert(termId: termId),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TermsWithHomeworkEnabledTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DatabaseService,
+      $TermsWithHomeworkEnabledTable,
+      TermsWithHomeworkEnabledData,
+      $$TermsWithHomeworkEnabledTableFilterComposer,
+      $$TermsWithHomeworkEnabledTableOrderingComposer,
+      $$TermsWithHomeworkEnabledTableAnnotationComposer,
+      $$TermsWithHomeworkEnabledTableCreateCompanionBuilder,
+      $$TermsWithHomeworkEnabledTableUpdateCompanionBuilder,
+      (
+        TermsWithHomeworkEnabledData,
+        BaseReferences<
+          _$DatabaseService,
+          $TermsWithHomeworkEnabledTable,
+          TermsWithHomeworkEnabledData
+        >,
+      ),
+      TermsWithHomeworkEnabledData,
+      PrefetchHooks Function()
+    >;
 
 class $DatabaseServiceManager {
   final _$DatabaseService _db;
@@ -14364,4 +14649,9 @@ class $DatabaseServiceManager {
       $$ConfigsTableTableManager(_db, _db.configs);
   $$ImagesTableTableManager get images =>
       $$ImagesTableTableManager(_db, _db.images);
+  $$TermsWithHomeworkEnabledTableTableManager get termsWithHomeworkEnabled =>
+      $$TermsWithHomeworkEnabledTableTableManager(
+        _db,
+        _db.termsWithHomeworkEnabled,
+      );
 }

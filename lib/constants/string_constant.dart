@@ -171,6 +171,17 @@ class StringConstant {
   static const wrongQuestions = '$_terms.wrong-questions';
   static const youHaveToDownloadFirst = '$_terms.you-have-to-download-first';
   static const termIsExpired = '$_terms.term-is-expired';
+  static const homework = '$_terms.homework';
+  static const uploadHomework = '$_terms.upload-homework';
+  static const chooseFile = '$_terms.choose-file';
+  static const noHomeworkSubmissionsYet = '$_terms.no-homework-submissions-yet';
+  static const homeworkStatusPending = '$_terms.homework-status-pending';
+  static const homeworkStatusApproved = '$_terms.homework-status-approved';
+  static const homeworkStatusRejected = '$_terms.homework-status-rejected';
+  static const homeworkReviewNote = '$_terms.homework-review-note';
+  static const homeworkMark = '$_terms.homework-mark';
+  static const homeworkUploadedSuccessfully =
+      '$_terms.homework-uploaded-successfully';
   static const pleaseDownloadAllTermsWithin =
       '$_terms.please-download-all-terms-within';
   static const downloads = '$_terms.downloads';

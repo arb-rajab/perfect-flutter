@@ -40,7 +40,7 @@ void main() async {
     dioAdapter.onGet(ApiConstant.getTermsUpdates, (server) {
       server.reply(
         200,
-        r'''{"updated-terms":[],"refreshed-terms-ids":[],"related-terms":[],"terms-with-questions-levelling-enabled":[],"terms-parents":[],"terms-linked-to-tags":[],"terms-tags":[],"terms-linked-to-labels":[],"terms-labels":[],"result":"success","message":""}''',
+        r'''{"updated-terms":[],"refreshed-terms-ids":[],"related-terms":[],"terms-with-questions-levelling-enabled":[],"terms-with-homework-enabled":[],"terms-parents":[],"terms-linked-to-tags":[],"terms-tags":[],"terms-linked-to-labels":[],"terms-labels":[],"result":"success","message":""}''',
       );
     });
   }

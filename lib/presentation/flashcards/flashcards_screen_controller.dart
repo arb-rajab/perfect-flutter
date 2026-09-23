@@ -16,9 +16,26 @@ class FlashcardsScreenController {
   int currentIndex = 0;
   final PageController pageController = PageController(viewportFraction: 0.8);
 
+  bool searchVisible = false;
+  String search = '';
+  final TextEditingController searchController = TextEditingController();
+
   FlashcardsScreenController(this.state) {
     _configureScreenshots();
     _configureFlashcards();
+  }
+
+  List<FlashcardData> get displayedFlashcards => search.isEmpty
+      ? flashcards
+      : flashcards.where(_matchesSearch).toList();
+
+  bool _matchesSearch(FlashcardData flashcardData) {
+    final query = search.toLowerCase();
+    final head = flashcardData.flashcard.head.toLowerCase();
+    final tail = flashcardData.flashcard.tail
+        .replaceAll(RegExp(r'<[^>]*>'), ' ')
+        .toLowerCase();
+    return head.contains(query) || tail.contains(query);
   }
 
   Future _configureFlashcards() async {
@@ -38,15 +55,16 @@ class FlashcardsScreenController {
 
   void flipCard(int flashcardIndex) {
     state.setState(() {
-      flashcards[flashcardIndex].isFront = !flashcards[flashcardIndex].isFront;
+      displayedFlashcards[flashcardIndex].isFront =
+          !displayedFlashcards[flashcardIndex].isFront;
     });
   }
 
   void nextFlashcard() {
     state.setState(() {
-      if (currentIndex < flashcards.length - 1) {
+      if (currentIndex < displayedFlashcards.length - 1) {
         currentIndex++;
-        flashcards[currentIndex].isFront = true;
+        displayedFlashcards[currentIndex].isFront = true;
       }
     });
     pageController.jumpToPage(currentIndex);
@@ -56,7 +74,7 @@ class FlashcardsScreenController {
     state.setState(() {
       if (currentIndex > 0) {
         currentIndex--;
-        flashcards[currentIndex].isFront = true;
+        displayedFlashcards[currentIndex].isFront = true;
       }
     });
     pageController.jumpToPage(currentIndex);
@@ -64,10 +82,45 @@ class FlashcardsScreenController {
 
   void onPageChanged(int value) => state.setState(() {
         currentIndex = value;
-        flashcards[value].isFront = true;
+        displayedFlashcards[value].isFront = true;
       });
 
   bool previousButtonVisible() => currentIndex > 0;
 
-  bool nextFlashcardVisible() => currentIndex < flashcards.length - 1;
+  bool nextFlashcardVisible() => currentIndex < displayedFlashcards.length - 1;
+
+  void searchText(String? text) {
+    if (text == null) return;
+    state.setState(() {
+      search = text;
+      currentIndex = 0;
+      if (displayedFlashcards.isNotEmpty) {
+        displayedFlashcards.first.isFront = true;
+      }
+    });
+    if (pageController.hasClients && displayedFlashcards.isNotEmpty) {
+      pageController.jumpToPage(0);
+    }
+  }
+
+  void clearSearch() {
+    state.setState(() {
+      search = '';
+      searchVisible = false;
+      currentIndex = 0;
+      if (displayedFlashcards.isNotEmpty) {
+        displayedFlashcards.first.isFront = true;
+      }
+    });
+    searchController.clear();
+    if (pageController.hasClients && displayedFlashcards.isNotEmpty) {
+      pageController.jumpToPage(0);
+    }
+  }
+
+  void setSearchVisible(bool value) {
+    state.setState(() {
+      searchVisible = value;
+    });
+  }
 }

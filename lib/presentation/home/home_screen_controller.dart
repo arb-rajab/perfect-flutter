@@ -11,7 +11,9 @@ import 'package:beta/application/services/term_linked_to_tag_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
+import 'package:beta/application/services/terms_with_homework_enabled_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
+import 'package:beta/domain/terms_with_homework_enabled_properties.dart';
 import 'package:beta/application/services/user_service.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/constants/api_constant.dart';
@@ -103,6 +105,15 @@ class HomeScreenController {
       await termsWithQuestionsFilteringEnabledService
           .addTermsWithQuestionsFilteringEnabled(
               termsWithQuestionsFilteringEnabled);
+
+      List<TermsWithHomeworkEnabledProperties> termsWithHomeworkEnabled =
+          (data['terms-with-homework-enabled'] as List)
+              .map((e) => TermsWithHomeworkEnabledProperties.fromJson(e))
+              .toList();
+      TermsWithHomeworkEnabledService termsWithHomeworkEnabledService =
+          Get.find();
+      await termsWithHomeworkEnabledService
+          .addTermsWithHomeworkEnabled(termsWithHomeworkEnabled);
 
       List<TermsParentData> termsParents = (data['terms-parents'] as List)
           .map((e) => TermsParentData.fromJson(e))

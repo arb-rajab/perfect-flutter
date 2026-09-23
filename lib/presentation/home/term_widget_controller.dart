@@ -9,6 +9,7 @@ import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/terms_with_homework_enabled_service.dart';
 import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
 import 'package:beta/common/exceptions.dart';
@@ -49,6 +50,7 @@ class TermWidgetController {
   bool isNew = false;
   bool isStudied = false;
   bool isFavorite = false;
+  bool homeworkEnabled = false;
   State state;
   bool downloading = false;
   double? downloadProgress;
@@ -69,6 +71,17 @@ class TermWidgetController {
     configureIsDownloaded();
     configureIsStudied();
     configureIsFavorite();
+    configureHomeworkEnabled();
+  }
+
+  Future<void> configureHomeworkEnabled() async {
+    if (!TermType.isHomeworkEligibleType(termData)) return;
+    TermsWithHomeworkEnabledService termsWithHomeworkEnabledService = Get.find();
+    bool enabled = await termsWithHomeworkEnabledService
+        .isTermWithHomeworkEnabled(Id(termData.term.id));
+    if (state.mounted) {
+      state.setState(() => homeworkEnabled = enabled);
+    }
   }
 
   Future configureNewBanner() {

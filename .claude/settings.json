@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(fvm --version)",
+      "Bash(fvm list *)",
+      "Bash(java -version)",
+      "PowerShell(fvm --version)",
+      "PowerShell(fvm list)",
+      "Bash(ls -la \"/d/keys/perfect.jks\" 2>&1)",
+      "Read(//d/keys/**)",
+      "Bash(/e/Sdk/platform-tools/adb.exe devices *)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 install -r /d/perfect_flutter/build/app/outputs/flutter-apk/app-debug.apk)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 logcat -d -t 300)",
+      "Bash(find \"/c/Users/ASUS/AppData/Local/Pub/Cache/hosted/pub.dev\" -maxdepth 1 -iname \"share_plus-10*\" -o -maxdepth 1 -iname \"file_saver-0.2*\" 2>/dev/null)",
+      "Read(//c/Users/ASUS/AppData/Local/Pub/Cache/hosted/pub.dev/**)",
+      "Read(//c/Users/ASUS/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-10.1.4/lib/src/**)",
+      "Read(//c/Users/ASUS/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-10.1.4/lib/**)",
+      "Read(//c/Users/ASUS/AppData/Local/Pub/Cache/hosted/pub.dev/file_saver-0.2.14/lib/**)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 uninstall edu.perfect)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 shell df /data)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 shell rm -f /data/local/tmp/app-debug.apk)",
+      "Bash(MSYS_NO_PATHCONV=1 /e/Sdk/platform-tools/adb.exe -s emulator-5554 shell df -h /data)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 logcat -c)",
+      "Bash(MSYS_NO_PATHCONV=1 /e/Sdk/platform-tools/adb.exe -s emulator-5554 shell am start -n edu.perfect/.MainActivity)",
+      "Bash(MSYS_NO_PATHCONV=1 /e/Sdk/platform-tools/adb.exe -s emulator-5554 shell 'ps -A -o PID,NAME | grep edu.perfect')",
+      "Bash(MSYS_NO_PATHCONV=1 /e/Sdk/platform-tools/adb.exe -s emulator-5554 shell 'ps | grep edu.perfect')",
+      "Bash(MSYS_NO_PATHCONV=1 /e/Sdk/platform-tools/adb.exe -s emulator-5554 shell screencap -p /sdcard/screen.png)",
+      "Bash(/e/Sdk/platform-tools/adb.exe -s emulator-5554 pull /sdcard/screen.png /d/perfect_flutter/screen_api23.png)",
+      "Bash(git commit -m ' *)",
+      "Bash(git checkout *)",
+      "PowerShell(flutter --version)",
+      "PowerShell(flutter pub get 2>&1)"
+    ]
+  }
+}

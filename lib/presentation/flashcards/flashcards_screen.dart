@@ -26,49 +26,72 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final flashcards = controller.displayedFlashcards;
     return ScreenWrapper(
-        titleText: controller.argument.title,
+        actions: [
+          if (!controller.searchVisible)
+            IconButton(
+                onPressed: () => controller.setSearchVisible(true),
+                icon: const Icon(Icons.search)),
+        ],
+        title: controller.searchVisible
+            ? TextFormField(
+                decoration: InputDecoration(
+                  hintText: StringConstant.search.tr(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: controller.clearSearch,
+                  ),
+                ),
+                controller: controller.searchController,
+                onChanged: controller.searchText,
+              )
+            : null,
+        titleText: controller.searchVisible ? null : controller.argument.title,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              '${controller.currentIndex + 1}/${controller.flashcards.length}',
+              '${flashcards.isEmpty ? 0 : controller.currentIndex + 1}/${flashcards.length}',
               style: const TextStyle(fontSize: 20.0),
             ),
             Expanded(
-              child: PageView.builder(
-                controller: controller.pageController,
-                itemCount: controller.flashcards.length,
-                onPageChanged: controller.onPageChanged,
-                itemBuilder: (context, index) {
-                  bool isFront = controller.flashcards[index].isFront;
-                  return GestureDetector(
-                    onTap: () => controller.flipCard(index),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return RotationYTransition(
-                            turns: animation, child: child);
+              child: flashcards.isEmpty
+                  ? Center(child: Text(StringConstant.listEmpty.tr()))
+                  : PageView.builder(
+                      controller: controller.pageController,
+                      itemCount: flashcards.length,
+                      onPageChanged: controller.onPageChanged,
+                      itemBuilder: (context, index) {
+                        bool isFront = flashcards[index].isFront;
+                        return GestureDetector(
+                          onTap: () => controller.flipCard(index),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return RotationYTransition(
+                                  turns: animation, child: child);
+                            },
+                            child: isFront
+                                ? Card(
+                                    key: ValueKey<bool>(isFront),
+                                    child: Center(
+                                        child: Text(
+                                            flashcards[index].flashcard.head)),
+                                  )
+                                : Card(
+                                    key: ValueKey<bool>(isFront),
+                                    child: Center(
+                                        child: Html(
+                                            data: flashcards[index]
+                                                .flashcard
+                                                .tail)),
+                                  ),
+                          ),
+                        );
                       },
-                      child: isFront
-                          ? Card(
-                              key: ValueKey<bool>(isFront),
-                              child: Center(
-                                  child: Text(controller
-                                      .flashcards[index].flashcard.head)),
-                            )
-                          : Card(
-                              key: ValueKey<bool>(isFront),
-                              child: Center(
-                                  child: Html(
-                                      data: controller
-                                          .flashcards[index].flashcard.tail)),
-                            ),
                     ),
-                  );
-                },
-              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

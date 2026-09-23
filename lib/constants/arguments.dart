@@ -113,3 +113,9 @@ class VideoFileScreenArgument {
 
   VideoFileScreenArgument({required this.term});
 }
+
+class HomeworkScreenArgument {
+  final TermData term;
+
+  HomeworkScreenArgument({required this.term});
+}

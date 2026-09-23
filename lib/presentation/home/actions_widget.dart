@@ -1,12 +1,15 @@
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_service.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/home/term_widget_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
+import 'package:beta/presentation/homework/homework_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
 
 class ActionsWidget extends StatefulWidget {
@@ -15,6 +18,7 @@ class ActionsWidget extends StatefulWidget {
   final bool favorite;
   final bool downloading;
   final double? downloadProgress;
+  final bool homeworkEnabled;
   final TermWidgetController termWidgetController;
   const ActionsWidget(
     this.termWidgetController, {
@@ -24,6 +28,7 @@ class ActionsWidget extends StatefulWidget {
     required this.favorite,
     required this.downloading,
     required this.downloadProgress,
+    this.homeworkEnabled = false,
   });
 
   @override
@@ -124,6 +129,15 @@ class _ActionsWidgetState extends State<ActionsWidget> {
                     Icons.star_border,
                     color: Theme.of(context).disabledColor,
                   ),
+          ),
+        if (TermType.isHomeworkEligibleType(termData) && widget.homeworkEnabled)
+          IconButton(
+            onPressed: () {
+              Get.delete<HomeworkScreenArgument>();
+              Get.put(HomeworkScreenArgument(term: termData));
+              context.push(HomeworkScreen.route);
+            },
+            icon: const Icon(Icons.assignment),
           ),
         if (termData.numberOfRelatedTerms!.value! > 0)
           IconButton(

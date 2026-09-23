@@ -4,7 +4,7 @@ import 'package:share_plus/share_plus.dart';
 class ShareService {
   bool shared = false;
   Future share(String content) {
-    if (!MainController.testing) return Share.share(content);
+    if (!MainController.testing) return SharePlus.instance.share(ShareParams( text:content));
     shared = true;
     return Future.value();
   }

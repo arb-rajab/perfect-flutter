@@ -58,8 +58,7 @@ Future<void> exportDatabaseFile() async {
   );
   await sourceFile.copy(exportFile.path);
 
-  await Share.shareXFiles([
+  await SharePlus.instance.share(ShareParams(files: [
     XFile(exportFile.path, mimeType: 'application/octet-stream'),
-  ], subject: 'QuizDatabase export',
-  );
+  ], subject: 'QuizDatabase export'));
 }

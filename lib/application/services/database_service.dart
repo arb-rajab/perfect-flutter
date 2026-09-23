@@ -38,6 +38,7 @@ import 'package:beta/domain/term_tag.dart';
 import 'package:beta/domain/term_tag_data.dart';
 import 'package:beta/domain/term_tree.dart';
 import 'package:beta/domain/term_with_questions_filtering_enabled.dart';
+import 'package:beta/domain/terms_with_homework_enabled.dart';
 import 'package:beta/domain/value/deleted_at.dart';
 import 'package:beta/domain/value/visible.dart';
 import 'package:beta/domain/video_file.dart';
@@ -78,13 +79,14 @@ part 'database_service.g.dart'; // the generated code will be there
     TermProperties,
     Configs,
     Images,
+    TermsWithHomeworkEnabled,
   ],
 )
 class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
   @override
-  int get schemaVersion => 43;
+  int get schemaVersion => 44;
 
   @override
   MigrationStrategy get migration {
@@ -402,6 +404,7 @@ class DatabaseService extends _$DatabaseService {
           await dropColumnIfExists(m, ebooks, 'lastUpdated');
           await dropColumnIfExists(m, voiceNotes, 'lastUpdated');
         }
+        if (from < 44) await m.createTable(termsWithHomeworkEnabled);
       },
     );
   }
