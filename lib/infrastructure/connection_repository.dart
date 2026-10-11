@@ -12,4 +12,11 @@ class ConnectionRepository {
       return false;
     });
   }
+
+  Future<bool> isOnWifi() {
+    if (MainController.testing) return Future.value(true);
+    return Connectivity().checkConnectivity().then((value) =>
+        value.contains(ConnectivityResult.wifi) ||
+        value.contains(ConnectivityResult.ethernet));
+  }
 }

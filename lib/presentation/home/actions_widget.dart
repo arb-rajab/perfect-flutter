@@ -1,12 +1,14 @@
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/constants/arguments.dart';
+import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/number_of_sub_terms.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
 import 'package:beta/presentation/home/term_widget_controller.dart';
 import 'package:beta/presentation/home/terms_controller.dart';
 import 'package:beta/presentation/homework/homework_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -93,8 +95,15 @@ class _ActionsWidgetState extends State<ActionsWidget> {
           if (!widget.downloading)
             IconButton(
               key: const Key('refresh'),
+              tooltip: StringConstant.update.tr(),
               onPressed: widget.termWidgetController.downloadContent,
-              icon: const Icon(Icons.refresh),
+              icon: Badge(
+                smallSize: 8,
+                child: Icon(
+                  Icons.system_update,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             )
           else
             CircularProgressIndicator(value: widget.downloadProgress),

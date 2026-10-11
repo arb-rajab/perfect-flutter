@@ -2734,7 +2734,7 @@ group('images term type tests', () {
       await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
       await widgetTester.pumpAndSettle();
 
-      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
           findsNothing);
     });
 
@@ -2755,7 +2755,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -2793,7 +2793,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -2831,7 +2831,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -3143,7 +3143,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });
@@ -3165,7 +3165,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3188,7 +3188,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3211,7 +3211,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -3375,7 +3375,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });
@@ -3397,7 +3397,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3435,7 +3435,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3473,7 +3473,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -3785,7 +3785,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });
@@ -3805,7 +3805,7 @@ group('images term type tests', () {
       await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
       await widgetTester.pumpAndSettle();
 
-      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+      expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
           findsNothing);
     });
 
@@ -3826,7 +3826,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3850,7 +3850,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -3875,7 +3875,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -4055,7 +4055,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });
@@ -4079,7 +4079,7 @@ group('images term type tests', () {
           await widgetTester.pumpAndSettle();
 
           expect(
-            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing,
           );
         },
@@ -4113,7 +4113,7 @@ group('images term type tests', () {
           await widgetTester.pumpAndSettle();
 
           expect(
-            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing,
           );
         },
@@ -4148,7 +4148,7 @@ group('images term type tests', () {
           await widgetTester.pumpAndSettle();
 
           expect(
-            widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+            widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget,
           );
         },
@@ -4379,7 +4379,7 @@ group('images term type tests', () {
 
         expect(find.byType(OKDialogue), findsNothing);
         expect(
-          widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+          widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
           findsNothing,
         );
       });
@@ -4402,7 +4402,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -4425,7 +4425,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -4448,7 +4448,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -4612,7 +4612,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });
@@ -4634,7 +4634,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -4657,7 +4657,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
 
@@ -4680,7 +4680,7 @@ group('images term type tests', () {
         await widgetTester.tap(find.widgetWithText(TermWidget, 'child'));
         await widgetTester.pumpAndSettle();
 
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsOneWidget);
       });
 
@@ -4846,7 +4846,7 @@ group('images term type tests', () {
         await widgetTester.pumpAndSettle();
 
         expect(find.byType(OKDialogue), findsNothing);
-        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.refresh),
+        expect(widgetWithTextAndIcon(TermWidget, 'name', Icons.system_update),
             findsNothing);
       });
     });

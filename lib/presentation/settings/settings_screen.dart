@@ -2,6 +2,7 @@ import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
 import 'package:beta/application/services/term_last_access_service.dart';
 import 'package:beta/application/services/term_property_service.dart';
+import 'package:beta/application/services/term_update_service.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/presentation/animations/opacity_animation.dart';
 import 'package:beta/presentation/dialogues/confirm_dialogue.dart';
@@ -28,6 +29,8 @@ class SettingsScreen extends StatelessWidget {
           children: const [
             SelectThemeWidget(),
             TextScaleFactorWidget(),
+            Divider(),
+            AutoUpdateTermsWidget(),
             Divider(),
             DeleteUserNotesWidget(),
             DeleteUserFavoriteQuestionsWidget(),
@@ -151,6 +154,33 @@ class DeleteFavoriteTermsWidget extends StatelessWidget {
                 await termPropertyService.deleteAllUserFavoriteTerms();
                 if (context.mounted) showSuccessDialogue(context);
               })),
+    );
+  }
+}
+
+class AutoUpdateTermsWidget extends StatefulWidget {
+  const AutoUpdateTermsWidget({super.key});
+
+  @override
+  State<AutoUpdateTermsWidget> createState() => _AutoUpdateTermsWidgetState();
+}
+
+class _AutoUpdateTermsWidgetState extends State<AutoUpdateTermsWidget> {
+  final TermUpdateService termUpdateService = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return OpacityAnimation(
+      child: SwitchListTile(
+        secondary: const Icon(Icons.system_update),
+        title: Text(StringConstant.autoUpdate.tr()),
+        subtitle: Text(StringConstant.autoUpdateExplanation.tr()),
+        value: termUpdateService.isAutoUpdateEnabled(),
+        onChanged: (value) async {
+          await termUpdateService.setAutoUpdateEnabled(value);
+          setState(() {});
+        },
+      ),
     );
   }
 }
