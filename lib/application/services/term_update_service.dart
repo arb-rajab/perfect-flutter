@@ -85,16 +85,29 @@ class TermUpdateService {
     if (!await connectionRepository.isOnWifi()) {
       terms = terms.where(TermType.hasContent).toList();
     }
-    await updateTerms(terms, onTermUpdated: onTermUpdated);
+    int numberOfUpdatedTerms = 0;
+    await updateTerms(
+      terms,
+      silent: true,
+      onTermUpdated: (termData) async {
+        numberOfUpdatedTerms++;
+        await onTermUpdated?.call(termData);
+      },
+    );
+    if (numberOfUpdatedTerms > 0) {
+      downloadService.showUpdatesSummaryNotification(numberOfUpdatedTerms);
+    }
   }
 
   Future<void> updateTerms(
     List<TermData> terms, {
+    bool silent = false,
     Future<void> Function(TermData termData)? onTermUpdated,
   }) async {
     for (TermData termData in terms) {
       await startDownload(
         termData,
+        silent: silent,
         onUpdated: onTermUpdated == null
             ? null
             : () => onTermUpdated.call(termData),
@@ -118,6 +131,7 @@ class TermUpdateService {
     Function(int received, int total)? onReceiveProgress,
     Future<void> Function(dynamic body)? onContentStored,
     Future<void> Function()? onUpdated,
+    bool silent = false,
   }) {
     String url = _getDownloadApi(
       termData,
@@ -128,6 +142,7 @@ class TermUpdateService {
         type: Types.term,
         url: url,
         fileName: termData.term.name,
+        silent: silent,
         onDownload: () => _download(
           termData,
           url,

@@ -141,6 +141,7 @@
         "update-available-description": "تتوفر نسخة أحدث من هذا المحتوى. هل تريد تحديثه الآن؟",
         "terms-have-updates": "يوجد محتوى جديد لـ {} من الأقسام التي قمت بتحميلها",
         "update-all": "تحديث الكل",
+        "terms-updated-summary": "تم تحديث محتوى {} من الأقسام",
         "later": "لاحقاً",
         "update": "تحديث",
         "last-updated": "آخر تحديث: {}",

@@ -160,6 +160,7 @@ class StringConstant {
       '$_updateable.update-available-description';
   static const termsHaveUpdates = '$_updateable.terms-have-updates';
   static const updateAll = '$_updateable.update-all';
+  static const termsUpdatedSummary = '$_updateable.terms-updated-summary';
   static const later = '$_updateable.later';
   static const update = '$_updateable.update';
   static const lastUpdated = '$_updateable.last-updated';
