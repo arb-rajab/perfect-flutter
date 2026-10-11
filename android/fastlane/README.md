@@ -1,38 +1,33 @@
 # Fastlane (Google Play)
 
 Uploads the store screenshots in `play_screenshots/` (phone, 7" and 10" tablet)
-to the Play Console listing, so they don't need to be uploaded by hand.
+to the Play Console listing. It is meant to run from the **GitHub Actions
+workflow** `.github/workflows/play-screenshots.yml`, so no key file is ever
+stored on a machine.
 
 ## One-time setup
 
-1. Install Ruby and Bundler, then from `android/` run `bundle install`.
-2. In Google Cloud, create a **service account** and download a JSON key.
-3. In Play Console go to **Users and permissions** (or **Setup → API access**),
-   invite the service account's email and give it permission to manage the
-   store presence / edit the store listing.
-4. Keep the key **out of git** and point to it:
+1. In Google Cloud, create a **service account** and a JSON key.
+2. In Play Console (**Users and permissions**) invite the service account's email
+   and let it manage the store presence / edit the store listing.
+3. In GitHub: **Settings -> Secrets and variables -> Actions -> New repository
+   secret**, name `PLAY_JSON_KEY_DATA`, value = the full JSON content of the key.
+   Then delete the downloaded key file.
 
-   ```
-   export PLAY_JSON_KEY_FILE=/path/to/play-service-account.json
-   ```
+## Run
 
-## Usage (from `android/`)
+GitHub -> **Actions -> Play Store screenshots -> Run workflow**:
 
-```
-# Dry run: validates the upload without publishing
-VALIDATE=1 bundle exec fastlane screenshots
+- `upload` off: only generates the screenshots and attaches them as an artifact.
+- `upload` on + `validate_only` on (default): dry run against Play, nothing is published.
+- `upload` on + `validate_only` off: replaces the screenshots on the listing.
+- `locale`: listing language (default `ar`).
 
-# Upload (replaces the existing screenshots)
-bundle exec fastlane screenshots
+(GitHub only lists a workflow in the Actions tab once the file is on the default branch.)
 
-# Another language listing (default is ar)
-PLAY_LOCALE=en-US bundle exec fastlane screenshots
-```
-
-Screenshots are shown in file name order. To regenerate the images:
+`Appfile` reads the key from the `PLAY_JSON_KEY_DATA` environment variable
+(`json_key_data_raw`), so the same lane also works anywhere that variable is set:
 
 ```
-for d in phone tablet_7 tablet_10; do
-  GEN_SCREENSHOTS=1 SHOT_DIR=play_screenshots flutter test test/store_screenshots_test.dart --plain-name $d
-done
+cd android && VALIDATE=1 bundle exec fastlane screenshots
 ```

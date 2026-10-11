@@ -1,0 +1,77 @@
+name: Play Store screenshots
+
+# Generates the store screenshots (phone, 7" and 10" tablet) from the real app
+# widgets and, optionally, uploads them to the Google Play listing.
+# Run it from the Actions tab -> "Play Store screenshots" -> Run workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: "Upload to Google Play (otherwise only generate and attach as an artifact)"
+        type: boolean
+        default: false
+      validate_only:
+        description: "When uploading: validate with Play without publishing (dry run)"
+        type: boolean
+        default: true
+      locale:
+        description: "Play listing language"
+        type: string
+        default: ar
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # One process per device: state left over from a previous test breaks the next.
+      - name: Generate screenshots
+        run: |
+          for d in phone tablet_7 tablet_10; do
+            GEN_SCREENSHOTS=1 SHOT_DIR="$PWD/play_screenshots" \
+              flutter test test/store_screenshots_test.dart --plain-name "$d"
+          done
+          # Play does not accept transparency.
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          import glob
+          from PIL import Image
+          for f in glob.glob("play_screenshots/*/*.png"):
+              Image.open(f).convert("RGB").save(f, optimize=True)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: play-screenshots
+          path: play_screenshots/
+          if-no-files-found: error
+
+      - uses: ruby/setup-ruby@v1
+        if: ${{ inputs.upload }}
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: android
+
+      # The key is stored as a repository secret and handed to Fastlane as
+      # JSON content in an environment variable; it is never written to disk.
+      - name: Upload to Google Play
+        if: ${{ inputs.upload }}
+        working-directory: android
+        env:
+          PLAY_JSON_KEY_DATA: ${{ secrets.PLAY_JSON_KEY_DATA }}
+          PLAY_LOCALE: ${{ inputs.locale }}
+          VALIDATE: ${{ inputs.validate_only && '1' || '0' }}
+        run: bundle exec fastlane screenshots
