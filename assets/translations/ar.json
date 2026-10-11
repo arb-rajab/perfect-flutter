@@ -136,7 +136,9 @@
 
     "updateable": {
         "updateable": "تحديث متاح",
-        "explanation":"الأقسام الدراسية التي تحوي على تحديثات"
+        "explanation":"الأقسام الدراسية التي تحوي على تحديثات",
+        "update-available-title": "يوجد تحديث جديد",
+        "update-available-description": "تتوفر نسخة أحدث من هذا المحتوى. هل تريد تحديثه الآن؟"
     },
     "educational-content": {
         "educational-content": "المحتوى التعليمي"

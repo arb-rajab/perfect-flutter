@@ -28,6 +28,7 @@ import 'package:beta/domain/voice_note_data.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
+import 'package:beta/presentation/dialogues/yes_no_dialogue.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/flashcards/flashcards_screen.dart';
 import 'package:beta/presentation/home/actions_widget.dart';
@@ -414,6 +415,26 @@ class TermWidgetController {
     if (termData.term.type == TermType.term) {
       return;
     }
+    if (_needsUpdate()) {
+      if (state.mounted) {
+        showYesNoDialogueDialog(state.context,
+            title: StringConstant.updateAvailableTitle.tr(),
+            description: StringConstant.updateAvailableDescription.tr(),
+            onYesClicked: downloadContent,
+            onNoClicked: _openTermContent);
+      }
+      return;
+    }
+    await _openTermContent();
+  }
+
+  bool _needsUpdate() =>
+      TermType.downloadable(termData) &&
+      termData.term.needsUpdate == 1 &&
+      isDownloaded &&
+      !isDownloadingInBackground(termData);
+
+  Future<void> _openTermContent() async {
     switch (termData.term.type) {
       case TermType.questions:
       case TermType.template:

@@ -155,6 +155,9 @@ class StringConstant {
   static const _updateable = 'updateable';
   static const updateable = '$_updateable.updateable';
   static const updateableTermsExplanation = '$_updateable.explanation';
+  static const updateAvailableTitle = '$_updateable.update-available-title';
+  static const updateAvailableDescription =
+      '$_updateable.update-available-description';
 
   static const _terms = 'terms';
   static const unsupportedContent = '$_terms.unsupported-content';
