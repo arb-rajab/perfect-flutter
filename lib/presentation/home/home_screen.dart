@@ -9,6 +9,7 @@ import 'package:beta/presentation/home/new_terms_tab.dart';
 import 'package:beta/presentation/home/news_tab.dart';
 import 'package:beta/presentation/home/recent_terms_tab.dart';
 import 'package:beta/presentation/home/store_tab.dart';
+import 'package:beta/presentation/home/term_updates_banner.dart';
 import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:beta/presentation/home/unstudied_terms_tab.dart';
 import 'package:beta/presentation/home/favorite_terms_tab.dart';
@@ -115,8 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildMenuTile(
               Icons.update,
               StringConstant.updateable.tr(),
-              5,
+              HomeScreenController.updateableTabIndex,
               updateableTermsKey,
+              badgeCount: homeScreenController.updateableTermsCount,
             ),
           ],
         ),
@@ -124,14 +126,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMenuTile(IconData icon, String text, int index, GlobalKey key) {
+  Widget _buildMenuTile(IconData icon, String text, int index, GlobalKey key,
+      {int badgeCount = 0}) {
     final isSelected = homeScreenController.educationalIndex == index;
 
     return ListTile(
       key: key,
-      leading: Icon(
-        icon,
-        color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+      leading: Badge(
+        isLabelVisible: badgeCount > 0,
+        label: Text(badgeCount.toString()),
+        child: Icon(
+          icon,
+          color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+        ),
       ),
       title: Text(
         text,
@@ -188,6 +195,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  bool _onUpdateableTab() =>
+      homeScreenController.educationalIndex ==
+      HomeScreenController.updateableTabIndex;
+
+  bool _showUpdatesBanner() =>
+      homeScreenController.updateableTermsCount > 0 &&
+      (_onUpdateableTab() || !homeScreenController.updatesBannerDismissed);
+
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
@@ -196,7 +211,13 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: _openEducationalMenu,
               child: Row(
                 children: [
-                  const Icon(Icons.arrow_downward),
+                  Badge(
+                    isLabelVisible:
+                        homeScreenController.updateableTermsCount > 0,
+                    label: Text(
+                        homeScreenController.updateableTermsCount.toString()),
+                    child: const Icon(Icons.arrow_downward),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -359,7 +380,19 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       child: homeScreenController.selectedBottomNavigationIndex == 0
           ? UpgradeAlert(
-              child: _educationalContent(homeScreenController.educationalIndex),
+              child: Column(
+                children: [
+                  if (_showUpdatesBanner())
+                    TermUpdatesBanner(
+                      homeScreenController,
+                      dismissible: !_onUpdateableTab(),
+                    ),
+                  Expanded(
+                    child: _educationalContent(
+                        homeScreenController.educationalIndex),
+                  ),
+                ],
+              ),
             )
           : homeScreenController.selectedBottomNavigationIndex == 1 && hasStore
               ? const StoreTab()

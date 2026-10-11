@@ -28,6 +28,24 @@ class _TermWidgetState extends State<TermWidget> {
     super.initState();
   }
 
+  Widget? _subtitle(BuildContext context) {
+    String outerNote = termWidgetController.termData.term.outerNote;
+    DateTime? lastUpdated = termWidgetController.lastUpdated();
+    if (outerNote.isEmpty && lastUpdated == null) return null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (outerNote.isNotEmpty) Text(outerNote),
+        if (lastUpdated != null)
+          Text(
+            StringConstant.lastUpdated
+                .tr(args: [DateFormat('yyyy/MM/dd').format(lastUpdated)]),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     termWidgetController.termsListingController =
@@ -66,9 +84,7 @@ class _TermWidgetState extends State<TermWidget> {
           ListTile(
             leading: TermLeadingWidget(termData),
             title: Text(termData.term.name),
-            subtitle: termData.term.outerNote.isNotEmpty
-                ? Text(termData.term.outerNote)
-                : null,
+            subtitle: _subtitle(context),
             trailing: termData.term.enabled == 1
                 ? const Icon(Icons.navigate_next)
                 : const Icon(Icons.lock),

@@ -6,6 +6,7 @@ import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database/shared.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/download_service.dart';
+import 'package:beta/application/services/term_update_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/fcm_topic_service.dart';
 import 'package:beta/application/services/flashcard_service.dart';
@@ -137,6 +138,7 @@ class MainController {
     Get.put(ClipboardRepository());
     Get.put(ShareService());
     Get.put(DownloadService());
+    Get.put(TermUpdateService(keyValue: keyValue));
 
     PaymentService paymentService = Get.put(PaymentService());
     if (!testing) {

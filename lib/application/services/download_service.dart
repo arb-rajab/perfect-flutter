@@ -8,6 +8,7 @@ class DownloadService {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final List<DownloadItem> downloads = [];
   final int _notificationId = 0;
+  final int _updatesSummaryNotificationId = 1;
   final String downloadsChannel = 'downloads_channel';
 
   DownloadService() {
@@ -85,7 +86,11 @@ class DownloadService {
   void _updateNotification() {
     if (downloads.where((download) => download.completed).length ==
         downloads.length) {
-      _showCompletionNotification();
+      if (downloads.every((download) => download.silent)) {
+        _cancelProgressNotification();
+      } else {
+        _showCompletionNotification();
+      }
       downloads.clear();
       return;
     }
@@ -105,6 +110,33 @@ class DownloadService {
     if (downloads.isEmpty) return 0;
     final totalProgress = downloads.where((d) => d.completed).length;
     return totalProgress;
+  }
+
+  void _cancelProgressNotification() {
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.cancel(_notificationId);
+    }
+  }
+
+  /// A quiet summary for terms that were updated in the background.
+  void showUpdatesSummaryNotification(int numberOfUpdatedTerms) {
+    final androidDetails = AndroidNotificationDetails(
+      downloadsChannel,
+      StringConstant.downloads.tr(),
+      channelDescription: StringConstant.downloadComplete.tr(),
+      importance: Importance.low,
+      priority: Priority.low,
+    );
+
+    if (!MainController.testing) {
+      flutterLocalNotificationsPlugin.show(
+        _updatesSummaryNotificationId,
+        StringConstant.termsUpdatedSummary
+            .tr(args: [numberOfUpdatedTerms.toString()]),
+        null,
+        NotificationDetails(android: androidDetails),
+      );
+    }
   }
 
   void _showCompletionNotification() {

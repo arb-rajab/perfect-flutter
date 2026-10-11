@@ -10,6 +10,7 @@ import 'package:beta/application/services/term_linked_to_label_service.dart';
 import 'package:beta/application/services/term_linked_to_tag_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/application/services/term_update_service.dart';
 import 'package:beta/application/services/terms_parent_service.dart';
 import 'package:beta/application/services/terms_with_homework_enabled_service.dart';
 import 'package:beta/application/services/terms_with_questions_filtering_enabled_service.dart';
@@ -31,7 +32,9 @@ import 'package:beta/domain/value/id.dart';
 import 'package:beta/helper/failure_response.dart';
 import 'package:beta/infrastructure/firebase_repository.dart';
 import 'package:beta/infrastructure/key_value_repository.dart';
+import 'package:beta/presentation/home/actions_widget.dart';
 import 'package:beta/presentation/home/review/shared.dart';
+import 'package:beta/presentation/home/terms_listing_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +49,15 @@ class HomeScreenController {
   // static const int newsBottomNavigationIndex = 2;
   int selectedBottomNavigationIndex = 0;
   int educationalIndex = 0;
+  static const int updateableTabIndex = 5;
   bool newNews = false;
   FirebaseRepository firebaseRepository = Get.find();
   bool loading = false;
   bool error = false;
+  int updateableTermsCount = 0;
+  bool updatingAllTerms = false;
+  bool updatesBannerDismissed = false;
+  TermUpdateService termUpdateService = Get.find();
   HomeScreenController(this.state) {
     configureUserToken();
     subscribeToTopics();
@@ -59,6 +67,7 @@ class HomeScreenController {
     recieveNewToken();
     showRequestReview();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      refreshUpdateableTermsCount();
       getTermsUpdates();
       showNewNewsBadge();
     });
@@ -149,6 +158,7 @@ class HomeScreenController {
       await termLabelService.addTermLabels(termsLabels);
 
       termService.subscribeToTermsUpdates(updatedTerms);
+      autoUpdateTerms();
     }, onConnectionFailed: () {
       state.setState(() {
         error = true;
@@ -162,6 +172,55 @@ class HomeScreenController {
       });
       state.context.showErrorBar(content: Text(message.content));
     }).get(url: ApiConstant.getTermsUpdates);
+  }
+
+  Future<void> refreshUpdateableTermsCount() async {
+    int count = (await termUpdateService.getDownloadedUpdateableTerms()).length;
+    if (state.mounted) state.setState(() => updateableTermsCount = count);
+  }
+
+  Future<void> autoUpdateTerms() async {
+    await refreshUpdateableTermsCount();
+    int countBefore = updateableTermsCount;
+    await termUpdateService.autoUpdate(onTermUpdated: _onTermUpdated);
+    await refreshUpdateableTermsCount();
+    if (updateableTermsCount != countBefore) _refreshTermsListing();
+  }
+
+  Future<void> updateAllTerms() async {
+    if (updatingAllTerms) return;
+    state.setState(() => updatingAllTerms = true);
+    List<TermData> terms =
+        await termUpdateService.getDownloadedUpdateableTerms();
+    await termUpdateService.updateTerms(terms, onTermUpdated: _onTermUpdated);
+    if (state.mounted) state.setState(() => updatingAllTerms = false);
+    await refreshUpdateableTermsCount();
+    _refreshTermsListing();
+  }
+
+  /// Only the updateable tab lists terms by their update state, other tabs
+  /// already refresh each shown term through [_onTermUpdated].
+  void _refreshTermsListing() {
+    if (educationalIndex != updateableTabIndex) return;
+    if (state.mounted && Get.isRegistered<TermsListingController>()) {
+      Get.find<TermsListingController>().init();
+    }
+  }
+
+  void dismissUpdatesBanner() =>
+      state.setState(() => updatesBannerDismissed = true);
+
+  Future<void> _onTermUpdated(TermData termData) async {
+    String tag = termData.term.id.toString();
+    if (Get.isRegistered<State<ActionsWidget>>(tag: tag)) {
+      State<ActionsWidget> actionsWidgetState = Get.find(tag: tag);
+      if (actionsWidgetState.mounted) {
+        await actionsWidgetState.widget.termWidgetController.onTermUpdated();
+      }
+    }
+    if (state.mounted && updateableTermsCount > 0) {
+      state.setState(() => updateableTermsCount--);
+    }
   }
 
   void recieveNewToken() {

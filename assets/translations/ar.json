@@ -136,7 +136,17 @@
 
     "updateable": {
         "updateable": "تحديث متاح",
-        "explanation":"الأقسام الدراسية التي تحوي على تحديثات"
+        "explanation":"الأقسام الدراسية التي تحوي على تحديثات",
+        "update-available-title": "يوجد تحديث جديد",
+        "update-available-description": "تتوفر نسخة أحدث من هذا المحتوى. هل تريد تحديثه الآن؟",
+        "terms-have-updates": "يوجد محتوى جديد لـ {} من الأقسام التي قمت بتحميلها",
+        "update-all": "تحديث الكل",
+        "terms-updated-summary": "تم تحديث محتوى {} من الأقسام",
+        "later": "لاحقاً",
+        "update": "تحديث",
+        "last-updated": "آخر تحديث: {}",
+        "auto-update": "التحديث التلقائي للمحتوى",
+        "auto-update-explanation": "تحديث الأسئلة والبطاقات والصور تلقائياً، والملفات (الكتب والصوتيات والفيديو) عند الاتصال بشبكة Wi-Fi فقط"
     },
     "educational-content": {
         "educational-content": "المحتوى التعليمي"
