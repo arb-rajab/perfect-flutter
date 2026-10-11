@@ -43,6 +43,7 @@ class TermWidgetController {
   bool isNew = false;
   bool isStudied = false;
   bool isFavorite = false;
+  DateTime? lastUpdatedDate;
   bool homeworkEnabled = false;
   State state;
   bool downloading = false;
@@ -61,6 +62,7 @@ class TermWidgetController {
     configureIsDownloaded();
     configureIsStudied();
     configureIsFavorite();
+    configureLastUpdated();
     configureHomeworkEnabled();
   }
 
@@ -203,6 +205,8 @@ class TermWidgetController {
               termData.term.copyWith(needsUpdate: 0);
           actionsWidgetState.widget.termWidgetController.isDownloaded = true;
         });
+        await actionsWidgetState.widget.termWidgetController
+            .configureLastUpdated();
       }
     }
   }
@@ -266,9 +270,15 @@ class TermWidgetController {
     return termData.labelId != previousTermData.labelId;
   }
 
-  DateTime? lastUpdated() => TermType.downloadable(termData) && isDownloaded
-      ? termUpdateService.getLastUpdated(termData.term.id)
-      : null;
+  Future configureLastUpdated() async {
+    if (!TermType.downloadable(termData)) return;
+    DateTime? date = await termPropertyService.getLastUpdated(
+      Id(termData.term.id),
+    );
+    if (state.mounted) state.setState(() => lastUpdatedDate = date);
+  }
+
+  DateTime? lastUpdated() => isDownloaded ? lastUpdatedDate : null;
 
   bool isDownloadingInBackground(TermData termData) =>
       termUpdateService.isDownloading(termData);

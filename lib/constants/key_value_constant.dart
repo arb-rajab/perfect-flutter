@@ -9,7 +9,6 @@ class KeyValueConstant {
 
   static const String autoUpdateTerms = 'autoUpdateTerms';
   static const bool autoUpdateTermsDefaultValue = true;
-  static const String termLastUpdated = 'termLastUpdated_';
 
   static const String userId = 'user_id';
   static const String userToken = 'user_token';

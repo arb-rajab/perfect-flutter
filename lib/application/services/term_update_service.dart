@@ -2,6 +2,7 @@ import 'package:beta/application/services/download_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/application/services/path/shared.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/video_file_service.dart';
 import 'package:beta/application/services/voice_note_service.dart';
@@ -24,6 +25,7 @@ import 'package:get/instance_manager.dart';
 class TermUpdateService {
   final KeyValue keyValue;
   TermService termService = Get.find();
+  TermPropertyService termPropertyService = Get.find();
   EbookService ebookService = Get.find();
   VoiceNoteService voiceNoteService = Get.find();
   VideoFileService videoFileService = Get.find();
@@ -40,18 +42,6 @@ class TermUpdateService {
 
   Future setAutoUpdateEnabled(bool value) =>
       keyValue.setBool(KeyValueConstant.autoUpdateTerms, value);
-
-  DateTime? getLastUpdated(int termId) {
-    String? value = keyValue.getString(
-      '${KeyValueConstant.termLastUpdated}$termId',
-    );
-    return value == null ? null : DateTime.tryParse(value);
-  }
-
-  Future _setLastUpdated(int termId) => keyValue.setString(
-    '${KeyValueConstant.termLastUpdated}$termId',
-    DateTime.now().toIso8601String(),
-  );
 
   Future<bool> isTermDownloaded(TermData termData) async {
     if (TermType.hasFile(termData)) {
@@ -166,7 +156,10 @@ class TermUpdateService {
   }) async {
     Future<void> setUpdated() async {
       await termService.setTermUpdated(termData);
-      await _setLastUpdated(termData.term.id);
+      await termPropertyService.setLastUpdated(
+        Id(termData.term.id),
+        DateTime.now(),
+      );
       await onUpdated?.call();
     }
 

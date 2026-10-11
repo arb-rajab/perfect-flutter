@@ -1,9 +1,11 @@
 import 'package:beta/application/services/question_service.dart';
+import 'package:beta/application/services/term_property_service.dart';
 import 'package:beta/application/services/term_service.dart';
 import 'package:beta/application/services/term_update_service.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/deleted_at.dart';
+import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/visible.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/instance_manager.dart';
@@ -94,10 +96,30 @@ Future main() async {
     });
   });
 
-  group('getLastUpdated', () {
-    test('returns null when the term was never updated', () {
-      TermUpdateService termUpdateService = Get.find();
-      expect(termUpdateService.getLastUpdated(999), null);
+  group('last updated date', () {
+    test('is null when the term was never updated', () async {
+      TermPropertyService termPropertyService = Get.find();
+      expect(await termPropertyService.getLastUpdated(const Id(999)), null);
+    });
+
+    test('keeps only the latest date of a term', () async {
+      TermPropertyService termPropertyService = Get.find();
+      await termPropertyService.setLastUpdated(
+          const Id(100), DateTime(2026, 1, 1));
+      await termPropertyService.setLastUpdated(
+          const Id(100), DateTime(2026, 2, 2));
+      expect(await termPropertyService.getLastUpdated(const Id(100)),
+          DateTime(2026, 2, 2));
+    });
+
+    test('is left out of backups while other properties are kept', () async {
+      TermPropertyService termPropertyService = Get.find();
+      await termPropertyService.addTermToFavorite(const Id(100));
+      await termPropertyService.setLastUpdated(
+          const Id(100), DateTime(2026, 1, 1));
+      List<TermProperty> properties =
+          await termPropertyService.getAllTermProperties();
+      expect(properties.map((property) => property.name), ['favorite']);
     });
   });
 }
