@@ -50,3 +50,8 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+# Fastlane / Play service account keys
+android/fastlane/report.xml
+android/.bundle/
+*service-account*.json
+play-*.json

@@ -1,0 +1,4 @@
+# Service account JSON key with access to the Play Console (see README.md).
+# Keep the key out of git; point to it with an environment variable.
+json_key_file(ENV["PLAY_JSON_KEY_FILE"]) if ENV["PLAY_JSON_KEY_FILE"]
+package_name("edu.perfect")
