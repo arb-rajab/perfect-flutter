@@ -1,0 +1,50 @@
+default_platform(:android)
+
+# Where the generated store screenshots live (see test/store_screenshots_test.dart).
+SCREENSHOTS_DIR = File.expand_path("../../play_screenshots", __dir__)
+# Temporary metadata folder in the layout `supply` expects:
+#   <metadata>/<locale>/images/{phoneScreenshots,sevenInchScreenshots,tenInchScreenshots}
+STAGING_DIR = File.expand_path("../../build/fastlane_metadata", __dir__)
+
+# Source folder in play_screenshots => folder name supply expects.
+SCREENSHOT_FOLDERS = {
+  "phone" => "phoneScreenshots",
+  "tablet_7" => "sevenInchScreenshots",
+  "tablet_10" => "tenInchScreenshots",
+}.freeze
+
+platform :android do
+  desc "Copy play_screenshots/ into the layout supply expects"
+  private_lane :stage_screenshots do |options|
+    locale = options[:locale]
+    images_dir = File.join(STAGING_DIR, locale, "images")
+    FileUtils.rm_rf(STAGING_DIR)
+
+    SCREENSHOT_FOLDERS.each do |source, target|
+      files = Dir[File.join(SCREENSHOTS_DIR, source, "*.png")].sort
+      UI.user_error!("No screenshots found in #{File.join(SCREENSHOTS_DIR, source)}") if files.empty?
+      FileUtils.mkdir_p(File.join(images_dir, target))
+      # Play shows screenshots in file name order (01_, 02_, ...).
+      FileUtils.cp(files, File.join(images_dir, target))
+    end
+  end
+
+  desc "Upload store screenshots to Google Play (LOCALE=ar by default, VALIDATE=1 to dry run)"
+  lane :screenshots do
+    locale = ENV["PLAY_LOCALE"] || "ar"
+    stage_screenshots(locale: locale)
+
+    upload_to_play_store(
+      metadata_path: STAGING_DIR,
+      validate_only: ENV["VALIDATE"] == "1",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,       # icon / feature graphic
+      skip_upload_screenshots: false,
+      # Replace the existing screenshots instead of appending to them.
+      sync_image_upload: true,
+    )
+  end
+end
