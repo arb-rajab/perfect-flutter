@@ -3,7 +3,18 @@ name: Play Store screenshots
 # Generates the store screenshots (phone, 7" and 10" tablet) from the real app
 # widgets and, optionally, uploads them to the Google Play listing.
 # Run it from the Actions tab -> "Play Store screenshots" -> Run workflow.
+# It also runs by itself when UI code changes on main: it regenerates the
+# screenshots and opens/updates a PR on the landing page. Uploading to Google
+# Play (which replaces the live listing) is only done from a manual run.
 on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/presentation/**"
+      - "lib/configs/**"
+      - "assets/**"
+      - "test/store_screenshots_test.dart"
+      - ".github/workflows/play-screenshots.yml"
   workflow_dispatch:
     inputs:
       upload:
@@ -132,7 +143,7 @@ jobs:
         working-directory: web
         env:
           GH_TOKEN: ${{ secrets.WEB_REPO_TOKEN }}
-          MODE: ${{ inputs.web_publish }}
+          MODE: ${{ inputs.web_publish || 'pull_request' }}
         run: |
           git add public/assets/welcome/screenshots
           if git diff --cached --quiet; then

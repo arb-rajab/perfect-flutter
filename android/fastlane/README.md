@@ -21,6 +21,11 @@ stored on a machine.
 
 ## Run
 
+On every push to `main` that touches UI code (`lib/presentation`, `lib/configs`,
+`assets`, the screenshot test) the workflow runs by itself: it regenerates the
+screenshots and opens/updates the landing page PR. It never uploads to Play on its own.
+The manual options below are for uploading to Play or publishing on demand.
+
 GitHub -> **Actions -> Play Store screenshots -> Run workflow**:
 
 - `upload` off: only generates the screenshots and attaches them as an artifact.
