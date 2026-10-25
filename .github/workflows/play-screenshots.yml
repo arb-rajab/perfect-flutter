@@ -1,0 +1,169 @@
+name: Play Store screenshots
+
+# Generates the store screenshots (phone, 7" and 10" tablet) from the real app
+# widgets and, optionally, uploads them to the Google Play listing.
+# Run it from the Actions tab -> "Play Store screenshots" -> Run workflow.
+# It also runs by itself when UI code changes on main: it regenerates the
+# screenshots and opens/updates a PR on the landing page. Uploading to Google
+# Play (which replaces the live listing) is only done from a manual run.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/presentation/**"
+      - "lib/configs/**"
+      - "assets/**"
+      - "test/store_screenshots_test.dart"
+      - ".github/workflows/play-screenshots.yml"
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: "Upload to Google Play (otherwise only generate and attach as an artifact)"
+        type: boolean
+        default: false
+      validate_only:
+        description: "When uploading: validate with Play without publishing (dry run)"
+        type: boolean
+        default: true
+      locale:
+        description: "Play listing language"
+        type: string
+        default: ar
+      web_publish:
+        description: "Publish the screenshots to the landing page (perfect-web repo)"
+        type: choice
+        options:
+          - pull_request   # push a branch and open/update a PR (recommended)
+          - push           # commit straight to the web repo's default branch
+          - none
+        default: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # One process per device: state left over from a previous test breaks the next.
+      - name: Generate screenshots
+        run: |
+          for d in phone tablet_7 tablet_10; do
+            GEN_SCREENSHOTS=1 SHOT_DIR="$PWD/play_screenshots" \
+              flutter test test/store_screenshots_test.dart --plain-name "$d"
+          done
+          # Play does not accept transparency.
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          import glob
+          from PIL import Image
+          for f in glob.glob("play_screenshots/*/*.png"):
+              Image.open(f).convert("RGB").save(f, optimize=True)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: play-screenshots
+          path: play_screenshots/
+          if-no-files-found: error
+
+      - uses: ruby/setup-ruby@v1
+        if: ${{ inputs.upload }}
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: android
+
+      # The key is stored as a repository secret and handed to Fastlane as
+      # JSON content in an environment variable; it is never written to disk.
+      - name: Upload to Google Play
+        if: ${{ inputs.upload }}
+        working-directory: android
+        env:
+          PLAY_JSON_KEY_DATA: ${{ secrets.PLAY_JSON_KEY_DATA }}
+          PLAY_LOCALE: ${{ inputs.locale }}
+          VALIDATE: ${{ inputs.validate_only && '1' || '0' }}
+        run: bundle exec fastlane screenshots
+
+  # Updates the landing page gallery in the perfect-web repo with the new images.
+  # GITHUB_TOKEN cannot write to another repository, so this uses WEB_REPO_TOKEN:
+  # a fine-grained personal access token limited to arb-rajab/perfect-web with
+  # "Contents: read and write" and "Pull requests: read and write".
+  publish-web:
+    needs: screenshots
+    if: ${{ inputs.web_publish != 'none' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: publish-landing-screenshots
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: play-screenshots
+          path: play_screenshots
+
+      - uses: actions/checkout@v4
+        with:
+          repository: arb-rajab/perfect-web
+          token: ${{ secrets.WEB_REPO_TOKEN }}
+          path: web
+
+      # The landing page already points at
+      # public/assets/welcome/screenshots/<device>/<NN_name>.png, so replacing
+      # the files is all it takes. Images are downscaled to keep the page light.
+      - name: Resize for the web
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          import glob, os
+          from PIL import Image
+          sizes = {"phone": (540, 960), "tablet_7": (600, 960), "tablet_10": (800, 1280)}
+          for device, size in sizes.items():
+              files = sorted(glob.glob(f"play_screenshots/{device}/*.png"))
+              assert len(files) == 8, f"expected 8 {device} screenshots, found {len(files)}"
+              out = f"web/public/assets/welcome/screenshots/{device}"
+              os.makedirs(out, exist_ok=True)
+              for f in files:
+                  Image.open(f).convert("RGB").resize(size, Image.LANCZOS).save(
+                      os.path.join(out, os.path.basename(f)), optimize=True)
+          PY
+
+      - name: Commit and publish
+        working-directory: web
+        env:
+          GH_TOKEN: ${{ secrets.WEB_REPO_TOKEN }}
+          MODE: ${{ inputs.web_publish || 'pull_request' }}
+        run: |
+          git add public/assets/welcome/screenshots
+          if git diff --cached --quiet; then
+            echo "Landing page screenshots are already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          MSG="Update landing page screenshots (from perfect-flutter run ${GITHUB_RUN_ID})"
+          if [ "$MODE" = "push" ]; then
+            git commit -q -m "$MSG"
+            git push origin HEAD:"$(git remote show origin | sed -n 's/.*HEAD branch: //p')"
+          else
+            BRANCH=automation/landing-screenshots
+            git checkout -q -B "$BRANCH"
+            git commit -q -m "$MSG"
+            git push --force origin "$BRANCH"
+            if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+              gh pr create --head "$BRANCH" \
+                --title "Update landing page screenshots" \
+                --body "Automated update of the landing page gallery from the Play Store screenshots workflow in perfect-flutter (run ${GITHUB_RUN_ID})."
+            fi
+          fi
