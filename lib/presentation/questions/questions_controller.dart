@@ -80,6 +80,8 @@ class QuestionsController {
   QuestionsController(this.state);
 
   Future<void> init() async {
+    // Block screenshots until the source (and term) is known.
+    screenshotRepository.setScreenshotPolicy(this, prevent: true);
     if (questionUUID == null) {
       questionsScreenArgument = Get.find<QuestionsScreenArgument>();
       _configure();
@@ -130,11 +132,10 @@ class QuestionsController {
 
   configureScreenShots() {
     // if (!kReleaseMode) return;
-    if (questionsScreenArgument!.source != QuestionScreenSource.term) {
-      screenshotRepository.preventScreenshot();
-    } else if (term!.captureable == 0) {
-      screenshotRepository.preventScreenshot();
-    }
+    if (!state.mounted) return;
+    screenshotRepository.setScreenshotPolicy(this,
+        prevent: questionsScreenArgument!.source != QuestionScreenSource.term ||
+            term!.captureable == 0);
   }
 
   Future _configureArgument() async {
@@ -499,7 +500,7 @@ class QuestionsController {
   void dispose() {
     _searchDebounceTimer?.cancel();
     _updateLastAccess();
-    screenshotRepository.allowScreenshot();
+    screenshotRepository.releaseScreenshotPolicy(this);
     if (questionsScreenArgument!.source == QuestionScreenSource.term &&
         term!.type == TermType.template) {
       timer?.cancel();

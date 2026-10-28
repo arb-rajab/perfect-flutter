@@ -46,12 +46,11 @@ class FlashcardsScreenController {
   }
 
   void _configureScreenshots() {
-    if (argument.term.term.captureable == 0) {
-      screenshotRepository.preventScreenshot();
-    } else {
-      screenshotRepository.allowScreenshot();
-    }
+    screenshotRepository.setScreenshotPolicy(this,
+        prevent: argument.term.term.captureable == 0);
   }
+
+  void dispose() => screenshotRepository.releaseScreenshotPolicy(this);
 
   void flipCard(int flashcardIndex) {
     state.setState(() {

@@ -24,7 +24,7 @@ class MockTermLastAccessService extends Mock implements TermLastAccessService {
   Future<int> addTermLastAccessed(Id termId, int childId) => Future.value(1);
 }
 
-class MockScreenshotRepository extends Mock implements ScreenshotRepository {
+class MockScreenshotRepository extends ScreenshotRepository {
   @override
   Future preventScreenshot() => Future.value();
 
