@@ -1,6 +1,5 @@
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
-import 'package:beta/main.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/questions/questions_controller.dart';
 import 'package:beta/presentation/widgets/loading_widget.dart';
@@ -22,7 +21,7 @@ class QuestionsScreen extends StatefulWidget {
   State<StatefulWidget> createState() => QuestionsScreenState();
 }
 
-class QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
+class QuestionsScreenState extends State<QuestionsScreen> {
   late QuestionsController questionsController;
   @override
   void initState() {
@@ -41,15 +40,6 @@ class QuestionsScreenState extends State<QuestionsScreen> with RouteAware {
     questionsController.init();
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-  }
-
-  @override
-  void didPopNext() => questionsController.configureScreenShots();
 
   @override
   void dispose() {

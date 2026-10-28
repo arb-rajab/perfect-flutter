@@ -25,6 +25,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final flashcards = controller.displayedFlashcards;
     return ScreenWrapper(

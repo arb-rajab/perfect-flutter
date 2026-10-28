@@ -15,12 +15,14 @@ class MediaSliderController {
     mediaSlidersScreenArgument = Get.find();
   }
 
-  void _preventScreenshot() => screenshotRepository.preventScreenshot();
+  void _preventScreenshot() =>
+      screenshotRepository.setScreenshotPolicy(this, prevent: true);
 
-  void _allowScreenshot() => screenshotRepository.allowScreenshot();
+  void _releaseScreenshot() =>
+      screenshotRepository.releaseScreenshotPolicy(this);
 
   void dispose() {
-    _allowScreenshot();
+    _releaseScreenshot();
   }
 
   // ignore: invalid_use_of_protected_member

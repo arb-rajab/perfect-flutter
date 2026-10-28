@@ -1,6 +1,6 @@
 import 'package:beta/abstract/screenshot_repository_base.dart';
 
-class ScreenshotRepository implements ScreenshotRepositoryBase {
+class ScreenshotRepository extends ScreenshotRepositoryBase {
   @override
   Future preventScreenshot() => Future.value();
   @override

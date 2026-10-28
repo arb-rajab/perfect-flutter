@@ -10,14 +10,11 @@ class EbookScreenController {
     _configureScreenshots();
   }
 
-  void dispose() => screenshotRepository.allowScreenshot();
+  void dispose() => screenshotRepository.releaseScreenshotPolicy(this);
 
   void _configureScreenshots() {
-    if (ebookScreenArgument.term.term.captureable == 0) {
-      screenshotRepository.preventScreenshot();
-    } else {
-      screenshotRepository.allowScreenshot();
-    }
+    screenshotRepository.setScreenshotPolicy(this,
+        prevent: ebookScreenArgument.term.term.captureable == 0);
   }
 
 }

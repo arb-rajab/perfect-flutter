@@ -20,7 +20,7 @@ class YoutubeVideoScreenController {
   bool finishedLoading = false;
 
   YoutubeVideoScreenController(this.state) {
-    screenshotRepository.preventScreenshot();
+    screenshotRepository.setScreenshotPolicy(this, prevent: true);
   }
 
   Future<void> getLastSecond() async {
@@ -69,7 +69,7 @@ class YoutubeVideoScreenController {
   }
 
   void dispose() {
-    screenshotRepository.allowScreenshot();
+    screenshotRepository.releaseScreenshotPolicy(this);
   }
 
   void onConsoleMessage(controller, message) {

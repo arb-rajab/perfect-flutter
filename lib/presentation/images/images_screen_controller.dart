@@ -32,11 +32,8 @@ class ImagesScreenController {
   }
 
   void _configureScreenshots() {
-    if (argument.term.term.captureable == 0) {
-      screenshotRepository.preventScreenshot();
-    } else {
-      screenshotRepository.allowScreenshot();
-    }
+    screenshotRepository.setScreenshotPolicy(this,
+        prevent: argument.term.term.captureable == 0);
   }
 
   void toggleDetails(int imageIndex) {
@@ -46,7 +43,7 @@ class ImagesScreenController {
   }
 
   Future<void> dispose() async {
-    await screenshotRepository.allowScreenshot();
+    await screenshotRepository.releaseScreenshotPolicy(this);
     TermLastAccessService termLastAccessService = Get.find();
     return termLastAccessService.addTermLastAccessed(
       Id(argument.term.term.id),

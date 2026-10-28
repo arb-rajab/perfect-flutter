@@ -22,6 +22,12 @@ class _MediaSliderScreenState extends State<MediaSliderScreen> {
   }
 
   @override
+  void dispose() {
+    mediaSliderController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
         titleText:
