@@ -18,4 +18,7 @@ class KeyValueConstant {
   static const String newsRecieved = 'user_newsRecieved';
 
   static const String webImei = 'ime1';
+
+  static const String cachedFrequentQuestions = 'cachedFrequentQuestions';
+  static const String cachedNews = 'cachedNews';
 }

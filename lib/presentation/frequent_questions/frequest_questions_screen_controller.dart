@@ -1,10 +1,14 @@
+import 'package:beta/application/services/public_content_cache_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/domain/frequent_question.dart';
 import 'package:beta/presentation/frequent_questions/frequent_question_widget.dart';
 import 'package:beta/presentation/widgets/list_controller.dart';
+import 'package:get/instance_manager.dart';
 
 class FrequestQuestionsScreenController
     extends ListController<FrequentQuestion> {
+  int? expandedId;
+
   FrequestQuestionsScreenController(state)
       : super(
             itemBuilder: (context, index) =>
@@ -13,5 +17,9 @@ class FrequestQuestionsScreenController
             plural: 'frequent-questions',
             fetch: null,
             fromJson: FrequentQuestion.fromJson,
-            indexUrl: ApiConstant.frequentQuestions);
+            indexUrl: ApiConstant.frequentQuestions) {
+    // Keep the loaded FAQs searchable offline by the assistant.
+    onConnectionSucceed = () => Get.find<PublicContentCacheService>()
+        .cacheFrequentQuestions(items);
+  }
 }

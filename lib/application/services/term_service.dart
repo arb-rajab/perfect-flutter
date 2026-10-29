@@ -190,18 +190,44 @@ class TermService {
         .go();
   }
 
+  /// SQL condition on `terms t`: the term is free or lies under a term linked
+  /// to a coupon that has not expired.
+  static const String unExpiredTermCondition =
+      "(t.id in (select termId from termTrees where parentTermId in (select termId from couponsLinkedToTerms where couponId in "
+      "(select id from coupons where activationDate is null or "
+      "(activationDate!='' and CURRENT_TIMESTAMP<DATETIME(activationDate,'+'||expirationDays||' days'))))) or t.free=1)";
+
+  /// SQL condition on `terms t`: the term and all of its ancestors are
+  /// enabled (a disabled term is locked content).
+  static const String enabledTermCondition =
+      "(t.enabled=1 and not exists (select 1 from termTrees tr join terms a on a.id=tr.parentTermId "
+      "where tr.termId=t.id and a.enabled!=1))";
+
+  /// SQL selecting the ids of the terms the user has unlocked.
+  static const String unlockedTermIdsQuery =
+      "select t.id from terms t where $enabledTermCondition and $unExpiredTermCondition";
+
   Future<bool> isUnExpired(TermData termData) async {
     return (await databaseService
                 .customSelect(
-                    "select count(*) as c from terms where id=${termData.term.id} and (id in "
-                    "(select termId from termTrees where parentTermId in (select termId from couponsLinkedToTerms where couponId in "
-                    "(select id from coupons where activationDate is null or "
-                    "(activationDate!='' and CURRENT_TIMESTAMP<DATETIME(activationDate,'+'||expirationDays||' days'))))) or free=1)")
+                    "select count(*) as c from terms t where t.id=${termData.term.id} and $unExpiredTermCondition")
                 .watch()
                 .map((rows) => rows.map((row) => row.read<int>('c')).toList())
                 .first)
             .first >
         0;
+  }
+
+  Future<bool> isUnlocked(int termId) async =>
+      (await databaseService.customSelect(
+              "select count(*) as c from ($unlockedTermIdsQuery) where id=?",
+              variables: [Variable.withInt(termId)]).getSingle())
+          .read<int>('c') >
+      0;
+
+  Future<TermData?> getTermDataById(int termId) async {
+    List<TermData> terms = await _queryTerms("t.id=$termId");
+    return terms.isEmpty ? null : terms.first;
   }
 
   Future<List<TermData>> getTermUndownloadedTermsWithQuestions(

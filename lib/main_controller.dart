@@ -1,10 +1,12 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/answer_service.dart';
+import 'package:beta/application/services/assistant_search_service.dart';
 import 'package:beta/application/services/coupon_linked_to_term_service.dart';
 import 'package:beta/application/services/coupon_service.dart';
 import 'package:beta/application/services/database/shared.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/deep_link_service.dart';
 import 'package:beta/application/services/download_service.dart';
 import 'package:beta/application/services/term_update_service.dart';
 import 'package:beta/application/services/ebook_service.dart';
@@ -14,6 +16,7 @@ import 'package:beta/application/services/http_request_service.dart';
 import 'package:beta/application/services/image_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/application/services/payment_service.dart';
+import 'package:beta/application/services/public_content_cache_service.dart';
 import 'package:beta/application/services/question_linked_to_tag_service.dart';
 import 'package:beta/application/services/question_media_service.dart';
 import 'package:beta/application/services/question_property_service.dart';
@@ -133,7 +136,16 @@ class MainController {
         ),
       ));
     }
-    Get.put(PathService());
+    PathService pathService = Get.put(PathService());
+    PublicContentCacheService publicContentCacheService =
+        Get.put(PublicContentCacheService(keyValue: keyValue));
+    Get.put(AssistantSearchService(
+        databaseService: databaseService,
+        publicContentCacheService: publicContentCacheService));
+    Get.put(DeepLinkService(
+        databaseService: databaseService,
+        termService: Get.find(),
+        pathService: pathService));
     Get.put(NotificationRepository());
     Get.put(ClipboardRepository());
     Get.put(ShareService());

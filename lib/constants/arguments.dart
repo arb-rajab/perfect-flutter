@@ -89,8 +89,14 @@ class FlashcardsScreenArgument {
   final String title;
   final TermData term;
 
+  /// The flashcard to show first, e.g. when opened from a deep link.
+  final int? initialFlashcardId;
+
   FlashcardsScreenArgument(
-      {required this.query, required this.title, required this.term});
+      {required this.query,
+      required this.title,
+      required this.term,
+      this.initialFlashcardId});
 }
 
 class ImagesScreenArgument {

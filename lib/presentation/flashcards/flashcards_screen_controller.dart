@@ -42,7 +42,17 @@ class FlashcardsScreenController {
     flashcards = (await flashcardService.getFlashcardsFromQuery(argument.query))
         .map((element) => FlashcardData(element))
         .toList();
-    state.setState(() {});
+    final initialIndex = flashcards.indexWhere(
+        (element) => element.flashcard.id == argument.initialFlashcardId);
+    if (!state.mounted) return;
+    state.setState(() {
+      if (initialIndex > 0) currentIndex = initialIndex;
+    });
+    if (initialIndex > 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (pageController.hasClients) pageController.jumpToPage(initialIndex);
+      });
+    }
   }
 
   void _configureScreenshots() {

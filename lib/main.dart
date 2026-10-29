@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:beta/application/services/deep_link_service.dart';
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
 import 'package:beta/main_controller.dart';
+import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
@@ -76,6 +78,7 @@ class _MyAppState extends State<MyApp> {
   late final AppLinks appLinks;
   StreamSubscription<Uri>? _sub;
   late GoRouter routerConfig;
+  late DeepLinkCoordinator _deepLinkCoordinator;
 
   Future<void> _initDeepLink() async {
     // 1) Initial link (cold start)
@@ -85,16 +88,21 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _handleUri(Uri initialUri) {
-    final nav = navigatorKey.currentState;
-    debugPrint('NAV READY: ${nav != null}');
-    routerConfig.go(initialUri.path);
+  void _handleUri(Uri uri) {
+    _deepLinkCoordinator.handle(uri).catchError(
+        (Object error) => debugPrint('Could not open deep link $uri: $error'));
   }
 
   @override
   void initState() {
     super.initState();
     routerConfig = router(widget.defaultRoute);
+    _deepLinkCoordinator = DeepLinkCoordinator(
+        deepLinkService: Get.find(),
+        navigator: _GoRouterDeepLinkNavigator(routerConfig));
+    // Lets in-app callers, such as the assistant, open search results.
+    Get.delete<DeepLinkCoordinator>();
+    Get.put(_deepLinkCoordinator);
     // 1. Handle cold start
     appLinks = AppLinks();
     _initDeepLink();
@@ -241,5 +249,43 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: themeService.getThemeMode(),
     );
+  }
+}
+
+class _GoRouterDeepLinkNavigator implements DeepLinkNavigator {
+  final GoRouter router;
+  final Completer<void> _ready = Completer();
+
+  _GoRouterDeepLinkNavigator(this.router) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ready.complete());
+  }
+
+  @override
+  Future<void> get ready => _ready.future;
+
+  @override
+  String get currentLocation =>
+      router.routerDelegate.currentConfiguration.uri.path;
+
+  // Waiting for the frame lets the next navigation (or dialog) build on top
+  // of this one.
+  @override
+  Future<void> go(String location) {
+    router.go(location);
+    return WidgetsBinding.instance.endOfFrame;
+  }
+
+  @override
+  Future<void> push(String location) {
+    router.push(location);
+    return WidgetsBinding.instance.endOfFrame;
+  }
+
+  @override
+  Future<void> showMessage(String messageKey, {void Function()? onConfirm}) {
+    final context = navigatorKey.currentContext;
+    if (context == null || !context.mounted) return Future.value();
+    showOkDialogue(context, content: messageKey.tr(), onConfirm: onConfirm);
+    return Future.value();
   }
 }

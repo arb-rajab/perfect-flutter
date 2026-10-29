@@ -61,7 +61,9 @@ GoRouter router(defaultRoute) => GoRouter(
           builder: (context, state) => const ContactUsScreen()),
       GoRoute(
           path: FrequentQuestionsScreen.route,
-          builder: (context, state) => const FrequentQuestionsScreen()),
+          builder: (context, state) => FrequentQuestionsScreen(
+              expandedId:
+                  int.tryParse(state.uri.queryParameters['id'] ?? ''))),
       GoRoute(
           path: ScanQrScreen.route,
           builder: (context, state) => const ScanQrScreen()),
