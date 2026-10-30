@@ -1,3 +1,4 @@
+import 'package:beta/application/services/public_content_cache_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/key_value_constant.dart';
 import 'package:beta/domain/news.dart';
@@ -19,6 +20,9 @@ class NewsTabController extends ListController<News> {
             fetch: null,
             fromJson: News.fromJson,
             indexUrl: ApiConstant.news) {
+    // Keep the loaded news searchable offline by the assistant.
+    onConnectionSucceed =
+        () => Get.find<PublicContentCacheService>().cacheNews(items);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       removeNewNewsBadge();
     });

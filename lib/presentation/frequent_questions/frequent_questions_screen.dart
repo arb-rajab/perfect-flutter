@@ -10,7 +10,11 @@ class FrequentQuestionsScreen extends StatefulWidget {
   static const route = '/frequent-questions';
   static const icon = Icons.question_answer_sharp;
   static String title = StringConstant.frequentlyAskedQuestions.tr();
-  const FrequentQuestionsScreen({super.key});
+
+  /// The frequent question to show expanded, e.g. when opened from a deep link.
+  final int? expandedId;
+
+  const FrequentQuestionsScreen({super.key, this.expandedId});
 
   @override
   State<FrequentQuestionsScreen> createState() =>
@@ -22,7 +26,8 @@ class _FrequentQuestionsScreenState extends State<FrequentQuestionsScreen> {
   @override
   void initState() {
     Get.delete<FrequestQuestionsScreenController>();
-    _controller = Get.put(FrequestQuestionsScreenController(this));
+    _controller = Get.put(FrequestQuestionsScreenController(this)
+      ..expandedId = widget.expandedId);
     super.initState();
   }
 

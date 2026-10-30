@@ -14,7 +14,17 @@ class FrequentQuestionWidget extends StatefulWidget {
 }
 
 class _FrequentQuestionWidgetState extends State<FrequentQuestionWidget> {
-  bool _isExpanded = false;
+  late bool _isExpanded;
+
+  @override
+  void initState() {
+    super.initState();
+    FrequestQuestionsScreenController controller = Get.find();
+    FrequentQuestion frequentQuestion = controller.items[widget.index];
+    _isExpanded = frequentQuestion.id.value != null &&
+        frequentQuestion.id.value == controller.expandedId;
+  }
+
   @override
   Widget build(BuildContext context) {
     FrequestQuestionsScreenController controller = Get.find();

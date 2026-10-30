@@ -182,6 +182,7 @@ class StringConstant {
   static const wrongQuestions = '$_terms.wrong-questions';
   static const youHaveToDownloadFirst = '$_terms.you-have-to-download-first';
   static const termIsExpired = '$_terms.term-is-expired';
+  static const contentUnavailable = '$_terms.content-unavailable';
   static const homework = '$_terms.homework';
   static const uploadHomework = '$_terms.upload-homework';
   static const chooseFile = '$_terms.choose-file';
