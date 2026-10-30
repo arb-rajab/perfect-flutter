@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App shortcuts (xml/shortcuts.xml). The app is Arabic only, like its Flutter strings. -->
+    <string name="shortcut_coupon_short">إضافة كرت</string>
+    <string name="shortcut_coupon_long">إضافة كرت جديد</string>
+    <string name="shortcut_faq_short">الأسئلة الشائعة</string>
+    <string name="shortcut_faq_long">الأسئلة الشائعة</string>
+    <string name="shortcut_contact_short">تواصل معنا</string>
+    <string name="shortcut_contact_long">تواصل معنا</string>
+
+    <!-- Shown to the user where Android lists what agents can do with the app (xml/app_metadata.xml). -->
+    <string name="app_functions_display_description">يتيح للمساعد مثل Gemini البحث في المحتوى الذي فعّلته والإجابة منه، وفتحه في التطبيق.</string>
+</resources>

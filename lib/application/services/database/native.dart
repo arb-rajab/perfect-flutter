@@ -12,7 +12,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqflite.dart';
 import 'package:share_plus/share_plus.dart';
 
-DatabaseService constructDb() {
+/// With [forAssistant] (the assistant's background engine), the database is
+/// only opened when the app already created and migrated it, so the two
+/// engines never create or migrate it at the same time.
+DatabaseService constructDb({bool forAssistant = false}) {
   if (MainController.testing) return DatabaseService(NativeDatabase.memory());
 
   var db = LazyDatabase(() async {
@@ -33,6 +36,18 @@ DatabaseService constructDb() {
         final escapedKey = encryptionKey.replaceAll("'", "''");
         database.execute("pragma key = '$escapedKey'");
         database.execute('select count(*) from sqlite_master');
+        // The UI and the assistant's background engine can both have the
+        // database open: wait for the other's lock instead of failing.
+        database.execute('pragma busy_timeout = 5000');
+        if (forAssistant) {
+          final version =
+              database.select('pragma user_version').single.columnAt(0);
+          if (version != DatabaseService.currentSchemaVersion) {
+            throw StateError(
+              'The app has not set up its database yet (version $version)',
+            );
+          }
+        }
       },
     );
   });

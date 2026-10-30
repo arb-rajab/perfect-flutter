@@ -28,8 +28,24 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>edu.perfect</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Content links perfect://<type>/<id> (DeepLinkTarget in Dart). -->
+				<string>perfect</string>
+			</array>
+		</dict>
+	</array>
+	<!-- app_links delivers every link to DeepLinkCoordinator; Flutter's own handler would
+	     push the same link to the router a second time, so it is off, as app_links asks. -->
 	<key>FlutterDeepLinkingEnabled</key>
-	<true/>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

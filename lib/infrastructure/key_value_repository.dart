@@ -13,6 +13,9 @@ class KeyValue {
     return Future(() => this);
   }
 
+  /// Re-reads the values, e.g. ones another Flutter engine wrote.
+  Future<void> reload() => _pref.reload();
+
   String? getString(String key, [String? defaultValue]) =>
       _pref.getString(key) ?? defaultValue;
 

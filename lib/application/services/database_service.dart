@@ -85,8 +85,11 @@ part 'database_service.g.dart'; // the generated code will be there
 class DatabaseService extends _$DatabaseService {
   DatabaseService(super.e);
 
+  /// Bump this when adding a migration.
+  static const int currentSchemaVersion = 44;
+
   @override
-  int get schemaVersion => 44;
+  int get schemaVersion => currentSchemaVersion;
 
   @override
   MigrationStrategy get migration {

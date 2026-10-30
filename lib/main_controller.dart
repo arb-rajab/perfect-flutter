@@ -1,6 +1,8 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/answer_service.dart';
+import 'package:beta/application/services/assistant_index_service.dart';
 import 'package:beta/application/services/assistant_search_service.dart';
 import 'package:beta/application/services/coupon_linked_to_term_service.dart';
 import 'package:beta/application/services/coupon_service.dart';
@@ -139,9 +141,15 @@ class MainController {
     PathService pathService = Get.put(PathService());
     PublicContentCacheService publicContentCacheService =
         Get.put(PublicContentCacheService(keyValue: keyValue));
-    Get.put(AssistantSearchService(
+    AssistantSearchService assistantSearchService = Get.put(
+        AssistantSearchService(
+            databaseService: databaseService,
+            publicContentCacheService: publicContentCacheService));
+    Get.put(ContentAccessService(databaseService: databaseService));
+    Get.put(AssistantIndexService(
+        searchService: assistantSearchService,
         databaseService: databaseService,
-        publicContentCacheService: publicContentCacheService));
+        keyValue: keyValue));
     Get.put(DeepLinkService(
         databaseService: databaseService,
         termService: Get.find(),
@@ -156,6 +164,23 @@ class MainController {
     if (!testing) {
       await paymentService.initialize();
     }
+  }
+
+  /// The services of the assistant's background engine (`assistantMain` in
+  /// main.dart): only what searching the content and checking links needs.
+  /// The native side registers just the plugins these use.
+  static Future<void> initAssistantServices() async {
+    KeyValue keyValue = Get.put(await KeyValue().initialise());
+    Get.put<DeviceRepositoryBase>(
+        await DeviceRepository().initialise(modelOnly: true));
+    Get.put(await PackageRepository().initialise());
+    DatabaseService databaseService =
+        Get.put(constructDb(forAssistant: true));
+    Get.put(AssistantSearchService(
+        databaseService: databaseService,
+        publicContentCacheService:
+            PublicContentCacheService(keyValue: keyValue)));
+    Get.put(ContentAccessService(databaseService: databaseService));
   }
 }
 

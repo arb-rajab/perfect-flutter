@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.devtools.ksp"
 }
 
 def localProperties = new Properties()
@@ -29,15 +30,17 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "edu.perfect"
-    compileSdkVersion flutter.compileSdkVersion
+    // AppFunctions (androidx.appfunctions) needs compileSdk 37.
+    compileSdkVersion Math.max(flutter.compileSdkVersion, 37)
     ndkVersion "29.0.14206865"
 
     compileOptions {
     // Flag to enable support for the new language APIs
     coreLibraryDesugaringEnabled true
-    // Sets Java compatibility to Java 8
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    // Java 11: androidx.appfunctions targets it, and Kotlin cannot inline its
+    // code into Java 8 bytecode.
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
     }
 
     sourceSets {
@@ -96,12 +99,17 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
 
 flutter {
     source '../..'
+}
+
+ksp {
+    // Lets the AppFunctions compiler collect the functions into one service.
+    arg("appfunctions:aggregateAppFunctions", "true")
 }
 
 dependencies {
@@ -112,4 +120,9 @@ dependencies {
     //Temporare for flutter local notifications
     implementation 'androidx.window:window:1.0.0'
     implementation 'androidx.window:window-java:1.0.0'
+
+    // Assistant: AppFunctions for Gemini (PerfectAppFunctions.kt, AssistantBridge.kt).
+    implementation "androidx.appfunctions:appfunctions:1.0.0-beta01"
+    ksp "androidx.appfunctions:appfunctions-compiler:1.0.0-beta01"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
 }

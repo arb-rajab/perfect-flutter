@@ -9,6 +9,7 @@ import 'package:beta/infrastructure/url_launcher_repository.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/flashcards/flashcards_screen.dart';
+import 'package:beta/presentation/frequent_questions/frequent_questions_screen.dart';
 import 'package:beta/presentation/home/home_screen.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
@@ -405,5 +406,76 @@ void main() {
         ]);
       },
     );
+
+    test('opens the sections of the app shortcuts over home', () async {
+      createCoordinator(SplashScreen.route);
+
+      await coordinator.handle(Uri.parse('perfect://coupon'));
+      now = now.add(DeepLinkCoordinator.duplicateWindow);
+      await coordinator.handle(Uri.parse('perfect://FAQ/'));
+
+      expect(navigator.calls, [
+        'go ${HomeScreen.route}',
+        'push ${EnterCouponScreen.route}',
+        'push ${FrequentQuestionsScreen.route}',
+      ]);
+    });
+
+    test('opens home for a section link with a path', () async {
+      createCoordinator('/settings');
+
+      await coordinator.handle(Uri.parse('perfect://contact/me'));
+
+      expect(navigator.calls, ['go ${HomeScreen.route}']);
+    });
+  });
+
+  group('ContentAccessService', () {
+    late ContentAccessService accessService;
+
+    setUp(() => accessService = Get.find());
+
+    Future<DeepLinkOutcome> check(AssistantContentType type, int id) =>
+        accessService.check(DeepLinkTarget(type, id));
+
+    test('reports each kind of access without navigating', () async {
+      expect(
+        await check(
+          AssistantContentType.question,
+          AssistantFixtures.unlockedQuestionId,
+        ),
+        DeepLinkOutcome.opened,
+      );
+      // No coupon covers term 3; the coupon of term 4 expired.
+      expect(
+        await check(AssistantContentType.question, 2),
+        DeepLinkOutcome.expired,
+      );
+      expect(
+        await check(AssistantContentType.question, 3),
+        DeepLinkOutcome.expired,
+      );
+      expect(
+        await check(AssistantContentType.question, 4),
+        DeepLinkOutcome.locked,
+      );
+      expect(
+        await check(
+          AssistantContentType.flashcard,
+          AssistantFixtures.lockedFlashcardId,
+        ),
+        DeepLinkOutcome.expired,
+      );
+      expect(
+        await check(AssistantContentType.term, 999),
+        DeepLinkOutcome.unavailable,
+      );
+      expect(
+        await check(AssistantContentType.question, 999),
+        DeepLinkOutcome.unavailable,
+      );
+      expect(await check(AssistantContentType.faq, 1), DeepLinkOutcome.opened);
+      expect(Get.isRegistered<QuestionsScreenArgument>(), isFalse);
+    });
   });
 }

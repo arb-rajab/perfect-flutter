@@ -21,4 +21,6 @@ class KeyValueConstant {
 
   static const String cachedFrequentQuestions = 'cachedFrequentQuestions';
   static const String cachedNews = 'cachedNews';
+
+  static const String assistantIndexFingerprint = 'assistantIndexFingerprint';
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Describes Perfect's AppFunctions (PerfectAppFunctions.kt) to agents such as Gemini. -->
+<AppFunctionAppMetadata xmlns:appfn="http://schemas.android.com/apk/androidx.appfunctions"
+    appfn:instructions="Perfect is a study app with questions and their correct answers, flashcards, lessons, ebooks, FAQs and news. Most content is in Arabic and is only available after the user unlocks it with a coupon.
+Operational Patterns:
+  - 'searchContent' returns answer text for a question; 'openContent' opens a result from it using its link.
+  - Pass the user's question or its key words as the query, in the language of the content.
+Constraints:
+  - Only unlocked content is searched. When 'searchContent' returns matched=false, Perfect has no answer for the query.
+  - 'openContent' accepts only links returned by 'searchContent'."
+    appfn:displayDescription="@string/app_functions_display_description" />

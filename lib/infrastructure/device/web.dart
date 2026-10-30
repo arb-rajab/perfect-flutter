@@ -17,7 +17,7 @@ class DeviceRepository extends DeviceRepositoryBase {
   String getModel() => _webBrowserInfo.browserName.name;
 
   @override
-  Future<DeviceRepositoryBase> initialise() async {
+  Future<DeviceRepositoryBase> initialise({bool modelOnly = false}) async {
     _webBrowserInfo = await deviceInfoPlugin.webBrowserInfo;
     KeyValue keyValue = Get.find();
     if (keyValue.getString(KeyValueConstant.webImei) == null) {

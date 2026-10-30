@@ -203,6 +203,17 @@ class TermService {
       "(t.enabled=1 and not exists (select 1 from termTrees tr join terms a on a.id=tr.parentTermId "
       "where tr.termId=t.id and a.enabled!=1))";
 
+  /// SQL expression on `terms t`: when the access [unExpiredTermCondition]
+  /// grants ends (`YYYY-MM-DD HH:MM:SS`, UTC), or null when it does not end:
+  /// the term is free or a coupon that covers it is not activated yet. Only
+  /// meaningful for unlocked terms.
+  static const String accessExpiryExpression =
+      "(case when t.free=1 or exists (select 1 from termTrees tt join couponsLinkedToTerms cl on cl.termId=tt.parentTermId "
+      "join coupons c on c.id=cl.couponId where tt.termId=t.id and c.activationDate is null) then null "
+      "else (select max(DATETIME(c.activationDate,'+'||c.expirationDays||' days')) from termTrees tt "
+      "join couponsLinkedToTerms cl on cl.termId=tt.parentTermId join coupons c on c.id=cl.couponId "
+      "where tt.termId=t.id and c.activationDate!='') end)";
+
   /// SQL selecting the ids of the terms the user has unlocked.
   static const String unlockedTermIdsQuery =
       "select t.id from terms t where $enabledTermCondition and $unExpiredTermCondition";
