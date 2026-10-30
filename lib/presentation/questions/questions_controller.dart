@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:beta/application/services/answer_property_service.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/deep_link_service.dart';
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/question_tag_property_service.dart';
@@ -32,6 +33,7 @@ import 'package:beta/presentation/questions/questions_list.dart';
 import 'package:beta/presentation/questions/questions_screen.dart';
 import 'package:beta/presentation/questions_report/questions_report_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:drift/drift.dart' show Variable;
 import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -46,6 +48,7 @@ class QuestionsController {
       'select q.*,t.name as parentTermName,(select count(*) from questions where id <q.id and parentTermId=q.parentTermId) as indexInTerm,(select count(*) from questionMedias where parentQuestionId =q.id) as numberOfMedias,case when q.note != \'\''
       ' then 1 else 0 end as hasNote from questions q join terms t on t.id = q.parentTermId and t.enabled=1 where ';
   late String query;
+  List<Variable> queryVariables = [];
 
   bool deepLinked = false;
   bool loading = true;
@@ -91,11 +94,17 @@ class QuestionsController {
   }
 
   Future _getUUIDData() async {
+    final resolution = await Get.find<DeepLinkService>()
+        .resolveQuestionUuid(questionUUID!);
+    if (resolution.outcome != DeepLinkOutcome.opened) {
+      await Get.find<DeepLinkCoordinator>().showDenied(resolution);
+      return;
+    }
     termService.getTermByQuestionUuid(questionUUID!).then((term) {
       Get.delete<QuestionsScreenArgument>();
       questionsScreenArgument = Get.put(QuestionsScreenArgument(
           query:
-              "q.parentTermId in (select parentTermId from questions where uuid = '$questionUUID') order by id asc",
+              'q.parentTermId = ${term.id} order by id asc',
           source: QuestionScreenSource.term,
           sourceId: Id(term.id),
           resourceTermId: Id(term.id),
@@ -359,7 +368,9 @@ class QuestionsController {
 
   Future _configureQuestions() async {
     QuestionService questionService = Get.find();
-    questions = await questionService.getQuestionsFromQuery(query);
+    questions = await questionService.getQuestionsFromQuery(
+        query,
+        variables: queryVariables);
     for (QuestionData question in questions) {
       await question.getData();
     }
@@ -581,9 +592,9 @@ class QuestionsController {
         return;
       }
       _searchDebounceTimer = Timer(const Duration(milliseconds: 400), () {
-        String escapedText = text.replaceAll("'", "''");
+        queryVariables = [Variable.withString('%$text%')];
         query =
-            "$preQuery(q.title like '%$escapedText%' or q.id in (select parentQuestionId from answers where title like '%$escapedText%')) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument!.sourceId!.value} and depth>0) order by q.id asc ";
+            "$preQuery(q.title like ?1 or q.id in (select parentQuestionId from answers where title like ?1)) and q.parentTermId in (select termId from termTrees where parentTermId = ${questionsScreenArgument!.sourceId!.value} and depth>0) order by q.id asc ";
         _configureQuestions();
       });
       return;

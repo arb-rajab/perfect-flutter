@@ -5,6 +5,7 @@ import 'package:beta/configs/links.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/deep_link_target.dart';
+import 'package:beta/domain/question_uuid.dart';
 import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
@@ -159,6 +160,25 @@ class DeepLinkService {
           ),
         );
     }
+  }
+
+  /// Resolves a `/q/<uuid>` share link. A uuid that is not on this device is
+  /// let through so the questions screen can download it, and checks again.
+  Future<DeepLinkResolution> resolveQuestionUuid(String uuid) async {
+    if (!isQuestionUuid(uuid)) {
+      return const DeepLinkResolution(DeepLinkOutcome.unavailable);
+    }
+    final question = await (databaseService.select(
+      databaseService.questions,
+    )..where((tbl) => tbl.uuid.equals(uuid))).getSingleOrNull();
+    final denied = question == null
+        ? null
+        : await _access.checkTerm(question.parentTermId);
+    return denied ??
+        DeepLinkResolution(
+          DeepLinkOutcome.opened,
+          QuestionsScreen.uuidRoute.replaceFirst(':uuid', uuid),
+        );
   }
 
   Future<DeepLinkResolution> _resolveTerm(
@@ -387,14 +407,29 @@ class DeepLinkCoordinator {
         await _openOverHome(section);
         return;
       }
-      // Other app links (e.g. /q/<uuid> question shares) keep their route.
+      final questionUuid = _questionUuid(uri);
+      if (questionUuid != null) {
+        await present(await deepLinkService.resolveQuestionUuid(questionUuid));
+        return;
+      }
+      // Other app links keep their route.
       final isAppRoute =
           uri.scheme.toLowerCase() != DeepLinkTarget.scheme &&
           uri.path.isNotEmpty;
       await navigator.go(isAppRoute ? uri.path : HomeScreen.route);
       return;
     }
-    final resolution = await deepLinkService.resolve(target);
+    await present(await deepLinkService.resolve(target));
+  }
+
+  /// Opens a link that cannot be opened (the questions screen found out
+  /// after it was shown) from the home screen.
+  Future<void> showDenied(DeepLinkResolution resolution) async {
+    await navigator.go(HomeScreen.route);
+    await present(resolution);
+  }
+
+  Future<void> present(DeepLinkResolution resolution) async {
     await _openOverHome(resolution.location);
     switch (resolution.outcome) {
       case DeepLinkOutcome.opened:
@@ -422,6 +457,15 @@ class DeepLinkCoordinator {
       await navigator.go(HomeScreen.route);
     }
     if (location != null) await navigator.push(location);
+  }
+
+  /// The uuid of a `/q/<uuid>` question share link; null for other links.
+  static String? _questionUuid(Uri uri) {
+    final segments = uri.pathSegments;
+    if (segments.length != 2 || segments[0] != 'q') return null;
+    final scheme = uri.scheme.toLowerCase();
+    if (scheme == DeepLinkTarget.scheme) return null;
+    return segments[1];
   }
 
   static String? _sectionRoute(Uri uri) {

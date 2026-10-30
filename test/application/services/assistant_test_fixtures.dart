@@ -48,7 +48,11 @@ class AssistantFixtures {
 
   static const int unlockedQuestionId = 1;
   static const int unlockedQuestionWithoutUuidId = 6;
-  static const String unlockedQuestionUuid = 'q-uuid-1';
+  static const String unlockedQuestionUuid = '00000000-0000-4000-8000-000000000001';
+  static const String expiredQuestionUuid =
+      '00000000-0000-4000-8000-000000000003';
+  static const String disabledQuestionUuid =
+      '00000000-0000-4000-8000-000000000004';
   static const Set<int> lockedQuestionIds = {2, 3, 4, 5};
 
   static const int unlockedFlashcardId = 1;
@@ -148,12 +152,12 @@ class AssistantFixtures {
         'ما هي وظيفة <b>الميتوكوندريا</b>؟',
         unlockedQuestionsTermId,
       ),
-      question(2, 'q-uuid-2', 'ما هي وظيفة الميتوكوندريا؟', noCouponTermId),
-      question(3, 'q-uuid-3', 'ما هي وظيفة الميتوكوندريا؟', expiredTermId),
-      question(4, 'q-uuid-4', 'ما هي وظيفة الميتوكوندريا؟', disabledTermId),
+      question(2, '00000000-0000-4000-8000-000000000002', 'ما هي وظيفة الميتوكوندريا؟', noCouponTermId),
+      question(3, '00000000-0000-4000-8000-000000000003', 'ما هي وظيفة الميتوكوندريا؟', expiredTermId),
+      question(4, '00000000-0000-4000-8000-000000000004', 'ما هي وظيفة الميتوكوندريا؟', disabledTermId),
       question(
         5,
-        'q-uuid-5',
+        '00000000-0000-4000-8000-000000000005',
         'ما هي وظيفة الميتوكوندريا؟',
         disabledAncestorTermId,
       ),
