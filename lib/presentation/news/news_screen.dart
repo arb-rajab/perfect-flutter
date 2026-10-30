@@ -5,6 +5,7 @@ import 'package:beta/presentation/widgets/loading_widget.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:beta/presentation/widgets/html_plain_text.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:get/instance_manager.dart';
@@ -53,12 +54,17 @@ class _NewsScreenState extends State<NewsScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: <Widget>[
-                      Text(
-                        news.title.value.toString(),
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
+                      Semantics(
+                        label: news.title.value.toString(),
+                        header: true,
+                        excludeSemantics: true,
+                        child: Text(
+                          news.title.value.toString(),
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10.0),
@@ -71,12 +77,16 @@ class _NewsScreenState extends State<NewsScreen> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      Html(
+                      Semantics(
+                        label: htmlToPlainText(news.content.value!),
+                        excludeSemantics: true,
+                        child: Html(
                           data: news.content.value!,
                           extensions: const [
                             // for supporting tables
                             TableHtmlExtension(),
                           ],
+                        ),
                       ),
                       const SizedBox(height: 10.0),
                     ],

@@ -1,3 +1,5 @@
+import 'package:beta/constants/other_constants.dart';
+
 class _ScreenshotRequest {
   final Object owner;
   bool prevent;
@@ -9,7 +11,13 @@ class _ScreenshotRequest {
 /// was revealed would otherwise undo that screen's setting. Instead every
 /// screen registers its requirement here and the topmost (most recently
 /// registered) screen decides.
+///
+/// When [enabled] is false (the default is [kScreenCaptureProtectionEnabled])
+/// no requirement is recorded and the platform is never asked to block capture.
 abstract class ScreenshotRepositoryBase {
+  ScreenshotRepositoryBase({this.enabled = kScreenCaptureProtectionEnabled});
+
+  final bool enabled;
   final List<_ScreenshotRequest> _requests = [];
   bool? _applied;
 
@@ -21,6 +29,7 @@ abstract class ScreenshotRepositoryBase {
   /// updates its requirement in place if it is already registered (so a
   /// screen finishing an async load doesn't jump above screens pushed since).
   Future setScreenshotPolicy(Object owner, {required bool prevent}) {
+    if (!enabled) return Future.value();
     final index = _requests.indexWhere((r) => identical(r.owner, owner));
     if (index == -1) {
       _requests.add(_ScreenshotRequest(owner, prevent));
@@ -32,6 +41,7 @@ abstract class ScreenshotRepositoryBase {
 
   /// Removes [owner]'s requirement; the screen now on top decides again.
   Future releaseScreenshotPolicy(Object owner) {
+    if (!enabled) return Future.value();
     _requests.removeWhere((r) => identical(r.owner, owner));
     return _apply();
   }

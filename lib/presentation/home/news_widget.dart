@@ -17,7 +17,11 @@ class NewsWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => controller.moveToNewsScreen(news),
-      child: Card(
+      child: Semantics(
+        label: '${news.title.value!}, $formattedDate',
+        button: true,
+        excludeSemantics: true,
+        child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         elevation: 3,
         child: Padding(
@@ -56,6 +60,7 @@ class NewsWidget extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

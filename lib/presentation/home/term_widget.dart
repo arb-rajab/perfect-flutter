@@ -35,7 +35,11 @@ class _TermWidgetState extends State<TermWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (outerNote.isNotEmpty) Text(outerNote),
+        if (outerNote.isNotEmpty)
+          Semantics(
+              label: outerNote,
+              excludeSemantics: true,
+              child: Text(outerNote)),
         if (lastUpdated != null)
           Text(
             StringConstant.lastUpdated
@@ -83,7 +87,11 @@ class _TermWidgetState extends State<TermWidget> {
         children: [
           ListTile(
             leading: TermLeadingWidget(termData),
-            title: Text(termData.term.name),
+            title: Semantics(
+                label: termData.term.name,
+                header: true,
+                excludeSemantics: true,
+                child: Text(termData.term.name)),
             subtitle: _subtitle(context),
             trailing: termData.term.enabled == 1
                 ? const Icon(Icons.navigate_next)

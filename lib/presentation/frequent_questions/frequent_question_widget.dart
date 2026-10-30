@@ -29,8 +29,15 @@ class _FrequentQuestionWidgetState extends State<FrequentQuestionWidget> {
           children: [
             ExpansionPanel(
                 isExpanded: _isExpanded,
-                headerBuilder: (_, __) => Text(frequentQuestion.title.value!),
-                body: Text(frequentQuestion.description.value!))
+                headerBuilder: (_, __) => Semantics(
+                    label: frequentQuestion.title.value!,
+                    header: true,
+                    excludeSemantics: true,
+                    child: Text(frequentQuestion.title.value!)),
+                body: Semantics(
+                    label: frequentQuestion.description.value!,
+                    excludeSemantics: true,
+                    child: Text(frequentQuestion.description.value!)))
           ],
         ),
       ),

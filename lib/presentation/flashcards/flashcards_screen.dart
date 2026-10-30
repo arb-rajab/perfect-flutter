@@ -3,6 +3,7 @@ import 'package:beta/presentation/flashcards/flashcards_screen_controller.dart';
 import 'package:beta/presentation/widgets/screen_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:beta/presentation/widgets/html_plain_text.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/instance_manager.dart';
 
@@ -83,16 +84,28 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                                 ? Card(
                                     key: ValueKey<bool>(isFront),
                                     child: Center(
-                                        child: Text(
-                                            flashcards[index].flashcard.head)),
+                                        child: Semantics(
+                                            label: flashcards[index]
+                                                .flashcard
+                                                .head,
+                                            excludeSemantics: true,
+                                            child: Text(flashcards[index]
+                                                .flashcard
+                                                .head))),
                                   )
                                 : Card(
                                     key: ValueKey<bool>(isFront),
                                     child: Center(
-                                        child: Html(
-                                            data: flashcards[index]
-                                                .flashcard
-                                                .tail)),
+                                        child: Semantics(
+                                            label: htmlToPlainText(
+                                                flashcards[index]
+                                                    .flashcard
+                                                    .tail),
+                                            excludeSemantics: true,
+                                            child: Html(
+                                                data: flashcards[index]
+                                                    .flashcard
+                                                    .tail))),
                                   ),
                           ),
                         );

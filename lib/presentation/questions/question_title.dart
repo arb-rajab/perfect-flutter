@@ -11,16 +11,23 @@ class QuestionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (questionData.question.specialCharacter == SpecialCharacter.none) {
-      return Text(questionData.getTranslatableTitle(),
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(height: lineSpacing));
+      final title = questionData.getTranslatableTitle();
+      return Semantics(
+          label: title,
+          excludeSemantics: true,
+          child: Text(title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(height: lineSpacing)));
     } else if (questionData.question.specialCharacter ==
         SpecialCharacter.math) {
-      return MathWidget(
-          data: questionData
-              .getMultiOrientationString(questionData.getTranslatableTitle()));
+      final title = questionData.getTranslatableTitle();
+      return Semantics(
+          label: title,
+          excludeSemantics: true,
+          child: MathWidget(
+              data: questionData.getMultiOrientationString(title)));
       // return TeX2SVG(
       //     math: questionData
       //         .getMultiOrientationString(questionData.getTranslatableTitle()));

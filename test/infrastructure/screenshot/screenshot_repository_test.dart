@@ -1,7 +1,10 @@
 import 'package:beta/abstract/screenshot_repository_base.dart';
+import 'package:beta/constants/other_constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class RecordingScreenshotRepository extends ScreenshotRepositoryBase {
+  RecordingScreenshotRepository({super.enabled = true});
+
   final List<bool> calls = [];
 
   bool? get platformPrevented => calls.isEmpty ? null : calls.last;
@@ -86,5 +89,23 @@ void main() {
 
   test('screenshots are allowed when no screen requires protection', () {
     expect(repository.screenshotsPrevented, false);
+  });
+
+  group('protection disabled', () {
+    test('is the app default', () {
+      expect(kScreenCaptureProtectionEnabled, false);
+    });
+
+    test('policies never reach the platform', () async {
+      final disabled = RecordingScreenshotRepository(enabled: false);
+
+      await disabled.setScreenshotPolicy(a, prevent: true);
+      await disabled.setScreenshotPolicy(b, prevent: true);
+      await disabled.releaseScreenshotPolicy(b);
+      await disabled.releaseScreenshotPolicy(a);
+
+      expect(disabled.calls, isEmpty);
+      expect(disabled.screenshotsPrevented, false);
+    });
   });
 }

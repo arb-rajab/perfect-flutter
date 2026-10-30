@@ -20,6 +20,8 @@ import 'package:go_router/go_router.dart';
 import '../../common/tests.dart';
 
 class RecordingScreenshotRepository extends ScreenshotRepository {
+  RecordingScreenshotRepository() : super(enabled: true);
+
   final List<bool> calls = [];
 
   bool? get platformPrevented => calls.isEmpty ? null : calls.last;
