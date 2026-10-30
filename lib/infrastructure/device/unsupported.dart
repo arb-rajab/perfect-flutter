@@ -11,5 +11,6 @@ class DeviceRepository extends DeviceRepositoryBase {
   String getModel() => throw UnimplementedError();
 
   @override
-  Future<DeviceRepositoryBase> initialise() => throw UnimplementedError();
+  Future<DeviceRepositoryBase> initialise({bool modelOnly = false}) =>
+      throw UnimplementedError();
 }

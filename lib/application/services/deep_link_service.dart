@@ -9,6 +9,7 @@ import 'package:beta/domain/term_data.dart';
 import 'package:beta/domain/value/id.dart';
 import 'package:beta/domain/value/title.dart' as t;
 import 'package:beta/infrastructure/url_launcher_repository.dart';
+import 'package:beta/presentation/contact_us/contact_us_screen.dart';
 import 'package:beta/presentation/ebook/ebook_screen.dart';
 import 'package:beta/presentation/enter_coupon/enter_coupon_screen.dart';
 import 'package:beta/presentation/flashcards/flashcards_screen.dart';
@@ -53,6 +54,69 @@ class DeepLinkResolution {
   String toString() => 'DeepLinkResolution($outcome, $location)';
 }
 
+/// Checks whether content can be opened, without navigating, so the
+/// assistant can check a link in its background engine too.
+class ContentAccessService {
+  final DatabaseService databaseService;
+
+  ContentAccessService({required this.databaseService});
+
+  /// Whether [target] can be opened now. Unlike [DeepLinkService.resolve],
+  /// it does not check that the content was downloaded.
+  Future<DeepLinkOutcome> check(DeepLinkTarget target) async {
+    final int? termId;
+    switch (target.type) {
+      case AssistantContentType.term:
+      case AssistantContentType.ebook:
+        termId = target.id;
+      case AssistantContentType.question:
+        termId = await _parentTermId('questions', target.id);
+      case AssistantContentType.flashcard:
+        termId = await _parentTermId('flashcards', target.id);
+      case AssistantContentType.faq:
+      case AssistantContentType.news:
+        // Public content.
+        return DeepLinkOutcome.opened;
+    }
+    if (termId == null) return DeepLinkOutcome.unavailable;
+    return (await checkTerm(termId))?.outcome ?? DeepLinkOutcome.opened;
+  }
+
+  /// Returns why [termId] cannot be opened, or null when it is unlocked.
+  Future<DeepLinkResolution?> checkTerm(int termId) async {
+    final row = await databaseService
+        .customSelect(
+          'select ${TermService.enabledTermCondition} as enabled, '
+          '${TermService.unExpiredTermCondition} as unExpired '
+          'from terms t where t.id=?',
+          variables: [Variable.withInt(termId)],
+        )
+        .getSingleOrNull();
+    if (row == null) {
+      return const DeepLinkResolution(DeepLinkOutcome.unavailable);
+    }
+    if (row.read<int>('enabled') != 1) {
+      return const DeepLinkResolution(DeepLinkOutcome.locked);
+    }
+    if (row.read<int>('unExpired') != 1) {
+      return const DeepLinkResolution(
+        DeepLinkOutcome.expired,
+        EnterCouponScreen.route,
+      );
+    }
+    return null;
+  }
+
+  Future<int?> _parentTermId(String table, int id) async =>
+      (await databaseService
+              .customSelect(
+                'select parentTermId from $table where id=?',
+                variables: [Variable.withInt(id)],
+              )
+              .getSingleOrNull())
+          ?.read<int>('parentTermId');
+}
+
 /// Resolves content deep links to routes, checking access at the time the
 /// link is opened: content found by a search can be locked by then.
 ///
@@ -62,12 +126,13 @@ class DeepLinkService {
   final DatabaseService databaseService;
   final TermService termService;
   final PathService pathService;
+  final ContentAccessService _access;
 
   DeepLinkService({
     required this.databaseService,
     required this.termService,
     required this.pathService,
-  });
+  }) : _access = ContentAccessService(databaseService: databaseService);
 
   Future<DeepLinkResolution> resolve(DeepLinkTarget target) {
     switch (target.type) {
@@ -96,36 +161,11 @@ class DeepLinkService {
     }
   }
 
-  /// Returns why [termId] cannot be opened, or null when it is unlocked.
-  Future<DeepLinkResolution?> _checkAccess(int termId) async {
-    final row = await databaseService
-        .customSelect(
-          'select ${TermService.enabledTermCondition} as enabled, '
-          '${TermService.unExpiredTermCondition} as unExpired '
-          'from terms t where t.id=?',
-          variables: [Variable.withInt(termId)],
-        )
-        .getSingleOrNull();
-    if (row == null) {
-      return const DeepLinkResolution(DeepLinkOutcome.unavailable);
-    }
-    if (row.read<int>('enabled') != 1) {
-      return const DeepLinkResolution(DeepLinkOutcome.locked);
-    }
-    if (row.read<int>('unExpired') != 1) {
-      return const DeepLinkResolution(
-        DeepLinkOutcome.expired,
-        EnterCouponScreen.route,
-      );
-    }
-    return null;
-  }
-
   Future<DeepLinkResolution> _resolveTerm(
     int termId, {
     int? requiredType,
   }) async {
-    final denied = await _checkAccess(termId);
+    final denied = await _access.checkTerm(termId);
     if (denied != null) return denied;
     final termData = await termService.getTermDataById(termId);
     if (termData == null ||
@@ -241,7 +281,7 @@ class DeepLinkService {
     if (question == null) {
       return const DeepLinkResolution(DeepLinkOutcome.unavailable);
     }
-    final denied = await _checkAccess(question.parentTermId);
+    final denied = await _access.checkTerm(question.parentTermId);
     if (denied != null) return denied;
     if (question.uuid.isNotEmpty) {
       // The uuid route opens the question's term scrolled to the question.
@@ -271,7 +311,7 @@ class DeepLinkService {
     if (flashcard == null) {
       return const DeepLinkResolution(DeepLinkOutcome.unavailable);
     }
-    final denied = await _checkAccess(flashcard.parentTermId);
+    final denied = await _access.checkTerm(flashcard.parentTermId);
     if (denied != null) return denied;
     final termData = await termService.getTermDataById(flashcard.parentTermId);
     if (termData == null) {
@@ -308,6 +348,14 @@ class DeepLinkCoordinator {
   /// opened once.
   static const Duration duplicateWindow = Duration(seconds: 2);
 
+  /// Routes of the `perfect://<section>` links that the Android app
+  /// shortcuts open (android/app/src/main/res/xml/shortcuts.xml).
+  static const Map<String, String> sectionRoutes = {
+    'coupon': EnterCouponScreen.route,
+    'faq': FrequentQuestionsScreen.route,
+    'contact': ContactUsScreen.route,
+  };
+
   final DeepLinkService deepLinkService;
   final DeepLinkNavigator navigator;
   final DateTime Function() _now;
@@ -334,6 +382,11 @@ class DeepLinkCoordinator {
     await navigator.ready;
     final target = DeepLinkTarget.parse(uri);
     if (target == null) {
+      final section = _sectionRoute(uri);
+      if (section != null) {
+        await _openOverHome(section);
+        return;
+      }
       // Other app links (e.g. /q/<uuid> question shares) keep their route.
       final isAppRoute =
           uri.scheme.toLowerCase() != DeepLinkTarget.scheme &&
@@ -342,14 +395,7 @@ class DeepLinkCoordinator {
       return;
     }
     final resolution = await deepLinkService.resolve(target);
-    // On cold start the splash screen is showing; put the home screen under
-    // the content so that back leads into the app instead of out of it.
-    if (navigator.currentLocation == SplashScreen.route) {
-      await navigator.go(HomeScreen.route);
-    }
-    if (resolution.location != null) {
-      await navigator.push(resolution.location!);
-    }
+    await _openOverHome(resolution.location);
     switch (resolution.outcome) {
       case DeepLinkOutcome.opened:
         break;
@@ -366,5 +412,21 @@ class DeepLinkCoordinator {
       case DeepLinkOutcome.notDownloaded:
         await navigator.showMessage(StringConstant.youHaveToDownloadFirst);
     }
+  }
+
+  /// Opens [location], if any, on top of the current screen.
+  Future<void> _openOverHome(String? location) async {
+    // On cold start the splash screen is showing; put the home screen under
+    // the content so that back leads into the app instead of out of it.
+    if (navigator.currentLocation == SplashScreen.route) {
+      await navigator.go(HomeScreen.route);
+    }
+    if (location != null) await navigator.push(location);
+  }
+
+  static String? _sectionRoute(Uri uri) {
+    if (uri.scheme.toLowerCase() != DeepLinkTarget.scheme) return null;
+    if (uri.pathSegments.any((s) => s.isNotEmpty)) return null;
+    return sectionRoutes[uri.host.toLowerCase()];
   }
 }

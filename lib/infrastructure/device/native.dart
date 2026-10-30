@@ -10,7 +10,7 @@ class DeviceRepository extends DeviceRepositoryBase {
   late AndroidDeviceInfo _androidDeviceInfo;
   late IosDeviceInfo _iosDeviceInfo;
   @override
-  Future<DeviceRepositoryBase> initialise() async {
+  Future<DeviceRepositoryBase> initialise({bool modelOnly = false}) async {
     // if (MainController.testing) WidgetsFlutterBinding.ensureInitialized();
     if (Platform.isAndroid) {
       _androidDeviceInfo = await deviceInfoPlugin.androidInfo;
@@ -19,6 +19,7 @@ class DeviceRepository extends DeviceRepositoryBase {
     } else {
       if (!MainController.testing) throw UnimplementedError();
     }
+    if (modelOnly) return this;
     if (Platform.isAndroid) {
       // ime1 = await UniqueIdentifier.serial ?? '';
       ime1 = await const AndroidId().getId() ?? '';

@@ -23,6 +23,7 @@ import 'package:drift/drift.dart';
 class AssistantSearchService {
   static const int defaultLimit = 10;
   static const int snippetLength = 160;
+  static const int answerLength = 800;
 
   /// Rows fetched per content type before ranking.
   static const int _candidatesPerType = 200;
@@ -68,9 +69,15 @@ class AssistantSearchService {
     if (tokens.isEmpty || limit <= 0) return [];
 
     final candidates = [
-      ...await _searchTerms(tokens, normalizedQuery),
-      ...await _searchQuestions(tokens, normalizedQuery),
-      ...await _searchFlashcards(tokens, normalizedQuery),
+      ...await _searchTerms(tokens: tokens, normalizedQuery: normalizedQuery),
+      ...await _searchQuestions(
+        tokens: tokens,
+        normalizedQuery: normalizedQuery,
+      ),
+      ...await _searchFlashcards(
+        tokens: tokens,
+        normalizedQuery: normalizedQuery,
+      ),
       ..._searchFrequentQuestions(),
       ..._searchNews(),
     ];
@@ -79,15 +86,7 @@ class AssistantSearchService {
     for (final candidate in candidates) {
       final score = _score(candidate, normalizedQuery, tokens);
       if (score == null) continue;
-      results.add(
-        AssistantSearchResult(
-          type: candidate.type,
-          id: candidate.id,
-          title: candidate.title,
-          snippet: _snippet(candidate, tokens),
-          score: score,
-        ),
-      );
+      results.add(_result(candidate, tokens, score));
     }
     results.sort((a, b) {
       final byScore = b.score.compareTo(a.score);
@@ -98,10 +97,69 @@ class AssistantSearchService {
     return results.take(limit).toList();
   }
 
-  Future<List<_Candidate>> _searchTerms(
-    List<String> tokens,
-    String normalizedQuery,
+  /// The results for [targets] that the user can open now, in the order of
+  /// [targets]. Lets the assistant look results up again by their deep link.
+  Future<List<AssistantSearchResult>> lookup(
+    Iterable<DeepLinkTarget> targets,
   ) async {
+    final results = <AssistantSearchResult>[];
+    for (final target in targets) {
+      final candidates = switch (target.type) {
+        AssistantContentType.term ||
+        AssistantContentType.ebook => await _searchTerms(id: target.id),
+        AssistantContentType.question => await _searchQuestions(id: target.id),
+        AssistantContentType.flashcard => await _searchFlashcards(
+          id: target.id,
+        ),
+        AssistantContentType.faq => _searchFrequentQuestions(),
+        AssistantContentType.news => _searchNews(),
+      };
+      results.addAll(
+        candidates
+            .where((e) => e.type == target.type && e.id == target.id)
+            .map((e) => _result(e, const [], 0)),
+      );
+    }
+    return results;
+  }
+
+  /// Up to [limit] items the user can open, for the device's search index:
+  /// terms and ebooks first, then FAQs, flashcards and questions. News is
+  /// left out because it goes stale.
+  Future<List<AssistantSearchResult>> listUnlocked({required int limit}) async {
+    final results = <AssistantSearchResult>[];
+    void add(Iterable<_Candidate> candidates) => results.addAll(
+      candidates
+          .take(limit - results.length)
+          .map((e) => _result(e, const [], 0)),
+    );
+    add(await _searchTerms(limit: limit));
+    add(_searchFrequentQuestions());
+    add(await _searchFlashcards(limit: limit - results.length));
+    add(await _searchQuestions(limit: limit - results.length));
+    return results;
+  }
+
+  AssistantSearchResult _result(
+    _Candidate candidate,
+    List<String> tokens,
+    double score,
+  ) => AssistantSearchResult(
+    type: candidate.type,
+    id: candidate.id,
+    title: candidate.title,
+    snippet: _excerpt(candidate, tokens, snippetLength),
+    answer: _excerpt(candidate, tokens, answerLength),
+    termId: candidate.termId,
+    score: score,
+  );
+
+  Future<List<_Candidate>> _searchTerms({
+    List<String> tokens = const [],
+    String normalizedQuery = '',
+    int? id,
+    int limit = _candidatesPerType,
+  }) async {
     final hasContent = _openableTermContentTables.entries
         .map(
           (e) =>
@@ -110,12 +168,15 @@ class AssistantSearchService {
         .join(' or ');
     final rows = await _select(
       rawQuery:
-          "select t.id as id, t.type as type, coalesce(t.name, '') as title, "
+          "select t.id as id, t.id as termId, t.type as type, "
+          "coalesce(t.name, '') as title, "
           "coalesce(t.text, '') || ' ' || coalesce(t.outerNote, '') as body, "
           "'' as answer "
-          "from terms t where t.id in (select id from unlockedTerms) and ($hasContent)",
+          "from terms t where t.id in (select id from unlockedTerms) and ($hasContent)"
+          "${id == null ? '' : ' and t.id=$id'}",
       tokens: tokens,
       normalizedQuery: normalizedQuery,
+      limit: limit,
     );
     return rows
         .map(
@@ -124,6 +185,7 @@ class AssistantSearchService {
                 ? AssistantContentType.ebook
                 : AssistantContentType.term,
             id: row.read<int>('id'),
+            termId: row.read<int>('termId'),
             title: SearchTextNormalizer.stripHtml(row.read<String>('title')),
             body: SearchTextNormalizer.stripHtml(row.read<String>('body')),
           ),
@@ -133,20 +195,25 @@ class AssistantSearchService {
 
   /// Questions match on their title, translation, note and correct answers;
   /// the correct answers are the snippet.
-  Future<List<_Candidate>> _searchQuestions(
-    List<String> tokens,
-    String normalizedQuery,
-  ) async {
+  Future<List<_Candidate>> _searchQuestions({
+    List<String> tokens = const [],
+    String normalizedQuery = '',
+    int? id,
+    int limit = _candidatesPerType,
+  }) async {
     final rows = await _select(
       rawQuery:
-          "select q.id as id, coalesce(q.title, '') as title, "
+          "select q.id as id, q.parentTermId as termId, "
+          "coalesce(q.title, '') as title, "
           "coalesce((select group_concat(a.title, char(10)) from answers a "
           "where a.parentQuestionId=q.id and a.isCorrect=1), '') as answer, "
           "coalesce(q.titleTranslation, '') || ' ' || coalesce(q.note, '') as body "
-          "from questions q where q.parentTermId in (select id from unlockedTerms)",
+          "from questions q where q.parentTermId in (select id from unlockedTerms)"
+          "${id == null ? '' : ' and q.id=$id'}",
       bodyExpression: "raw.answer || ' ' || raw.body",
       tokens: tokens,
       normalizedQuery: normalizedQuery,
+      limit: limit,
     );
     return rows.map((row) {
       final answer = row
@@ -158,6 +225,7 @@ class AssistantSearchService {
       return _Candidate(
         type: AssistantContentType.question,
         id: row.read<int>('id'),
+        termId: row.read<int>('termId'),
         title: SearchTextNormalizer.stripHtml(row.read<String>('title')),
         body:
             '$answer ${SearchTextNormalizer.stripHtml(row.read<String>('body'))}',
@@ -166,24 +234,30 @@ class AssistantSearchService {
     }).toList();
   }
 
-  Future<List<_Candidate>> _searchFlashcards(
-    List<String> tokens,
-    String normalizedQuery,
-  ) async {
+  Future<List<_Candidate>> _searchFlashcards({
+    List<String> tokens = const [],
+    String normalizedQuery = '',
+    int? id,
+    int limit = _candidatesPerType,
+  }) async {
     final rows = await _select(
       rawQuery:
-          "select f.id as id, coalesce(f.head, '') as title, "
+          "select f.id as id, f.parentTermId as termId, "
+          "coalesce(f.head, '') as title, "
           "coalesce(f.tail, '') as body, "
           "'' as answer from flashcards f "
-          "where f.parentTermId in (select id from unlockedTerms)",
+          "where f.parentTermId in (select id from unlockedTerms)"
+          "${id == null ? '' : ' and f.id=$id'}",
       tokens: tokens,
       normalizedQuery: normalizedQuery,
+      limit: limit,
     );
     return rows.map((row) {
       final tail = SearchTextNormalizer.stripHtml(row.read<String>('body'));
       return _Candidate(
         type: AssistantContentType.flashcard,
         id: row.read<int>('id'),
+        termId: row.read<int>('termId'),
         title: SearchTextNormalizer.stripHtml(row.read<String>('title')),
         body: tail,
         answer: tail,
@@ -219,9 +293,10 @@ class AssistantSearchService {
         ),
       );
 
-  /// Runs [rawQuery] (which must select `id`, `title`, `body` and `answer`,
-  /// and may use the `unlockedTerms` CTE) and keeps the rows where every token
-  /// is in the normalized title or [bodyExpression].
+  /// Runs [rawQuery] (which must select `id`, `termId`, `title`, `body` and
+  /// `answer`, and may use the `unlockedTerms` CTE) and keeps up to [limit]
+  /// rows where every token is in the normalized title or [bodyExpression].
+  /// Without tokens it keeps every row.
   ///
   /// The `limit -1` subqueries stop SQLite from flattening them, so each row
   /// is normalized once instead of once per token.
@@ -229,6 +304,7 @@ class AssistantSearchService {
     required String rawQuery,
     required List<String> tokens,
     required String normalizedQuery,
+    required int limit,
     String bodyExpression = 'raw.body',
   }) {
     const like = r"like ? escape '\'";
@@ -247,7 +323,7 @@ class AssistantSearchService {
         '%${SearchTextNormalizer.escapeLike(normalizedQuery)}%',
       ),
     );
-    variables.add(Variable.withInt(_candidatesPerType));
+    variables.add(Variable.withInt(limit));
     return databaseService
         .customSelect(
           'with unlockedTerms(id) as (${TermService.unlockedTermIdsQuery}) '
@@ -255,8 +331,8 @@ class AssistantSearchService {
           '${SearchTextNormalizer.sql('raw.title')} as searchTitle, '
           '${SearchTextNormalizer.sql(bodyExpression)} as searchBody '
           'from ($rawQuery limit -1) raw limit -1) '
-          'where $conditions '
-          'order by searchTitle $like desc, length(searchTitle) '
+          'where ${conditions.isEmpty ? '1' : conditions} '
+          'order by searchTitle $like desc, length(searchTitle), id '
           'limit ?',
           variables: variables,
         )
@@ -297,12 +373,12 @@ class AssistantSearchService {
     return score - min(title.length, 200) / 100;
   }
 
-  /// The answer when the content has one, otherwise an excerpt of the body
-  /// around the first matching word.
-  String _snippet(_Candidate candidate, List<String> tokens) {
+  /// Up to [length] characters of the answer when the content has one,
+  /// otherwise of the body around the first matching word.
+  String _excerpt(_Candidate candidate, List<String> tokens, int length) {
     final answer = candidate.answer;
     final text = answer != null && answer.isNotEmpty ? answer : candidate.body;
-    if (text.length <= snippetLength) return text;
+    if (text.length <= length) return text;
     final words = text.split(' ');
     int start = words.indexWhere((word) {
       final normalized = SearchTextNormalizer.normalize(word);
@@ -311,7 +387,8 @@ class AssistantSearchService {
     start = max(0, start - 8);
     final buffer = StringBuffer(start > 0 ? '…' : '');
     for (int i = start; i < words.length; i++) {
-      if (buffer.length + words[i].length > snippetLength) {
+      final separator = i > start ? 1 : 0;
+      if (buffer.length + separator + words[i].length > length) {
         buffer.write('…');
         break;
       }
@@ -329,11 +406,15 @@ class _Candidate {
   final String body;
   final String? answer;
 
+  /// See [AssistantSearchResult.termId].
+  final int? termId;
+
   _Candidate({
     required this.type,
     required this.id,
     required this.title,
     required this.body,
     this.answer,
+    this.termId,
   });
 }

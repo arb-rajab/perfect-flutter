@@ -10,6 +10,7 @@ xmlns:tools="http://schemas.android.com/tools">
 <uses-sdk tools:overrideLibrary="io.flutter.plugins.videoplayer,
                                 com.google.android.gms.wallet,
                                 androidx.*,
+                                androidx.appfunctions,
                                 com.stripe.*,
                                 dev.steenbakker.mobile_scanner"
                                 />
@@ -41,11 +42,16 @@ xmlns:tools="http://schemas.android.com/tools">
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
+            <!-- app_links delivers every link to DeepLinkCoordinator, which also keeps the
+                 /q/<uuid> routes. Flutter's own handler would push the same link to the router
+                 a second time (and fail on perfect:// links), so it is off, as app_links asks. -->
             <meta-data
                 android:name="flutter_deeplinking_enabled"
-                android:value="true" />
+                android:value="false" />
 
-            <!-- App Links: https://perfect-app.com/q... -->
+            <!-- App Links: https://perfect-app.com/q... and the content links of
+                 DeepLinkTarget (https://perfect-app.com/question/12, ...). The domain's
+                 assetlinks.json must list this app for autoVerify. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -53,6 +59,12 @@ xmlns:tools="http://schemas.android.com/tools">
                 <data android:scheme="https" />
                 <data android:host="perfect-app.com" />
                 <data android:pathPrefix="/q" />
+                <data android:pathPrefix="/term/" />
+                <data android:pathPrefix="/question/" />
+                <data android:pathPrefix="/flashcard/" />
+                <data android:pathPrefix="/ebook/" />
+                <data android:pathPrefix="/faq/" />
+                <data android:pathPrefix="/news/" />
             </intent-filter>
 
             <!-- App Links: https://perfect-app.scienceontheweb.net/... -->
@@ -73,8 +85,41 @@ xmlns:tools="http://schemas.android.com/tools">
                 <data android:scheme="prfct" android:host="perfect-app.scienceontheweb.net" />
             </intent-filter>
 
+            <!-- Content and section links: perfect://<type>/<id> (DeepLinkTarget), e.g. the
+                 links that AppFunctions return, and perfect://<section> (app shortcuts). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="perfect" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
 
         </activity>
+        <!-- AppFunctions for Gemini and other agents (Android 16+). KSP generates this class
+             and the perfect_app_function_service.xml asset from PerfectAppFunctions.kt. -->
+        <service
+            android:name=".PerfectAppFunctionService"
+            android:permission="android.permission.BIND_APP_FUNCTION_SERVICE"
+            android:exported="true"
+            tools:targetApi="36">
+            <property
+                android:name="android.app.appfunctions.schema"
+                android:value="app_functions_schema.xsd" />
+            <property
+                android:name="android.app.appfunctions.v2"
+                android:value="perfect_app_function_service.xml" />
+            <intent-filter>
+                <action android:name="android.app.appfunctions.AppFunctionService" />
+            </intent-filter>
+        </service>
+        <property
+            android:name="android.app.appfunctions.app_metadata"
+            android:resource="@xml/app_metadata" />
+
         <!-- ADD THIS "SERVICE" element -->
         <service android:name="com.ryanheise.audioservice.AudioService"
             android:foregroundServiceType="mediaPlayback"

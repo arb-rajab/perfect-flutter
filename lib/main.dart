@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:ui' show DartPluginRegistrant;
 
 import 'package:app_links/app_links.dart';
+import 'package:beta/application/services/assistant_channel.dart';
+import 'package:beta/application/services/assistant_index_service.dart';
 import 'package:beta/application/services/deep_link_service.dart';
 import 'package:beta/application/services/theme_service.dart';
 import 'package:beta/configs/app.dart';
 import 'package:beta/configs/colors.dart';
 import 'package:beta/configs/locals.dart';
 import 'package:beta/constants/route_constant.dart';
+import 'package:beta/infrastructure/key_value_repository.dart';
 import 'package:beta/main_controller.dart';
 import 'package:beta/presentation/dialogues/ok_dialogue.dart';
 import 'package:beta/presentation/splash/splash_screen.dart';
@@ -15,6 +19,7 @@ import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flash/flash_helper.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -61,6 +66,30 @@ Future<void> main() async {
   );
 }
 
+/// Entry point of the headless engine that answers the device assistants
+/// (Gemini through AppFunctions, Siri through App Intents) without the UI, for
+/// example when the assistant starts the app in the background. The native
+/// AssistantBridge (Android and iOS) runs it and calls [AssistantChannel] on
+/// it once it reports `ready`.
+@pragma('vm:entry-point')
+Future<void> assistantMain() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+  final assistant = MainController.initAssistantServices().then(
+    (_) => AssistantChannel(
+      searchService: Get.find(),
+      contentAccessService: Get.find(),
+    ),
+  );
+  AssistantChannel.channel.setMethodCallHandler((call) async {
+    final assistantChannel = await assistant;
+    // The UI engine may have cached FAQs or news since this engine started.
+    await Get.find<KeyValue>().reload();
+    return assistantChannel.handle(call);
+  });
+  await AssistantChannel.channel.invokeMethod('ready');
+}
+
 // Register the RouteObserver as a navigation observer.
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -103,6 +132,16 @@ class _MyAppState extends State<MyApp> {
     // Lets in-app callers, such as the assistant, open search results.
     Get.delete<DeepLinkCoordinator>();
     Get.put(_deepLinkCoordinator);
+    AssistantChannel(
+      searchService: Get.find(),
+      contentAccessService: Get.find(),
+      openInApp: _deepLinkCoordinator.handle,
+    ).attach();
+    if (!MainController.testing &&
+        !kIsWeb &&
+        defaultTargetPlatform == TargetPlatform.iOS) {
+      Get.find<AssistantIndexService>().start();
+    }
     // 1. Handle cold start
     appLinks = AppLinks();
     _initDeepLink();

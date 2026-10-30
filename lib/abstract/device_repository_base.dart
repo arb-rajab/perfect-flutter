@@ -13,7 +13,10 @@ abstract class DeviceRepositoryBase {
   bool rooted = false;
   bool isRealDevice = true;
 
-  Future<DeviceRepositoryBase> initialise();
+  /// With [modelOnly], reads only what [getModel] needs (the assistant's
+  /// background engine, which has fewer plugins, uses it for the database
+  /// key).
+  Future<DeviceRepositoryBase> initialise({bool modelOnly = false});
   String getModel();
   String getAndroidApi();
   String getIosVersion();

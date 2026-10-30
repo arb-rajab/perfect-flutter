@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher (and assistant) shortcuts for common sections. Each opens a perfect://<section>
+     link, which DeepLinkCoordinator.sectionRoutes maps to a screen. targetPackage must match
+     the applicationId. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="coupon"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_coupon_short"
+        android:shortcutLongLabel="@string/shortcut_coupon_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="perfect://coupon"
+            android:targetPackage="edu.perfect"
+            android:targetClass="edu.perfect.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="faq"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_faq_short"
+        android:shortcutLongLabel="@string/shortcut_faq_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="perfect://faq"
+            android:targetPackage="edu.perfect"
+            android:targetClass="edu.perfect.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="contact"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_contact_short"
+        android:shortcutLongLabel="@string/shortcut_contact_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="perfect://contact"
+            android:targetPackage="edu.perfect"
+            android:targetClass="edu.perfect.MainActivity" />
+    </shortcut>
+</shortcuts>

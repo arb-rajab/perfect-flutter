@@ -6,7 +6,8 @@ import 'package:drift/wasm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/instance_manager.dart';
 
-DatabaseService constructDb() {
+// The assistant's background engine does not run on the web.
+DatabaseService constructDb({bool forAssistant = false}) {
   return DatabaseService(connectOnWeb());
 }
 
