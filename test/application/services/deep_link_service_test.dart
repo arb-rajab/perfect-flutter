@@ -1,4 +1,5 @@
 import 'package:beta/application/services/assistant_search_service.dart';
+import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/deep_link_service.dart';
 import 'package:beta/application/services/path/shared.dart';
 import 'package:beta/configs/links.dart';
@@ -51,6 +52,12 @@ class FakeDeepLinkNavigator implements DeepLinkNavigator {
     lastOnConfirm = onConfirm;
   }
 }
+
+Future<List<int>> _rowCounts(DatabaseService db) async => [
+  for (final table in ['questions', 'terms', 'answers', 'coupons'])
+    (await db.customSelect('select count(*) as c from $table').getSingle())
+        .read<int>('c'),
+];
 
 void main() {
   late DeepLinkService deepLinkService;
@@ -313,7 +320,7 @@ void main() {
 
         await coordinator.handle(questionLink);
 
-        expect(navigator.calls, ['go ${HomeScreen.route}', 'push /q/q-uuid-1']);
+        expect(navigator.calls, ['go ${HomeScreen.route}', 'push /q/00000000-0000-4000-8000-000000000001']);
       },
     );
 
@@ -324,7 +331,7 @@ void main() {
 
         await coordinator.handle(questionLink);
 
-        expect(navigator.calls, ['push /q/q-uuid-1']);
+        expect(navigator.calls, ['push /q/00000000-0000-4000-8000-000000000001']);
       },
     );
 
@@ -337,12 +344,12 @@ void main() {
           coordinator.handle(questionLink),
           coordinator.handle(questionLink),
         ]);
-        expect(navigator.calls, ['go ${HomeScreen.route}', 'push /q/q-uuid-1']);
+        expect(navigator.calls, ['go ${HomeScreen.route}', 'push /q/00000000-0000-4000-8000-000000000001']);
 
         // The same link opened again later is a new request.
         now = now.add(DeepLinkCoordinator.duplicateWindow);
         await coordinator.handle(questionLink);
-        expect(navigator.calls.last, 'push /q/q-uuid-1');
+        expect(navigator.calls.last, 'push /q/00000000-0000-4000-8000-000000000001');
         expect(navigator.calls.length, 3);
       },
     );
@@ -350,11 +357,64 @@ void main() {
     test('keeps the previous behaviour for other links', () async {
       createCoordinator(SplashScreen.route);
 
-      await coordinator.handle(
-        Uri.parse('https://perfect-app.com/q/some-uuid'),
-      );
+      await coordinator.handle(Uri.parse('https://perfect-app.com/settings'));
 
-      expect(navigator.calls, ['go /q/some-uuid']);
+      expect(navigator.calls, ['go /settings']);
+    });
+
+    group('/q/<uuid> links', () {
+      Uri link(String uuid) =>
+          Uri.parse('https://perfect-app.com/q/${Uri.encodeComponent(uuid)}');
+
+      test('open the question of an unlocked term', () async {
+        createCoordinator('/settings');
+
+        await coordinator.handle(link(AssistantFixtures.unlockedQuestionUuid));
+
+        expect(navigator.calls, [
+          'push /q/${AssistantFixtures.unlockedQuestionUuid}',
+        ]);
+      });
+
+      test('of an expired coupon open the expired flow', () async {
+        createCoordinator('/settings');
+
+        await coordinator.handle(link(AssistantFixtures.expiredQuestionUuid));
+
+        expect(navigator.calls, [
+          'push ${EnterCouponScreen.route}',
+          'message ${StringConstant.termIsExpired}',
+        ]);
+      });
+
+      test('of a disabled term open the locked flow', () async {
+        createCoordinator('/settings');
+
+        await coordinator.handle(link(AssistantFixtures.disabledQuestionUuid));
+
+        expect(navigator.calls, ['message ${StringConstant.contentLocked}']);
+      });
+
+      for (final uuid in [
+        "'; DROP TABLE questions; --",
+        "' OR '1'='1",
+        'not-a-uuid',
+        '${AssistantFixtures.unlockedQuestionUuid}x',
+      ]) {
+        test('reject "$uuid", query nothing and change no data', () async {
+          createCoordinator('/settings');
+          final before = await _rowCounts(deepLinkService.databaseService);
+
+          await coordinator.handle(link(uuid));
+          final resolution = await deepLinkService.resolveQuestionUuid(uuid);
+
+          expect(resolution.outcome, DeepLinkOutcome.unavailable);
+          expect(navigator.calls, [
+            'message ${StringConstant.contentUnavailable}',
+          ]);
+          expect(await _rowCounts(deepLinkService.databaseService), before);
+        });
+      }
     });
 
     test('opens the home screen for an unknown perfect:// link', () async {

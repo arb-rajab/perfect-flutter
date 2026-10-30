@@ -1,6 +1,7 @@
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/domain/question_data.dart';
 import 'package:beta/domain/term_data.dart';
+import 'package:drift/drift.dart';
 
 class QuestionService {
   final DatabaseService databaseService;
@@ -55,9 +56,12 @@ class QuestionService {
               .first)
           .first;
 
-  Future<List<QuestionData>> getQuestionsFromQuery(String query) =>
+  Future<List<QuestionData>> getQuestionsFromQuery(
+    String query, {
+    List<Variable> variables = const [],
+  }) =>
       (databaseService
-          .customSelect(query)
+          .customSelect(query, variables: variables)
           .watch()
           .map((rows) => rows
               .map(

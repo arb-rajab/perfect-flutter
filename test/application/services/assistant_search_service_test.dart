@@ -313,7 +313,7 @@ void main() {
       await questionService.addQuestions([
         AssistantFixtures.question(
           40,
-          'q-uuid-40',
+          '00000000-0000-4000-8000-000000000040',
           '<span class="highlight">سؤال منسق</span>',
           AssistantFixtures.unlockedQuestionsTermId,
         ),
