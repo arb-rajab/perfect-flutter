@@ -4,6 +4,7 @@ import 'package:beta/application/services/question_service.dart';
 import 'package:beta/application/services/question_tag_service.dart';
 import 'package:beta/application/services/term_linked_to_tag_service.dart';
 import 'package:beta/application/services/term_tag_service.dart';
+import 'package:beta/constants/arguments.dart';
 import 'package:beta/constants/string_constant.dart';
 import 'package:beta/domain/term_linked_to_tag_data.dart';
 import 'package:beta/domain/term_tag_data.dart';
@@ -553,5 +554,7 @@ Future main() async {
 
     expect(find.byType(WebScreen), findsOneWidget);
     expect(find.widgetWithText(AppBar, 'parent tag 2'), findsOneWidget);
+    // The server identifies the device by this header, not by the URL.
+    expect(Get.find<WebScreenArgument>().headers.keys, contains('deviceInfo'));
   });
 }

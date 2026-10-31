@@ -54,8 +54,14 @@ class WebScreenArgument {
   final t.Title title;
   final bool connected;
 
+  /// Extra request headers for the first page load, e.g. the device identity.
+  final Map<String, String> headers;
+
   WebScreenArgument(
-      {required this.connected, required this.uri, required this.title});
+      {required this.connected,
+      required this.uri,
+      required this.title,
+      this.headers = const {}});
 }
 
 class EbookScreenArgument {

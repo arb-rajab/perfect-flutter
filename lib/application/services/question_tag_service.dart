@@ -1,5 +1,6 @@
 import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
+import 'package:beta/application/services/network_service.dart';
 import 'package:beta/constants/api_constant.dart';
 import 'package:beta/constants/arguments.dart';
 import 'package:beta/domain/question_tag_data.dart';
@@ -102,6 +103,9 @@ class QuestionTagService {
               .replaceFirst('(IME1)', Get.find<DeviceRepositoryBase>().ime1)
               .replaceFirst('(LANGUAGE)',
                   MainController.testing ? 'en' : context.locale.languageCode)),
+          // The server identifies the device by this header; the id in the
+          // URL is kept for older servers.
+          headers: NetworkService.deviceHeaders(),
           title: t.Title(questionTag.name)));
       context.push(WebScreen.route);
     });
