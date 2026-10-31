@@ -38,7 +38,11 @@ class NetworkService {
     setHttpOverrides();
   }
 
-  Map<String, String> getHeaders() {
+  Map<String, String> getHeaders() => deviceHeaders();
+
+  /// The identity header the server expects on every request, also usable
+  /// outside of [NetworkService] (e.g. for web views that load our own pages).
+  static Map<String, String> deviceHeaders() {
     String info = '';
     DeviceRepositoryBase deviceRepository = Get.find();
     // if (keyValue.getString('deviceInfo') != null) {

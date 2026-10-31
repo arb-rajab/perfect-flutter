@@ -31,6 +31,7 @@ class _WebScreenState extends State<WebScreen> {
             : WebWidget(
           uri: webScreenArgument.uri,
           connected: webScreenArgument.connected,
+          headers: webScreenArgument.headers,
         ));
   }
 }

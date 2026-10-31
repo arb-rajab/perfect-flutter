@@ -7,7 +7,12 @@ import 'package:go_router/go_router.dart';
 class WebWidget extends StatefulWidget {
   final Uri uri;
   final bool connected;
-  const WebWidget({super.key, required this.uri, required this.connected});
+  final Map<String, String> headers;
+  const WebWidget(
+      {super.key,
+      required this.uri,
+      required this.connected,
+      this.headers = const {}});
 
   @override
   State<WebWidget> createState() => WebWidgetState();
@@ -40,7 +45,8 @@ class WebWidgetState extends State<WebWidget> {
           Expanded(
               child: InAppWebView(
             key: webViewKey,
-            initialUrlRequest: URLRequest(url: WebUri(widget.uri.toString())),
+            initialUrlRequest: URLRequest(
+                url: WebUri(widget.uri.toString()), headers: widget.headers),
             initialSettings: settings,
             onWebViewCreated: (controller) {
               webViewController = controller;
