@@ -1,4 +1,3 @@
-import 'package:beta/abstract/device_repository_base.dart';
 import 'package:beta/application/services/database_service.dart';
 import 'package:beta/application/services/network_service.dart';
 import 'package:beta/constants/api_constant.dart';
@@ -100,11 +99,10 @@ class QuestionTagService {
           connected: value,
           uri: Uri.parse(ApiConstant.questionTagInformation
               .replaceFirst('(QUESTION_TAG_ID)', questionTag.id.toString())
-              .replaceFirst('(IME1)', Get.find<DeviceRepositoryBase>().ime1)
               .replaceFirst('(LANGUAGE)',
                   MainController.testing ? 'en' : context.locale.languageCode)),
-          // The server identifies the device by this header; the id in the
-          // URL is kept for older servers.
+          // API v2 identifies the device by this header only. Apps up to
+          // 9.0.6 call the v1 route, which the server still serves.
           headers: NetworkService.deviceHeaders(),
           title: t.Title(questionTag.name)));
       context.push(WebScreen.route);

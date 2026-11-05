@@ -2,6 +2,7 @@ import 'package:beta/configs/app.dart';
 
 class ApiConstant {
   static const String _apiV1 = '${rootUrl}api/v1/';
+  static const String _apiV2 = '${rootUrl}api/v2/';
   static const String notifications = '${_apiV1}notifications';
   static const String termPrintQr = '${_apiV1}term-print-qr/(QR)';
   static const String checkCoupon = '${_apiV1}coupons/(SERIAL)/check';
@@ -18,7 +19,7 @@ class ApiConstant {
   static const String getVideoFile = '${_apiV1}video-files/(TERM_ID)';
   static const String getTermContent = '${_apiV1}term/(TERM_ID)/content';
   static const String questionTagInformation =
-      '${_apiV1}question-tag/(QUESTION_TAG_ID)/info/ime1/(IME1)/language/(LANGUAGE)';
+      '${_apiV2}question-tag/(QUESTION_TAG_ID)/info/language/(LANGUAGE)';
   static const String reportQuestion =
       '${_apiV1}questions/(QUESTION_ID)/report';
   static const String checkedAnswers = '${_apiV1}answers/checked';
